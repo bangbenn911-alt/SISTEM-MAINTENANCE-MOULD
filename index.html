@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Control Kinerja Maintenance Mould CBI</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- LIBRARY UNTUK MEMBUAT EXCEL RAPI (.XLSX) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
         /* --- TEMA & VARIABEL WARNA --- */
         :root {
@@ -104,7 +106,7 @@
         .btn-apply { background-color: var(--secondary); }
         .btn-reset { background-color: #94a3b8; }
 
-        /* --- LEMBAR LAPORAN DETAIL (BARU) --- */
+        /* --- LEMBAR LAPORAN DETAIL --- */
         .report-sheet { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #333; margin-bottom: 20px;}
         .report-header { text-align: center; border-bottom: 3px double #334155; padding-bottom: 15px; margin-bottom: 20px; }
         .report-header h2 { margin: 0; color: var(--primary); font-size: 20px; }
@@ -126,15 +128,11 @@
         /* SETINGAN KHUSUS UNTUK CETAK PDF PINTAR */
         @media print {
             body { background: white !important; }
-            .screen:not(.active-screen) { display: none !important; } /* Sembunyikan layar yang tidak aktif */
+            .screen:not(.active-screen) { display: none !important; } 
             .header, .export-row, .filter-box, .btn-back, .btn-print-detail, .tab-container { display: none !important; }
             .screen { padding: 0 !important; }
             .content-wrapper { max-width: 100%; margin: 0; }
-            
-            /* Untuk halaman List Progres */
             .progress-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
-            
-            /* Untuk halaman Detail Laporan */
             .report-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; color: black; }
             .report-table th, .report-table td { border: 1px solid black !important; }
             .report-header { border-bottom-color: black !important; }
@@ -279,7 +277,7 @@
         </div>
     </div>
 
-    <!-- 7. HALAMAN DETAIL LAPORAN PROJECT (BARU) -->
+    <!-- 7. HALAMAN DETAIL LAPORAN PROJECT -->
     <div id="detail-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -574,7 +572,6 @@
             window.renderProgressList();
         }
 
-        // FUNGSI MEMBUKA HALAMAN LAPORAN DETAIL PDF (BARU)
         window.bukaDetailProject = function(id) {
             const data = currentDatabase.find(d => d.id === id);
             if(!data) return;
@@ -582,7 +579,6 @@
             const reportContainer = document.getElementById('report-content');
             let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES / BELUM SELESAI" : "✅ SUDAH SELESAI";
             
-            // Susun tabel laporan
             let html = `
                 <div class="report-header">
                     <h2>LAPORAN MAINTENANCE MOULD</h2>
@@ -610,7 +606,6 @@
                 `;
             }
 
-            // Susun Galeri Foto Laporan
             html += `<div class="report-images">`;
             
             if(data.fotoAwal) {
@@ -677,7 +672,6 @@
 
                 let snippetKet = data.keteranganAwal ? `<p style="margin: 3px 0; font-size: 13px; color: #475569;"><i>"${data.keteranganAwal}"</i></p>` : "";
 
-                // MODIFIKASI: Menambahkan onclick agar kartu bisa dipencet menuju halaman Detail Laporan
                 container.innerHTML += `
                     <div class="progress-card" style="border-left-color: ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')">
                         <h3 style="margin:0; color: var(--primary);">${data.namaProject}</h3>
@@ -692,11 +686,7 @@
             });
         }
 
-        const bersihkanTeksCSV = (teks) => {
-            if (!teks) return '-';
-            return teks.replace(/"/g, '""').replace(/\n/g, " | "); 
-        };
-
+        // --- SISTEM EXCEL PROFESIONAL (BARU) ---
         window.exportData = function(format) {
             let dataExport = [...currentDatabase];
             
@@ -708,28 +698,42 @@
                 alert("Tidak ada data yang bisa didownload!"); return;
             }
 
-            if (format === 'Excel') {
-                let csvContent = "data:text/csv;charset=utf-8,";
-                csvContent += "Divisi,Nama Project,Keterangan Detail Awal,Target Selesai,Nama User,Status Update,Tanggal Selesai,Hasil Singkat,Keterangan Detail Hasil\n";
-                
-                dataExport.forEach(row => {
-                    let statusTxt = row.statusUpdate === 'Belum' ? 'Sedang Proses' : 'Selesai';
-                    let tglSelesai = row.tanggalSelesai ? row.tanggalSelesai : 'Belum Selesai';
-                    let hasilSingkat = row.hasilProject ? row.hasilProject : '-';
-                    let ketAwal = bersihkanTeksCSV(row.keteranganAwal);
-                    let ketUp = bersihkanTeksCSV(row.keteranganUpdate);
-                    
-                    let baris = `"${row.divisi}","${row.namaProject}","${ketAwal}","${row.targetSelesai}","${row.userAwal}","${statusTxt}","${tglSelesai}","${hasilSingkat}","${ketUp}"`;
-                    csvContent += baris + "\n";
-                });
+            // MENGGUNAKAN LIBRARY SHEETJS (XLSX)
+            const arrayDataExcel = dataExport.map(row => ({
+                "Divisi": row.divisi,
+                "Nama Project": row.namaProject,
+                "Keterangan Permintaan (Awal)": row.keteranganAwal || "-",
+                "Target Selesai": row.targetSelesai,
+                "Nama User (Pemohon)": row.userAwal || "-",
+                "Status Saat Ini": row.statusUpdate === 'Belum' ? 'Sedang Proses' : 'Selesai',
+                "Tanggal Selesai Aktual": row.tanggalSelesai || "Belum Selesai",
+                "Hasil Pengerjaan (Singkat)": row.hasilProject || "-",
+                "Detail Perbaikan (Akhir)": row.keteranganUpdate || "-",
+                "Teknisi Updater": row.userUpdate || "-"
+            }));
 
-                var encodedUri = encodeURI(csvContent);
-                var link = document.createElement("a");
-                link.setAttribute("href", encodedUri);
-                link.setAttribute("download", `Data_Firebase_${divisiAktif}.csv`);
-                document.body.appendChild(link); link.click(); document.body.removeChild(link);
-                alert("Berhasil mengunduh Excel dari Server!");
-            }
+            // Membuat Lembar Kerja Excel Baru
+            const worksheet = XLSX.utils.json_to_sheet(arrayDataExcel);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan Maintenance");
+
+            // Mengatur Lebar Kolom Otomatis agar rapi saat dibuka
+            const wscols = [
+                {wch: 22}, // Divisi
+                {wch: 25}, // Nama Project
+                {wch: 40}, // Ket Awal
+                {wch: 15}, // Target
+                {wch: 22}, // User
+                {wch: 18}, // Status
+                {wch: 22}, // Tgl Selesai
+                {wch: 30}, // Hasil
+                {wch: 50}, // Detail Perbaikan
+                {wch: 20}  // Teknisi
+            ];
+            worksheet['!cols'] = wscols;
+
+            // Mengunduh File .xlsx
+            XLSX.writeFile(workbook, `Rekap_Maintenance_${divisiAktif}.xlsx`);
         }
     </script>
 </body>
