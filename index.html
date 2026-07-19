@@ -29,7 +29,7 @@
             transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.5s ease;
         }
 
-        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen {
+        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen, #detail-project-screen {
             background: linear-gradient(rgba(241, 245, 249, 0.85), rgba(241, 245, 249, 0.85)), url(https://archive.org/download/1784450628482/1784450628482.png);
             background-size: cover; background-position: center; background-attachment: fixed;
         }
@@ -82,7 +82,8 @@
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
         /* --- KARTU PROGRES --- */
-        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; }
+        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; }
+        .progress-card:active { transform: scale(0.98); }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; margin-top: 10px;}
         .bg-proses { background-color: var(--proses); color: #000; }
         .bg-cepat { background-color: var(--cepat); }
@@ -103,18 +104,40 @@
         .btn-apply { background-color: var(--secondary); }
         .btn-reset { background-color: #94a3b8; }
 
+        /* --- LEMBAR LAPORAN DETAIL (BARU) --- */
+        .report-sheet { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #333; margin-bottom: 20px;}
+        .report-header { text-align: center; border-bottom: 3px double #334155; padding-bottom: 15px; margin-bottom: 20px; }
+        .report-header h2 { margin: 0; color: var(--primary); font-size: 20px; }
+        .report-header p { margin: 5px 0 0 0; font-size: 14px; color: #64748b; font-weight: bold; }
+        .report-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
+        .report-table th, .report-table td { border: 1px solid #cbd5e1; padding: 10px; vertical-align: top; }
+        .report-table th { background-color: #f8fafc; width: 35%; text-align: left; color: var(--primary); }
+        .report-images { display: flex; gap: 10px; justify-content: space-between; }
+        .report-img-box { flex: 1; border: 1px dashed #94a3b8; padding: 10px; text-align: center; border-radius: 5px; font-size: 12px;}
+        .report-img-box img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 5px; margin-top: 10px; }
+        
+        .btn-print-detail { width: 100%; padding: 15px; background: #e11d48; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;}
+
         /* Loader */
         .loader-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; color: white;}
         .spinner { border: 5px solid #f3f3f3; border-top: 5px solid var(--secondary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 10px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* SETINGAN KHUSUS UNTUK CETAK PDF PINTAR */
         @media print {
             body { background: white !important; }
-            #landing-page, #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, .loader-overlay { display: none !important; }
-            .header, .export-row, .filter-box, .btn-back { display: none !important; }
-            #progress-screen { display: block !important; padding: 0 !important; }
+            .screen:not(.active-screen) { display: none !important; } /* Sembunyikan layar yang tidak aktif */
+            .header, .export-row, .filter-box, .btn-back, .btn-print-detail, .tab-container { display: none !important; }
+            .screen { padding: 0 !important; }
+            .content-wrapper { max-width: 100%; margin: 0; }
+            
+            /* Untuk halaman List Progres */
             .progress-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
-            .content-wrapper { max-width: 100%; }
+            
+            /* Untuk halaman Detail Laporan */
+            .report-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; color: black; }
+            .report-table th, .report-table td { border: 1px solid black !important; }
+            .report-header { border-bottom-color: black !important; }
         }
     </style>
 </head>
@@ -228,7 +251,7 @@
         </div>
     </div>
 
-    <!-- 6. CONTROL PROGRES PROJECT -->
+    <!-- 6. CONTROL PROGRES PROJECT (List) -->
     <div id="progress-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -236,8 +259,8 @@
                 <h2>Control Progres</h2>
             </div>
             <div class="export-row">
-                <button class="btn-export btn-excel" onclick="exportData('Excel')"><i class="fas fa-file-excel"></i> Unduh Excel</button>
-                <button class="btn-export btn-pdf" onclick="exportData('PDF')"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button class="btn-export btn-excel" onclick="exportData('Excel')"><i class="fas fa-file-excel"></i> Rekap Excel</button>
+                <button class="btn-export btn-pdf" onclick="window.print()"><i class="fas fa-file-pdf"></i> Cetak List PDF</button>
             </div>
             <div class="filter-box">
                 <label style="color: var(--primary); font-size: 14px;"><i class="fas fa-filter"></i> Filter Berdasarkan Target Selesai:</label>
@@ -251,7 +274,25 @@
                     <button class="btn-filter-action btn-reset" onclick="resetFilter()">Reset Semua</button>
                 </div>
             </div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada nama project untuk melihat laporan detail PDF</i></p>
             <div id="list-progress"></div>
+        </div>
+    </div>
+
+    <!-- 7. HALAMAN DETAIL LAPORAN PROJECT (BARU) -->
+    <div id="detail-project-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <button class="btn-back" onclick="navigasi('progress-screen')"><i class="fas fa-arrow-left"></i></button>
+                <h2>Detail Project</h2>
+            </div>
+            
+            <button class="btn-print-detail" onclick="window.print()"><i class="fas fa-file-pdf"></i> Download / Cetak Laporan PDF</button>
+
+            <!-- Ini adalah Lembar Laporan yang akan tercetak di PDF -->
+            <div class="report-sheet" id="report-content">
+                <!-- Data Laporan akan diinjeksi lewat JavaScript di bawah -->
+            </div>
         </div>
     </div>
 
@@ -260,7 +301,7 @@
     <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, where, orderBy } 
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, where } 
         from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -286,7 +327,6 @@
             document.getElementById('loader').style.display = show ? 'flex' : 'none';
         }
 
-        // FITUR BARU: Kompresi Gambar Otomatis (Mengecilkan ukuran file)
         const compressImage = (file, maxWidth = 800, maxHeight = 800, quality = 0.6) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -379,7 +419,6 @@
 
             let fotoBase64 = "";
             if (fotoInput.files.length > 0) {
-                // Menggunakan fitur kompresi
                 fotoBase64 = await compressImage(fotoInput.files[0]);
             }
 
@@ -480,7 +519,6 @@
 
             let fotoBase64 = "";
             if (fotoInput.files.length > 0) {
-                // Menggunakan fitur kompresi
                 fotoBase64 = await compressImage(fotoInput.files[0]);
             }
 
@@ -536,6 +574,63 @@
             window.renderProgressList();
         }
 
+        // FUNGSI MEMBUKA HALAMAN LAPORAN DETAIL PDF (BARU)
+        window.bukaDetailProject = function(id) {
+            const data = currentDatabase.find(d => d.id === id);
+            if(!data) return;
+
+            const reportContainer = document.getElementById('report-content');
+            let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES / BELUM SELESAI" : "✅ SUDAH SELESAI";
+            
+            // Susun tabel laporan
+            let html = `
+                <div class="report-header">
+                    <h2>LAPORAN MAINTENANCE MOULD</h2>
+                    <p>${data.divisi} - PT. CITRA BUANA INTITAMA</p>
+                </div>
+                
+                <table class="report-table">
+                    <tr><th>Nama Project</th><td><strong>${data.namaProject}</strong></td></tr>
+                    <tr><th>Status Saat Ini</th><td style="font-weight:bold; color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr>
+                    <tr><th>Nama User / Pemohon</th><td>${data.userAwal || '-'}</td></tr>
+                    <tr><th>Target Penyelesaian</th><td>${data.targetSelesai}</td></tr>
+                    <tr><th>Keterangan Request (Awal)</th><td>${data.keteranganAwal || '-'}</td></tr>
+                </table>
+            `;
+
+            if(data.statusUpdate === "Sudah") {
+                html += `
+                <table class="report-table">
+                    <tr><th colspan="2" style="text-align:center; background:#e2e8f0; color:#333;">HASIL UPDATE PROJECT</th></tr>
+                    <tr><th>Tanggal Selesai Aktual</th><td>${data.tanggalSelesai}</td></tr>
+                    <tr><th>Nama User Updater (Teknisi)</th><td>${data.userUpdate || '-'}</td></tr>
+                    <tr><th>Hasil Pengerjaan (Singkat)</th><td>${data.hasilProject || '-'}</td></tr>
+                    <tr><th>Detail Perbaikan / Tindakan</th><td>${data.keteranganUpdate || '-'}</td></tr>
+                </table>
+                `;
+            }
+
+            // Susun Galeri Foto Laporan
+            html += `<div class="report-images">`;
+            
+            if(data.fotoAwal) {
+                html += `<div class="report-img-box"><strong>KONDISI AWAL (SEBELUM)</strong><br><img src="${data.fotoAwal}"></div>`;
+            } else {
+                html += `<div class="report-img-box"><strong>KONDISI AWAL (SEBELUM)</strong><br><br><i class="fas fa-camera" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`;
+            }
+
+            if(data.fotoAkhir) {
+                html += `<div class="report-img-box"><strong>KONDISI AKHIR (SESUDAH)</strong><br><img src="${data.fotoAkhir}"></div>`;
+            } else {
+                html += `<div class="report-img-box"><strong>KONDISI AKHIR (SESUDAH)</strong><br><br><i class="fas fa-camera" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto / Belum diupdate</span></div>`;
+            }
+            
+            html += `</div>`;
+
+            reportContainer.innerHTML = html;
+            window.navigasi('detail-project-screen');
+        }
+
         window.renderProgressList = function() {
             const container = document.getElementById('list-progress');
             container.innerHTML = "";
@@ -582,8 +677,9 @@
 
                 let snippetKet = data.keteranganAwal ? `<p style="margin: 3px 0; font-size: 13px; color: #475569;"><i>"${data.keteranganAwal}"</i></p>` : "";
 
+                // MODIFIKASI: Menambahkan onclick agar kartu bisa dipencet menuju halaman Detail Laporan
                 container.innerHTML += `
-                    <div class="progress-card" style="border-left-color: ${borderColor};">
+                    <div class="progress-card" style="border-left-color: ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')">
                         <h3 style="margin:0; color: var(--primary);">${data.namaProject}</h3>
                         ${snippetKet}
                         <p style="margin:5px 0; font-size: 14px; color: gray;">
@@ -633,10 +729,6 @@
                 link.setAttribute("download", `Data_Firebase_${divisiAktif}.csv`);
                 document.body.appendChild(link); link.click(); document.body.removeChild(link);
                 alert("Berhasil mengunduh Excel dari Server!");
-
-            } else if (format === 'PDF') {
-                alert(`Sistem akan mencetak PDF untuk ${dataExport.length} data.\n\nSilakan pilih 'Simpan sebagai PDF'.`);
-                window.print(); 
             }
         }
     </script>
