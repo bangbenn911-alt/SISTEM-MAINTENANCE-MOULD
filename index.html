@@ -31,8 +31,7 @@
             transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.5s ease;
         }
 
-        /* DITAMBAHKAN ID BARU: #informasi-mold-screen */
-        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen, #detail-project-screen, #informasi-mold-screen, #sub-data-mold-screen {
+        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen, #detail-project-screen, #informasi-mold-screen, #sub-info-screen {
             background: linear-gradient(rgba(241, 245, 249, 0.85), rgba(241, 245, 249, 0.85)), url(https://archive.org/download/1784450628482/1784450628482.png);
             background-size: cover; background-position: center; background-attachment: fixed;
         }
@@ -166,30 +165,22 @@
         </div>
     </div>
 
-    <!-- 2. BERANDA UTAMA -->
+    <!-- 2. BERANDA UTAMA (DIVISI & INFORMASI MOLD) -->
     <div id="home-screen" class="screen">
         <div class="content-wrapper">
             <div class="header"><h2>BERANDA UTAMA</h2></div>
-            
-            <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 15px;"><i class="fas fa-tools"></i> 4 DIVISI MAINTENANCE</h3>
-            <div class="grid-menu" style="margin-bottom: 25px;">
+            <div class="grid-menu">
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
-            </div>
-
-            <!-- MODIFIKASI: HANYA ADA 1 TOMBOL INFORMASI MOLD -->
-            <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 15px;"><i class="fas fa-database"></i> MENU DATA MOLD</h3>
-            <div class="grid-menu">
-                <div class="menu-card" style="border-left-color: #10b981; background-color: #f8fafc;" onclick="navigasi('informasi-mold-screen')">
-                    <i class="fas fa-folder-open" style="color: #10b981; font-size: 20px; margin-bottom: 5px;"></i><br>INFORMASI MOLD
-                </div>
+                <!-- MENU BARU INFORMASI MOLD -->
+                <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
     </div>
 
-    <!-- 3.A. BERANDA DIVISI -->
+    <!-- 3. BERANDA DIVISI -->
     <div id="divisi-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -204,36 +195,41 @@
         </div>
     </div>
 
-    <!-- 3.B. HALAMAN INFORMASI MOLD (MENU UTAMA) -->
+    <!-- MENU UTAMA INFORMASI MOLD (BARU) -->
     <div id="informasi-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
                 <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
-                <h2>Informasi Mold</h2>
+                <h2>Informasi & Laporan Mold</h2>
             </div>
-            <!-- INILAH 3 BAGIAN YANG MUNCUL SETELAH DIKLIK -->
             <div class="grid-menu">
-                <div class="menu-card" style="border-left-color: #10b981;" onclick="bukaDataMold('DATA MOLD TERBARU')"><i class="fas fa-boxes"></i> 1. DATA MOLD TERBARU</div>
-                <div class="menu-card" style="border-left-color: #f59e0b;" onclick="bukaDataMold('ROTASI MOLD')"><i class="fas fa-sync-alt"></i> 2. ROTASI MOLD</div>
-                <div class="menu-card" style="border-left-color: #ef4444;" onclick="bukaDataMold('PREVENTIF MOLD TAHUNAN')"><i class="fas fa-calendar-alt"></i> 3. PREVENTIF MOLD TAHUNAN</div>
+                <div class="menu-card" onclick="bukaSubInfo('JADWAL BESAR')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 1. JADWAL BESAR</div>
+                <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 2. SCHEDULE BULANAN MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 3. LAPORAN MINGGUAN ADMIN</div>
             </div>
         </div>
     </div>
 
-    <!-- 3.C. HALAMAN ISI DARI SUB-DATA MOLD (Placeholder) -->
-    <div id="sub-data-mold-screen" class="screen">
+    <!-- SUB HALAMAN INPUT & LIST INFORMASI MOLD (BARU) -->
+    <div id="sub-info-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
                 <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
-                <h2 id="judul-data-mold">Data Mold</h2>
+                <h2 id="judul-sub-info">Sub Informasi</h2>
             </div>
-            <div style="background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <i class="fas fa-file-alt" style="font-size: 50px; color: var(--secondary); margin-bottom: 15px;"></i>
-                <h3 id="info-menu-mold" style="color: var(--primary); margin-top: 0;">Judul Menu</h3>
-                <p style="color: #64748b; font-size: 14px; line-height: 1.6;">
-                    Halaman khusus untuk mengelola rekap dan informasi bagian ini sedang dipersiapkan. Anda dapat menambahkan tabel atau formulir data di sini sesuai kebutuhan operasional pabrik.
-                </p>
+            <div class="export-row">
+                <button class="btn-export btn-excel" onclick="exportInfoExcel()"><i class="fas fa-file-excel"></i> Rekap Excel</button>
+                <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak PDF</button>
             </div>
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input Data Baru</h3>
+                <div class="form-group"><label>Nama / Judul Kegiatan</label><input type="text" id="info-nama" placeholder="Masukkan judul..."></div>
+                <div class="form-group"><label>Keterangan Detail</label><textarea id="info-ket" rows="3" placeholder="Tuliskan rincian kegiatan..."></textarea></div>
+                <div class="form-group"><label>Tanggal Pelaksanaan / Target</label><input type="date" id="info-tgl"></div>
+                <div class="form-group"><label>Nama Pembuat / Admin</label><input type="text" id="info-user" placeholder="Nama..."></div>
+                <button class="btn-submit" onclick="simpanInfoData()">SIMPAN KE DATABASE</button>
+            </div>
+            <div id="list-sub-info"></div>
         </div>
     </div>
 
@@ -360,13 +356,14 @@
         const db = getFirestore(app);
 
         let currentDatabase = [];
+        let infoDatabase = [];
         let divisiAktif = "";
+        let kategoriInfoAktif = "";
         let filterTglAwal = "";
         let filterTglAkhir = "";
 
         // --- MANAJEMEN RIWAYAT HALAMAN (HISTORY NAVIGASI) ---
         let riwayatNavigasi = ['landing-page'];
-
         history.pushState({page: 'landing-page'}, "", "");
 
         window.navigasi = function(idTujuan) {
@@ -414,13 +411,6 @@
                 window.scrollTo(0, 0);
             }
         });
-
-        // --- FUNGSI MENU DATA MOLD ---
-        window.bukaDataMold = function(namaMenu) {
-            document.getElementById('judul-data-mold').innerText = namaMenu;
-            document.getElementById('info-menu-mold').innerText = namaMenu;
-            window.navigasi('sub-data-mold-screen');
-        }
 
         const toggleLoader = (show, text = "Loading...") => {
             document.getElementById('loader-text').innerText = text;
@@ -498,6 +488,123 @@
                 alert("Gagal mengambil data dari server: " + error.message);
             }
             toggleLoader(false);
+        }
+
+        // --- LOGIKA INFORMASI MOLD (JADWAL BESAR, SCHEDULE BULANAN, LAPORAN ADMIN) ---
+        window.bukaSubInfo = async function(kategori) {
+            kategoriInfoAktif = kategori;
+            document.getElementById('judul-sub-info').innerText = kategori;
+            window.navigasi('sub-info-screen');
+            await ambilDataInfoServer();
+        }
+
+        async function ambilDataInfoServer() {
+            toggleLoader(true, "Mengunduh data informasi...");
+            infoDatabase = [];
+            try {
+                const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriInfoAktif));
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach((doc) => {
+                    infoDatabase.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (error) {
+                alert("Gagal mengambil data informasi: " + error.message);
+            }
+            toggleLoader(false);
+            renderInfoList();
+        }
+
+        window.simpanInfoData = async function() {
+            const nama = document.getElementById('info-nama').value;
+            const ket = document.getElementById('info-ket').value;
+            const tgl = document.getElementById('info-tgl').value;
+            const user = document.getElementById('info-user').value;
+
+            if(!nama || !tgl) { alert("Nama/Judul dan Tanggal wajib diisi!"); return; }
+
+            toggleLoader(true, "Menyimpan data ke server...");
+
+            const dataBaru = {
+                kategori: kategoriInfoAktif,
+                namaKegiatan: nama,
+                keterangan: ket,
+                tanggal: tgl,
+                pembuat: user || "Admin",
+                timestamp: Date.now()
+            };
+
+            try {
+                await addDoc(collection(db, "informasi_mold"), dataBaru);
+                alert("Data Berhasil Disimpan!");
+                
+                document.getElementById('info-nama').value = "";
+                document.getElementById('info-ket').value = "";
+                document.getElementById('info-tgl').value = "";
+                document.getElementById('info-user').value = "";
+
+                await ambilDataInfoServer();
+            } catch (error) {
+                alert("Gagal menyimpan: " + error.message);
+            }
+            toggleLoader(false);
+        }
+
+        function renderInfoList() {
+            const container = document.getElementById('list-sub-info');
+            container.innerHTML = "";
+
+            if (infoDatabase.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:30px;">Belum ada data untuk ${kategoriInfoAktif}.</p>`;
+                return;
+            }
+
+            infoDatabase.forEach(data => {
+                container.innerHTML += `
+                    <div class="progress-card" style="border-left-color: var(--secondary);">
+                        <h3 style="margin:0; color: var(--primary);">${data.namaKegiatan}</h3>
+                        <p style="margin: 5px 0; font-size: 13px; color: #475569;"><i>"${data.keterangan || '-'}"</i></p>
+                        <p style="margin:5px 0; font-size: 14px; color: gray;">
+                            Tanggal: ${data.tanggal} <br>
+                            Pembuat: ${data.pembuat}
+                        </p>
+                    </div>
+                `;
+            });
+        }
+
+        window.exportInfoExcel = function() {
+            if (infoDatabase.length === 0) {
+                alert("Tidak ada data untuk didownload!"); return;
+            }
+
+            const arrayDataExcel = infoDatabase.map(row => ({
+                "Kategori": row.kategori,
+                "Nama / Judul Kegiatan": row.namaKegiatan,
+                "Keterangan Detail": row.keterangan || "-",
+                "Tanggal Pelaksanaan": row.tanggal,
+                "Pembuat / Admin": row.pembuat
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(arrayDataExcel);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Informasi Mold");
+
+            const wscols = [{wch: 25}, {wch: 30}, {wch: 40}, {wch: 18}, {wch: 20}];
+            worksheet['!cols'] = wscols;
+
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
+            
+            const blobUrl = URL.createObjectURL(dataBlob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = blobUrl;
+            downloadLink.download = `Rekap_${kategoriInfoAktif.replace(/\s+/g, '_')}.xlsx`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+
+            alert("File Excel berhasil diunduh!");
         }
 
         window.simpanNewProject = async function() {
