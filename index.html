@@ -174,7 +174,7 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
-                <!-- MENU BARU INFORMASI MOLD -->
+                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
@@ -195,7 +195,7 @@
         </div>
     </div>
 
-    <!-- MENU UTAMA INFORMASI MOLD (BARU) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (6 POIN DIPERBARUI) -->
     <div id="informasi-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -206,11 +206,14 @@
                 <div class="menu-card" onclick="bukaSubInfo('JADWAL BESAR')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 1. JADWAL BESAR</div>
                 <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 2. SCHEDULE BULANAN MOLD</div>
                 <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 3. LAPORAN MINGGUAN ADMIN</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 4. DATA MASTER MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 5. ROTASI MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 6. DATA PREVENTIF TAHUNAN MOLD</div>
             </div>
         </div>
     </div>
 
-    <!-- SUB HALAMAN INPUT & LIST INFORMASI MOLD (BARU) -->
+    <!-- SUB HALAMAN INPUT & LIST INFORMASI MOLD -->
     <div id="sub-info-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -233,7 +236,7 @@
         </div>
     </div>
 
-    <!-- 4. INPUT NEW PROJECT -->
+    <!-- 5. INPUT NEW PROJECT -->
     <div id="new-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -254,7 +257,7 @@
         </div>
     </div>
 
-    <!-- 5. INPUT UPDATE PROJECT -->
+    <!-- 6. INPUT UPDATE PROJECT -->
     <div id="update-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -289,7 +292,7 @@
         </div>
     </div>
 
-    <!-- 6. CONTROL PROGRES PROJECT (List) -->
+    <!-- 7. CONTROL PROGRES PROJECT (List) -->
     <div id="progress-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -317,7 +320,7 @@
         </div>
     </div>
 
-    <!-- 7. HALAMAN DETAIL LAPORAN PROJECT -->
+    <!-- 8. HALAMAN DETAIL LAPORAN PROJECT -->
     <div id="detail-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -490,7 +493,7 @@
             toggleLoader(false);
         }
 
-        // --- LOGIKA INFORMASI MOLD (JADWAL BESAR, SCHEDULE BULANAN, LAPORAN ADMIN) ---
+        // --- LOGIKA 6 POIN INFORMASI MOLD ---
         window.bukaSubInfo = async function(kategori) {
             kategoriInfoAktif = kategori;
             document.getElementById('judul-sub-info').innerText = kategori;
