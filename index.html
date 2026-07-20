@@ -203,19 +203,21 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (6 POIN) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (8 POIN DIPERBARUI) -->
     <div id="informasi-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
                 <h2>Informasi & Laporan Mold</h2>
             </div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="bukaSubInfo('JADWAL BESAR')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 1. JADWAL BESAR</div>
-                <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 2. SCHEDULE BULANAN MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 3. LAPORAN MINGGUAN ADMIN</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 4. DATA MASTER MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 5. ROTASI MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 6. DATA PREVENTIF TAHUNAN MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('NOTULEN MEETING')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
+                <div class="menu-card" onclick="bukaSubInfo('PERMINTAAN TRIAL')" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
+                <div class="menu-card" onclick="bukaSubInfo('JADWAL BESAR')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
+                <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 5. LAPORAN MINGGUAN ADMIN</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 6. DATA MASTER MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 7. ROTASI MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 8. DATA PREVENTIF TAHUNAN MOLD</div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -383,17 +385,20 @@
                 riwayatNavigasi.push(idTujuan);
                 history.pushState({page: idTujuan}, "", "");
             }
+
             document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen'));
             document.getElementById(idTujuan).classList.add('active-screen');
             window.scrollTo(0, 0); 
         }
 
         window.kembaliKeSebelumnya = function() {
-            if (navigator.vibrate) navigator.vibrate(50); // Getaran saat tombol ditekan
+            if (navigator.vibrate) navigator.vibrate(50);
             if (riwayatNavigasi.length > 1) {
                 riwayatNavigasi.pop();
                 const halamanSebelumnya = riwayatNavigasi[riwayatNavigasi.length - 1];
+                
                 document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen'));
+                
                 if (halamanSebelumnya === 'landing-page') {
                     document.getElementById('landing-page').style.display = 'flex';
                     document.getElementById('landing-page').classList.remove('door-open');
@@ -404,7 +409,22 @@
             }
         }
 
-        window.addEventListener('popstate', function(event) { window.kembaliKeSebelumnya(); });
+        window.addEventListener('popstate', function(event) {
+            if (riwayatNavigasi.length > 1) {
+                riwayatNavigasi.pop();
+                const halamanSebelumnya = riwayatNavigasi[riwayatNavigasi.length - 1];
+                
+                document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen'));
+                
+                if (halamanSebelumnya === 'landing-page') {
+                    document.getElementById('landing-page').style.display = 'flex';
+                    document.getElementById('landing-page').classList.remove('door-open');
+                } else {
+                    document.getElementById(halamanSebelumnya).classList.add('active-screen');
+                }
+                window.scrollTo(0, 0);
+            }
+        });
 
         const toggleLoader = (show, text = "Loading...") => {
             document.getElementById('loader-text').innerText = text;
@@ -422,12 +442,21 @@
                         let width = img.width;
                         let height = img.height;
                         if (width > height) {
-                            if (width > maxWidth) { height = Math.round((height *= maxWidth / width)); width = maxWidth; }
+                            if (width > maxWidth) {
+                                height = Math.round((height *= maxWidth / width));
+                                width = maxWidth;
+                            }
                         } else {
-                            if (height > maxHeight) { width = Math.round((width *= maxHeight / height)); height = maxHeight; }
+                            if (height > maxHeight) {
+                                width = Math.round((width *= maxHeight / height));
+                                height = maxHeight;
+                            }
                         }
-                        const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
-                        const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
                         resolve(canvas.toDataURL('image/jpeg', quality));
                     };
                     img.onerror = error => reject(error);
@@ -438,13 +467,19 @@
 
         window.bukaPintu = function() {
             document.getElementById('landing-page').classList.add('door-open');
-            setTimeout(() => { document.getElementById('landing-page').style.display = 'none'; window.navigasi('home-screen'); }, 1200); 
+            setTimeout(() => {
+                document.getElementById('landing-page').style.display = 'none';
+                window.navigasi('home-screen');
+            }, 1200); 
         }
 
         window.cekFoto = function(input, targetId) {
             const target = document.getElementById(targetId);
-            if (input.files && input.files.length > 0) target.innerHTML = `<i class="fas fa-check-circle"></i> Foto siap diunggah`;
-            else target.innerHTML = "";
+            if (input.files && input.files.length > 0) {
+                target.innerHTML = `<i class="fas fa-check-circle"></i> Foto siap diunggah`;
+            } else {
+                target.innerHTML = "";
+            }
         }
 
         window.masukDivisi = async function(namaDivisi) {
@@ -460,11 +495,16 @@
             try {
                 const q = query(collection(db, "projects"), where("divisi", "==", divisiAktif));
                 const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => { currentDatabase.push({ id: doc.id, ...doc.data() }); });
-            } catch (error) { alert("Gagal: " + error.message); }
+                querySnapshot.forEach((doc) => {
+                    currentDatabase.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (error) {
+                alert("Gagal mengambil data dari server: " + error.message);
+            }
             toggleLoader(false);
         }
 
+        // --- LOGIKA 8 POIN INFORMASI MOLD ---
         window.bukaSubInfo = async function(kategori) {
             kategoriInfoAktif = kategori;
             document.getElementById('judul-sub-info').innerText = kategori;
@@ -478,157 +518,446 @@
             try {
                 const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriInfoAktif));
                 const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => { infoDatabase.push({ id: doc.id, ...doc.data() }); });
-            } catch (error) { alert("Gagal: " + error.message); }
+                querySnapshot.forEach((doc) => {
+                    infoDatabase.push({ id: doc.id, ...doc.data() });
+                });
+            } catch (error) {
+                alert("Gagal mengambil data informasi: " + error.message);
+            }
             toggleLoader(false);
             renderInfoList();
         }
 
         window.simpanInfoData = async function() {
-            const nama = document.getElementById('info-nama').value; const ket = document.getElementById('info-ket').value;
-            const tgl = document.getElementById('info-tgl').value; const user = document.getElementById('info-user').value;
-            if(!nama || !tgl) { alert("Nama dan Tanggal wajib diisi!"); return; }
-            toggleLoader(true, "Menyimpan data...");
+            const nama = document.getElementById('info-nama').value;
+            const ket = document.getElementById('info-ket').value;
+            const tgl = document.getElementById('info-tgl').value;
+            const user = document.getElementById('info-user').value;
+
+            if(!nama || !tgl) { alert("Nama/Judul dan Tanggal wajib diisi!"); return; }
+
+            toggleLoader(true, "Menyimpan data ke server...");
+
+            const dataBaru = {
+                kategori: kategoriInfoAktif,
+                namaKegiatan: nama,
+                keterangan: ket,
+                tanggal: tgl,
+                pembuat: user || "Admin",
+                timestamp: Date.now()
+            };
+
             try {
-                await addDoc(collection(db, "informasi_mold"), { kategori: kategoriInfoAktif, namaKegiatan: nama, keterangan: ket, tanggal: tgl, pembuat: user || "Admin", timestamp: Date.now() });
-                alert("Berhasil Disimpan!");
-                document.getElementById('info-nama').value = ""; document.getElementById('info-ket').value = ""; document.getElementById('info-tgl').value = ""; document.getElementById('info-user').value = "";
+                await addDoc(collection(db, "informasi_mold"), dataBaru);
+                alert("Data Berhasil Disimpan!");
+                
+                document.getElementById('info-nama').value = "";
+                document.getElementById('info-ket').value = "";
+                document.getElementById('info-tgl').value = "";
+                document.getElementById('info-user').value = "";
+
                 await ambilDataInfoServer();
-            } catch (error) { alert("Gagal: " + error.message); }
+            } catch (error) {
+                alert("Gagal menyimpan: " + error.message);
+            }
             toggleLoader(false);
         }
 
         function renderInfoList() {
-            const container = document.getElementById('list-sub-info'); container.innerHTML = "";
-            if (infoDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Belum ada data.</p>`; return; }
+            const container = document.getElementById('list-sub-info');
+            container.innerHTML = "";
+
+            if (infoDatabase.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:30px;">Belum ada data untuk ${kategoriInfoAktif}.</p>`;
+                return;
+            }
+
             infoDatabase.forEach(data => {
                 container.innerHTML += `
                     <div class="progress-card" style="border-left-color: var(--secondary);">
                         <h3 style="margin:0; color: var(--primary);">${data.namaKegiatan}</h3>
-                        <p style="margin: 5px 0; font-size: 13px;"><i>"${data.keterangan || '-'}"</i></p>
-                        <p style="margin:5px 0; font-size: 14px; color: gray;">Tanggal: ${data.tanggal} <br>Pembuat: ${data.pembuat}</p>
-                    </div>`;
+                        <p style="margin: 5px 0; font-size: 13px; color: #475569;"><i>"${data.keterangan || '-'}"</i></p>
+                        <p style="margin:5px 0; font-size: 14px; color: gray;">
+                            Tanggal: ${data.tanggal} <br>
+                            Pembuat: ${data.pembuat}
+                        </p>
+                    </div>
+                `;
             });
         }
 
         window.exportInfoExcel = function() {
-            if (infoDatabase.length === 0) { alert("Kosong!"); return; }
-            const arrayDataExcel = infoDatabase.map(row => ({ "Kategori": row.kategori, "Kegiatan": row.namaKegiatan, "Detail": row.keterangan || "-", "Tgl": row.tanggal, "Admin": row.pembuat }));
-            const worksheet = XLSX.utils.json_to_sheet(arrayDataExcel); const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Info");
-            worksheet['!cols'] = [{wch: 25}, {wch: 30}, {wch: 40}, {wch: 18}, {wch: 20}];
+            if (infoDatabase.length === 0) {
+                alert("Tidak ada data untuk didownload!"); return;
+            }
+
+            const arrayDataExcel = infoDatabase.map(row => ({
+                "Kategori": row.kategori,
+                "Nama / Judul Kegiatan": row.namaKegiatan,
+                "Keterangan Detail": row.keterangan || "-",
+                "Tanggal Pelaksanaan": row.tanggal,
+                "Pembuat / Admin": row.pembuat
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(arrayDataExcel);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Informasi Mold");
+
+            const wscols = [{wch: 25}, {wch: 30}, {wch: 40}, {wch: 18}, {wch: 20}];
+            worksheet['!cols'] = wscols;
+
             const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-            const blobUrl = URL.createObjectURL(dataBlob); const downloadLink = document.createElement("a");
-            downloadLink.href = blobUrl; downloadLink.download = `Rekap_${kategoriInfoAktif}.xlsx`;
-            document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink);
+            
+            const blobUrl = URL.createObjectURL(dataBlob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = blobUrl;
+            downloadLink.download = `Rekap_${kategoriInfoAktif.replace(/\s+/g, '_')}.xlsx`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
             setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+
+            alert("File Excel berhasil diunduh!");
         }
 
         window.simpanNewProject = async function() {
-            const nama = document.getElementById('np-nama').value; const keterangan = document.getElementById('np-keterangan').value; 
-            const target = document.getElementById('np-target').value; const user = document.getElementById('np-user').value; const fotoInput = document.getElementById('np-foto');
-            if(!nama || !target) { alert("Nama dan Target harus diisi!"); return; }
-            toggleLoader(true, "Menyimpan...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
+            const nama = document.getElementById('np-nama').value;
+            const keterangan = document.getElementById('np-keterangan').value; 
+            const target = document.getElementById('np-target').value;
+            const user = document.getElementById('np-user').value;
+            const fotoInput = document.getElementById('np-foto');
+
+            if(!nama || !target) { alert("Nama Project dan Target harus diisi!"); return; }
+
+            toggleLoader(true, "Memproses & Menyimpan ke Server...");
+
+            let fotoBase64 = "";
+            if (fotoInput.files.length > 0) {
+                fotoBase64 = await compressImage(fotoInput.files[0]);
+            }
+
+            const dataBaru = {
+                divisi: divisiAktif,
+                namaProject: nama,
+                keteranganAwal: keterangan, 
+                targetSelesai: target,
+                userAwal: user,
+                statusUpdate: "Belum", 
+                tanggalSelesai: null,
+                hasilProject: "",
+                keteranganUpdate: "",
+                fotoAwal: fotoBase64,
+                timestamp: Date.now() 
+            };
+
             try {
-                await addDoc(collection(db, "projects"), { divisi: divisiAktif, namaProject: nama, keteranganAwal: keterangan, targetSelesai: target, userAwal: user, statusUpdate: "Belum", tanggalSelesai: null, hasilProject: "", keteranganUpdate: "", fotoAwal: fotoBase64, timestamp: Date.now() });
-                alert("Tersimpan!");
-                document.getElementById('np-nama').value = ""; document.getElementById('np-keterangan').value = ""; document.getElementById('np-target').value = ""; document.getElementById('np-user').value = ""; document.getElementById('status-np-foto').innerHTML = "";
-                await ambilDataServer(); window.navigasi('divisi-screen');
-            } catch (error) { alert("Gagal: " + error.message); }
+                await addDoc(collection(db, "projects"), dataBaru);
+                alert("Data Berhasil Disimpan ke Database Online!");
+                
+                document.getElementById('np-nama').value = "";
+                document.getElementById('np-keterangan').value = "";
+                document.getElementById('np-target').value = "";
+                document.getElementById('np-user').value = "";
+                document.getElementById('np-foto').value = "";
+                document.getElementById('status-np-foto').innerHTML = "";
+                
+                await ambilDataServer(); 
+                window.navigasi('divisi-screen');
+            } catch (error) {
+                alert("Gagal menyimpan: " + error.message);
+            }
             toggleLoader(false);
         }
 
         window.switchTab = function(tab) {
-            document.getElementById('tab-belum').classList.remove('tab-active'); document.getElementById('tab-sudah').classList.remove('tab-active');
-            document.getElementById('list-belum-update').style.display = 'none'; document.getElementById('list-sudah-update').style.display = 'none'; document.getElementById('form-update-area').style.display = 'none';
-            if(tab === 'belum') { document.getElementById('tab-belum').classList.add('tab-active'); document.getElementById('list-belum-update').style.display = 'block'; } 
-            else { document.getElementById('tab-sudah').classList.add('tab-active'); document.getElementById('list-sudah-update').style.display = 'block'; }
+            document.getElementById('tab-belum').classList.remove('tab-active');
+            document.getElementById('tab-sudah').classList.remove('tab-active');
+            document.getElementById('list-belum-update').style.display = 'none';
+            document.getElementById('list-sudah-update').style.display = 'none';
+            document.getElementById('form-update-area').style.display = 'none';
+
+            if(tab === 'belum') {
+                document.getElementById('tab-belum').classList.add('tab-active');
+                document.getElementById('list-belum-update').style.display = 'block';
+            } else {
+                document.getElementById('tab-sudah').classList.add('tab-active');
+                document.getElementById('list-sudah-update').style.display = 'block';
+            }
         }
 
         window.renderUpdateList = function() {
-            const listBelum = document.getElementById('list-belum-update'); const listSudah = document.getElementById('list-sudah-update');
+            const listBelum = document.getElementById('list-belum-update');
+            const listSudah = document.getElementById('list-sudah-update');
             listBelum.innerHTML = ""; listSudah.innerHTML = "";
+
             currentDatabase.forEach(data => {
-                const html = `<div class="progress-card" style="border-color: ${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}; cursor:pointer;" onclick="${data.statusUpdate === 'Belum' ? `bukaFormUpdate('${data.id}')` : ''}">
-                    <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4><small>Target: ${data.targetSelesai}</small><br>
-                    ${data.statusUpdate === 'Belum' ? `<span class="status-badge bg-proses">Klik Update</span>` : `<span class="status-badge bg-cepat">Selesai: ${data.tanggalSelesai}</span>`}
-                </div>`;
-                if(data.statusUpdate === 'Belum') listBelum.innerHTML += html; else listSudah.innerHTML += html;
+                const html = `
+                    <div class="progress-card" style="border-color: ${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}; cursor:pointer;"
+                         onclick="${data.statusUpdate === 'Belum' ? `bukaFormUpdate('${data.id}')` : ''}">
+                        <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4>
+                        <small>Target: ${data.targetSelesai}</small><br>
+                        ${data.statusUpdate === 'Belum' ? `<span class="status-badge bg-proses">Klik untuk Update</span>` : `<span class="status-badge bg-cepat">Selesai: ${data.tanggalSelesai}</span>`}
+                    </div>
+                `;
+                if(data.statusUpdate === 'Belum') listBelum.innerHTML += html;
+                else listSudah.innerHTML += html;
             });
             window.switchTab('belum');
         }
 
         window.bukaFormUpdate = function(id) {
-            const data = currentDatabase.find(d => d.id === id); document.getElementById('up-id').value = id; document.getElementById('up-nama-tampil').innerText = data.namaProject;
-            document.getElementById('form-update-area').style.display = 'block'; document.getElementById('list-belum-update').style.display = 'none'; window.scrollTo(0, document.getElementById('form-update-area').offsetTop);
+            const data = currentDatabase.find(d => d.id === id);
+            document.getElementById('up-id').value = id;
+            document.getElementById('up-nama-tampil').innerText = data.namaProject;
+            document.getElementById('form-update-area').style.display = 'block';
+            document.getElementById('list-belum-update').style.display = 'none';
+            window.scrollTo(0, document.getElementById('form-update-area').offsetTop);
         }
 
-        window.batalUpdate = function() { document.getElementById('form-update-area').style.display = 'none'; document.getElementById('list-belum-update').style.display = 'block'; }
+        window.batalUpdate = function() {
+            document.getElementById('form-update-area').style.display = 'none';
+            document.getElementById('list-belum-update').style.display = 'block';
+        }
 
         window.simpanUpdateProject = async function() {
-            const idFirestore = document.getElementById('up-id').value; const hasil = document.getElementById('up-hasil').value;
-            const ketUpdate = document.getElementById('up-keterangan').value; const tglSelesai = document.getElementById('up-selesai').value;
-            const updater = document.getElementById('up-user').value; const fotoInput = document.getElementById('up-foto');
-            if(!tglSelesai) { alert("Tanggal Selesai wajib!"); return; }
-            toggleLoader(true, "Mengupdate...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
+            const idFirestore = document.getElementById('up-id').value;
+            const hasil = document.getElementById('up-hasil').value;
+            const ketUpdate = document.getElementById('up-keterangan').value; 
+            const tglSelesai = document.getElementById('up-selesai').value;
+            const updater = document.getElementById('up-user').value;
+            const fotoInput = document.getElementById('up-foto');
+
+            if(!tglSelesai) { alert("Tanggal Selesai wajib diisi!"); return; }
+
+            toggleLoader(true, "Memproses & Mengupdate Data di Server...");
+
+            let fotoBase64 = "";
+            if (fotoInput.files.length > 0) {
+                fotoBase64 = await compressImage(fotoInput.files[0]);
+            }
+
             try {
-                await updateDoc(doc(db, "projects", idFirestore), { statusUpdate: "Sudah", hasilProject: hasil, keteranganUpdate: ketUpdate, tanggalSelesai: tglSelesai, userUpdate: updater, fotoAkhir: fotoBase64 });
-                alert("Update Berhasil!");
-                document.getElementById('form-update-area').style.display = 'none'; document.getElementById('up-hasil').value = ""; document.getElementById('up-keterangan').value = ""; document.getElementById('up-selesai').value = ""; document.getElementById('up-user').value = ""; document.getElementById('status-up-foto').innerHTML = "";
-                await ambilDataServer(); window.renderUpdateList();
-            } catch(error) { alert("Gagal: " + error.message); }
+                const projectRef = doc(db, "projects", idFirestore);
+                await updateDoc(projectRef, {
+                    statusUpdate: "Sudah",
+                    hasilProject: hasil,
+                    keteranganUpdate: ketUpdate,
+                    tanggalSelesai: tglSelesai,
+                    userUpdate: updater,
+                    fotoAkhir: fotoBase64
+                });
+
+                alert("Update Berhasil Disimpan di Server!");
+                
+                document.getElementById('form-update-area').style.display = 'none';
+                document.getElementById('up-hasil').value = "";
+                document.getElementById('up-keterangan').value = "";
+                document.getElementById('up-selesai').value = "";
+                document.getElementById('up-user').value = "";
+                document.getElementById('up-foto').value = "";
+                document.getElementById('status-up-foto').innerHTML = "";
+                
+                await ambilDataServer();
+                window.renderUpdateList();
+
+            } catch(error) {
+                alert("Gagal update data: " + error.message);
+            }
             toggleLoader(false);
         }
 
-        function hitungSelisihHari(tgl1, tgl2) { return Math.floor((new Date(tgl2) - new Date(tgl1)) / (1000 * 60 * 60 * 24)); }
+        function hitungSelisihHari(tgl1, tgl2) {
+            const dt1 = new Date(tgl1); const dt2 = new Date(tgl2);
+            return Math.floor((dt2 - dt1) / (1000 * 60 * 60 * 24));
+        }
 
-        window.terapkanFilter = function() { filterTglAwal = document.getElementById('filter-start').value; filterTglAkhir = document.getElementById('filter-end').value; if(!filterTglAwal || !filterTglAkhir) { alert("Masukkan rentang!"); return; } window.renderProgressList(); }
-        window.resetFilter = function() { document.getElementById('filter-start').value = ""; document.getElementById('filter-end').value = ""; filterTglAwal = ""; filterTglAkhir = ""; window.renderProgressList(); }
+        window.terapkanFilter = function() {
+            filterTglAwal = document.getElementById('filter-start').value;
+            filterTglAkhir = document.getElementById('filter-end').value;
+            if(!filterTglAwal || !filterTglAkhir) {
+                alert("Harap masukkan kedua rentang tanggal!");
+                return;
+            }
+            window.renderProgressList();
+        }
+
+        window.resetFilter = function() {
+            document.getElementById('filter-start').value = "";
+            document.getElementById('filter-end').value = "";
+            filterTglAwal = ""; filterTglAkhir = "";
+            window.renderProgressList();
+        }
 
         window.bukaDetailProject = function(id) {
-            const data = currentDatabase.find(d => d.id === id); if(!data) return;
-            let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES" : "✅ SUDAH SELESAI";
-            let html = `<div class="report-header"><h2>LAPORAN MAINTENANCE</h2><p>${data.divisi} - CBI</p></div>
-                <table class="report-table"><tr><th>Nama Project</th><td><strong>${data.namaProject}</strong></td></tr><tr><th>Status</th><td style="color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr><tr><th>Target</th><td>${data.targetSelesai}</td></tr></table>`;
+            const data = currentDatabase.find(d => d.id === id);
+            if(!data) return;
+
+            const reportContainer = document.getElementById('report-content');
+            let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES / BELUM SELESAI" : "✅ SUDAH SELESAI";
+            
+            let html = `
+                <div class="report-header">
+                    <h2>LAPORAN MAINTENANCE MOULD</h2>
+                    <p>${data.divisi} - PT. CITRA BUANA INTITAMA</p>
+                </div>
+                
+                <table class="report-table">
+                    <tr><th>Nama Project</th><td><strong>${data.namaProject}</strong></td></tr>
+                    <tr><th>Status Saat Ini</th><td style="font-weight:bold; color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr>
+                    <tr><th>Nama User / Pemohon</th><td>${data.userAwal || '-'}</td></tr>
+                    <tr><th>Target Penyelesaian</th><td>${data.targetSelesai}</td></tr>
+                    <tr><th>Keterangan Request (Awal)</th><td>${data.keteranganAwal || '-'}</td></tr>
+                </table>
+            `;
+
             if(data.statusUpdate === "Sudah") {
-                html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE</th></tr><tr><th>Tgl Selesai</th><td>${data.tanggalSelesai}</td></tr><tr><th>Hasil</th><td>${data.hasilProject}</td></tr></table>`;
+                html += `
+                <table class="report-table">
+                    <tr><th colspan="2" style="text-align:center; background:#e2e8f0; color:#333;">HASIL UPDATE PROJECT</th></tr>
+                    <tr><th>Tanggal Selesai Aktual</th><td>${data.tanggalSelesai}</td></tr>
+                    <tr><th>Nama User Updater (Teknisi)</th><td>${data.userUpdate || '-'}</td></tr>
+                    <tr><th>Hasil Pengerjaan (Singkat)</th><td>${data.hasilProject || '-'}</td></tr>
+                    <tr><th>Detail Perbaikan / Tindakan</th><td>${data.keteranganUpdate || '-'}</td></tr>
+                </table>
+                `;
             }
-            document.getElementById('report-content').innerHTML = html;
+
+            html += `<div class="report-images">`;
+            
+            if(data.fotoAwal) {
+                html += `<div class="report-img-box"><strong>KONDISI AWAL (SEBELUM)</strong><br><img src="${data.fotoAwal}"></div>`;
+            } else {
+                html += `<div class="report-img-box"><strong>KONDISI AWAL (SEBELUM)</strong><br><br><i class="fas fa-camera" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`;
+            }
+
+            if(data.fotoAkhir) {
+                html += `<div class="report-img-box"><strong>KONDISI AKHIR (SESUDAH)</strong><br><img src="${data.fotoAkhir}"></div>`;
+            } else {
+                html += `<div class="report-img-box"><strong>KONDISI AKHIR (SESUDAH)</strong><br><br><i class="fas fa-camera" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto / Belum diupdate</span></div>`;
+            }
+            
+            html += `</div>`;
+
+            reportContainer.innerHTML = html;
             window.navigasi('detail-project-screen');
         }
 
         window.renderProgressList = function() {
-            const container = document.getElementById('list-progress'); container.innerHTML = "";
+            const container = document.getElementById('list-progress');
+            container.innerHTML = "";
+            const hariIniStr = new Date().toISOString().split('T')[0];
+
             let dataDitampilkan = [...currentDatabase]; 
-            if (filterTglAwal && filterTglAkhir) { dataDitampilkan = dataDitampilkan.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir); }
-            if (dataDitampilkan.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
+
+            if (filterTglAwal && filterTglAkhir) {
+                dataDitampilkan = dataDitampilkan.filter(d => {
+                    return d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir;
+                });
+            }
+
+            if (dataDitampilkan.length === 0) {
+                container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:30px;">Tidak ada data ditemukan.</p>`;
+                return;
+            }
+
             dataDitampilkan.forEach(data => {
                 let statusHtml = ""; let borderColor = "";
+
                 if (data.statusUpdate === "Belum") {
-                    const selisih = hitungSelisihHari(data.targetSelesai, new Date().toISOString().split('T')[0]);
-                    if (selisih > 0) { statusHtml = `<span class="status-badge bg-lambat">Telat ${selisih} Hari</span>`; borderColor = "var(--lambat)"; } 
-                    else { statusHtml = `<span class="status-badge bg-proses">Proses</span>`; borderColor = "var(--proses)"; }
+                    const selisih = hitungSelisihHari(data.targetSelesai, hariIniStr);
+                    if (selisih > 0) {
+                        statusHtml = `<span class="status-badge bg-lambat">Terlambat ${selisih} Hari 😢</span>`;
+                        borderColor = "var(--lambat)";
+                    } else {
+                        statusHtml = `<span class="status-badge bg-proses">Proses (Dalam Pengerjaan)</span>`;
+                        borderColor = "var(--proses)";
+                    }
                 } else {
-                    statusHtml = `<span class="status-badge bg-cepat">Selesai</span>`; borderColor = "var(--cepat)";
+                    const selisih = hitungSelisihHari(data.targetSelesai, data.tanggalSelesai);
+                    if (selisih < 0) {
+                        statusHtml = `<span class="status-badge bg-cepat">Lebih cepat ${Math.abs(selisih)} Hari 🎆</span>`;
+                        borderColor = "var(--cepat)";
+                    } else if (selisih === 0) {
+                        statusHtml = `<span class="status-badge bg-cepat">Tepat Waktu ✓</span>`;
+                        borderColor = "var(--cepat)";
+                    } else {
+                        statusHtml = `<span class="status-badge bg-lambat">Selesai Terlambat ${selisih} Hari 😢</span>`;
+                        borderColor = "var(--lambat)";
+                    }
                 }
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')"><h3 style="margin:0;">${data.namaProject}</h3><p style="font-size:12px;">Target: ${data.targetSelesai}</p>${statusHtml}</div>`;
+
+                let snippetKet = data.keteranganAwal ? `<p style="margin: 3px 0; font-size: 13px; color: #475569;"><i>"${data.keteranganAwal}"</i></p>` : "";
+
+                container.innerHTML += `
+                    <div class="progress-card" style="border-left-color: ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')">
+                        <h3 style="margin:0; color: var(--primary);">${data.namaProject}</h3>
+                        ${snippetKet}
+                        <p style="margin:5px 0; font-size: 14px; color: gray;">
+                            Target: ${data.targetSelesai} <br>
+                            ${data.statusUpdate === 'Sudah' ? `Selesai: ${data.tanggalSelesai}` : ''}
+                        </p>
+                        ${statusHtml}
+                    </div>
+                `;
             });
         }
 
-        window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
+        window.cetakPDFUniversal = function() {
+            try {
+                window.print();
+            } catch (e) {
+                alert("Fitur cetak PDF dipicu. Jika di HP, silakan pilih 'Simpan sebagai PDF' pada opsi printer.");
+            }
+        };
 
         window.exportData = function(format) {
-            let dataExport = [...currentDatabase]; if (filterTglAwal && filterTglAkhir) { dataExport = dataExport.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir); }
-            if (dataExport.length === 0) { alert("Kosong!"); return; }
-            const worksheet = XLSX.utils.json_to_sheet(dataExport.map(row => ({"Nama": row.namaProject, "Target": row.targetSelesai, "Status": row.statusUpdate})));
-            const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan");
+            let dataExport = [...currentDatabase];
+            
+            if (filterTglAwal && filterTglAkhir) {
+                dataExport = dataExport.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir);
+            }
+
+            if (dataExport.length === 0) {
+                alert("Tidak ada data yang bisa didownload!"); return;
+            }
+
+            const arrayDataExcel = dataExport.map(row => ({
+                "Divisi": row.divisi,
+                "Nama Project": row.namaProject,
+                "Keterangan Permintaan (Awal)": row.keteranganAwal || "-",
+                "Target Selesai": row.targetSelesai,
+                "Nama User (Pemohon)": row.userAwal || "-",
+                "Status Saat Ini": row.statusUpdate === 'Belum' ? 'Sedang Proses' : 'Selesai',
+                "Tanggal Selesai Aktual": row.tanggalSelesai || "Belum Selesai",
+                "Hasil Pengerjaan (Singkat)": row.hasilProject || "-",
+                "Detail Perbaikan (Akhir)": row.keteranganUpdate || "-",
+                "Teknisi Updater": row.userUpdate || "-"
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(arrayDataExcel);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan Maintenance");
+
+            const wscols = [
+                {wch: 22}, {wch: 25}, {wch: 40}, {wch: 15}, {wch: 22}, 
+                {wch: 18}, {wch: 22}, {wch: 30}, {wch: 50}, {wch: 20}
+            ];
+            worksheet['!cols'] = wscols;
+
             const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-            const blobUrl = URL.createObjectURL(dataBlob); const downloadLink = document.createElement("a");
-            downloadLink.href = blobUrl; downloadLink.download = `Rekap.xlsx`; document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink);
+            
+            const blobUrl = URL.createObjectURL(dataBlob);
+            const downloadLink = document.createElement("a");
+            downloadLink.href = blobUrl;
+            downloadLink.download = `Rekap_Maintenance_${divisiAktif}.xlsx`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 100);
+
+            alert("File Excel berhasil diunduh dan disimpan di perangkat Anda!");
         }
     </script>
 </body>
