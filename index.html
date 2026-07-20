@@ -31,7 +31,8 @@
             transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.5s ease;
         }
 
-        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen, #detail-project-screen, #data-mold-screen, #sub-data-mold-screen {
+        /* DITAMBAHKAN ID BARU: #informasi-mold-screen */
+        #home-screen, #divisi-screen, #new-project-screen, #update-project-screen, #progress-screen, #detail-project-screen, #informasi-mold-screen, #sub-data-mold-screen {
             background: linear-gradient(rgba(241, 245, 249, 0.85), rgba(241, 245, 249, 0.85)), url(https://archive.org/download/1784450628482/1784450628482.png);
             background-size: cover; background-position: center; background-attachment: fixed;
         }
@@ -165,10 +166,11 @@
         </div>
     </div>
 
-    <!-- 2. BERANDA UTAMA (DIVISI & DATA MOLD) -->
+    <!-- 2. BERANDA UTAMA -->
     <div id="home-screen" class="screen">
         <div class="content-wrapper">
             <div class="header"><h2>BERANDA UTAMA</h2></div>
+            
             <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 15px;"><i class="fas fa-tools"></i> 4 DIVISI MAINTENANCE</h3>
             <div class="grid-menu" style="margin-bottom: 25px;">
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
@@ -177,16 +179,17 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
             </div>
 
+            <!-- MODIFIKASI: HANYA ADA 1 TOMBOL INFORMASI MOLD -->
             <h3 style="color: var(--primary); margin-bottom: 10px; font-size: 15px;"><i class="fas fa-database"></i> MENU DATA MOLD</h3>
             <div class="grid-menu">
-                <div class="menu-card" style="border-left-color: #10b981;" onclick="bukaDataMold('DATA MOLD CBI')"><i class="fas fa-boxes"></i> 1. DATA MOLD CBI</div>
-                <div class="menu-card" style="border-left-color: #f59e0b;" onclick="bukaDataMold('ROTASI MOLD')"><i class="fas fa-sync-alt"></i> 2. ROTASI MOLD</div>
-                <div class="menu-card" style="border-left-color: #ef4444;" onclick="bukaDataMold('DATA PREVENTIF MOLD TAHUNAN')"><i class="fas fa-calendar-alt"></i> 3. DATA PREVENTIF MOLD TAHUNAN</div>
+                <div class="menu-card" style="border-left-color: #10b981; background-color: #f8fafc;" onclick="navigasi('informasi-mold-screen')">
+                    <i class="fas fa-folder-open" style="color: #10b981; font-size: 20px; margin-bottom: 5px;"></i><br>INFORMASI MOLD
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. BERANDA DIVISI -->
+    <!-- 3.A. BERANDA DIVISI -->
     <div id="divisi-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -201,7 +204,23 @@
         </div>
     </div>
 
-    <!-- 3.B. HALAMAN MENU DATA MOLD (BARU) -->
+    <!-- 3.B. HALAMAN INFORMASI MOLD (MENU UTAMA) -->
+    <div id="informasi-mold-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
+                <h2>Informasi Mold</h2>
+            </div>
+            <!-- INILAH 3 BAGIAN YANG MUNCUL SETELAH DIKLIK -->
+            <div class="grid-menu">
+                <div class="menu-card" style="border-left-color: #10b981;" onclick="bukaDataMold('DATA MOLD TERBARU')"><i class="fas fa-boxes"></i> 1. DATA MOLD TERBARU</div>
+                <div class="menu-card" style="border-left-color: #f59e0b;" onclick="bukaDataMold('ROTASI MOLD')"><i class="fas fa-sync-alt"></i> 2. ROTASI MOLD</div>
+                <div class="menu-card" style="border-left-color: #ef4444;" onclick="bukaDataMold('PREVENTIF MOLD TAHUNAN')"><i class="fas fa-calendar-alt"></i> 3. PREVENTIF MOLD TAHUNAN</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3.C. HALAMAN ISI DARI SUB-DATA MOLD (Placeholder) -->
     <div id="sub-data-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -209,7 +228,7 @@
                 <h2 id="judul-data-mold">Data Mold</h2>
             </div>
             <div style="background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <i class="fas fa-folder-open" style="font-size: 50px; color: var(--secondary); margin-bottom: 15px;"></i>
+                <i class="fas fa-file-alt" style="font-size: 50px; color: var(--secondary); margin-bottom: 15px;"></i>
                 <h3 id="info-menu-mold" style="color: var(--primary); margin-top: 0;">Judul Menu</h3>
                 <p style="color: #64748b; font-size: 14px; line-height: 1.6;">
                     Halaman khusus untuk mengelola rekap dan informasi bagian ini sedang dipersiapkan. Anda dapat menambahkan tabel atau formulir data di sini sesuai kebutuhan operasional pabrik.
@@ -396,7 +415,7 @@
             }
         });
 
-        // --- FUNGSI MENU DATA MOLD (BARU) ---
+        // --- FUNGSI MENU DATA MOLD ---
         window.bukaDataMold = function(namaMenu) {
             document.getElementById('judul-data-mold').innerText = namaMenu;
             document.getElementById('info-menu-mold').innerText = namaMenu;
