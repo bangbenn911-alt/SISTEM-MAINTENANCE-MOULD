@@ -57,12 +57,45 @@
         .btn-open i { font-size: 26px; }
 
         /* --- LAYOUT UTAMA --- */
-        .screen { display: none; padding: 20px; padding-bottom: 80px; min-height: 100vh; box-sizing: border-box; }
+        .screen { display: none; padding: 20px; padding-bottom: 90px; min-height: 100vh; box-sizing: border-box; } /* padding-bottom dinaikkan agar tidak tertutup tombol bawah */
         .active-screen { display: block; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         .content-wrapper { max-width: 600px; margin: auto; }
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
-        .btn-back { position: absolute; left: 15px; top: 15px; background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+
+        /* --- TOMBOL KEMBALI MENGAMBANG DI BAWAH (BARU) --- */
+        .btn-bottom-back {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 560px; /* Menyesuaikan layar content */
+            background: #1e293b; /* Warna gelap elegan */
+            color: white;
+            padding: 16px;
+            border: none;
+            border-radius: 15px; /* Sudut membulat kekinian */
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35); /* Bayangan tinggi */
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.1s ease-out, background 0.1s ease-out, box-shadow 0.1s ease-out;
+            touch-action: manipulation; /* Menghilangkan delay sentuh 300ms di HP */
+        }
+        
+        /* Efek saat tombol dipencet / ditahan jari */
+        .btn-bottom-back:active {
+            transform: translateX(-50%) scale(0.95); /* Efek mengecil / tenggelam */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); /* Bayangan memendek */
+            background: var(--secondary); /* Warna berubah menyala */
+        }
 
         /* --- TOMBOL MENU --- */
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 15px; }
@@ -129,7 +162,7 @@
         @media print {
             body { background: white !important; }
             .screen:not(.active-screen) { display: none !important; } 
-            .header, .export-row, .filter-box, .btn-back, .btn-print-detail, .tab-container { display: none !important; }
+            .header, .export-row, .filter-box, .btn-bottom-back, .btn-print-detail, .tab-container { display: none !important; } /* Menyembunyikan tombol kembali saat print */
             .screen { padding: 0 !important; }
             .content-wrapper { max-width: 100%; margin: 0; }
             .progress-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
@@ -184,7 +217,6 @@
     <div id="divisi-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2 id="judul-divisi">Nama Divisi</h2>
             </div>
             <div class="grid-menu">
@@ -192,6 +224,7 @@
                 <div class="menu-card" onclick="navigasi('update-project-screen'); renderUpdateList();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
                 <div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
             </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -199,7 +232,6 @@
     <div id="informasi-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2>Informasi & Laporan Mold</h2>
             </div>
             <div class="grid-menu">
@@ -210,6 +242,7 @@
                 <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 5. ROTASI MOLD</div>
                 <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 6. DATA PREVENTIF TAHUNAN MOLD</div>
             </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -217,7 +250,6 @@
     <div id="sub-info-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2 id="judul-sub-info">Sub Informasi</h2>
             </div>
             <div class="export-row">
@@ -233,6 +265,7 @@
                 <button class="btn-submit" onclick="simpanInfoData()">SIMPAN KE DATABASE</button>
             </div>
             <div id="list-sub-info"></div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -240,7 +273,6 @@
     <div id="new-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2>Input New Project</h2>
             </div>
             <div class="form-group"><label>Nama Project</label><input type="text" id="np-nama" placeholder="Masukkan nama project..."></div>
@@ -254,6 +286,7 @@
                 <span id="status-np-foto" class="file-status"></span>
             </div>
             <button class="btn-submit" onclick="simpanNewProject()">SIMPAN KE DATABASE</button>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -261,7 +294,6 @@
     <div id="update-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2>Input Update Project</h2>
             </div>
             <div class="tab-container">
@@ -289,6 +321,7 @@
                     <button class="btn-submit" onclick="simpanUpdateProject()">SIMPAN UPDATE</button>
                 </div>
             </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -296,7 +329,6 @@
     <div id="progress-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2>Control Progres</h2>
             </div>
             <div class="export-row">
@@ -317,6 +349,7 @@
             </div>
             <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada nama project untuk melihat laporan detail PDF</i></p>
             <div id="list-progress"></div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -324,7 +357,6 @@
     <div id="detail-project-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
-                <button class="btn-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i></button>
                 <h2>Detail Project</h2>
             </div>
             
@@ -334,6 +366,7 @@
             <div class="report-sheet" id="report-content">
                 <!-- Data Laporan akan diinjeksi lewat JavaScript di bawah -->
             </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -382,6 +415,11 @@
         }
 
         window.kembaliKeSebelumnya = function() {
+            // Memberikan efek getar pada HP saat tombol ditekan (jika didukung)
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+
             if (riwayatNavigasi.length > 1) {
                 riwayatNavigasi.pop();
                 const halamanSebelumnya = riwayatNavigasi[riwayatNavigasi.length - 1];
