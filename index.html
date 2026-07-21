@@ -97,24 +97,56 @@
         .neon-trigger-btn:active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
 
         /* ==================================================== */
-        /* MENU SATELIT LINGKARAN BERPUTAR                      */
+        /* MENU SATELIT LINGKARAN BERPUTAR BOLA 3D NEON         */
         /* ==================================================== */
-        .menu-circle-wrap { position: relative; width: 280px; height: 280px; margin: 40px auto 30px auto; border-radius: 50%; border: 3px dashed #cbd5e1; animation: spinOrbit 20s linear infinite; }
+        .menu-circle-wrap { 
+            position: relative; width: 280px; height: 280px; margin: 40px auto 30px auto; border-radius: 50%; 
+            border: 2px dashed rgba(56, 189, 248, 0.3); /* Cahaya lintasan putaran */
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.1), inset 0 0 30px rgba(56, 189, 248, 0.1);
+            animation: spinOrbit 20s linear infinite; 
+        }
         @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
         .menu-circle-wrap:active, .menu-circle-wrap:active .counter-spin-1, .menu-circle-wrap:active .counter-spin-2, .menu-circle-wrap:active .counter-spin-3 { animation-play-state: paused; }
+        
         .circle-orbit { position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px; }
         .orbit-1 { transform: rotate(0deg) translateX(140px); }
         .orbit-2 { transform: rotate(120deg) translateX(140px); }
         .orbit-3 { transform: rotate(240deg) translateX(140px); }
+        
         .counter-spin-1 { width: 100%; height: 100%; animation: spinRev1 20s linear infinite; }
         .counter-spin-2 { width: 100%; height: 100%; animation: spinRev2 20s linear infinite; }
         .counter-spin-3 { width: 100%; height: 100%; animation: spinRev3 20s linear infinite; }
         @keyframes spinRev1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
         @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } }
         @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
-        .circle-btn { width: 100%; height: 100%; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; box-shadow: 0 8px 15px rgba(0,0,0,0.2); cursor: pointer; border: 4px solid; transition: transform 0.2s, box-shadow 0.2s; }
-        .circle-btn:active { transform: scale(0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+        /* BOLA 3D NEON */
+        .circle-btn { 
+            width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; cursor: pointer; border: 2px solid; 
+            transition: transform 0.2s, filter 0.2s; 
+            background: radial-gradient(circle at 30% 30%, #1e293b, #020617); /* Efek Massa Bola 3D Gelap */
+        }
+        .circle-btn:active { transform: scale(0.9); filter: brightness(1.5); }
         .circle-btn i { font-size: 26px; margin-bottom: 5px; }
+
+        /* Warna Neon Khusus & Animasi Detak (Pulsating) */
+        @keyframes pulse-neon-green { 
+            0%, 100% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 15px rgba(16, 185, 129, 0.4), inset 0 0 20px rgba(16, 185, 129, 0.6), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.2); } 
+            50% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 35px rgba(16, 185, 129, 0.8), inset 0 0 30px rgba(16, 185, 129, 0.8), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.3); } 
+        }
+        @keyframes pulse-neon-blue { 
+            0%, 100% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 15px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(59, 130, 246, 0.6), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.2); } 
+            50% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 35px rgba(59, 130, 246, 0.8), inset 0 0 30px rgba(59, 130, 246, 0.8), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.3); } 
+        }
+        @keyframes pulse-neon-purple { 
+            0%, 100% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 15px rgba(139, 92, 246, 0.4), inset 0 0 20px rgba(139, 92, 246, 0.6), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.2); } 
+            50% { box-shadow: 0 15px 25px rgba(0,0,0,0.5), 0 0 35px rgba(139, 92, 246, 0.8), inset 0 0 30px rgba(139, 92, 246, 0.8), inset -15px -15px 25px rgba(0,0,0,0.8), inset 5px 5px 15px rgba(255,255,255,0.3); } 
+        }
+
+        .neon-green { border-color: rgba(16, 185, 129, 0.8); color: #34d399; text-shadow: 0 0 10px #34d399; animation: pulse-neon-green 3s infinite ease-in-out; }
+        .neon-blue { border-color: rgba(59, 130, 246, 0.8); color: #60a5fa; text-shadow: 0 0 10px #60a5fa; animation: pulse-neon-blue 3s infinite ease-in-out 1s; } /* Jeda 1s agar animasi tidak bersamaan */
+        .neon-purple { border-color: rgba(139, 92, 246, 0.8); color: #a78bfa; text-shadow: 0 0 10px #a78bfa; animation: pulse-neon-purple 3s infinite ease-in-out 2s; } /* Jeda 2s */
 
         /* ==================================================== */
         /* PANEL ANALISA PERFORMA AI (NEON & 3D ESTETIK)        */
@@ -255,7 +287,7 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
                 <!-- MENU ADM MOLD DI BERANDA -->
-                <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
+                <div class="menu-card" onclick="bukaAdmMoldMenu()" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
@@ -275,7 +307,7 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN RATA KIRI) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
@@ -294,43 +326,46 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: ADM MOLD LINGKARAN & TOMBOL MASUK PANEL -->
+    <!-- EKOSISTEM BARU: ADM MOLD BOLA 3D NEON -->
     <!-- ========================================== -->
     
-    <!-- LAYAR: MENU UTAMA ADM MOLD -->
     <div id="adm-mold-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem ADM MOLD</h2></div>
             
             <div class="menu-circle-wrap">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #38bdf8; font-size: 50px; opacity: 0.3; text-shadow: 0 0 20px #38bdf8;">
                     <i class="fas fa-user-tie"></i>
                 </div>
                 
+                <!-- Orbit 1: Kerja Harian -->
                 <div class="circle-orbit orbit-1">
                     <div class="counter-spin-1">
-                        <div class="circle-btn" style="border-color: #10b981; color: #10b981;" onclick="navigasi('adm-harian-menu-screen')">
+                        <div class="circle-btn neon-green" onclick="navigasi('adm-harian-menu-screen')">
                             <i class="fas fa-calendar-day"></i><span>1. Kerja<br>Harian</span>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Orbit 2: Kerja Mingguan -->
                 <div class="circle-orbit orbit-2">
                     <div class="counter-spin-2">
-                        <div class="circle-btn" style="border-color: #3b82f6; color: #3b82f6;" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
+                        <div class="circle-btn neon-blue" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
                             <i class="fas fa-calendar-week"></i><span>2. Kerja<br>Mingguan</span>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Orbit 3: Kerja Bulanan -->
                 <div class="circle-orbit orbit-3">
                     <div class="counter-spin-3">
-                        <div class="circle-btn" style="border-color: #8b5cf6; color: #8b5cf6;" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
+                        <div class="circle-btn neon-purple" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
                             <i class="fas fa-calendar-alt"></i><span>3. Kerja<br>Bulanan</span>
                         </div>
                     </div>
                 </div>
             </div>
+            
             <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan menu lingkaran untuk menghentikan putaran.</i></p>
 
             <!-- TOMBOL PINTU MASUK KE RUANGAN NEON 3D -->
@@ -935,7 +970,6 @@
         }
 
         window.switchTabAnalisa = async function(tipe) {
-            // Ubah style tab yang aktif
             document.getElementById('ntab-harian').classList.remove('active');
             document.getElementById('ntab-mingguan').classList.remove('active');
             document.getElementById('ntab-bulanan').classList.remove('active');
@@ -949,7 +983,6 @@
 
             try {
                 if (tipe === 'harian') {
-                    // AMBIL DATA HARIAN
                     descText = "*Grafik Harian Target vs Realisasi (7 Hari Terakhir)";
                     const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
                     let tempHarian = []; snapshot.forEach(doc => tempHarian.push(doc.data()));
@@ -972,16 +1005,15 @@
                     dataRealisasi = sortedDates.map(tgl => groupedData[tgl].realisasi);
 
                 } else if (tipe === 'mingguan' || tipe === 'bulanan') {
-                    // AMBIL DATA MINGGUAN / BULANAN DARI INFORMASI MOLD
                     let kategoriQuery = tipe === 'mingguan' ? 'LAPORAN KERJA MINGGUAN' : 'LAPORAN KERJA BULANAN';
-                    descText = `*Grafik Frekuensi Pengiriman ${kategoriQuery} (Otomatis 100% Realisasi)`;
+                    descText = `*Grafik Frekuensi Pengiriman ${kategoriQuery}`;
                     
                     const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriQuery)); 
                     const snapshot = await getDocs(q);
                     let tempInfo = []; snapshot.forEach(doc => tempInfo.push(doc.data()));
 
                     totalTarget = tempInfo.length;
-                    totalSelesai = tempInfo.length; // Karena sifatnya laporan dikirim = selesai
+                    totalSelesai = tempInfo.length; 
                     persen = totalTarget === 0 ? 0 : 100;
 
                     let groupedData = {};
@@ -994,16 +1026,14 @@
                     let sortedDates = Object.keys(groupedData).sort().slice(-7);
                     labels = sortedDates;
                     dataTarget = sortedDates.map(tgl => groupedData[tgl]);
-                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl]); // Sama dengan target karena otomatis sukses
+                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl]); 
                 }
 
-                // Update Angka di Kartu Neon
                 document.getElementById('neon-val-target').innerText = totalTarget;
                 document.getElementById('neon-val-selesai').innerText = totalSelesai;
                 document.getElementById('neon-val-persen').innerText = persen + '%';
                 document.getElementById('neon-chart-desc').innerText = descText;
 
-                // Render Grafik Chart.js
                 const ctx = document.getElementById('performaChart').getContext('2d');
                 if(window.myChart) { window.myChart.destroy(); }
 
