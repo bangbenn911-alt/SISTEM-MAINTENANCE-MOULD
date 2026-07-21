@@ -63,8 +63,14 @@
 
         /* --- LAYOUT UTAMA --- */
         .screen { display: none; padding: 20px; padding-bottom: 100px; min-height: 100vh; box-sizing: border-box; }
-        .active-screen { display: block; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        
+        /* EFEK MASUK KEDALAM HALUS (DIVE-IN ZOOM) */
+        .active-screen { display: block; animation: diveIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes diveIn { 
+            0% { opacity: 0; transform: scale(0.85); } 
+            100% { opacity: 1; transform: scale(1); } 
+        }
+
         .content-wrapper { max-width: 700px; margin: auto; position: relative;} 
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         
@@ -77,25 +83,54 @@
         }
         .btn-bottom-back:active { transform: translateX(-50%) scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.2); background: var(--secondary); }
 
-        /* --- TOMBOL MENU (RATA KIRI / LEFT-ALIGNED) --- */
+        /* --- TOMBOL MENU RATA KIRI --- */
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .menu-card { 
-            background: white; 
-            padding: 18px 20px; 
-            border-radius: 12px; 
-            text-align: left; 
-            font-weight: bold; 
-            font-size: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-            cursor: pointer; 
-            border-left: 5px solid var(--secondary); 
-            transition: transform 0.2s; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
+            background: white; padding: 18px 20px; border-radius: 12px; text-align: left; font-weight: bold; font-size: 15px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border-left: 5px solid var(--secondary); transition: transform 0.2s; 
+            display: flex; align-items: center; gap: 12px; 
         }
         .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
+
+        /* ==================================================== */
+        /* MENU SATELIT LINGKARAN BERPUTAR (KHUSUS ADM MOLD)    */
+        /* ==================================================== */
+        .menu-circle-wrap {
+            position: relative; width: 280px; height: 280px; margin: 60px auto 40px auto; 
+            border-radius: 50%; border: 3px dashed #cbd5e1; 
+            animation: spinOrbit 20s linear infinite; /* Putaran Lintasan */
+        }
+        @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
+        @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
+
+        /* Hentikan putaran saat ditekan agar mudah di-klik */
+        .menu-circle-wrap:active, .menu-circle-wrap:active .circle-btn { animation-play-state: paused; }
+
+        .circle-orbit {
+            position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px;
+        }
+        /* Penempatan 3 Titik Lingkaran (0deg, 120deg, 240deg) */
+        .orbit-1 { transform: rotate(0deg) translateX(140px); }
+        .orbit-2 { transform: rotate(120deg) translateX(140px); }
+        .orbit-3 { transform: rotate(240deg) translateX(140px); }
+
+        .circle-btn {
+            width: 100%; height: 100%; background: white; border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2); cursor: pointer;
+            border: 4px solid; transition: transform 0.2s, box-shadow 0.2s;
+            animation: spinReverse 20s linear infinite; /* Melawan putaran lintasan agar teks tetap tegak */
+        }
+        .circle-btn:active { transform: scale(0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .circle-btn i { font-size: 26px; margin-bottom: 5px; }
+
+        /* Warna khusus untuk setiap tombol lingkaran */
+        .orbit-1 .circle-btn { border-color: #10b981; color: #10b981; }
+        .orbit-2 .circle-btn { border-color: #3b82f6; color: #3b82f6; }
+        .orbit-3 .circle-btn { border-color: #8b5cf6; color: #8b5cf6; }
+        /* ==================================================== */
 
         /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
@@ -210,27 +245,89 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
-                <!-- MENU BARU: ADM MOLD DI BERANDA -->
+                <!-- MENU ADM MOLD DI BERANDA -->
                 <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
+                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
     </div>
 
+    <!-- 3. BERANDA DIVISI -->
+    <div id="divisi-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
+                <div class="menu-card" onclick="navigasi('update-project-screen'); renderUpdateList();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
+                <div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN RATA KIRI) -->
+    <div id="informasi-mold-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Informasi & Laporan Mold</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigasi('notulen-menu-screen')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
+                <div class="menu-card" onclick="bukaMenuPermintaanTrial()" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
+                <div class="menu-card" onclick="navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
+                <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 5. DATA MASTER MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 6. ROTASI MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 7. DATA PREVENTIF TAHUNAN MOLD</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: ADM MOLD -->
+    <!-- EKOSISTEM BARU: ADM MOLD DENGAN MENU LINGKARAN BERPUTAR -->
     <!-- ========================================== -->
     
     <!-- LAYAR: MENU UTAMA ADM MOLD -->
     <div id="adm-mold-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header"><h2>Menu ADM MOLD</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('adm-harian-menu-screen')" style="border-left-color: #10b981;"><i class="fas fa-calendar-day"></i> 1. Laporan Kerja Harian</div>
-                <div class="menu-card" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')" style="border-left-color: #3b82f6;"><i class="fas fa-calendar-week"></i> 2. Laporan Kerja Mingguan</div>
-                <div class="menu-card" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')" style="border-left-color: #8b5cf6;"><i class="fas fa-calendar-alt"></i> 3. Laporan Kerja Bulanan</div>
+            <div class="header"><h2>Sistem ADM MOLD</h2></div>
+            
+            <!-- MENU LINGKARAN BERPUTAR -->
+            <div class="menu-circle-wrap">
+                <!-- Titik Tengah (Hiasan) -->
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                
+                <!-- Orbit 1: Kerja Harian -->
+                <div class="circle-orbit orbit-1">
+                    <div class="circle-btn" onclick="navigasi('adm-harian-menu-screen')">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>1. Kerja<br>Harian</span>
+                    </div>
+                </div>
+                
+                <!-- Orbit 2: Kerja Mingguan -->
+                <div class="circle-orbit orbit-2">
+                    <div class="circle-btn" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
+                        <i class="fas fa-calendar-week"></i>
+                        <span>2. Kerja<br>Mingguan</span>
+                    </div>
+                </div>
+                
+                <!-- Orbit 3: Kerja Bulanan -->
+                <div class="circle-orbit orbit-3">
+                    <div class="circle-btn" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>3. Kerja<br>Bulanan</span>
+                    </div>
+                </div>
             </div>
+            
+            <p style="text-align: center; color: gray; font-size: 12px; margin-top: 50px;"><i>*Tahan menu lingkaran untuk menghentikan putaran.</i></p>
+
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -330,37 +427,6 @@
     </div>
 
 
-    <!-- 3. BERANDA DIVISI -->
-    <div id="divisi-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
-                <div class="menu-card" onclick="navigasi('update-project-screen'); renderUpdateList();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
-                <div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
-            </div>
-            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN) -->
-    <div id="informasi-mold-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Informasi & Laporan Mold</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('notulen-menu-screen')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
-                <div class="menu-card" onclick="bukaMenuPermintaanTrial()" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
-                <div class="menu-card" onclick="navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
-                <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 5. DATA MASTER MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 6. ROTASI MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 7. DATA PREVENTIF TAHUNAN MOLD</div>
-            </div>
-            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-
     <!-- ========================================== -->
     <!-- EKOSISTEM: PERMINTAAN TRIAL -->
     <!-- ========================================== -->
@@ -376,7 +442,6 @@
         </div>
     </div>
 
-    <!-- INPUT PERMINTAAN TRIAL -->
     <div id="pt-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Permintaan Trial</h2></div>
@@ -390,7 +455,6 @@
         </div>
     </div>
 
-    <!-- ADMIN: VERIFIKASI & UPDATE -->
     <div id="pt-admin-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Verifikasi Admin Mold</h2></div>
@@ -401,7 +465,6 @@
             <div id="list-pt-belum"></div>
             <div id="list-pt-proses" style="display: none;"></div>
 
-            <!-- FORM AUTO-FILL: Verifikasi -->
             <div id="form-pt-verifikasi" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Verifikasi Trial Mold</h3>
                 <input type="hidden" id="pt-verif-id">
@@ -415,7 +478,6 @@
                 </div>
             </div>
 
-            <!-- FORM AUTO-FILL: Update Hasil -->
             <div id="form-pt-hasil" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Update Hasil Trial</h3>
                 <input type="hidden" id="pt-hasil-id">
@@ -443,7 +505,6 @@
         </div>
     </div>
 
-    <!-- CONTROL PROGRES TRIAL -->
     <div id="pt-progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Trial</h2></div>
@@ -453,7 +514,6 @@
         </div>
     </div>
 
-    <!-- DETAIL LAPORAN TRIAL -->
     <div id="pt-detail-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Laporan Trial</h2></div>
@@ -481,7 +541,6 @@
         </div>
     </div>
 
-    <!-- INPUT NOTULEN -->
     <div id="notulen-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Notulen Baru</h2></div>
@@ -529,7 +588,6 @@
         </div>
     </div>
 
-    <!-- HASIL NOTULEN -->
     <div id="notulen-hasil-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Hasil Laporan Notulen</h2></div>
@@ -538,7 +596,6 @@
         </div>
     </div>
 
-    <!-- DETAIL NOTULEN -->
     <div id="detail-notulen-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail & Evaluasi Notulen</h2></div>
@@ -566,7 +623,6 @@
         </div>
     </div>
 
-    <!-- INPUT JADWAL BESAR -->
     <div id="jadwal-besar-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Manajemen Jadwal Besar</h2></div>
@@ -593,7 +649,6 @@
         </div>
     </div>
 
-    <!-- VIEW JADWAL BESAR ZOOMABLE -->
     <div id="jadwal-besar-view-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>View Jadwal Besar</h2></div>
@@ -738,7 +793,7 @@
         let infoDatabase = [];
         let notulenDatabase = []; 
         let ptDatabase = []; 
-        let admHarianDatabase = []; // Database khusus ADM Harian Baru
+        let admHarianDatabase = []; 
         let divisiAktif = "";
         let kategoriInfoAktif = "";
         let filterTglAwal = "";
@@ -836,7 +891,6 @@
         // =======================================================
         // EKOSISTEM BARU: LAPORAN KERJA HARIAN ADM
         // =======================================================
-        
         window.simpanAdmTarget = async function() {
             const tgl = document.getElementById('adm-target-tgl').value;
             const nama = document.getElementById('adm-target-nama').value;
@@ -848,58 +902,36 @@
             
             try {
                 await addDoc(collection(db, "adm_harian"), {
-                    tglTarget: tgl,
-                    namaKegiatan: nama,
-                    detailRencana: detail || "-",
-                    adminName: admin || "Admin",
-                    status: "Belum",
-                    tglActual: "-",
-                    hasilActual: "-",
-                    keteranganActual: "-",
-                    fotoActual: "",
-                    timestamp: Date.now()
+                    tglTarget: tgl, namaKegiatan: nama, detailRencana: detail || "-", adminName: admin || "Admin",
+                    status: "Belum", tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now()
                 });
                 alert("Target Harian Tersimpan!");
-                document.getElementById('adm-target-tgl').value = "";
-                document.getElementById('adm-target-nama').value = "";
-                document.getElementById('adm-target-detail').value = "";
+                document.getElementById('adm-target-tgl').value = ""; document.getElementById('adm-target-nama').value = ""; document.getElementById('adm-target-detail').value = "";
                 window.navigasi('adm-harian-menu-screen');
             } catch(e) { alert(e.message); }
             toggleLoader(false);
         }
 
         async function ambilDataAdmHarian() {
-            toggleLoader(true, "Mengunduh Data Laporan...");
-            admHarianDatabase = [];
+            toggleLoader(true, "Mengunduh Data Laporan..."); admHarianDatabase = [];
             try {
-                const q = query(collection(db, "adm_harian"));
-                const snapshot = await getDocs(q);
+                const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
                 snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()}));
                 admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp);
             } catch(e) {}
             toggleLoader(false);
         }
 
-        window.bukaAdmHarianActual = async function() {
-            window.navigasi('adm-harian-actual-screen');
-            await ambilDataAdmHarian();
-            window.switchTabAdm('belum');
-        }
+        window.bukaAdmHarianActual = async function() { window.navigasi('adm-harian-actual-screen'); await ambilDataAdmHarian(); window.switchTabAdm('belum'); }
 
         window.switchTabAdm = function(tab) {
-            document.getElementById('tab-adm-belum').classList.remove('tab-active');
-            document.getElementById('tab-adm-sudah').classList.remove('tab-active');
-            document.getElementById('list-adm-belum').style.display = 'none';
-            document.getElementById('list-adm-sudah').style.display = 'none';
-            document.getElementById('form-adm-actual').style.display = 'none';
-
+            document.getElementById('tab-adm-belum').classList.remove('tab-active'); document.getElementById('tab-adm-sudah').classList.remove('tab-active');
+            document.getElementById('list-adm-belum').style.display = 'none'; document.getElementById('list-adm-sudah').style.display = 'none'; document.getElementById('form-adm-actual').style.display = 'none';
             if(tab === 'belum') {
-                document.getElementById('tab-adm-belum').classList.add('tab-active');
-                document.getElementById('list-adm-belum').style.display = 'block';
+                document.getElementById('tab-adm-belum').classList.add('tab-active'); document.getElementById('list-adm-belum').style.display = 'block';
                 renderAdmActualList('Belum', 'list-adm-belum');
             } else {
-                document.getElementById('tab-adm-sudah').classList.add('tab-active');
-                document.getElementById('list-adm-sudah').style.display = 'block';
+                document.getElementById('tab-adm-sudah').classList.add('tab-active'); document.getElementById('list-adm-sudah').style.display = 'block';
                 renderAdmActualList('Selesai', 'list-adm-sudah');
             }
         }
@@ -911,90 +943,45 @@
             filtered.forEach(data => {
                 let badge = status === 'Belum' ? `<span class="status-badge bg-lambat">Menunggu Realisasi</span>` : `<span class="status-badge bg-cepat">Sudah Terealisasi</span>`;
                 let clickAction = status === 'Belum' ? `bukaFormAdmActual('${data.id}')` : '';
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${status==='Belum' ? 'var(--lambat)' : 'var(--cepat)'}; cursor:pointer;" onclick="${clickAction}">
-                    <h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p>${badge}
-                </div>`;
+                container.innerHTML += `<div class="progress-card" style="border-left-color: ${status==='Belum' ? 'var(--lambat)' : 'var(--cepat)'}; cursor:pointer;" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p>${badge}</div>`;
             });
         }
 
         window.bukaFormAdmActual = function(id) {
             const data = admHarianDatabase.find(d => d.id === id);
-            document.getElementById('adm-actual-id').value = id;
-            document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan;
-            document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0]; // Auto today
-            document.getElementById('form-adm-actual').style.display = 'block';
-            document.getElementById('list-adm-belum').style.display = 'none';
-            window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop);
+            document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0];
+            document.getElementById('form-adm-actual').style.display = 'block'; document.getElementById('list-adm-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop);
         }
-
-        window.batalAdmActual = function() {
-            document.getElementById('form-adm-actual').style.display = 'none';
-            document.getElementById('list-adm-belum').style.display = 'block';
-        }
+        window.batalAdmActual = function() { document.getElementById('form-adm-actual').style.display = 'none'; document.getElementById('list-adm-belum').style.display = 'block'; }
 
         window.simpanAdmActual = async function() {
-            const id = document.getElementById('adm-actual-id').value;
-            const tgl = document.getElementById('adm-actual-tgl').value;
-            const hasil = document.getElementById('adm-actual-hasil').value;
-            const ket = document.getElementById('adm-actual-ket').value;
-            const fotoInput = document.getElementById('adm-actual-foto');
-
+            const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value;
+            const hasil = document.getElementById('adm-actual-hasil').value; const ket = document.getElementById('adm-actual-ket').value; const fotoInput = document.getElementById('adm-actual-foto');
             if(!tgl || !hasil) return alert("Tanggal & Hasil Actual wajib diisi!");
-            toggleLoader(true, "Menyimpan Realisasi...");
-            
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
-
+            toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
             try {
-                await updateDoc(doc(db, "adm_harian", id), {
-                    status: "Selesai",
-                    tglActual: tgl,
-                    hasilActual: hasil,
-                    keteranganActual: ket || "-",
-                    fotoActual: fotoBase64
-                });
-                alert("Realisasi Tersimpan!");
-                document.getElementById('adm-actual-hasil').value = "";
-                document.getElementById('adm-actual-ket').value = "";
-                document.getElementById('adm-actual-foto').value = "";
-                document.getElementById('status-adm-foto').innerHTML = "";
-                document.getElementById('form-adm-actual').style.display = 'none';
+                await updateDoc(doc(db, "adm_harian", id), { status: "Selesai", tglActual: tgl, hasilActual: hasil, keteranganActual: ket || "-", fotoActual: fotoBase64 });
+                alert("Realisasi Tersimpan!"); document.getElementById('adm-actual-hasil').value = ""; document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; document.getElementById('status-adm-foto').innerHTML = ""; document.getElementById('form-adm-actual').style.display = 'none';
                 await ambilDataAdmHarian(); window.switchTabAdm('sudah');
             } catch(e) { alert(e.message); }
             toggleLoader(false);
         }
 
         window.bukaAdmHarianProgress = async function() {
-            window.navigasi('adm-harian-progress-screen');
-            await ambilDataAdmHarian();
+            window.navigasi('adm-harian-progress-screen'); await ambilDataAdmHarian();
             const container = document.getElementById('list-adm-progress'); container.innerHTML = "";
             if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
             admHarianDatabase.forEach(data => {
-                let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)";
-                let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi";
-                container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')">
-                    <h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p>
-                    <span class="status-badge" style="background:${color}">${badge}</span>
-                </div>`;
+                let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)"; let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi";
+                container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${color}">${badge}</span></div>`;
             });
         }
 
         window.bukaDetailAdmHarian = function(id) {
             const data = admHarianDatabase.find(d => d.id === id); if(!data) return;
             let colorStatus = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)";
-            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div>
-                <table class="report-table">
-                    <tr><th>Nama Kegiatan / Rencana</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr>
-                    <tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status === 'Belum' ? 'Belum Terealisasi' : 'Sudah Terealisasi'}</td></tr>
-                    <tr><th>Tanggal Target Pelaksanaan</th><td>${data.tglTarget}</td></tr>
-                    <tr><th>Detail Rencana Pekerjaan</th><td>${data.detailRencana}</td></tr>
-                    <tr><th>Nama Admin</th><td>${data.adminName}</td></tr>
-                </table>`;
-            if(data.status === "Selesai") {
-                html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL ACTUAL TEREALISASI</th></tr>
-                    <tr><th>Tanggal Aktual Selesai</th><td>${data.tglActual}</td></tr>
-                    <tr><th>Hasil Aktual</th><td>${data.hasilActual}</td></tr>
-                    <tr><th>Keterangan Tambahan</th><td>${data.keteranganActual}</td></tr>
-                </table>`;
+            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Kegiatan / Rencana</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status === 'Belum' ? 'Belum Terealisasi' : 'Sudah Terealisasi'}</td></tr><tr><th>Tanggal Target Pelaksanaan</th><td>${data.tglTarget}</td></tr><tr><th>Detail Rencana Pekerjaan</th><td>${data.detailRencana}</td></tr><tr><th>Nama Admin</th><td>${data.adminName}</td></tr></table>`;
+            if(data.status === "Selesai") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL ACTUAL TEREALISASI</th></tr><tr><th>Tanggal Aktual Selesai</th><td>${data.tglActual}</td></tr><tr><th>Hasil Aktual</th><td>${data.hasilActual}</td></tr><tr><th>Keterangan Tambahan</th><td>${data.keteranganActual}</td></tr></table>`;
                 if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; }
                 else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
             }
@@ -1015,60 +1002,26 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
 
         window.simpanPtInput = async function() {
-            const namaMold = document.getElementById('pt-input-nama').value;
-            const target = document.getElementById('pt-input-target').value;
-            const user = document.getElementById('pt-input-user').value;
-
+            const namaMold = document.getElementById('pt-input-nama').value; const target = document.getElementById('pt-input-target').value; const user = document.getElementById('pt-input-user').value;
             if(!namaMold || !target || !user) { alert("Semua kolom input Trial wajib diisi!"); return; }
-
             toggleLoader(true, "Mengirim Permintaan Trial...");
-            const dataPt = {
-                namaMold: namaMold, targetTrial: target, namaUser: user, status: "Menunggu Verifikasi",
-                noTrial: "-", tglPermintaan: "-", hasil: "-", keteranganHasil: "-", fotoHasil: "", timestamp: Date.now()
-            };
-
-            try {
-                await addDoc(collection(db, "permintaan_trial"), dataPt);
-                alert("Permintaan berhasil dikirim ke Admin!");
-                document.getElementById('pt-input-nama').value = ""; document.getElementById('pt-input-target').value = ""; document.getElementById('pt-input-user').value = "";
-                window.navigasi('permintaan-trial-menu-screen');
-            } catch (e) { alert("Gagal mengirim: " + e.message); }
+            const dataPt = { namaMold: namaMold, targetTrial: target, namaUser: user, status: "Menunggu Verifikasi", noTrial: "-", tglPermintaan: "-", hasil: "-", keteranganHasil: "-", fotoHasil: "", timestamp: Date.now() };
+            try { await addDoc(collection(db, "permintaan_trial"), dataPt); alert("Permintaan dikirim ke Admin!"); document.getElementById('pt-input-nama').value = ""; document.getElementById('pt-input-target').value = ""; document.getElementById('pt-input-user').value = ""; window.navigasi('permintaan-trial-menu-screen'); } catch (e) { alert("Gagal: " + e.message); }
             toggleLoader(false);
         }
 
-        async function ambilDataPt() {
-            toggleLoader(true, "Sinkronisasi Data..."); ptDatabase = [];
-            try {
-                const q = query(collection(db, "permintaan_trial"));
-                const querySnapshot = await getDocs(q);
-                querySnapshot.forEach((doc) => { ptDatabase.push({ id: doc.id, ...doc.data() }); });
-                ptDatabase.sort((a, b) => b.timestamp - a.timestamp); 
-            } catch (e) {}
-            toggleLoader(false);
-        }
+        async function ambilDataPt() { toggleLoader(true, "Sinkronisasi Data..."); ptDatabase = []; try { const q = query(collection(db, "permintaan_trial")); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { ptDatabase.push({ id: doc.id, ...doc.data() }); }); ptDatabase.sort((a, b) => b.timestamp - a.timestamp); } catch (e) {} toggleLoader(false); }
 
         window.bukaPtAdmin = async function() { window.navigasi('pt-admin-screen'); await ambilDataPt(); window.switchTabPt('belum'); }
 
         window.switchTabPt = function(tab) {
-            document.getElementById('tab-pt-belum').classList.remove('tab-active'); document.getElementById('tab-pt-proses').classList.remove('tab-active');
-            document.getElementById('list-pt-belum').style.display = 'none'; document.getElementById('list-pt-proses').style.display = 'none';
-            document.getElementById('form-pt-verifikasi').style.display = 'none'; document.getElementById('form-pt-hasil').style.display = 'none';
-
-            if(tab === 'belum') {
-                document.getElementById('tab-pt-belum').classList.add('tab-active'); document.getElementById('list-pt-belum').style.display = 'block';
-                renderListAdminPt('Menunggu Verifikasi', 'list-pt-belum');
-            } else {
-                document.getElementById('tab-pt-proses').classList.add('tab-active'); document.getElementById('list-pt-proses').style.display = 'block';
-                renderListAdminPt('Proses', 'list-pt-proses');
-            }
+            document.getElementById('tab-pt-belum').classList.remove('tab-active'); document.getElementById('tab-pt-proses').classList.remove('tab-active'); document.getElementById('list-pt-belum').style.display = 'none'; document.getElementById('list-pt-proses').style.display = 'none'; document.getElementById('form-pt-verifikasi').style.display = 'none'; document.getElementById('form-pt-hasil').style.display = 'none';
+            if(tab === 'belum') { document.getElementById('tab-pt-belum').classList.add('tab-active'); document.getElementById('list-pt-belum').style.display = 'block'; renderListAdminPt('Menunggu Verifikasi', 'list-pt-belum'); } else { document.getElementById('tab-pt-proses').classList.add('tab-active'); document.getElementById('list-pt-proses').style.display = 'block'; renderListAdminPt('Proses', 'list-pt-proses'); }
         }
 
         function renderListAdminPt(filterStatus, containerId) {
-            const container = document.getElementById(containerId); container.innerHTML = "";
-            let filteredData = ptDatabase.filter(d => d.status === filterStatus);
-
+            const container = document.getElementById(containerId); container.innerHTML = ""; let filteredData = ptDatabase.filter(d => d.status === filterStatus);
             if(filteredData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Kosong.</p>`; return; }
-
             filteredData.forEach(data => {
                 let badge = filterStatus === 'Menunggu Verifikasi' ? `<span class="status-badge bg-lambat">Menunggu Verifikasi Admin</span>` : `<span class="status-badge bg-proses">Sedang Proses Trial</span>`;
                 let clickAction = filterStatus === 'Menunggu Verifikasi' ? `bukaFormPtVerifikasi('${data.id}')` : `bukaFormPtHasil('${data.id}')`;
@@ -1076,169 +1029,68 @@
             });
         }
 
-        window.batalPtAdmin = function(tipe) {
-            if(tipe === 'verif') { document.getElementById('form-pt-verifikasi').style.display = 'none'; document.getElementById('list-pt-belum').style.display = 'block'; } 
-            else { document.getElementById('form-pt-hasil').style.display = 'none'; document.getElementById('list-pt-proses').style.display = 'block'; }
-        }
-
-        window.bukaFormPtVerifikasi = function(id) {
-            const data = ptDatabase.find(d => d.id === id);
-            document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = data.targetTrial;
-            document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('list-pt-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-verifikasi').offsetTop);
-        }
-
-        window.simpanPtVerifikasi = async function() {
-            const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value; const tglPermintaan = document.getElementById('pt-verif-tgl').value;
-            if(!noTrial || !tglPermintaan) { alert("Isi No Trial & Tanggal!"); return; }
-            toggleLoader(true, "Memproses Verifikasi...");
-            try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Terverifikasi!"); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; document.getElementById('form-pt-verifikasi').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); }
-            toggleLoader(false);
-        }
-
-        window.bukaFormPtHasil = function(id) {
-            const data = ptDatabase.find(d => d.id === id);
-            document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = data.targetTrial;
-            document.getElementById('form-pt-hasil').style.display = 'block'; document.getElementById('list-pt-proses').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop);
-        }
-
+        window.batalPtAdmin = function(tipe) { if(tipe === 'verif') { document.getElementById('form-pt-verifikasi').style.display = 'none'; document.getElementById('list-pt-belum').style.display = 'block'; } else { document.getElementById('form-pt-hasil').style.display = 'none'; document.getElementById('list-pt-proses').style.display = 'block'; } }
+        window.bukaFormPtVerifikasi = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = data.targetTrial; document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('list-pt-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-verifikasi').offsetTop); }
+        window.simpanPtVerifikasi = async function() { const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value; const tglPermintaan = document.getElementById('pt-verif-tgl').value; if(!noTrial || !tglPermintaan) { alert("Isi No Trial & Tanggal!"); return; } toggleLoader(true, "Memproses Verifikasi..."); try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Terverifikasi!"); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; document.getElementById('form-pt-verifikasi').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); } toggleLoader(false); }
+        window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = data.targetTrial; document.getElementById('form-pt-hasil').style.display = 'block'; document.getElementById('list-pt-proses').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
+        
         window.simpanPtHasil = async function() {
-            const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto');
-            toggleLoader(true, "Menyimpan Hasil...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
-            try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; document.getElementById('status-pt-foto').innerHTML = ""; document.getElementById('form-pt-hasil').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) {}
-            toggleLoader(false);
+            const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
+            try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; document.getElementById('status-pt-foto').innerHTML = ""; document.getElementById('form-pt-hasil').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) {} toggleLoader(false);
         }
 
         window.bukaPtProgress = async function() { window.navigasi('pt-progress-screen'); await ambilDataPt(); renderPtProgress(); }
-
-        window.renderPtProgress = function() {
-            const container = document.getElementById('list-pt-progress'); container.innerHTML = "";
-            if(ptDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
-            ptDatabase.forEach(data => {
-                let badge = ""; let color = "";
-                if(data.status === "Menunggu Verifikasi") { badge = `<span class="status-badge bg-lambat">Menunggu Verifikasi</span>`; color = "var(--lambat)"; }
-                else if(data.status === "Proses") { badge = `<span class="status-badge bg-proses">Sedang Proses Trial</span>`; color = "var(--proses)"; }
-                else if(data.status === "Selesai") { badge = `<span class="status-badge bg-cepat">Selesai (Sukses)</span>`; color = "var(--cepat)"; }
-                else if(data.status === "Gagal") { badge = `<span class="status-badge" style="background:#1e293b;">Selesai (Gagal)</span>`; color = "#1e293b"; }
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${color}; cursor:pointer;" onclick="bukaPtDetail('${data.id}')"><h4 style="margin:0 0 5px 0;">Mold: ${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${data.namaUser}</p>${badge}</div>`;
-            });
-        }
+        window.renderPtProgress = function() { const container = document.getElementById('list-pt-progress'); container.innerHTML = ""; if(ptDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } ptDatabase.forEach(data => { let badge = ""; let color = ""; if(data.status === "Menunggu Verifikasi") { badge = `<span class="status-badge bg-lambat">Menunggu Verifikasi</span>`; color = "var(--lambat)"; } else if(data.status === "Proses") { badge = `<span class="status-badge bg-proses">Sedang Proses Trial</span>`; color = "var(--proses)"; } else if(data.status === "Selesai") { badge = `<span class="status-badge bg-cepat">Selesai (Sukses)</span>`; color = "var(--cepat)"; } else if(data.status === "Gagal") { badge = `<span class="status-badge" style="background:#1e293b;">Selesai (Gagal)</span>`; color = "#1e293b"; } container.innerHTML += `<div class="progress-card" style="border-left-color: ${color}; cursor:pointer;" onclick="bukaPtDetail('${data.id}')"><h4 style="margin:0 0 5px 0;">Mold: ${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${data.namaUser}</p>${badge}</div>`; }); }
 
         window.bukaPtDetail = function(id) {
-            const data = ptDatabase.find(d => d.id === id); if(!data) return;
-            let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)");
+            const data = ptDatabase.find(d => d.id === id); if(!data) return; let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)");
             let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${data.targetTrial}</td></tr></table>`;
             if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td>${data.noTrial}</td></tr><tr><th>Tanggal Permintaan</th><td>${data.tglPermintaan}</td></tr></table>`; }
-            if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`;
-                if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } 
-                else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
-            }
+            if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`; if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; } }
             document.getElementById('report-pt-content').innerHTML = html; window.navigasi('pt-detail-screen');
         }
 
-        window.downloadPtJPG = function() {
-            toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content');
-            html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
-                let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false);
-            }).catch(e => { toggleLoader(false); alert("Gagal."); });
-        }
-
+        window.downloadPtJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
         // =======================================================
         // EKOSISTEM JADWAL BESAR
         // =======================================================
         window.bukaInputJadwal = async function() { window.navigasi('jadwal-besar-input-screen'); await muatJadwalBesar(); }
         window.bukaViewJadwal = async function() { window.navigasi('jadwal-besar-view-screen'); await muatJadwalBesar(); }
-
         window.currentZoomJadwal = 100;
-        window.zoomJadwal = function(step) {
-            const img = document.getElementById('img-zoom-jadwal'); if(!img) return;
-            if(step === 0) { window.currentZoomJadwal = 100; } else { window.currentZoomJadwal += step; }
-            if(window.currentZoomJadwal < 50) window.currentZoomJadwal = 50; if(window.currentZoomJadwal > 350) window.currentZoomJadwal = 350;
-            img.style.width = window.currentZoomJadwal + "%";
-        }
-
+        window.zoomJadwal = function(step) { const img = document.getElementById('img-zoom-jadwal'); if(!img) return; if(step === 0) { window.currentZoomJadwal = 100; } else { window.currentZoomJadwal += step; } if(window.currentZoomJadwal < 50) window.currentZoomJadwal = 50; if(window.currentZoomJadwal > 350) window.currentZoomJadwal = 350; img.style.width = window.currentZoomJadwal + "%"; }
         window.muatJadwalBesar = async function() {
-            try {
-                const docRef = doc(db, "jadwal_besar_db", "master_jadwal"); const docSnap = await getDoc(docRef);
-                const outContainer = document.getElementById('jb-output-container'); const viewContainer = document.getElementById('jb-view-container');
-                if (docSnap.exists() && docSnap.data().foto) {
-                    const imgHtmlOut = `<img src="${docSnap.data().foto}" style="max-width:100%; max-height:200px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2); object-fit:contain;"><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Update: ${docSnap.data().waktuUpdate}</p>`; outContainer.innerHTML = imgHtmlOut;
-                    window.currentZoomJadwal = 100;
-                    const imgHtmlView = `<div style="margin-bottom: 15px; display:flex; justify-content:center; gap:10px;"><button onclick="zoomJadwal(30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-plus"></i></button><button onclick="zoomJadwal(-30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-minus"></i></button><button onclick="zoomJadwal(0)" class="btn-submit" style="width:auto; padding:10px 20px; background:#94a3b8;"><i class="fas fa-sync"></i> Reset</button></div><div style="overflow:auto; max-height: 65vh; border: 2px dashed #cbd5e1; border-radius:8px; padding:10px; background:#f1f5f9; position:relative;" id="wrapper-zoom-jadwal"><img id="img-zoom-jadwal" src="${docSnap.data().foto}" style="width:100%; transition: width 0.2s ease; display:block; margin:auto; min-width:100%;"></div><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Terakhir diupdate: ${docSnap.data().waktuUpdate}</p>`;
-                    viewContainer.innerHTML = imgHtmlView;
-                } else {
-                    outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`;
-                }
+            try { const docRef = doc(db, "jadwal_besar_db", "master_jadwal"); const docSnap = await getDoc(docRef); const outContainer = document.getElementById('jb-output-container'); const viewContainer = document.getElementById('jb-view-container');
+                if (docSnap.exists() && docSnap.data().foto) { const imgHtmlOut = `<img src="${docSnap.data().foto}" style="max-width:100%; max-height:200px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2); object-fit:contain;"><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Update: ${docSnap.data().waktuUpdate}</p>`; outContainer.innerHTML = imgHtmlOut; window.currentZoomJadwal = 100; const imgHtmlView = `<div style="margin-bottom: 15px; display:flex; justify-content:center; gap:10px;"><button onclick="zoomJadwal(30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-plus"></i></button><button onclick="zoomJadwal(-30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-minus"></i></button><button onclick="zoomJadwal(0)" class="btn-submit" style="width:auto; padding:10px 20px; background:#94a3b8;"><i class="fas fa-sync"></i> Reset</button></div><div style="overflow:auto; max-height: 65vh; border: 2px dashed #cbd5e1; border-radius:8px; padding:10px; background:#f1f5f9; position:relative;" id="wrapper-zoom-jadwal"><img id="img-zoom-jadwal" src="${docSnap.data().foto}" style="width:100%; transition: width 0.2s ease; display:block; margin:auto; min-width:100%;"></div><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Terakhir diupdate: ${docSnap.data().waktuUpdate}</p>`; viewContainer.innerHTML = imgHtmlView; } else { outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; }
             } catch (error) { console.error("Gagal muat jadwal:", error); }
         }
-
         window.simpanJadwalBesar = async function() {
-            const fotoInput = document.getElementById('jb-foto'); if (fotoInput.files.length === 0) { alert("Pilih File!"); return; }
-            toggleLoader(true, "Memproses File..."); let fotoBase64 = ""; let file = fotoInput.files[0];
+            const fotoInput = document.getElementById('jb-foto'); if (fotoInput.files.length === 0) { alert("Pilih File!"); return; } toggleLoader(true, "Memproses File..."); let fotoBase64 = ""; let file = fotoInput.files[0];
             try {
-                if (file.type === "application/pdf") {
-                    const arrayBuffer = await file.arrayBuffer(); const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; const page = await pdf.getPage(1); 
-                    const viewport = page.getViewport({ scale: 1.5 }); const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); canvas.height = viewport.height; canvas.width = viewport.width;
-                    await page.render({ canvasContext: ctx, viewport: viewport }).promise; fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); 
-                } 
-                else if (file.type.startsWith("image/")) { fotoBase64 = await compressImage(file, 1200, 1200, 0.6); } 
-                else { alert("Format tidak didukung!"); toggleLoader(false); return; }
-
+                if (file.type === "application/pdf") { const arrayBuffer = await file.arrayBuffer(); const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; const page = await pdf.getPage(1); const viewport = page.getViewport({ scale: 1.5 }); const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); canvas.height = viewport.height; canvas.width = viewport.width; await page.render({ canvasContext: ctx, viewport: viewport }).promise; fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); } 
+                else if (file.type.startsWith("image/")) { fotoBase64 = await compressImage(file, 1200, 1200, 0.6); } else { alert("Format tidak didukung!"); toggleLoader(false); return; }
                 if(fotoBase64.length > 1000000) { alert("Peringatan: File terlalu padat/besar."); toggleLoader(false); return; }
-
                 const dataJb = { foto: fotoBase64, waktuUpdate: dapatkanWaktuRill(), timestamp: Date.now() }; await setDoc(doc(db, "jadwal_besar_db", "master_jadwal"), dataJb);
                 alert("Jadwal Besar berhasil diupdate!"); document.getElementById('jb-foto').value = ""; document.getElementById('status-jb-foto').innerHTML = ""; window.navigasi('jadwal-besar-menu-screen');
-            } catch (e) { alert("Gagal memproses: " + e.message); }
-            toggleLoader(false);
+            } catch (e) { alert("Gagal memproses: " + e.message); } toggleLoader(false);
         }
 
         // =======================================================
         // EKOSISTEM NOTULEN MEETING
         // =======================================================
         window.bukaHasilNotulen = async function() { window.navigasi('notulen-hasil-screen'); await ambilDataNotulen(); }
-
-        window.aiRapihkanNotulen = function() {
-            let text = document.getElementById('notul-deskripsi').value; if(!text.trim()) return alert("Tuliskan deskripsi!");
-            toggleLoader(true, "Merapihkan Format...");
-            setTimeout(() => { let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2); let formattedText = points.map(p => "• " + p.trim().replace(/^[\•\-\*]\s*/, "")).join("\n\n"); document.getElementById('notul-deskripsi').value = formattedText; toggleLoader(false); alert("Berhasil!"); }, 1200);
-        }
-
+        window.aiRapihkanNotulen = function() { let text = document.getElementById('notul-deskripsi').value; if(!text.trim()) return alert("Tuliskan deskripsi!"); toggleLoader(true, "Merapihkan Format..."); setTimeout(() => { let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2); let formattedText = points.map(p => "• " + p.trim().replace(/^[\•\-\*]\s*/, "")).join("\n\n"); document.getElementById('notul-deskripsi').value = formattedText; toggleLoader(false); alert("Berhasil!"); }, 1200); }
         window.simpanNotulen = async function() {
             const jenis = document.getElementById('notul-jenis').value; const waktuRill = document.getElementById('notul-waktu-display').value; const deskripsi = document.getElementById('notul-deskripsi').value; const fotoInput = document.getElementById('notul-foto');
-            if(!deskripsi.trim()) { alert("Deskripsi tidak boleh kosong!"); return; }
-            let kehadiran = []; document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value)); if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta");
-            let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => { return { id: index, teks: teks.replace(/^•\s*/, ''), done: false }; });
-            toggleLoader(true, "Menyimpan..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); }
+            if(!deskripsi.trim()) { alert("Deskripsi tidak boleh kosong!"); return; } let kehadiran = []; document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value)); if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta");
+            let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => { return { id: index, teks: teks.replace(/^•\s*/, ''), done: false }; }); toggleLoader(true, "Menyimpan..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); }
             const dataNotul = { jenisMeeting: jenis, waktuRecord: waktuRill, deskripsiData: arrDeskripsi, peserta: kehadiran, foto: fotoBase64, timestamp: Date.now() };
-            try { await addDoc(collection(db, "notulen_meeting"), dataNotul); alert("Tersimpan!"); document.getElementById('notul-deskripsi').value = ""; document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false); document.getElementById('notul-foto').value = ""; document.getElementById('status-notul-foto').innerHTML = ""; window.navigasi('notulen-menu-screen'); } catch (e) { alert("Gagal: " + e.message); }
-            toggleLoader(false);
+            try { await addDoc(collection(db, "notulen_meeting"), dataNotul); alert("Tersimpan!"); document.getElementById('notul-deskripsi').value = ""; document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false); document.getElementById('notul-foto').value = ""; document.getElementById('status-notul-foto').innerHTML = ""; window.navigasi('notulen-menu-screen'); } catch (e) { alert("Gagal: " + e.message); } toggleLoader(false);
         }
-
-        async function ambilDataNotulen() {
-            toggleLoader(true, "Mengunduh..."); notulenDatabase = [];
-            try { const q = query(collection(db, "notulen_meeting")); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { notulenDatabase.push({ id: doc.id, ...doc.data() }); }); notulenDatabase.sort((a, b) => b.timestamp - a.timestamp); renderNotulenList(); } catch (error) { alert("Gagal: " + error.message); }
-            toggleLoader(false);
-        }
-
-        function renderNotulenList() {
-            const container = document.getElementById('list-notulen'); container.innerHTML = ""; if (notulenDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
-            notulenDatabase.forEach(data => { let totalPoin = data.deskripsiData.length; let selesaiPoin = data.deskripsiData.filter(d => d.done).length; let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:bold;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:bold;">${selesaiPoin}/${totalPoin} Poin Evaluasi</span>`; container.innerHTML += `<div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="bukaDetailNotulen('${data.id}')"><h4 style="margin:0 0 5px 0; color:var(--primary);">${data.jenisMeeting}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> ${data.waktuRecord}</p><p style="margin:8px 0 0 0; font-size:13px; border-top:1px dashed #ccc; padding-top:8px;">Status: ${statusEval}</p></div>`; });
-        }
-
-        window.bukaDetailNotulen = function(id) {
-            const data = notulenDatabase.find(d => d.id === id); if(!data) return;
-            let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>');
-            let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`; data.deskripsiData.forEach(item => { let checked = item.done ? "checked" : ""; let classDone = item.done ? "done" : ""; htmlDeskripsi += `<li class="${classDone}"><input type="checkbox" id="chk-${item.id}" ${checked} onchange="updateCeklisNotulen('${id}', ${item.id}, this.checked)"><label for="chk-${item.id}" style="font-weight:normal; line-height:1.4;">${item.teks}</label></li>`; }); htmlDeskripsi += `</ul>`;
-            let html = `<div class="report-header"><h2>NOTULEN & EVALUASI MEETING</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Jenis Meeting</th><td><strong style="color:var(--secondary);">${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr><tr><th>Daftar Kehadiran</th><td style="font-size:12px;">${htmlListPeserta}</td></tr></table><h3 style="font-size:15px; color:var(--primary); margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;">Poin Evaluasi / Pembahasan:</h3>${htmlDeskripsi}`;
-            if(data.foto) html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO DOKUMENTASI</strong><br><img src="${data.foto}"></div>`; document.getElementById('report-notulen-content').innerHTML = html; window.navigasi('detail-notulen-screen');
-        }
-
-        window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) {
-            const indexDoc = notulenDatabase.findIndex(n => n.id === docId);
-            if(indexDoc > -1) { notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; if(isChecked) event.target.parentElement.classList.add('done'); else event.target.parentElement.classList.remove('done'); try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) {} }
-        }
-
+        async function ambilDataNotulen() { toggleLoader(true, "Mengunduh..."); notulenDatabase = []; try { const q = query(collection(db, "notulen_meeting")); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { notulenDatabase.push({ id: doc.id, ...doc.data() }); }); notulenDatabase.sort((a, b) => b.timestamp - a.timestamp); renderNotulenList(); } catch (error) {} toggleLoader(false); }
+        function renderNotulenList() { const container = document.getElementById('list-notulen'); container.innerHTML = ""; if (notulenDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } notulenDatabase.forEach(data => { let totalPoin = data.deskripsiData.length; let selesaiPoin = data.deskripsiData.filter(d => d.done).length; let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:bold;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:bold;">${selesaiPoin}/${totalPoin} Poin Evaluasi</span>`; container.innerHTML += `<div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="bukaDetailNotulen('${data.id}')"><h4 style="margin:0 0 5px 0; color:var(--primary);">${data.jenisMeeting}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> ${data.waktuRecord}</p><p style="margin:8px 0 0 0; font-size:13px; border-top:1px dashed #ccc; padding-top:8px;">Status: ${statusEval}</p></div>`; }); }
+        window.bukaDetailNotulen = function(id) { const data = notulenDatabase.find(d => d.id === id); if(!data) return; let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>'); let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`; data.deskripsiData.forEach(item => { let checked = item.done ? "checked" : ""; let classDone = item.done ? "done" : ""; htmlDeskripsi += `<li class="${classDone}"><input type="checkbox" id="chk-${item.id}" ${checked} onchange="updateCeklisNotulen('${id}', ${item.id}, this.checked)"><label for="chk-${item.id}" style="font-weight:normal; line-height:1.4;">${item.teks}</label></li>`; }); htmlDeskripsi += `</ul>`; let html = `<div class="report-header"><h2>NOTULEN & EVALUASI MEETING</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Jenis Meeting</th><td><strong style="color:var(--secondary);">${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr><tr><th>Daftar Kehadiran</th><td style="font-size:12px;">${htmlListPeserta}</td></tr></table><h3 style="font-size:15px; color:var(--primary); margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;">Poin Evaluasi / Pembahasan:</h3>${htmlDeskripsi}`; if(data.foto) html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO DOKUMENTASI</strong><br><img src="${data.foto}"></div>`; document.getElementById('report-notulen-content').innerHTML = html; window.navigasi('detail-notulen-screen'); }
+        window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { const indexDoc = notulenDatabase.findIndex(n => n.id === docId); if(indexDoc > -1) { notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; if(isChecked) event.target.parentElement.classList.add('done'); else event.target.parentElement.classList.remove('done'); try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) {} } }
         window.downloadNotulenJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-notulen-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `Notulen_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
 
