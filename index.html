@@ -30,7 +30,7 @@
             background-color: var(--bg); overflow-x: hidden; height: 100%; scroll-behavior: smooth;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- BACKGROUND DEFAULT --- */
         #landing-page {
             background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.95)), url(https://archive.org/download/1784450628482/1784450628482.png);
             background-size: cover; background-position: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -41,6 +41,12 @@
         .screen-bg {
             background: linear-gradient(rgba(241, 245, 249, 0.85), rgba(241, 245, 249, 0.85)), url(https://archive.org/download/1784450628482/1784450628482.png);
             background-size: cover; background-position: center; background-attachment: fixed;
+        }
+
+        /* --- BACKGROUND KHUSUS COMMAND CENTER (CYBERPUNK NEON) --- */
+        .bg-cyberpunk {
+            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%) !important;
+            color: white;
         }
 
         /* --- DESAIN LANDING PAGE --- */
@@ -70,18 +76,30 @@
         .content-wrapper { max-width: 700px; margin: auto; position: relative;} 
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         
+        /* HEADER KHUSUS CYBERPUNK */
+        .bg-cyberpunk .header { background: #0f172a; border: 1px solid #38bdf8; box-shadow: 0 0 15px rgba(56,189,248,0.3); color: #38bdf8; text-shadow: 0 0 5px rgba(56,189,248,0.8); }
+
         .btn-bottom-back { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 660px; background: #1e293b; color: white; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: 900; letter-spacing: 1.5px; box-shadow: 0 8px 20px rgba(0,0,0,0.35); cursor: pointer; z-index: 900; display: flex; justify-content: center; align-items: center; gap: 12px; transition: 0.1s ease-out; touch-action: manipulation; }
         .btn-bottom-back:active { transform: translateX(-50%) scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.2); background: var(--secondary); }
 
+        /* --- TOMBOL MENU RATA KIRI --- */
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .menu-card { background: white; padding: 18px 20px; border-radius: 12px; text-align: left; font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border-left: 5px solid var(--secondary); transition: transform 0.2s; display: flex; align-items: center; gap: 12px; }
         .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
 
+        /* TOMBOL MASUK POINT ANALISA PERFORMA (NEON) */
+        .neon-trigger-btn {
+            background: #0f172a; color: #38bdf8; border: 2px solid #38bdf8; border-left: 5px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); justify-content: center; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 10px; transition: 0.3s;
+        }
+        .neon-trigger-btn:active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
+
         /* ==================================================== */
         /* MENU SATELIT LINGKARAN BERPUTAR                      */
         /* ==================================================== */
-        .menu-circle-wrap { position: relative; width: 280px; height: 280px; margin: 60px auto 40px auto; border-radius: 50%; border: 3px dashed #cbd5e1; animation: spinOrbit 20s linear infinite; }
+        .menu-circle-wrap { position: relative; width: 280px; height: 280px; margin: 40px auto 30px auto; border-radius: 50%; border: 3px dashed #cbd5e1; animation: spinOrbit 20s linear infinite; }
         @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
         .menu-circle-wrap:active, .menu-circle-wrap:active .counter-spin-1, .menu-circle-wrap:active .counter-spin-2, .menu-circle-wrap:active .counter-spin-3 { animation-play-state: paused; }
         .circle-orbit { position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px; }
@@ -102,27 +120,32 @@
         /* PANEL ANALISA PERFORMA AI (NEON & 3D ESTETIK)        */
         /* ==================================================== */
         .neon-panel {
-            background: linear-gradient(145deg, #0f172a, #1e293b); border-radius: 15px; padding: 20px; margin-top: 40px; margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
-            position: relative; overflow: hidden; border: 1px solid #3b82f6;
-        }
-        .neon-panel::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 60%); pointer-events: none;
+            background: linear-gradient(145deg, rgba(15,23,42,0.6), rgba(30,41,59,0.8)); border-radius: 15px; padding: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 20px rgba(56, 189, 248, 0.1);
+            position: relative; overflow: hidden; border: 1px solid #38bdf8; backdrop-filter: blur(10px);
         }
         .neon-title {
             color: #fff; text-align: center; font-size: 16px; font-weight: 900; letter-spacing: 2px; margin: 0 0 20px 0;
-            text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; display: flex; align-items: center; justify-content: center; gap: 10px;
+            text-shadow: 0 0 5px #38bdf8, 0 0 10px #38bdf8; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
+        
+        /* TABS NEON KHUSUS ANALISA */
+        .neon-tabs { display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .neon-tab-btn { flex: 1; padding: 10px; background: transparent; border: none; color: #94a3b8; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
+        .neon-tab-btn.active { background: rgba(56, 189, 248, 0.2); color: #38bdf8; box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.5); text-shadow: 0 0 5px #38bdf8; border: 1px solid rgba(56, 189, 248, 0.5); }
+
         .neon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
         .neon-card {
-            background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 15px 5px; text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(16, 185, 129, 0.1); transform-style: preserve-3d; transition: 0.3s ease;
+            background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 15px 5px; text-align: center;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.5), inset 0 2px 10px rgba(16, 185, 129, 0.1); transform-style: preserve-3d; transition: 0.3s ease;
+            position: relative; overflow: hidden;
         }
-        .neon-card:active { transform: translateY(4px) scale(0.95); box-shadow: 0 0px 2px rgba(0,0,0,0.4), inset 0 0 5px rgba(16, 185, 129, 0.3); }
-        .neon-card h4 { margin: 0; font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;}
+        .neon-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent); transform: skewX(-20deg); animation: shine 3s infinite; }
+        @keyframes shine { 100% { left: 200%; } }
+
+        .neon-card h4 { margin: 0; font-size: 10px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px;}
         .neon-card .neon-num { font-size: 22px; font-weight: 900; margin: 5px 0 0; color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
-        .neon-chart-container { position: relative; height: 250px; width: 100%; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px;}
+        .neon-chart-container { position: relative; height: 260px; width: 100%; border-top: 1px dashed rgba(56,189,248,0.3); padding-top: 15px;}
 
         /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
@@ -139,13 +162,13 @@
         .btn-camera { display: inline-block; width: 100%; padding: 12px; background-color: #475569; color: white; text-align: center; border-radius: 8px; cursor: pointer; font-weight: bold; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.3s; }
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
-        /* --- TABS --- */
+        /* --- TABS BUKAN NEON (UNTUK HALAMAN LAIN) --- */
         .tab-container { display: flex; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;}
         .tab-btn { flex: 1; padding: 12px; border: none; background: #e2e8f0; font-weight: bold; cursor: pointer; transition: 0.3s; color: #475569;}
         .tab-active { background: var(--secondary); color: white; }
 
         /* --- KARTU PROGRES --- */
-        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; }
+        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; color: black;}
         .progress-card:active { transform: scale(0.98); }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; margin-top: 10px;}
         .bg-proses { background-color: var(--proses); color: #000; }
@@ -231,8 +254,8 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
-                <!-- MENU ADM MOLD (AKAN MEMBUKA ANIMASI MENU & GRAFIK) -->
-                <div class="menu-card" onclick="bukaAdmMoldMenu()" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
+                <!-- MENU ADM MOLD DI BERANDA -->
+                <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
@@ -271,14 +294,19 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: ADM MOLD & PANEL AI NEON -->
+    <!-- EKOSISTEM BARU: ADM MOLD LINGKARAN & TOMBOL MASUK PANEL -->
     <!-- ========================================== -->
+    
+    <!-- LAYAR: MENU UTAMA ADM MOLD -->
     <div id="adm-mold-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem ADM MOLD</h2></div>
             
             <div class="menu-circle-wrap">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;"><i class="fas fa-user-tie"></i></div>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                
                 <div class="circle-orbit orbit-1">
                     <div class="counter-spin-1">
                         <div class="circle-btn" style="border-color: #10b981; color: #10b981;" onclick="navigasi('adm-harian-menu-screen')">
@@ -286,6 +314,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="circle-orbit orbit-2">
                     <div class="counter-spin-2">
                         <div class="circle-btn" style="border-color: #3b82f6; color: #3b82f6;" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
@@ -293,6 +322,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="circle-orbit orbit-3">
                     <div class="counter-spin-3">
                         <div class="circle-btn" style="border-color: #8b5cf6; color: #8b5cf6;" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
@@ -301,16 +331,39 @@
                     </div>
                 </div>
             </div>
-            <p style="text-align: center; color: gray; font-size: 12px; margin-top: 50px;"><i>*Tahan menu lingkaran untuk menghentikan putaran.</i></p>
+            <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan menu lingkaran untuk menghentikan putaran.</i></p>
 
-            <!-- PANEL ANALISA PERFORMA AI (NEON & GRAFIK) -->
+            <!-- TOMBOL PINTU MASUK KE RUANGAN NEON 3D -->
+            <div class="menu-card neon-trigger-btn" onclick="bukaAnalisaPerforma()">
+                <i class="fas fa-bolt"></i> POINT ANALISA PERFORMA (KLIK)
+            </div>
+
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- RUANGAN RAHASIA: POINT ANALISA PERFORMA (CYBERPUNK) -->
+    <!-- ========================================== -->
+    <div id="analisa-performa-screen" class="screen bg-cyberpunk">
+        <div class="content-wrapper">
+            <div class="header"><h2><i class="fas fa-chart-pie"></i> COMMAND CENTER</h2></div>
+            
             <div class="neon-panel">
-                <h3 class="neon-title"><i class="fas fa-bolt"></i> Analisa Performa AI <i class="fas fa-bolt"></i></h3>
+                <h3 class="neon-title"><i class="fas fa-robot"></i> AI PERFORMANCE ANALYTICS <i class="fas fa-robot"></i></h3>
                 
+                <!-- TABS FILTER KHUSUS NEON -->
+                <div class="neon-tabs">
+                    <button class="neon-tab-btn active" id="ntab-harian" onclick="switchTabAnalisa('harian')">Harian</button>
+                    <button class="neon-tab-btn" id="ntab-mingguan" onclick="switchTabAnalisa('mingguan')">Mingguan</button>
+                    <button class="neon-tab-btn" id="ntab-bulanan" onclick="switchTabAnalisa('bulanan')">Bulanan</button>
+                </div>
+
+                <!-- KARTU DATA 3D -->
                 <div class="neon-grid">
                     <div class="neon-card">
                         <h4>Total Target</h4>
-                        <div class="neon-num" id="neon-val-target" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59,130,246,0.8);">0</div>
+                        <div class="neon-num" id="neon-val-target" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.8);">0</div>
                     </div>
                     <div class="neon-card">
                         <h4>Terealisasi</h4>
@@ -322,15 +375,17 @@
                     </div>
                 </div>
 
+                <!-- WADAH GRAFIK CHART.JS -->
                 <div class="neon-chart-container">
                     <canvas id="performaChart"></canvas>
                 </div>
-                <p style="text-align:center; font-size:10px; color:#64748b; margin-top:10px; margin-bottom:0;">*Grafik Real-Time Rencana Harian vs Realisasi (7 Hari Terakhir)</p>
+                <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Grafik Target vs Realisasi (7 Hari Terakhir)</p>
             </div>
 
-            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
         </div>
     </div>
+
 
     <!-- LAYAR: MENU LAPORAN KERJA HARIAN -->
     <div id="adm-harian-menu-screen" class="screen screen-bg">
@@ -872,102 +927,123 @@
 
 
         // =======================================================
-        // LOGIKA PANEL ANALISA AI (CHART.JS)
+        // LOGIKA PANEL ANALISA AI (CHART.JS NEON 3D)
         // =======================================================
-        window.bukaAdmMoldMenu = async function() {
-            window.navigasi('adm-mold-menu-screen');
-            await renderAnalisaPerforma();
+        window.bukaAnalisaPerforma = async function() {
+            window.navigasi('analisa-performa-screen');
+            await switchTabAnalisa('harian');
         }
 
-        async function renderAnalisaPerforma() {
-            // Ambil data terbaru
-            await ambilDataAdmHarian();
+        window.switchTabAnalisa = async function(tipe) {
+            // Ubah style tab yang aktif
+            document.getElementById('ntab-harian').classList.remove('active');
+            document.getElementById('ntab-mingguan').classList.remove('active');
+            document.getElementById('ntab-bulanan').classList.remove('active');
+            document.getElementById(`ntab-${tipe}`).classList.add('active');
+
+            toggleLoader(true, "AI Mengumpulkan Data...");
             
-            // Hitung Angka Neon Card
-            let totalTarget = admHarianDatabase.length;
-            let totalSelesai = admHarianDatabase.filter(d => d.status === 'Selesai').length;
-            let persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
+            let totalTarget = 0; let totalSelesai = 0; let persen = 0;
+            let labels = []; let dataTarget = []; let dataRealisasi = [];
+            let descText = "";
 
-            document.getElementById('neon-val-target').innerText = totalTarget;
-            document.getElementById('neon-val-selesai').innerText = totalSelesai;
-            document.getElementById('neon-val-persen').innerText = persen + '%';
+            try {
+                if (tipe === 'harian') {
+                    // AMBIL DATA HARIAN
+                    descText = "*Grafik Harian Target vs Realisasi (7 Hari Terakhir)";
+                    const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
+                    let tempHarian = []; snapshot.forEach(doc => tempHarian.push(doc.data()));
+                    
+                    totalTarget = tempHarian.length;
+                    totalSelesai = tempHarian.filter(d => d.status === 'Selesai').length;
+                    persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
 
-            // Kelompokkan data per tanggal (Tgl Target)
-            let groupedData = {};
-            admHarianDatabase.forEach(d => {
-                let tgl = d.tglTarget;
-                if(!groupedData[tgl]) { groupedData[tgl] = { target: 0, realisasi: 0 }; }
-                groupedData[tgl].target++;
-                if(d.status === 'Selesai') { groupedData[tgl].realisasi++; }
-            });
+                    let groupedData = {};
+                    tempHarian.forEach(d => {
+                        let tgl = d.tglTarget;
+                        if(!groupedData[tgl]) { groupedData[tgl] = { target: 0, realisasi: 0 }; }
+                        groupedData[tgl].target++;
+                        if(d.status === 'Selesai') { groupedData[tgl].realisasi++; }
+                    });
 
-            // Urutkan tanggal dari yang terlama ke terbaru (Batasi 7 hari terakhir agar rapi)
-            let sortedDates = Object.keys(groupedData).sort();
-            sortedDates = sortedDates.slice(-7);
+                    let sortedDates = Object.keys(groupedData).sort().slice(-7);
+                    labels = sortedDates;
+                    dataTarget = sortedDates.map(tgl => groupedData[tgl].target);
+                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl].realisasi);
 
-            let labels = sortedDates;
-            let dataTarget = sortedDates.map(tgl => groupedData[tgl].target);
-            let dataRealisasi = sortedDates.map(tgl => groupedData[tgl].realisasi);
+                } else if (tipe === 'mingguan' || tipe === 'bulanan') {
+                    // AMBIL DATA MINGGUAN / BULANAN DARI INFORMASI MOLD
+                    let kategoriQuery = tipe === 'mingguan' ? 'LAPORAN KERJA MINGGUAN' : 'LAPORAN KERJA BULANAN';
+                    descText = `*Grafik Frekuensi Pengiriman ${kategoriQuery} (Otomatis 100% Realisasi)`;
+                    
+                    const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriQuery)); 
+                    const snapshot = await getDocs(q);
+                    let tempInfo = []; snapshot.forEach(doc => tempInfo.push(doc.data()));
 
-            // Render Chart.js
-            const ctx = document.getElementById('performaChart').getContext('2d');
-            
-            // Hancurkan chart lama jika ada agar tidak tumpang tindih
-            if(window.myChart) { window.myChart.destroy(); }
+                    totalTarget = tempInfo.length;
+                    totalSelesai = tempInfo.length; // Karena sifatnya laporan dikirim = selesai
+                    persen = totalTarget === 0 ? 0 : 100;
 
-            // Buat efek Gradasi Glow untuk Area Garis
-            let gradientFill = ctx.createLinearGradient(0, 0, 0, 300);
-            gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.6)'); // Hijau terang
-            gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.0)'); // Transparan
-            
-            window.myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Terealisasi',
-                            data: dataRealisasi,
-                            borderColor: '#10b981',
-                            backgroundColor: gradientFill,
-                            borderWidth: 3,
-                            pointBackgroundColor: '#ffffff',
-                            pointBorderColor: '#10b981',
-                            pointRadius: 4,
-                            fill: true,
-                            tension: 0.4 // Membuat kurva melengkung mulus
-                        },
-                        {
-                            type: 'bar',
-                            label: 'Target Kerja',
-                            data: dataTarget,
-                            backgroundColor: 'rgba(59, 130, 246, 0.4)',
-                            borderColor: '#3b82f6',
-                            borderWidth: 1,
-                            borderRadius: 4
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#e2e8f0', font: { family: "'Segoe UI', sans-serif" } } }
+                    let groupedData = {};
+                    tempInfo.forEach(d => {
+                        let tgl = d.tanggal;
+                        if(!groupedData[tgl]) { groupedData[tgl] = 0; }
+                        groupedData[tgl]++;
+                    });
+
+                    let sortedDates = Object.keys(groupedData).sort().slice(-7);
+                    labels = sortedDates;
+                    dataTarget = sortedDates.map(tgl => groupedData[tgl]);
+                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl]); // Sama dengan target karena otomatis sukses
+                }
+
+                // Update Angka di Kartu Neon
+                document.getElementById('neon-val-target').innerText = totalTarget;
+                document.getElementById('neon-val-selesai').innerText = totalSelesai;
+                document.getElementById('neon-val-persen').innerText = persen + '%';
+                document.getElementById('neon-chart-desc').innerText = descText;
+
+                // Render Grafik Chart.js
+                const ctx = document.getElementById('performaChart').getContext('2d');
+                if(window.myChart) { window.myChart.destroy(); }
+
+                let gradientFill = ctx.createLinearGradient(0, 0, 0, 300);
+                gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.6)');
+                gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+                
+                window.myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [
+                            {
+                                type: 'line', label: 'Terealisasi', data: dataRealisasi,
+                                borderColor: '#10b981', backgroundColor: gradientFill, borderWidth: 3,
+                                pointBackgroundColor: '#ffffff', pointBorderColor: '#10b981', pointRadius: 4,
+                                fill: true, tension: 0.4
+                            },
+                            {
+                                type: 'bar', label: 'Target / Rencana', data: dataTarget,
+                                backgroundColor: 'rgba(56, 189, 248, 0.4)', borderColor: '#38bdf8',
+                                borderWidth: 1, borderRadius: 4
+                            }
+                        ]
                     },
-                    scales: {
-                        x: { 
-                            ticks: { color: '#94a3b8' }, 
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' } 
-                        },
-                        y: { 
-                            ticks: { color: '#94a3b8', stepSize: 1 }, 
-                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-                            beginAtZero: true
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { labels: { color: '#cbd5e1', font: { family: "'Segoe UI', sans-serif" } } } },
+                        scales: {
+                            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                            y: { ticks: { color: '#94a3b8', stepSize: 1 }, grid: { color: 'rgba(255, 255, 255, 0.05)' }, beginAtZero: true }
                         }
                     }
-                }
-            });
+                });
+
+            } catch (e) {
+                console.error("Gagal memuat chart:", e);
+                alert("Gagal menarik data performa!");
+            }
+            toggleLoader(false);
         }
 
 
@@ -975,33 +1051,16 @@
         // EKOSISTEM: LAPORAN KERJA HARIAN ADM
         // =======================================================
         window.simpanAdmTarget = async function() {
-            const tgl = document.getElementById('adm-target-tgl').value;
-            const nama = document.getElementById('adm-target-nama').value;
-            const detail = document.getElementById('adm-target-detail').value;
-            const admin = document.getElementById('adm-target-user').value;
-
+            const tgl = document.getElementById('adm-target-tgl').value; const nama = document.getElementById('adm-target-nama').value; const detail = document.getElementById('adm-target-detail').value; const admin = document.getElementById('adm-target-user').value;
             if(!tgl || !nama) return alert("Tanggal & Nama Kegiatan wajib diisi!");
             toggleLoader(true, "Menyimpan Target...");
-            
-            try {
-                await addDoc(collection(db, "adm_harian"), {
-                    tglTarget: tgl, namaKegiatan: nama, detailRencana: detail || "-", adminName: admin || "Admin",
-                    status: "Belum", tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now()
-                });
-                alert("Target Harian Tersimpan!");
-                document.getElementById('adm-target-tgl').value = ""; document.getElementById('adm-target-nama').value = ""; document.getElementById('adm-target-detail').value = "";
-                window.navigasi('adm-harian-menu-screen');
-            } catch(e) { alert(e.message); }
+            try { await addDoc(collection(db, "adm_harian"), { tglTarget: tgl, namaKegiatan: nama, detailRencana: detail || "-", adminName: admin || "Admin", status: "Belum", tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now() }); alert("Target Harian Tersimpan!"); document.getElementById('adm-target-tgl').value = ""; document.getElementById('adm-target-nama').value = ""; document.getElementById('adm-target-detail').value = ""; window.navigasi('adm-harian-menu-screen'); } catch(e) { alert(e.message); }
             toggleLoader(false);
         }
 
         async function ambilDataAdmHarian() {
-            toggleLoader(true, "Sinkronisasi Data..."); admHarianDatabase = [];
-            try {
-                const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
-                snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()}));
-                admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp);
-            } catch(e) {}
+            toggleLoader(true, "Mengunduh Data Laporan..."); admHarianDatabase = [];
+            try { const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q); snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()})); admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp); } catch(e) {}
             toggleLoader(false);
         }
 
@@ -1010,18 +1069,11 @@
         window.switchTabAdm = function(tab) {
             document.getElementById('tab-adm-belum').classList.remove('tab-active'); document.getElementById('tab-adm-sudah').classList.remove('tab-active');
             document.getElementById('list-adm-belum').style.display = 'none'; document.getElementById('list-adm-sudah').style.display = 'none'; document.getElementById('form-adm-actual').style.display = 'none';
-            if(tab === 'belum') {
-                document.getElementById('tab-adm-belum').classList.add('tab-active'); document.getElementById('list-adm-belum').style.display = 'block';
-                renderAdmActualList('Belum', 'list-adm-belum');
-            } else {
-                document.getElementById('tab-adm-sudah').classList.add('tab-active'); document.getElementById('list-adm-sudah').style.display = 'block';
-                renderAdmActualList('Selesai', 'list-adm-sudah');
-            }
+            if(tab === 'belum') { document.getElementById('tab-adm-belum').classList.add('tab-active'); document.getElementById('list-adm-belum').style.display = 'block'; renderAdmActualList('Belum', 'list-adm-belum'); } else { document.getElementById('tab-adm-sudah').classList.add('tab-active'); document.getElementById('list-adm-sudah').style.display = 'block'; renderAdmActualList('Selesai', 'list-adm-sudah'); }
         }
 
         function renderAdmActualList(status, containerId) {
-            const container = document.getElementById(containerId); container.innerHTML = "";
-            let filtered = admHarianDatabase.filter(d => d.status === status);
+            const container = document.getElementById(containerId); container.innerHTML = ""; let filtered = admHarianDatabase.filter(d => d.status === status);
             if(filtered.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
             filtered.forEach(data => {
                 let badge = status === 'Belum' ? `<span class="status-badge bg-lambat">Menunggu Realisasi</span>` : `<span class="status-badge bg-cepat">Sudah Terealisasi</span>`;
@@ -1030,34 +1082,20 @@
             });
         }
 
-        window.bukaFormAdmActual = function(id) {
-            const data = admHarianDatabase.find(d => d.id === id);
-            document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0];
-            document.getElementById('form-adm-actual').style.display = 'block'; document.getElementById('list-adm-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop);
-        }
+        window.bukaFormAdmActual = function(id) { const data = admHarianDatabase.find(d => d.id === id); document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0]; document.getElementById('form-adm-actual').style.display = 'block'; document.getElementById('list-adm-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop); }
         window.batalAdmActual = function() { document.getElementById('form-adm-actual').style.display = 'none'; document.getElementById('list-adm-belum').style.display = 'block'; }
 
         window.simpanAdmActual = async function() {
-            const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value;
-            const hasil = document.getElementById('adm-actual-hasil').value; const ket = document.getElementById('adm-actual-ket').value; const fotoInput = document.getElementById('adm-actual-foto');
-            if(!tgl || !hasil) return alert("Tanggal & Hasil Actual wajib diisi!");
-            toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
-            try {
-                await updateDoc(doc(db, "adm_harian", id), { status: "Selesai", tglActual: tgl, hasilActual: hasil, keteranganActual: ket || "-", fotoActual: fotoBase64 });
-                alert("Realisasi Tersimpan!"); document.getElementById('adm-actual-hasil').value = ""; document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; document.getElementById('status-adm-foto').innerHTML = ""; document.getElementById('form-adm-actual').style.display = 'none';
-                await ambilDataAdmHarian(); window.switchTabAdm('sudah');
-            } catch(e) { alert(e.message); }
-            toggleLoader(false);
+            const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const hasil = document.getElementById('adm-actual-hasil').value; const ket = document.getElementById('adm-actual-ket').value; const fotoInput = document.getElementById('adm-actual-foto');
+            if(!tgl || !hasil) return alert("Tanggal & Hasil Actual wajib diisi!"); toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
+            try { await updateDoc(doc(db, "adm_harian", id), { status: "Selesai", tglActual: tgl, hasilActual: hasil, keteranganActual: ket || "-", fotoActual: fotoBase64 }); alert("Realisasi Tersimpan!"); document.getElementById('adm-actual-hasil').value = ""; document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; document.getElementById('status-adm-foto').innerHTML = ""; document.getElementById('form-adm-actual').style.display = 'none'; await ambilDataAdmHarian(); window.switchTabAdm('sudah'); } catch(e) { alert(e.message); } toggleLoader(false);
         }
 
         window.bukaAdmHarianProgress = async function() {
             window.navigasi('adm-harian-progress-screen'); await ambilDataAdmHarian();
             const container = document.getElementById('list-adm-progress'); container.innerHTML = "";
             if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
-            admHarianDatabase.forEach(data => {
-                let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)"; let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi";
-                container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${color}">${badge}</span></div>`;
-            });
+            admHarianDatabase.forEach(data => { let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)"; let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi"; container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${color}">${badge}</span></div>`; });
         }
 
         window.bukaDetailAdmHarian = function(id) {
@@ -1067,16 +1105,10 @@
             if(data.status === "Selesai") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL ACTUAL TEREALISASI</th></tr><tr><th>Tanggal Aktual Selesai</th><td>${data.tglActual}</td></tr><tr><th>Hasil Aktual</th><td>${data.hasilActual}</td></tr><tr><th>Keterangan Tambahan</th><td>${data.keteranganActual}</td></tr></table>`;
                 if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; }
                 else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
-            }
-            document.getElementById('report-adm-content').innerHTML = html; window.navigasi('adm-harian-detail-screen');
+            } document.getElementById('report-adm-content').innerHTML = html; window.navigasi('adm-harian-detail-screen');
         }
 
-        window.downloadAdmJPG = function() {
-            toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-adm-content');
-            html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
-                let link = document.createElement('a'); link.download = `ADMHarian_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false);
-            }).catch(e => { toggleLoader(false); alert("Gagal."); });
-        }
+        window.downloadAdmJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-adm-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `ADMHarian_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
 
         // =======================================================
