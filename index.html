@@ -61,12 +61,12 @@
         .screen { display: none; padding: 20px; padding-bottom: 100px; min-height: 100vh; box-sizing: border-box; }
         .active-screen { display: block; animation: slideIn 0.3s ease; }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-        .content-wrapper { max-width: 600px; margin: auto; position: relative;}
+        .content-wrapper { max-width: 700px; margin: auto; position: relative;} /* Diperlebar sedikit agar layout dua kolom jadwal lega */
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         
         /* --- TOMBOL KEMBALI BAWAH --- */
         .btn-bottom-back {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 560px;
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 660px;
             background: #1e293b; color: white; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: 900;
             letter-spacing: 1.5px; box-shadow: 0 8px 20px rgba(0,0,0,0.35); cursor: pointer; z-index: 900; display: flex;
             justify-content: center; align-items: center; gap: 12px; transition: 0.1s ease-out; touch-action: manipulation;
@@ -212,7 +212,7 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="bukaNotulenScreen()" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
                 <div class="menu-card" onclick="bukaSubInfo('PERMINTAAN TRIAL')" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
-                <div class="menu-card" onclick="bukaSubInfo('JADWAL BESAR')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
+                <div class="menu-card" onclick="bukaJadwalBesar()" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
                 <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
                 <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 5. LAPORAN MINGGUAN ADMIN</div>
                 <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 6. DATA MASTER MOLD</div>
@@ -224,7 +224,60 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: NOTULEN MEETING -->
+    <!-- EKOSISTEM BARU: JADWAL BESAR (TAB INPUT & VIEW) -->
+    <!-- ========================================== -->
+    <div id="jadwal-besar-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2>Jadwal Besar</h2>
+            </div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active" id="tab-jb-input" onclick="switchTabJb('input')">1. Manajemen (Input / Output)</button>
+                <button class="tab-btn" id="tab-jb-view" onclick="switchTabJb('view')">2. View Jadwal Besar</button>
+            </div>
+
+            <!-- TAB INPUT / OUTPUT JADWAL BESAR -->
+            <div id="area-jb-input">
+                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                    <!-- Bagian Input (Upload Data Baru) -->
+                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input / Update Jadwal Baru</h3>
+                        <p style="font-size:12px; color:gray; line-height:1.4;">Upload file gambar jadwal (JPG/PNG). Jika di-simpan, data jadwal sebelumnya akan tertimpa dengan yang baru secara otomatis.</p>
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>Pilih File Gambar Jadwal</label>
+                            <label for="jb-foto" class="btn-camera"><i class="fas fa-image"></i> Pilih File</label>
+                            <input type="file" id="jb-foto" class="input-file-hidden" accept="image/*" onchange="cekFoto(this, 'status-jb-foto')">
+                            <span id="status-jb-foto" class="file-status"></span>
+                        </div>
+                        <button class="btn-submit" onclick="simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN / UPDATE JADWAL</button>
+                    </div>
+                    
+                    <!-- Bagian Output (Jadwal Saat Ini) -->
+                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <h3 style="margin-top:0; color: var(--secondary); font-size: 16px;">Output Jadwal Saat Ini</h3>
+                        <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                            <!-- Gambar Jadwal Aktif akan dimuat di sini oleh JS -->
+                            <span style="color: gray; font-size: 13px;">Memuat data...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB VIEW JADWAL BESAR PULL SIZE -->
+            <div id="area-jb-view" style="display:none; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top:0; text-align:center; color: var(--primary); font-size: 18px; border-bottom: 2px solid var(--secondary); padding-bottom:10px;">VIEW JADWAL BESAR BULANAN</h3>
+                <div id="jb-view-container" style="text-align:center; margin-top:15px;">
+                     <!-- Gambar Jadwal ukuran penuh akan dimuat di sini -->
+                </div>
+            </div>
+
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- EKOSISTEM NOTULEN MEETING (Tetap Aman) -->
     <!-- ========================================== -->
     <div id="notulen-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -268,7 +321,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Foto Dokumentasi (Opsional / Fleksibel)</label>
+                    <label>Foto Dokumentasi (Opsional)</label>
                     <label for="notul-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
                     <input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-notul-foto')">
                     <span id="status-notul-foto" class="file-status"></span>
@@ -303,9 +356,9 @@
             <button class="btn-bottom-back" onclick="bukaNotulenScreen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
-    <!-- ========================================== -->
 
-    <!-- SUB HALAMAN INPUT & LIST INFORMASI LAINNYA (Poin 2 - 8) -->
+
+    <!-- SUB HALAMAN INPUT & LIST INFORMASI LAINNYA (Poin 2, 4, 5, 6, 7, 8) -->
     <div id="sub-info-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2 id="judul-sub-info">Sub Informasi</h2></div>
@@ -416,7 +469,7 @@
     <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, query, where, orderBy } 
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, getDoc, query, where, orderBy } 
         from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -434,7 +487,7 @@
 
         let currentDatabase = [];
         let infoDatabase = [];
-        let notulenDatabase = []; // Database khusus notulen
+        let notulenDatabase = []; 
         let divisiAktif = "";
         let kategoriInfoAktif = "";
         let filterTglAwal = "";
@@ -477,7 +530,7 @@
             document.getElementById('loader').style.display = show ? 'flex' : 'none';
         }
 
-        const compressImage = (file, maxWidth = 800, maxHeight = 800, quality = 0.6) => {
+        const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.8) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -502,11 +555,11 @@
 
         window.cekFoto = function(input, targetId) {
             const target = document.getElementById(targetId);
-            if (input.files && input.files.length > 0) target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> Foto siap diunggah`;
+            if (input.files && input.files.length > 0) target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> File siap diunggah`;
             else target.innerHTML = "";
         }
 
-        // --- SISTEM JAM OTOMATIS RILL TIME UNTUK NOTULEN ---
+        // --- SISTEM JAM OTOMATIS RILL TIME UNTUK NOTULEN & JADWAL BESAR ---
         function dapatkanWaktuRill() {
             const now = new Date();
             const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -521,7 +574,85 @@
             if (el) el.value = dapatkanWaktuRill();
         }, 1000);
 
-        // --- EKOSISTEM NOTULEN MEETING ---
+
+        // =======================================================
+        // EKOSISTEM BARU: 3. JADWAL BESAR (SINGLE MASTER FILE)
+        // =======================================================
+        window.bukaJadwalBesar = async function() {
+            window.navigasi('jadwal-besar-screen');
+            switchTabJb('input');
+            await muatJadwalBesar();
+        }
+
+        window.switchTabJb = function(tab) {
+            document.getElementById('tab-jb-input').classList.remove('tab-active');
+            document.getElementById('tab-jb-view').classList.remove('tab-active');
+            document.getElementById('area-jb-input').style.display = 'none';
+            document.getElementById('area-jb-view').style.display = 'none';
+            if(tab === 'input') {
+                document.getElementById('tab-jb-input').classList.add('tab-active');
+                document.getElementById('area-jb-input').style.display = 'block';
+            } else {
+                document.getElementById('tab-jb-view').classList.add('tab-active');
+                document.getElementById('area-jb-view').style.display = 'block';
+            }
+        }
+
+        window.muatJadwalBesar = async function() {
+            try {
+                const docRef = doc(db, "jadwal_besar_db", "master_jadwal");
+                const docSnap = await getDoc(docRef);
+                const outContainer = document.getElementById('jb-output-container');
+                const viewContainer = document.getElementById('jb-view-container');
+                
+                if (docSnap.exists() && docSnap.data().foto) {
+                    const imgHtml = `<img src="${docSnap.data().foto}" style="max-width:100%; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+                                     <p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Terakhir diupdate: ${docSnap.data().waktuUpdate}</p>`;
+                    outContainer.innerHTML = imgHtml;
+                    viewContainer.innerHTML = imgHtml;
+                } else {
+                    outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal besar yang diupload.</span>`;
+                    viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal besar yang diupload.</span>`;
+                }
+            } catch (error) {
+                console.error("Gagal muat jadwal:", error);
+            }
+        }
+
+        window.simpanJadwalBesar = async function() {
+            const fotoInput = document.getElementById('jb-foto');
+            if (fotoInput.files.length === 0) {
+                alert("Harap pilih file gambar terlebih dahulu!");
+                return;
+            }
+
+            toggleLoader(true, "Menyimpan Jadwal Besar...");
+            // Kompresi resolusi tinggi khusus jadwal agar teks excelnya tidak buram
+            let fotoBase64 = await compressImage(fotoInput.files[0], 1500, 1500, 0.85); 
+
+            const dataJb = {
+                foto: fotoBase64,
+                waktuUpdate: dapatkanWaktuRill(),
+                timestamp: Date.now()
+            };
+
+            try {
+                // Menggunakan setDoc untuk menimpa file lama secara otomatis
+                await setDoc(doc(db, "jadwal_besar_db", "master_jadwal"), dataJb);
+                alert("Jadwal Besar berhasil diupdate!");
+                document.getElementById('jb-foto').value = "";
+                document.getElementById('status-jb-foto').innerHTML = "";
+                await muatJadwalBesar();
+            } catch (e) {
+                alert("Gagal menyimpan: " + e.message);
+            }
+            toggleLoader(false);
+        }
+
+
+        // =======================================================
+        // EKOSISTEM NOTULEN MEETING
+        // =======================================================
         window.bukaNotulenScreen = async function() {
             window.navigasi('notulen-screen');
             switchTabNotul('input');
@@ -542,14 +673,12 @@
             }
         }
 
-        // FUNGSI AI MERAPIHKAN FORMAT DESKRIPSI
         window.aiRapihkanNotulen = function() {
             let text = document.getElementById('notul-deskripsi').value;
             if(!text.trim()) return alert("Tuliskan deskripsi meeting terlebih dahulu!");
             
             toggleLoader(true, "AI Sedang Merapihkan Format...");
             setTimeout(() => {
-                // Logika AI sederhana: Pecah berdasarkan baris baru atau titik, hapus yang kosong, buat jadi poin.
                 let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2);
                 let formattedText = points.map(p => "• " + p.trim().replace(/^[\•\-\*]\s*/, "")).join("\n\n");
                 
@@ -561,23 +690,21 @@
 
         window.simpanNotulen = async function() {
             const jenis = document.getElementById('notul-jenis').value;
-            const waktuRill = dapatkanWaktuRill(); // Mengunci waktu tepat saat disave
+            const waktuRill = dapatkanWaktuRill(); 
             const deskripsi = document.getElementById('notul-deskripsi').value;
             const fotoInput = document.getElementById('notul-foto');
             
             if(!deskripsi.trim()) { alert("Deskripsi pembahasan tidak boleh kosong!"); return; }
 
-            // Menangkap Array Kehadiran yang diceklis
             let kehadiran = [];
             document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value));
             if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta ditandai");
 
-            // Mengubah deskripsi teks menjadi Array of Objects untuk fitur Ceklis Evaluasi di Detail
             let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => {
                 return { id: index, teks: teks.replace(/^•\s*/, ''), done: false };
             });
 
-            toggleLoader(true, "AI Memproses & Menyimpan Laporan...");
+            toggleLoader(true, "Memproses & Menyimpan Laporan...");
             let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
 
             const dataNotul = {
@@ -593,7 +720,6 @@
                 await addDoc(collection(db, "notulen_meeting"), dataNotul);
                 alert("Notulen Meeting Berhasil Disimpan & Dirapihkan!");
                 
-                // Reset Form
                 document.getElementById('notul-deskripsi').value = "";
                 document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false);
                 document.getElementById('notul-foto').value = "";
@@ -609,11 +735,9 @@
             toggleLoader(true, "Mengunduh Hasil Notulen...");
             notulenDatabase = [];
             try {
-                // Mengambil data dari firestore (Tidak pakai orderBy complex agar tidak butuh composite index manual)
                 const q = query(collection(db, "notulen_meeting"));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => { notulenDatabase.push({ id: doc.id, ...doc.data() }); });
-                // Sort manual by timestamp descending (Terbaru di atas)
                 notulenDatabase.sort((a, b) => b.timestamp - a.timestamp);
                 renderNotulenList();
             } catch (error) { alert("Gagal: " + error.message); }
@@ -624,7 +748,6 @@
             const container = document.getElementById('list-notulen'); container.innerHTML = "";
             if (notulenDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Belum ada hasil Notulen.</p>`; return; }
             notulenDatabase.forEach(data => {
-                // Hitung progress ceklis evaluasi
                 let totalPoin = data.deskripsiData.length;
                 let selesaiPoin = data.deskripsiData.filter(d => d.done).length;
                 let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:bold;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:bold;">${selesaiPoin}/${totalPoin} Poin Evaluasi</span>`;
@@ -643,7 +766,6 @@
             
             let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>');
             
-            // Build interaktif ceklis deskripsi
             let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`;
             data.deskripsiData.forEach(item => {
                 let checked = item.done ? "checked" : "";
@@ -678,29 +800,23 @@
             window.navigasi('detail-notulen-screen');
         }
 
-        // FUNGSI UPDATE CEKLIS ONLINE REAL-TIME
         window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) {
             const indexDoc = notulenDatabase.findIndex(n => n.id === docId);
             if(indexDoc > -1) {
-                // Update local memory
                 notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked;
-                // Update UI visual coret
                 if(isChecked) event.target.parentElement.classList.add('done');
                 else event.target.parentElement.classList.remove('done');
                 
-                // Silent Update ke Firebase
                 try {
                     await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData });
                 } catch(e) { console.error("Gagal update ceklis online", e); }
             }
         }
 
-        // FUNGSI DOWNLOAD JPG MENGGUNAKAN HTML2CANVAS
         window.downloadNotulenJPG = function() {
             toggleLoader(true, "Mencetak Gambar JPG...");
             const targetDiv = document.getElementById('report-notulen-content');
             
-            // Konfigurasi agar hasil render kanvas tajam di HP
             html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
                 let link = document.createElement('a');
                 link.download = `Notulen_${Date.now()}.jpg`;
@@ -712,6 +828,7 @@
                 alert("Gagal merender gambar. Coba fitur PDF.");
             });
         }
+
 
         // --- SISTEM DIVISI & INFORMASI UMUM (TETAP AMAN) ---
         window.masukDivisi = async function(namaDivisi) {
