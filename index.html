@@ -464,7 +464,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA -->
+    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA (UPDATED) -->
     <div id="adm-harian-target-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Target Harian</h2></div>
@@ -1055,6 +1055,12 @@
             else target.innerHTML = "";
         }
 
+        // FUNGSI GLOBAL TANGGAL LOKAL (Mencegah bug tanggal mundur karena zona waktu UTC)
+        function dapatkanTanggalLokal() {
+            const now = new Date();
+            return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+        }
+
         function dapatkanWaktuRill() {
             const now = new Date();
             const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -1218,19 +1224,55 @@
         }
 
         // =======================================================
-        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED 3 TABS)
+        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED)
         // =======================================================
         
         window.rencanaKerjaArray = [];
         window.actualEditList = []; 
         window.isLateActual = false; 
 
-        window.bukaInputTargetAdm = function() {
+        // Fungsi membuka menu dan set tanggal/waktu otomatis
+        window.bukaInputTargetAdm = async function() {
+            toggleLoader(true, "Menyiapkan Form...");
             window.rencanaKerjaArray = []; 
-            renderRencanaKerjaUI();
-            document.getElementById('adm-target-tgl').value = new Date().toISOString().split('T')[0];
+            
+            // Set Tanggal Hari Ini otomatis dengan Zona Waktu Lokal yg benar
+            document.getElementById('adm-target-tgl').value = dapatkanTanggalLokal();
             document.getElementById('adm-target-mulai').value = "08:00";
             document.getElementById('adm-target-selesai').value = "16:00";
+
+            // LOGIKA PINTAR: Tarik sisa tugas yang Gagal/Belum Selesai dari rekap sebelumnya
+            try {
+                const q = query(collection(db, "adm_harian")); 
+                const snapshot = await getDocs(q); 
+                let tempList = []; 
+                snapshot.forEach(doc => tempList.push({id: doc.id, ...doc.data()}));
+                
+                if(tempList.length > 0) {
+                    tempList.sort((a,b) => b.timestamp - a.timestamp);
+                    let entriTerakhir = tempList[0]; // Ambil data paling baru
+                    
+                    // Cek jika entri terakhir punya daftar actual yg sdh diupdate
+                    if (entriTerakhir.daftarActual && Array.isArray(entriTerakhir.daftarActual)) {
+                        entriTerakhir.daftarActual.forEach(item => {
+                            if (!item.done) {
+                                // Tugas belum diceklis -> Masukkan ke form rencana hari ini
+                                let alasan = entriTerakhir.keteranganActual && entriTerakhir.keteranganActual !== "-" ? entriTerakhir.keteranganActual : "Belum selesai";
+                                let taskBaru = item.teks;
+                                if (!taskBaru.includes("(Terlambat karna:")) {
+                                    taskBaru = `${taskBaru} (Terlambat karna: ${alasan})`;
+                                }
+                                window.rencanaKerjaArray.push(taskBaru);
+                            }
+                        });
+                    }
+                }
+            } catch(e) {
+                console.error("Gagal menarik sisa tugas:", e);
+            }
+
+            renderRencanaKerjaUI();
+            toggleLoader(false);
             window.navigasi('adm-harian-target-screen');
         }
 
@@ -1353,7 +1395,7 @@
             const data = admHarianDatabase.find(d => d.id === id); 
             document.getElementById('adm-actual-id').value = id; 
             document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; 
-            document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0];
+            document.getElementById('adm-actual-tgl').value = dapatkanTanggalLokal();
             
             if (data.daftarActual && data.daftarActual.length > 0) {
                 window.actualEditList = JSON.parse(JSON.stringify(data.daftarActual));
@@ -1423,7 +1465,6 @@
             const tgl = document.getElementById('adm-actual-tgl').value; 
             const ket = document.getElementById('adm-actual-ket').value; 
             const fotoInput = document.getElementById('adm-actual-foto');
-            const oldData = admHarianDatabase.find(d => d.id === id);
             
             const total = window.actualEditList.length;
             const selesai = window.actualEditList.filter(d => d.done).length;
@@ -1431,7 +1472,7 @@
 
             // WAJIB CATATAN JIKA ADA YANG BELUM SELESAI
             if (belum > 0 && !ket.trim()) {
-                return alert("Terdapat tugas yang belum terealisasi! Anda WAJIB mengisi 'Catatan' untuk alasan penundaan, agar otomatis dijadwalkan ulang besok.");
+                return alert("Terdapat tugas yang belum terealisasi! Anda WAJIB mengisi 'Catatan' untuk alasan penundaan, agar sistem dapat merekam info untuk dijadwalkan ulang besok.");
             }
 
             toggleLoader(true, "Menyimpan Realisasi..."); 
@@ -1448,32 +1489,7 @@
                 statusBaru = "Gagal"; 
             }
 
-            // ==========================================
-            // LEMPAR TUGAS SISA KE BESOK HARI 
-            // ==========================================
-            if (belum > 0) {
-                let besokDate = new Date();
-                besokDate.setDate(besokDate.getDate() + 1);
-                let tglBesokStr = besokDate.toISOString().split('T')[0];
-                
-                let sisaTugasArray = window.actualEditList
-                                     .filter(d => !d.done)
-                                     .map(d => d.teks + ` (Terlambat karna: ${ket})`);
-                
-                try {
-                    await addDoc(collection(db, "adm_harian"), {
-                        tglTarget: tglBesokStr,
-                        jamMulai: "08:00",
-                        jamSelesai: "16:00",
-                        namaKegiatan: oldData.namaKegiatan + " (Sisa Lanjutan)",
-                        daftarRencana: sisaTugasArray, 
-                        adminName: oldData.adminName,
-                        status: "Belum",
-                        tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now()
-                    });
-                } catch(e) { console.error("Gagal buat tugas lemparan", e); }
-            }
-
+            // SIMPAN PERUBAHAN KE DOCUMENT SAAT INI (TIDAK buat doc besok secara background)
             try { 
                 await updateDoc(doc(db, "adm_harian", id), { 
                     status: statusBaru, 
@@ -1485,7 +1501,7 @@
                 }); 
                 
                 if(belum > 0) {
-                    alert("Tersimpan! Tugas yang belum diceklis otomatis dipindahkan menjadi Target Besok Hari."); 
+                    alert("Tersimpan! Tugas yang belum diceklis akan otomatis ditarik saat Anda membuat Input Rencana Kerja Harian besok."); 
                 } else {
                     alert("Update Realisasi Tersimpan!");
                 }
