@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
-    <!-- LIBRARIES PDF TO IMAGE (BARU) -->
+    <!-- LIBRARIES PDF TO IMAGE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
     <style>
@@ -110,6 +110,7 @@
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; margin-top: 10px;}
         .bg-proses { background-color: var(--proses); color: #000; }
         .bg-cepat { background-color: var(--cepat); }
+        .bg-lambat { background-color: var(--lambat); }
 
         .export-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-export { flex: 1; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
@@ -145,9 +146,10 @@
         @media print {
             body { background: white !important; }
             .screen:not(.active-screen) { display: none !important; } 
-            .header, .export-row, .btn-bottom-back, .btn-print-detail, .tab-container { display: none !important; }
+            .header, .export-row, .btn-bottom-back, .btn-print-detail, .tab-container, .filter-box { display: none !important; }
             .screen { padding: 0 !important; }
             .content-wrapper { max-width: 100%; margin: 0; }
+            .progress-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
             .report-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; color: black; }
             .report-table th, .report-table td { border: 1px solid black !important; }
             .report-header { border-bottom-color: black !important; }
@@ -249,7 +251,6 @@
                         <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem akan otomatis memprosesnya menjadi gambar tabel.</p>
                         <div class="form-group" style="margin-top: 15px;">
                             <label>Pilih File (Buka File Manager)</label>
-                            <!-- Accept PDF dan Gambar -->
                             <label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label>
                             <input type="file" id="jb-foto" class="input-file-hidden" accept="image/*, application/pdf" onchange="cekFotoFile(this, 'status-jb-foto')">
                             <span id="status-jb-foto" class="file-status"></span>
@@ -540,7 +541,7 @@
         }
 
         // FUNGSI KOMPRESI GAMBAR BIASA
-        const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.85) => {
+        const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.6) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -623,11 +624,10 @@
             if(step === 0) { window.currentZoomJadwal = 100; } 
             else { window.currentZoomJadwal += step; }
             
-            // Batas Zoom (50% terkecil sampai 300% terbesar)
+            // Batas Zoom
             if(window.currentZoomJadwal < 50) window.currentZoomJadwal = 50;
             if(window.currentZoomJadwal > 350) window.currentZoomJadwal = 350;
 
-            // Mengubah width percentage (membuat kotak scroll otomatis menyesuaikan)
             img.style.width = window.currentZoomJadwal + "%";
         }
 
@@ -639,13 +639,11 @@
                 const viewContainer = document.getElementById('jb-view-container');
                 
                 if (docSnap.exists() && docSnap.data().foto) {
-                    // Tampilan Preview Kecil di Tab 1
                     const imgHtmlOut = `<img src="${docSnap.data().foto}" style="max-width:100%; max-height:200px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2); object-fit:contain;">
                                      <p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Update: ${docSnap.data().waktuUpdate}</p>`;
                     outContainer.innerHTML = imgHtmlOut;
 
-                    // Tampilan ZOOMABLE di Tab 2
-                    window.currentZoomJadwal = 100; // Reset zoom saat dimuat
+                    window.currentZoomJadwal = 100;
                     const imgHtmlView = `
                         <div style="margin-bottom: 15px; display:flex; justify-content:center; gap:10px;">
                             <button onclick="zoomJadwal(30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-plus"></i></button>
@@ -679,38 +677,38 @@
             let file = fotoInput.files[0];
 
             try {
-                // JIKA FILE ADALAH PDF (MENGGUNAKAN PDF.JS MAGIC)
+                // JIKA FILE ADALAH PDF
                 if (file.type === "application/pdf") {
                     const arrayBuffer = await file.arrayBuffer();
-                    
-                    // Baca dokumen PDF
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-                    const page = await pdf.getPage(1); // Ambil halaman pertama saja sebagai "Jadwal Besar"
+                    const page = await pdf.getPage(1); 
                     
-                    // Render skala besar (2.5x) agar tajam saat di-zoom
-                    const viewport = page.getViewport({ scale: 2.5 }); 
+                    const viewport = page.getViewport({ scale: 1.5 }); // Skala Aman
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     
-                    // Gambar PDF ke Canvas (Mengubah PDF jadi Foto)
                     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-                    fotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
+                    fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); // Kompresi 60%
                 } 
                 // JIKA FILE ADALAH GAMBAR BIASA
                 else if (file.type.startsWith("image/")) {
-                    // Kompresi ringan agar tetap bisa dibaca jelas
-                    fotoBase64 = await compressImage(file, 2000, 2000, 0.85);
+                    fotoBase64 = await compressImage(file, 1200, 1200, 0.6); // Maks 1200px
                 } 
-                // FILE DITOLAK
                 else {
                     alert("Format file tidak didukung! Harap masukkan file berformat PDF atau Gambar (JPG/PNG).");
                     toggleLoader(false);
                     return;
                 }
 
-                // Kirim ke Firebase Firestore
+                // Proteksi 1MB Limit
+                if(fotoBase64.length > 1000000) {
+                     alert("Peringatan: Walau sudah dikompres, file ini masih terlalu padat/besar. Cobalah gunakan file PDF/Foto jadwal yang lebih simpel atau screenshot terlebih dahulu.");
+                     toggleLoader(false);
+                     return;
+                }
+
                 const dataJb = {
                     foto: fotoBase64,
                     waktuUpdate: dapatkanWaktuRill(),
@@ -720,12 +718,10 @@
                 await setDoc(doc(db, "jadwal_besar_db", "master_jadwal"), dataJb);
                 alert("Jadwal Besar berhasil diupdate!");
                 
-                // Reset input dan muat ulang layar
                 document.getElementById('jb-foto').value = "";
                 document.getElementById('status-jb-foto').innerHTML = "";
                 await muatJadwalBesar();
                 
-                // Otomatis arahkan tab ke View agar tim bisa langsung lihat hasil
                 switchTabJb('view');
 
             } catch (e) {
@@ -791,7 +787,7 @@
             });
 
             toggleLoader(true, "Memproses & Menyimpan Laporan...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
+            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); }
 
             const dataNotul = {
                 jenisMeeting: jenis,
@@ -989,7 +985,7 @@
             const target = document.getElementById('np-target').value; const user = document.getElementById('np-user').value; const fotoInput = document.getElementById('np-foto');
             if(!nama || !target) { alert("Nama dan Target harus diisi!"); return; }
             toggleLoader(true, "Menyimpan...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
+            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); }
             try {
                 await addDoc(collection(db, "projects"), { divisi: divisiAktif, namaProject: nama, keteranganAwal: keterangan, targetSelesai: target, userAwal: user, statusUpdate: "Belum", tanggalSelesai: null, hasilProject: "", keteranganUpdate: "", fotoAwal: fotoBase64, timestamp: Date.now() });
                 alert("Tersimpan!");
@@ -1032,7 +1028,7 @@
             const updater = document.getElementById('up-user').value; const fotoInput = document.getElementById('up-foto');
             if(!tglSelesai) { alert("Tanggal Selesai wajib!"); return; }
             toggleLoader(true, "Mengupdate...");
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0]); }
+            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); }
             try {
                 await updateDoc(doc(db, "projects", idFirestore), { statusUpdate: "Sudah", hasilProject: hasil, keteranganUpdate: ketUpdate, tanggalSelesai: tglSelesai, userUpdate: updater, fotoAkhir: fotoBase64 });
                 alert("Update Berhasil!");
