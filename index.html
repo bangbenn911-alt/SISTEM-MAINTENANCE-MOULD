@@ -212,7 +212,7 @@
 
         /* --- TABS BUKAN NEON --- */
         .tab-container { display: flex; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;}
-        .tab-btn { flex: 1; padding: 12px; border: none; background: #e2e8f0; font-weight: bold; cursor: pointer; transition: 0.3s; color: #475569;}
+        .tab-btn { flex: 1; padding: 10px 4px; border: none; background: #e2e8f0; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.3s; color: #475569;}
         .tab-active { background: var(--secondary); color: white; }
 
         /* --- KARTU PROGRES --- */
@@ -506,16 +506,20 @@
         </div>
     </div>
 
-    <!-- LAYAR: 2. UPDATE ACTUAL TEREALISASI (UPDATED) -->
+    <!-- LAYAR: 2. UPDATE ACTUAL TEREALISASI (UPDATED 3 TABS) -->
     <div id="adm-harian-actual-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Update Actual Terealisasi</h2></div>
+            
             <div class="tab-container">
                 <button class="tab-btn tab-active" id="tab-adm-belum" onclick="switchTabAdm('belum')">Belum Terealisasi</button>
                 <button class="tab-btn" id="tab-adm-sudah" onclick="switchTabAdm('sudah')">Sudah Terealisasi</button>
+                <button class="tab-btn" id="tab-adm-gagal" onclick="switchTabAdm('gagal')">Gagal Terealisasi</button>
             </div>
+            
             <div id="list-adm-belum"></div>
             <div id="list-adm-sudah" style="display: none;"></div>
+            <div id="list-adm-gagal" style="display: none;"></div>
 
             <!-- FORM UPDATE ACTUAL (FITUR CEKLIS LIST & WAKTU) -->
             <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
@@ -539,7 +543,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Catatan Actual (Wajib jika lewat jam 16:00)</label>
+                    <label>Catatan Actual (Wajib diisi jika ada tugas yang belum selesai)</label>
                     <textarea id="adm-actual-ket" rows="3" placeholder="Isi kendala, keterangan, atau alasan pekerjaan tertunda..."></textarea>
                 </div>
                 
@@ -1093,7 +1097,6 @@
 
                 } else if (kategori === 'ALL') {
                     descText = "*Performa Global Seluruh Divisi & ADM Terstruktur";
-                    // Ambil projects semua divisi
                     const qProj = query(collection(db, "projects")); const snapProj = await getDocs(qProj);
                     let allProj = []; snapProj.forEach(d => allProj.data() && allProj.push(d.data()));
 
@@ -1118,7 +1121,6 @@
                     dataRealisasi = [st.s, rp.s, tr.s, ws.s, 10];
 
                 } else {
-                    // Berdasarkan Divisi spesifik
                     descText = `*Analisa Performa Spesifik: ${kategori}`;
                     const q = query(collection(db, "projects"), where("divisi", "==", kategori));
                     const snapshot = await getDocs(q);
@@ -1128,7 +1130,6 @@
                     totalSelesai = divData.filter(d => d.statusUpdate === 'Sudah').length;
                     persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
 
-                    // Kelompokkan per tanggal target
                     let grouped = {};
                     divData.forEach(d => {
                         let tgl = d.targetSelesai || 'Tanpa Tanggal';
@@ -1191,12 +1192,12 @@
         }
 
         // =======================================================
-        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED V3)
+        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED 3 TABS)
         // =======================================================
         
         window.rencanaKerjaArray = [];
-        window.actualEditList = []; // Untuk simpan ceklis yang diupdate
-        window.isLateActual = false; // Penanda jam > 16:00
+        window.actualEditList = []; 
+        window.isLateActual = false; 
 
         window.bukaInputTargetAdm = function() {
             window.rencanaKerjaArray = []; 
@@ -1259,25 +1260,35 @@
         window.bukaAdmHarianActual = async function() { window.navigasi('adm-harian-actual-screen'); await ambilDataAdmHarian(); window.switchTabAdm('belum'); }
 
         window.switchTabAdm = function(tab) {
-            document.getElementById('tab-adm-belum').classList.remove('tab-active'); document.getElementById('tab-adm-sudah').classList.remove('tab-active');
-            document.getElementById('list-adm-belum').style.display = 'none'; document.getElementById('list-adm-sudah').style.display = 'none'; document.getElementById('form-adm-actual').style.display = 'none';
+            ['belum', 'sudah', 'gagal'].forEach(t => {
+                document.getElementById(`tab-adm-${t}`).classList.remove('tab-active');
+                document.getElementById(`list-adm-${t}`).style.display = 'none';
+            });
+            document.getElementById('form-adm-actual').style.display = 'none';
+
+            document.getElementById(`tab-adm-${tab}`).classList.add('tab-active');
+            document.getElementById(`list-adm-${tab}`).style.display = 'block';
+
             if(tab === 'belum') { 
-                document.getElementById('tab-adm-belum').classList.add('tab-active'); document.getElementById('list-adm-belum').style.display = 'block'; 
                 renderAdmActualList('Belum', 'list-adm-belum'); 
-            } else { 
-                document.getElementById('tab-adm-sudah').classList.add('tab-active'); document.getElementById('list-adm-sudah').style.display = 'block'; 
-                renderAdmActualList('Selesai', 'list-adm-sudah'); 
+            } else if (tab === 'sudah') { 
+                renderAdmActualList('Sudah', 'list-adm-sudah'); 
+            } else {
+                renderAdmActualList('Gagal', 'list-adm-gagal'); 
             }
         }
 
         function renderAdmActualList(statusGroup, containerId) {
             const container = document.getElementById(containerId); container.innerHTML = ""; 
             let filtered = [];
+            
             if (statusGroup === 'Belum') {
                 filtered = admHarianDatabase.filter(d => d.status === 'Belum');
-            } else {
-                // Yang sudah di Update & Simpan akan masuk sini semua dengan status yang beda-beda
-                filtered = admHarianDatabase.filter(d => d.status.includes('Selesai') || d.status === 'Tertunda Banyak');
+            } else if (statusGroup === 'Sudah') {
+                // Selesai Sempurna ATAU Selesai Belum Sempurna masuk ke tab Sudah
+                filtered = admHarianDatabase.filter(d => d.status === 'Selesai Sempurna' || d.status === 'Selesai Belum Sempurna');
+            } else if (statusGroup === 'Gagal') {
+                filtered = admHarianDatabase.filter(d => d.status === 'Gagal');
             }
 
             if(filtered.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Belum Ada Data.</p>`; return; }
@@ -1285,18 +1296,17 @@
             filtered.forEach(data => {
                 let badge = ""; let color = "";
                 
-                // Logika Badge
                 if (data.status === 'Belum') {
                     badge = `<span class="status-badge bg-lambat">Menunggu Realisasi</span>`;
                     color = "var(--lambat)";
-                } else if (data.status === 'Selesai Sebagian') {
-                    badge = `<span class="status-badge" style="background:#fef08a; color:#854d0e; border:1px solid #eab308;">⚠️ Ada beberapa yg belum terealisasi</span>`;
+                } else if (data.status === 'Selesai Belum Sempurna') {
+                    badge = `<span class="status-badge" style="background:#fef08a; color:#854d0e; border:1px solid #eab308;">⚠️ Selesai Belum Sempurna</span>`;
                     color = "var(--proses)"; // kuning
-                } else if (data.status === 'Tertunda Banyak') {
-                    badge = `<span class="status-badge bg-lambat">🚨 Yang belum terealisasi lebih banyak</span>`;
+                } else if (data.status === 'Gagal') {
+                    badge = `<span class="status-badge bg-lambat">🚨 Gagal Terealisasi</span>`;
                     color = "var(--lambat)"; // merah
-                } else { // Selesai Penuh
-                    badge = `<span class="status-badge bg-cepat">Selesai Terealisasi Penuh</span>`;
+                } else { // Selesai Sempurna
+                    badge = `<span class="status-badge bg-cepat">✅ Selesai Sempurna</span>`;
                     color = "var(--cepat)"; // hijau
                 }
 
@@ -1320,16 +1330,13 @@
             document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; 
             document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0];
             
-            // Konversi / Load list untuk di-ceklis
             if (data.daftarActual && data.daftarActual.length > 0) {
                 window.actualEditList = JSON.parse(JSON.stringify(data.daftarActual));
             } else {
                 window.actualEditList = data.daftarRencana.map(teks => ({ teks: teks, done: false, type: 'rencana' }));
             }
 
-            // KUNCI WAKTU JIKA LEWAT JAM 16:01
             const now = new Date();
-            // True jika Jam > 16 (misal 17:00), ATAU Jam == 16 dan Menit >= 1 (16:01)
             window.isLateActual = (now.getHours() > 16) || (now.getHours() === 16 && now.getMinutes() >= 1);
 
             if (window.isLateActual) {
@@ -1358,7 +1365,6 @@
                 const isChecked = item.done ? "checked" : "";
                 const classDone = item.done ? "done" : "";
                 const badgeTag = item.type === 'tambahan' ? `<span style="font-size:11px; background:#fef3c7; color:#d97706; padding:2px 6px; border-radius:10px; margin-left:5px;">(Penambahan diluar rencana)</span>` : '';
-                // Jika sudah jam 16 lewat, kunci ceklisnya
                 const disableProp = window.isLateActual ? "disabled" : "";
                 
                 ul.innerHTML += `<li class="${classDone}">
@@ -1377,7 +1383,6 @@
             const input = document.getElementById('adm-actual-input-baru');
             const val = input.value.trim();
             if(val) {
-                // Tugas baru otomatis belum terceklis, user bisa menceklisnya
                 window.actualEditList.push({ teks: val, done: false, type: 'tambahan' }); 
                 renderActualCeklisUI(); input.value = "";
             }
@@ -1395,39 +1400,37 @@
             const fotoInput = document.getElementById('adm-actual-foto');
             const oldData = admHarianDatabase.find(d => d.id === id);
             
-            // Logika hitung yang terceklis vs belum terceklis
             const total = window.actualEditList.length;
             const selesai = window.actualEditList.filter(d => d.done).length;
             const belum = total - selesai;
 
-            // Jika lewat jam 16 & ada yg blm selesai, WAJIB ISI CATATAN
-            if (window.isLateActual && belum > 0 && !ket.trim()) {
-                return alert("Terdapat tugas yang belum selesai dan waktu sudah lewat pukul 16:00! Anda WAJIB mengisi 'Catatan' untuk alasan keterlambatan tugas.");
+            // WAJIB CATATAN JIKA ADA YANG BELUM SELESAI
+            if (belum > 0 && !ket.trim()) {
+                return alert("Terdapat tugas yang belum terealisasi! Anda WAJIB mengisi 'Catatan' untuk alasan penundaan, agar otomatis dijadwalkan ulang besok.");
             }
 
             toggleLoader(true, "Menyimpan Realisasi..."); 
             let fotoBase64 = ""; 
             if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
 
-            let statusBaru = "Selesai"; // Normal
+            let statusBaru = "Selesai Sempurna"; 
             
             if (belum === 0) {
-                statusBaru = "Selesai";
-            } else if (belum > 0 && belum <= selesai) {
-                statusBaru = "Selesai Sebagian"; // Kuning
+                statusBaru = "Selesai Sempurna";
+            } else if (belum <= selesai) {
+                statusBaru = "Selesai Belum Sempurna"; 
             } else if (belum > selesai) {
-                statusBaru = "Tertunda Banyak"; // Merah
+                statusBaru = "Gagal"; 
             }
 
             // ==========================================
-            // LEMPAR TUGAS SISA KE BESOK HARI (JIKA LATE 16:00)
+            // LEMPAR TUGAS SISA KE BESOK HARI 
             // ==========================================
-            if (window.isLateActual && belum > 0) {
+            if (belum > 0) {
                 let besokDate = new Date();
                 besokDate.setDate(besokDate.getDate() + 1);
                 let tglBesokStr = besokDate.toISOString().split('T')[0];
                 
-                // Ambil string teks tugas yang belum selesai + embel embel terlambat
                 let sisaTugasArray = window.actualEditList
                                      .filter(d => !d.done)
                                      .map(d => d.teks + ` (Terlambat karna: ${ket})`);
@@ -1438,15 +1441,12 @@
                         jamMulai: "08:00",
                         jamSelesai: "16:00",
                         namaKegiatan: oldData.namaKegiatan + " (Sisa Lanjutan)",
-                        daftarRencana: sisaTugasArray, // Di inject kembali ke list biasa untuk bsk
+                        daftarRencana: sisaTugasArray, 
                         adminName: oldData.adminName,
                         status: "Belum",
                         tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now()
                     });
                 } catch(e) { console.error("Gagal buat tugas lemparan", e); }
-                
-                // Karna sisanya sudah dilempar ke besok, maka laporan yang hari ini dianggap selesai
-                statusBaru = "Selesai"; 
             }
 
             try { 
@@ -1459,7 +1459,7 @@
                     fotoActual: fotoBase64 
                 }); 
                 
-                if(window.isLateActual && belum > 0) {
+                if(belum > 0) {
                     alert("Tersimpan! Tugas yang belum diceklis otomatis dipindahkan menjadi Target Besok Hari."); 
                 } else {
                     alert("Update Realisasi Tersimpan!");
@@ -1471,7 +1471,11 @@
                 document.getElementById('form-adm-actual').style.display = 'none'; 
                 
                 await ambilDataAdmHarian(); 
-                window.switchTabAdm('sudah'); 
+                if (statusBaru === 'Gagal') {
+                    window.switchTabAdm('gagal'); 
+                } else {
+                    window.switchTabAdm('sudah'); 
+                }
             } catch(e) { 
                 alert(e.message); 
             } 
@@ -1483,9 +1487,9 @@
             const container = document.getElementById('list-adm-progress'); container.innerHTML = "";
             if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
             admHarianDatabase.forEach(data => { 
-                let color = data.status.includes("Selesai") || data.status === "Tertunda Banyak" ? "var(--cepat)" : "var(--lambat)"; 
-                if(data.status === "Selesai Sebagian") color = "var(--proses)";
-                if(data.status === "Tertunda Banyak") color = "var(--lambat)";
+                let color = "var(--cepat)"; // Default Hijau (Selesai Sempurna)
+                if (data.status === "Belum" || data.status === "Gagal") color = "var(--lambat)"; 
+                if (data.status === "Selesai Belum Sempurna") color = "var(--proses)";
                 
                 let badge = data.status === "Belum" ? "Belum Terealisasi" : data.status; 
                 
@@ -1493,16 +1497,14 @@
             });
         }
 
-        // TAMPILAN DETAIL MEMBACA DATA CEKLIS
+        // TAMPILAN DETAIL MEMBACA DATA CEKLIS BARU
         window.bukaDetailAdmHarian = function(id) {
             const data = admHarianDatabase.find(d => d.id === id); if(!data) return;
             
             let colorStatus = "var(--cepat)";
-            if(data.status === "Belum") colorStatus = "var(--lambat)";
-            if(data.status === "Selesai Sebagian") colorStatus = "var(--proses)";
-            if(data.status === "Tertunda Banyak") colorStatus = "var(--lambat)";
+            if(data.status === "Belum" || data.status === "Gagal") colorStatus = "var(--lambat)";
+            if(data.status === "Selesai Belum Sempurna") colorStatus = "var(--proses)";
             
-            // Susun HTML untuk List Actual Kerja
             let listRencanaHTML = `<ul style="padding-left:0; margin:0; list-style:none;">`;
             if (data.daftarActual && data.daftarActual.length > 0) {
                 data.daftarActual.forEach(item => { 
