@@ -197,7 +197,7 @@
         /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
-        input[type="text"], input[type="date"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
+        input[type="text"], input[type="time"], input[type="date"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
         input:read-only { background-color: #f1f5f9; color: #64748b; font-weight: bold; cursor: not-allowed; }
         textarea { resize: vertical; } 
         .btn-submit { width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
@@ -458,7 +458,7 @@
         <div class="content-wrapper">
             <div class="header"><h2>Laporan Kerja Harian</h2></div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('adm-harian-target-screen')" style="border-left-color: #f97316;"><i class="fas fa-bullseye"></i> 1. Target Harian Kerja</div>
+                <div class="menu-card" onclick="bukaInputTargetAdm()" style="border-left-color: #f97316;"><i class="fas fa-bullseye"></i> 1. Target Harian Kerja</div>
                 <div class="menu-card" onclick="bukaAdmHarianActual()" style="border-left-color: #14b8a6;"><i class="fas fa-check-double"></i> 2. Actual Terealisasi</div>
                 <div class="menu-card" onclick="bukaAdmHarianProgress()" style="border-left-color: #ec4899;"><i class="fas fa-chart-line"></i> 3. Control Progres Kinerja</div>
             </div>
@@ -466,15 +466,42 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA -->
+    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA (UPDATED) -->
     <div id="adm-harian-target-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Target Harian</h2></div>
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Tanggal Target Pelaksanaan</label><input type="date" id="adm-target-tgl"></div>
-                <div class="form-group"><label>Rencana / Nama Kegiatan</label><input type="text" id="adm-target-nama" placeholder="Tuliskan nama kegiatan..."></div>
-                <div class="form-group"><label>Detail Rencana Pekerjaan</label><textarea id="adm-target-detail" rows="3" placeholder="Rincian / deskripsi target hari ini..."></textarea></div>
-                <div class="form-group"><label>Nama Admin pembuat</label><input type="text" id="adm-target-user" placeholder="Nama Admin..."></div>
+                <div class="form-group">
+                    <label>Tanggal Pelaksanaan</label>
+                    <input type="date" id="adm-target-tgl" readonly>
+                </div>
+                
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label>Waktu Dimulai</label>
+                        <input type="time" id="adm-target-mulai" value="08:00">
+                    </div>
+                    <div style="flex: 1;">
+                        <label>Target Waktu Selesai</label>
+                        <input type="time" id="adm-target-selesai" value="16:00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Rencana Kerja (Bisa tambah banyak)</label>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                        <input type="text" id="adm-input-rencana" placeholder="Ketik rencana kerja...">
+                        <button onclick="tambahRencanaKerja()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <!-- Tempat list rencana akan muncul -->
+                    <ul id="list-rencana-kerja" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;">
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Admin pembuat</label>
+                    <input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly>
+                </div>
                 <button class="btn-submit" onclick="simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
@@ -1144,15 +1171,90 @@
             toggleLoader(false);
         }
 
+        // =======================================================
+        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED)
+        // =======================================================
+        
+        // Array untuk menyimpan list rencana
+        window.rencanaKerjaArray = [];
 
-        // =======================================================
-        // EKOSISTEM: LAPORAN KERJA HARIAN ADM
-        // =======================================================
+        // Fungsi membuka menu dan set tanggal/waktu otomatis
+        window.bukaInputTargetAdm = function() {
+            window.rencanaKerjaArray = []; 
+            renderRencanaKerjaUI();
+            
+            // Set Tanggal Hari Ini otomatis
+            document.getElementById('adm-target-tgl').value = new Date().toISOString().split('T')[0];
+            // Set Jam Default
+            document.getElementById('adm-target-mulai').value = "08:00";
+            document.getElementById('adm-target-selesai').value = "16:00";
+            
+            window.navigasi('adm-harian-target-screen');
+        }
+
+        // Fungsi Tambah List Rencana Kerja
+        window.tambahRencanaKerja = function() {
+            const input = document.getElementById('adm-input-rencana');
+            const val = input.value.trim();
+            if(val) {
+                window.rencanaKerjaArray.push(val);
+                renderRencanaKerjaUI();
+                input.value = "";
+                input.focus();
+            }
+        }
+
+        // Fungsi Hapus Item dari List
+        window.hapusRencanaKerja = function(index) {
+            window.rencanaKerjaArray.splice(index, 1);
+            renderRencanaKerjaUI();
+        }
+
+        // Fungsi Menampilkan List di Layar
+        window.renderRencanaKerjaUI = function() {
+            const ul = document.getElementById('list-rencana-kerja');
+            ul.innerHTML = "";
+            if(window.rencanaKerjaArray.length === 0) {
+                ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada rencana ditambahkan.</li>`;
+            } else {
+                window.rencanaKerjaArray.forEach((item, idx) => {
+                    ul.innerHTML += `<li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary);">
+                        <span style="font-size:13px; font-weight:bold;">${idx + 1}. ${item}</span>
+                        <button onclick="hapusRencanaKerja(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </li>`;
+                });
+            }
+        }
+
+        // Fungsi Simpan (Diupdate)
         window.simpanAdmTarget = async function() {
-            const tgl = document.getElementById('adm-target-tgl').value; const nama = document.getElementById('adm-target-nama').value; const detail = document.getElementById('adm-target-detail').value; const admin = document.getElementById('adm-target-user').value;
-            if(!tgl || !nama) return alert("Tanggal & Nama Kegiatan wajib diisi!");
+            const tgl = document.getElementById('adm-target-tgl').value; 
+            const jamMulai = document.getElementById('adm-target-mulai').value;
+            const jamSelesai = document.getElementById('adm-target-selesai').value;
+            const admin = document.getElementById('adm-target-user').value;
+            
+            if(window.rencanaKerjaArray.length === 0) return alert("Tambahkan minimal 1 Rencana Kerja!");
+            
             toggleLoader(true, "Menyimpan Target...");
-            try { await addDoc(collection(db, "adm_harian"), { tglTarget: tgl, namaKegiatan: nama, detailRencana: detail || "-", adminName: admin || "Admin", status: "Belum", tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now() }); alert("Target Harian Tersimpan!"); document.getElementById('adm-target-tgl').value = ""; document.getElementById('adm-target-nama').value = ""; document.getElementById('adm-target-detail').value = ""; window.navigasi('adm-harian-menu-screen'); } catch(e) { alert(e.message); }
+            try { 
+                const judulHarian = "Target Harian - " + tgl;
+                await addDoc(collection(db, "adm_harian"), { 
+                    tglTarget: tgl,
+                    jamMulai: jamMulai,
+                    jamSelesai: jamSelesai,
+                    namaKegiatan: judulHarian, 
+                    daftarRencana: window.rencanaKerjaArray, 
+                    adminName: admin, 
+                    status: "Belum", 
+                    tglActual: "-", 
+                    hasilActual: "-", 
+                    keteranganActual: "-", 
+                    fotoActual: "", 
+                    timestamp: Date.now() 
+                }); 
+                alert("Target Harian Tersimpan!"); 
+                window.navigasi('adm-harian-menu-screen'); 
+            } catch(e) { alert(e.message); }
             toggleLoader(false);
         }
 
@@ -1196,10 +1298,29 @@
             admHarianDatabase.forEach(data => { let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)"; let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi"; container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${color}">${badge}</span></div>`; });
         }
 
+        // UPDATE TAMPILAN DETAIL UNTUK MEMBACA DATA LIST ARRAY
         window.bukaDetailAdmHarian = function(id) {
             const data = admHarianDatabase.find(d => d.id === id); if(!data) return;
             let colorStatus = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)";
-            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Kegiatan / Rencana</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status === 'Belum' ? 'Belum Terealisasi' : 'Sudah Terealisasi'}</td></tr><tr><th>Tanggal Target Pelaksanaan</th><td>${data.tglTarget}</td></tr><tr><th>Detail Rencana Pekerjaan</th><td>${data.detailRencana}</td></tr><tr><th>Nama Admin</th><td>${data.adminName}</td></tr></table>`;
+            
+            // Susun HTML untuk List Rencana Kerja
+            let listRencanaHTML = `<ul style="padding-left:15px; margin:0;">`;
+            if(data.daftarRencana && data.daftarRencana.length > 0) {
+                data.daftarRencana.forEach(item => { listRencanaHTML += `<li>${item}</li>`; });
+            } else {
+                listRencanaHTML += `<li>${data.detailRencana || "-"}</li>`; // Support jika data lama ditampilkan
+            }
+            listRencanaHTML += `</ul>`;
+
+            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div>
+            <table class="report-table">
+                <tr><th>Judul / Tanggal</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr>
+                <tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status === 'Belum' ? 'Belum Terealisasi' : 'Sudah Terealisasi'}</td></tr>
+                <tr><th>Waktu Target</th><td>Tgl: ${data.tglTarget}<br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr>
+                <tr><th>Daftar Rencana Pekerjaan</th><td>${listRencanaHTML}</td></tr>
+                <tr><th>Nama Admin</th><td>${data.adminName}</td></tr>
+            </table>`;
+            
             if(data.status === "Selesai") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL ACTUAL TEREALISASI</th></tr><tr><th>Tanggal Aktual Selesai</th><td>${data.tglActual}</td></tr><tr><th>Hasil Aktual</th><td>${data.hasilActual}</td></tr><tr><th>Keterangan Tambahan</th><td>${data.keteranganActual}</td></tr></table>`;
                 if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; }
                 else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
