@@ -94,11 +94,7 @@
             align-items: center; 
             gap: 12px; 
         }
-        .menu-card i {
-            font-size: 18px; 
-            width: 25px; 
-            text-align: center;
-        }
+        .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
 
         /* --- FORMULIR --- */
@@ -214,14 +210,125 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
-                <!-- LAPORAN MINGGUAN ADMIN SEKARANG DI BERANDA -->
-                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-signature"></i> LAPORAN MINGGUAN ADMIN</div>
+                <!-- MENU BARU: ADM MOLD DI BERANDA -->
+                <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
-                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
     </div>
+
+    <!-- ========================================== -->
+    <!-- EKOSISTEM BARU: ADM MOLD -->
+    <!-- ========================================== -->
+    
+    <!-- LAYAR: MENU UTAMA ADM MOLD -->
+    <div id="adm-mold-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Menu ADM MOLD</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigasi('adm-harian-menu-screen')" style="border-left-color: #10b981;"><i class="fas fa-calendar-day"></i> 1. Laporan Kerja Harian</div>
+                <div class="menu-card" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')" style="border-left-color: #3b82f6;"><i class="fas fa-calendar-week"></i> 2. Laporan Kerja Mingguan</div>
+                <div class="menu-card" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')" style="border-left-color: #8b5cf6;"><i class="fas fa-calendar-alt"></i> 3. Laporan Kerja Bulanan</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: MENU LAPORAN KERJA HARIAN -->
+    <div id="adm-harian-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Laporan Kerja Harian</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigasi('adm-harian-target-screen')" style="border-left-color: #f97316;"><i class="fas fa-bullseye"></i> 1. Target Harian Kerja</div>
+                <div class="menu-card" onclick="bukaAdmHarianActual()" style="border-left-color: #14b8a6;"><i class="fas fa-check-double"></i> 2. Actual Terealisasi</div>
+                <div class="menu-card" onclick="bukaAdmHarianProgress()" style="border-left-color: #ec4899;"><i class="fas fa-chart-line"></i> 3. Control Progres Kinerja</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA -->
+    <div id="adm-harian-target-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Target Harian</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <div class="form-group"><label>Tanggal Target Pelaksanaan</label><input type="date" id="adm-target-tgl"></div>
+                <div class="form-group"><label>Rencana / Nama Kegiatan</label><input type="text" id="adm-target-nama" placeholder="Tuliskan nama kegiatan..."></div>
+                <div class="form-group"><label>Detail Rencana Pekerjaan</label><textarea id="adm-target-detail" rows="3" placeholder="Rincian / deskripsi target hari ini..."></textarea></div>
+                <div class="form-group"><label>Nama Admin pembuat</label><input type="text" id="adm-target-user" placeholder="Nama Admin..."></div>
+                <button class="btn-submit" onclick="simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: 2. UPDATE ACTUAL TEREALISASI -->
+    <div id="adm-harian-actual-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Update Actual Terealisasi</h2></div>
+            
+            <div class="tab-container">
+                <button class="tab-btn tab-active" id="tab-adm-belum" onclick="switchTabAdm('belum')">Belum Terealisasi</button>
+                <button class="tab-btn" id="tab-adm-sudah" onclick="switchTabAdm('sudah')">Sudah Terealisasi</button>
+            </div>
+
+            <!-- List Target -->
+            <div id="list-adm-belum"></div>
+            <!-- List Selesai -->
+            <div id="list-adm-sudah" style="display: none;"></div>
+
+            <!-- FORM UPDATE ACTUAL -->
+            <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                <h3 style="margin-top:0; color: var(--primary);">Update Actual: <span id="adm-actual-tampil" style="color: var(--secondary);"></span></h3>
+                <input type="hidden" id="adm-actual-id">
+                
+                <div class="form-group"><label>Tanggal Actual Realisasi</label><input type="date" id="adm-actual-tgl"></div>
+                <div class="form-group"><label>Hasil Actual Terealisasi</label><input type="text" id="adm-actual-hasil" placeholder="Hasil singkat pelaksanaan..."></div>
+                <div class="form-group"><label>Keterangan Tambahan</label><textarea id="adm-actual-ket" rows="3" placeholder="Rincian hasil aktual pekerjaan..."></textarea></div>
+                
+                <div class="form-group">
+                    <label>Bukti Foto Actual (Opsional)</label>
+                    <label for="adm-actual-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
+                    <input type="file" id="adm-actual-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-adm-foto')">
+                    <span id="status-adm-foto" class="file-status"></span>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-submit" style="background: gray;" onclick="batalAdmActual()">Batal</button>
+                    <button class="btn-submit" onclick="simpanAdmActual()">SIMPAN ACTUAL</button>
+                </div>
+            </div>
+
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: 3. CONTROL PROGRES KINERJA & DETAIL -->
+    <div id="adm-harian-progress-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Control Progres Kinerja Admin</h2></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail Laporan Harian JPG/PDF.</i></p>
+            <div id="list-adm-progress"></div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: DETAIL LAPORAN HARIAN ADMIN -->
+    <div id="adm-harian-detail-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Detail Laporan Harian Admin</h2></div>
+            <div class="export-row">
+                <button class="btn-export btn-jpg" onclick="downloadAdmJPG()"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
+            <div class="report-sheet" id="report-adm-content">
+                <!-- Injeksi JS -->
+            </div>
+            <button class="btn-bottom-back" onclick="bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+        </div>
+    </div>
+
 
     <!-- 3. BERANDA DIVISI -->
     <div id="divisi-screen" class="screen screen-bg">
@@ -236,7 +343,7 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (SEKARANG 7 POIN KARENA LAPORAN MINGGUAN PINDAH) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN) -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
@@ -257,8 +364,6 @@
     <!-- ========================================== -->
     <!-- EKOSISTEM: PERMINTAAN TRIAL -->
     <!-- ========================================== -->
-    
-    <!-- LAYAR: MENU PERMINTAAN TRIAL -->
     <div id="permintaan-trial-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem Permintaan Trial</h2></div>
@@ -271,7 +376,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT PERMINTAAN TRIAL -->
+    <!-- INPUT PERMINTAAN TRIAL -->
     <div id="pt-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Permintaan Trial</h2></div>
@@ -285,20 +390,15 @@
         </div>
     </div>
 
-    <!-- LAYAR: 2. VERIFIKASI & UPDATE OLEH ADMIN -->
+    <!-- ADMIN: VERIFIKASI & UPDATE -->
     <div id="pt-admin-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Verifikasi Admin Mold</h2></div>
-            
             <div class="tab-container">
                 <button class="tab-btn tab-active" id="tab-pt-belum" onclick="switchTabPt('belum')">Permintaan Masuk</button>
                 <button class="tab-btn" id="tab-pt-proses" onclick="switchTabPt('proses')">Sedang Proses</button>
             </div>
-
-            <!-- List Permintaan Masuk -->
             <div id="list-pt-belum"></div>
-            
-            <!-- List Sedang Proses -->
             <div id="list-pt-proses" style="display: none;"></div>
 
             <!-- FORM AUTO-FILL: Verifikasi -->
@@ -339,22 +439,21 @@
                     <button class="btn-submit" onclick="simpanPtHasil()">SIMPAN HASIL TRIAL</button>
                 </div>
             </div>
-
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- LAYAR: 3. CONTROL PROGRES TRIAL & DETAIL -->
+    <!-- CONTROL PROGRES TRIAL -->
     <div id="pt-progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Trial</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Data berurut berdasarkan request terbaru. Klik pada list untuk melihat detail format Laporan JPG/PDF.</i></p>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail laporan JPG/PDF.</i></p>
             <div id="list-pt-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- LAYAR: DETAIL LAPORAN TRIAL -->
+    <!-- DETAIL LAPORAN TRIAL -->
     <div id="pt-detail-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Laporan Trial</h2></div>
@@ -362,9 +461,7 @@
                 <button class="btn-export btn-jpg" onclick="downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-            <div class="report-sheet" id="report-pt-content">
-                <!-- Injeksi JS -->
-            </div>
+            <div class="report-sheet" id="report-pt-content"></div>
             <button class="btn-bottom-back" onclick="bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
@@ -602,7 +699,6 @@
                     <button class="btn-filter-action btn-reset" onclick="resetFilter()">Reset Semua</button>
                 </div>
             </div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada nama project untuk melihat laporan detail PDF</i></p>
             <div id="list-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -642,6 +738,7 @@
         let infoDatabase = [];
         let notulenDatabase = []; 
         let ptDatabase = []; 
+        let admHarianDatabase = []; // Database khusus ADM Harian Baru
         let divisiAktif = "";
         let kategoriInfoAktif = "";
         let filterTglAwal = "";
@@ -734,6 +831,182 @@
             const el = document.getElementById('notul-waktu-display');
             if (el) el.value = dapatkanWaktuRill();
         }, 1000);
+
+
+        // =======================================================
+        // EKOSISTEM BARU: LAPORAN KERJA HARIAN ADM
+        // =======================================================
+        
+        window.simpanAdmTarget = async function() {
+            const tgl = document.getElementById('adm-target-tgl').value;
+            const nama = document.getElementById('adm-target-nama').value;
+            const detail = document.getElementById('adm-target-detail').value;
+            const admin = document.getElementById('adm-target-user').value;
+
+            if(!tgl || !nama) return alert("Tanggal & Nama Kegiatan wajib diisi!");
+            toggleLoader(true, "Menyimpan Target...");
+            
+            try {
+                await addDoc(collection(db, "adm_harian"), {
+                    tglTarget: tgl,
+                    namaKegiatan: nama,
+                    detailRencana: detail || "-",
+                    adminName: admin || "Admin",
+                    status: "Belum",
+                    tglActual: "-",
+                    hasilActual: "-",
+                    keteranganActual: "-",
+                    fotoActual: "",
+                    timestamp: Date.now()
+                });
+                alert("Target Harian Tersimpan!");
+                document.getElementById('adm-target-tgl').value = "";
+                document.getElementById('adm-target-nama').value = "";
+                document.getElementById('adm-target-detail').value = "";
+                window.navigasi('adm-harian-menu-screen');
+            } catch(e) { alert(e.message); }
+            toggleLoader(false);
+        }
+
+        async function ambilDataAdmHarian() {
+            toggleLoader(true, "Mengunduh Data Laporan...");
+            admHarianDatabase = [];
+            try {
+                const q = query(collection(db, "adm_harian"));
+                const snapshot = await getDocs(q);
+                snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()}));
+                admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp);
+            } catch(e) {}
+            toggleLoader(false);
+        }
+
+        window.bukaAdmHarianActual = async function() {
+            window.navigasi('adm-harian-actual-screen');
+            await ambilDataAdmHarian();
+            window.switchTabAdm('belum');
+        }
+
+        window.switchTabAdm = function(tab) {
+            document.getElementById('tab-adm-belum').classList.remove('tab-active');
+            document.getElementById('tab-adm-sudah').classList.remove('tab-active');
+            document.getElementById('list-adm-belum').style.display = 'none';
+            document.getElementById('list-adm-sudah').style.display = 'none';
+            document.getElementById('form-adm-actual').style.display = 'none';
+
+            if(tab === 'belum') {
+                document.getElementById('tab-adm-belum').classList.add('tab-active');
+                document.getElementById('list-adm-belum').style.display = 'block';
+                renderAdmActualList('Belum', 'list-adm-belum');
+            } else {
+                document.getElementById('tab-adm-sudah').classList.add('tab-active');
+                document.getElementById('list-adm-sudah').style.display = 'block';
+                renderAdmActualList('Selesai', 'list-adm-sudah');
+            }
+        }
+
+        function renderAdmActualList(status, containerId) {
+            const container = document.getElementById(containerId); container.innerHTML = "";
+            let filtered = admHarianDatabase.filter(d => d.status === status);
+            if(filtered.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
+            filtered.forEach(data => {
+                let badge = status === 'Belum' ? `<span class="status-badge bg-lambat">Menunggu Realisasi</span>` : `<span class="status-badge bg-cepat">Sudah Terealisasi</span>`;
+                let clickAction = status === 'Belum' ? `bukaFormAdmActual('${data.id}')` : '';
+                container.innerHTML += `<div class="progress-card" style="border-left-color: ${status==='Belum' ? 'var(--lambat)' : 'var(--cepat)'}; cursor:pointer;" onclick="${clickAction}">
+                    <h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p>${badge}
+                </div>`;
+            });
+        }
+
+        window.bukaFormAdmActual = function(id) {
+            const data = admHarianDatabase.find(d => d.id === id);
+            document.getElementById('adm-actual-id').value = id;
+            document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan;
+            document.getElementById('adm-actual-tgl').value = new Date().toISOString().split('T')[0]; // Auto today
+            document.getElementById('form-adm-actual').style.display = 'block';
+            document.getElementById('list-adm-belum').style.display = 'none';
+            window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop);
+        }
+
+        window.batalAdmActual = function() {
+            document.getElementById('form-adm-actual').style.display = 'none';
+            document.getElementById('list-adm-belum').style.display = 'block';
+        }
+
+        window.simpanAdmActual = async function() {
+            const id = document.getElementById('adm-actual-id').value;
+            const tgl = document.getElementById('adm-actual-tgl').value;
+            const hasil = document.getElementById('adm-actual-hasil').value;
+            const ket = document.getElementById('adm-actual-ket').value;
+            const fotoInput = document.getElementById('adm-actual-foto');
+
+            if(!tgl || !hasil) return alert("Tanggal & Hasil Actual wajib diisi!");
+            toggleLoader(true, "Menyimpan Realisasi...");
+            
+            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
+
+            try {
+                await updateDoc(doc(db, "adm_harian", id), {
+                    status: "Selesai",
+                    tglActual: tgl,
+                    hasilActual: hasil,
+                    keteranganActual: ket || "-",
+                    fotoActual: fotoBase64
+                });
+                alert("Realisasi Tersimpan!");
+                document.getElementById('adm-actual-hasil').value = "";
+                document.getElementById('adm-actual-ket').value = "";
+                document.getElementById('adm-actual-foto').value = "";
+                document.getElementById('status-adm-foto').innerHTML = "";
+                document.getElementById('form-adm-actual').style.display = 'none';
+                await ambilDataAdmHarian(); window.switchTabAdm('sudah');
+            } catch(e) { alert(e.message); }
+            toggleLoader(false);
+        }
+
+        window.bukaAdmHarianProgress = async function() {
+            window.navigasi('adm-harian-progress-screen');
+            await ambilDataAdmHarian();
+            const container = document.getElementById('list-adm-progress'); container.innerHTML = "";
+            if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
+            admHarianDatabase.forEach(data => {
+                let color = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)";
+                let badge = data.status === "Selesai" ? "Selesai Terealisasi" : "Belum Terealisasi";
+                container.innerHTML += `<div class="progress-card" style="border-left-color:${color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')">
+                    <h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p>
+                    <span class="status-badge" style="background:${color}">${badge}</span>
+                </div>`;
+            });
+        }
+
+        window.bukaDetailAdmHarian = function(id) {
+            const data = admHarianDatabase.find(d => d.id === id); if(!data) return;
+            let colorStatus = data.status === "Selesai" ? "var(--cepat)" : "var(--lambat)";
+            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div>
+                <table class="report-table">
+                    <tr><th>Nama Kegiatan / Rencana</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr>
+                    <tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status === 'Belum' ? 'Belum Terealisasi' : 'Sudah Terealisasi'}</td></tr>
+                    <tr><th>Tanggal Target Pelaksanaan</th><td>${data.tglTarget}</td></tr>
+                    <tr><th>Detail Rencana Pekerjaan</th><td>${data.detailRencana}</td></tr>
+                    <tr><th>Nama Admin</th><td>${data.adminName}</td></tr>
+                </table>`;
+            if(data.status === "Selesai") {
+                html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL ACTUAL TEREALISASI</th></tr>
+                    <tr><th>Tanggal Aktual Selesai</th><td>${data.tglActual}</td></tr>
+                    <tr><th>Hasil Aktual</th><td>${data.hasilActual}</td></tr>
+                    <tr><th>Keterangan Tambahan</th><td>${data.keteranganActual}</td></tr>
+                </table>`;
+                if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; }
+                else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
+            }
+            document.getElementById('report-adm-content').innerHTML = html; window.navigasi('adm-harian-detail-screen');
+        }
+
+        window.downloadAdmJPG = function() {
+            toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-adm-content');
+            html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
+                let link = document.createElement('a'); link.download = `ADMHarian_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false);
+            }).catch(e => { toggleLoader(false); alert("Gagal."); });
+        }
 
 
         // =======================================================
