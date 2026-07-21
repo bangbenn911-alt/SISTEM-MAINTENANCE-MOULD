@@ -99,37 +99,46 @@
         .menu-circle-wrap {
             position: relative; width: 280px; height: 280px; margin: 60px auto 40px auto; 
             border-radius: 50%; border: 3px dashed #cbd5e1; 
-            animation: spinOrbit 20s linear infinite; /* Putaran Lintasan */
+            animation: spinOrbit 20s linear infinite; 
         }
         @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
-        @keyframes spinReverse { 100% { transform: rotate(-360deg); } }
 
-        /* Hentikan putaran saat ditekan agar mudah di-klik */
-        .menu-circle-wrap:active, .menu-circle-wrap:active .circle-btn { animation-play-state: paused; }
+        /* Hentikan putaran saat ditekan */
+        .menu-circle-wrap:active, 
+        .menu-circle-wrap:active .counter-spin-1, 
+        .menu-circle-wrap:active .counter-spin-2, 
+        .menu-circle-wrap:active .counter-spin-3 { 
+            animation-play-state: paused; 
+        }
 
         .circle-orbit {
             position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px;
         }
-        /* Penempatan 3 Titik Lingkaran (0deg, 120deg, 240deg) */
+        
+        /* Posisi Sudut Lingkaran (Tetap) */
         .orbit-1 { transform: rotate(0deg) translateX(140px); }
         .orbit-2 { transform: rotate(120deg) translateX(140px); }
         .orbit-3 { transform: rotate(240deg) translateX(140px); }
 
+        /* Animasi Melawan Arah untuk menjaga teks TEGAK SEMPURNA */
+        .counter-spin-1 { width: 100%; height: 100%; animation: spinRev1 20s linear infinite; }
+        .counter-spin-2 { width: 100%; height: 100%; animation: spinRev2 20s linear infinite; }
+        .counter-spin-3 { width: 100%; height: 100%; animation: spinRev3 20s linear infinite; }
+
+        @keyframes spinRev1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
+        @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } }
+        @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
+
+        /* Tombolnya sendiri (Aman dari bentrokan rotasi) */
         .circle-btn {
             width: 100%; height: 100%; background: white; border-radius: 50%;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3;
             box-shadow: 0 8px 15px rgba(0,0,0,0.2); cursor: pointer;
             border: 4px solid; transition: transform 0.2s, box-shadow 0.2s;
-            animation: spinReverse 20s linear infinite; /* Melawan putaran lintasan agar teks tetap tegak */
         }
         .circle-btn:active { transform: scale(0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .circle-btn i { font-size: 26px; margin-bottom: 5px; }
-
-        /* Warna khusus untuk setiap tombol lingkaran */
-        .orbit-1 .circle-btn { border-color: #10b981; color: #10b981; }
-        .orbit-2 .circle-btn { border-color: #3b82f6; color: #3b82f6; }
-        .orbit-3 .circle-btn { border-color: #8b5cf6; color: #8b5cf6; }
         /* ==================================================== */
 
         /* --- FORMULIR --- */
@@ -248,7 +257,6 @@
                 <!-- MENU ADM MOLD DI BERANDA -->
                 <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
-                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
@@ -267,7 +275,7 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN RATA KIRI) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN) -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
@@ -286,42 +294,48 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: ADM MOLD DENGAN MENU LINGKARAN BERPUTAR -->
+    <!-- EKOSISTEM BARU: ADM MOLD DENGAN MENU LINGKARAN BERPUTAR (PERBAIKAN ROTASI TEGAK LURUS) -->
     <!-- ========================================== -->
     
-    <!-- LAYAR: MENU UTAMA ADM MOLD -->
     <div id="adm-mold-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem ADM MOLD</h2></div>
             
-            <!-- MENU LINGKARAN BERPUTAR -->
             <div class="menu-circle-wrap">
-                <!-- Titik Tengah (Hiasan) -->
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;">
                     <i class="fas fa-user-tie"></i>
                 </div>
                 
                 <!-- Orbit 1: Kerja Harian -->
                 <div class="circle-orbit orbit-1">
-                    <div class="circle-btn" onclick="navigasi('adm-harian-menu-screen')">
-                        <i class="fas fa-calendar-day"></i>
-                        <span>1. Kerja<br>Harian</span>
+                    <!-- counter-spin-1 menetralisir putaran global DAN posisi 0 derajat -->
+                    <div class="counter-spin-1">
+                        <div class="circle-btn" style="border-color: #10b981; color: #10b981;" onclick="navigasi('adm-harian-menu-screen')">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>1. Kerja<br>Harian</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Orbit 2: Kerja Mingguan -->
                 <div class="circle-orbit orbit-2">
-                    <div class="circle-btn" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
-                        <i class="fas fa-calendar-week"></i>
-                        <span>2. Kerja<br>Mingguan</span>
+                    <!-- counter-spin-2 menetralisir putaran global DAN kemiringan 120 derajat -->
+                    <div class="counter-spin-2">
+                        <div class="circle-btn" style="border-color: #3b82f6; color: #3b82f6;" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
+                            <i class="fas fa-calendar-week"></i>
+                            <span>2. Kerja<br>Mingguan</span>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Orbit 3: Kerja Bulanan -->
                 <div class="circle-orbit orbit-3">
-                    <div class="circle-btn" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>3. Kerja<br>Bulanan</span>
+                    <!-- counter-spin-3 menetralisir putaran global DAN kemiringan 240 derajat -->
+                    <div class="counter-spin-3">
+                        <div class="circle-btn" style="border-color: #8b5cf6; color: #8b5cf6;" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>3. Kerja<br>Bulanan</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -370,9 +384,7 @@
                 <button class="tab-btn" id="tab-adm-sudah" onclick="switchTabAdm('sudah')">Sudah Terealisasi</button>
             </div>
 
-            <!-- List Target -->
             <div id="list-adm-belum"></div>
-            <!-- List Selesai -->
             <div id="list-adm-sudah" style="display: none;"></div>
 
             <!-- FORM UPDATE ACTUAL -->
@@ -411,7 +423,6 @@
         </div>
     </div>
 
-    <!-- LAYAR: DETAIL LAPORAN HARIAN ADMIN -->
     <div id="adm-harian-detail-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Laporan Harian Admin</h2></div>
@@ -419,9 +430,7 @@
                 <button class="btn-export btn-jpg" onclick="downloadAdmJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-            <div class="report-sheet" id="report-adm-content">
-                <!-- Injeksi JS -->
-            </div>
+            <div class="report-sheet" id="report-adm-content"></div>
             <button class="btn-bottom-back" onclick="bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
@@ -1046,11 +1055,20 @@
             const data = ptDatabase.find(d => d.id === id); if(!data) return; let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)");
             let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${data.targetTrial}</td></tr></table>`;
             if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td>${data.noTrial}</td></tr><tr><th>Tanggal Permintaan</th><td>${data.tglPermintaan}</td></tr></table>`; }
-            if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`; if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; } }
+            if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`;
+                if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } 
+                else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
+            }
             document.getElementById('report-pt-content').innerHTML = html; window.navigasi('pt-detail-screen');
         }
 
-        window.downloadPtJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
+        window.downloadPtJPG = function() {
+            toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content');
+            html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
+                let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false);
+            }).catch(e => { toggleLoader(false); alert("Gagal."); });
+        }
+
 
         // =======================================================
         // EKOSISTEM JADWAL BESAR
