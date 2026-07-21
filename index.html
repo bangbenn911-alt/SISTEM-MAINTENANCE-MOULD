@@ -83,20 +83,20 @@
             background: white; 
             padding: 18px 20px; 
             border-radius: 12px; 
-            text-align: left; /* PERUBAHAN: Teks menjadi rata kiri */
+            text-align: left; 
             font-weight: bold; 
             font-size: 15px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
             cursor: pointer; 
             border-left: 5px solid var(--secondary); 
             transition: transform 0.2s; 
-            display: flex; /* PERUBAHAN: Menyelaraskan ikon dan teks dalam 1 garis presisi */
+            display: flex; 
             align-items: center; 
             gap: 12px; 
         }
         .menu-card i {
-            font-size: 18px; /* Menyamakan ukuran ikon agar rapi */
-            width: 25px; /* Mengunci lebar ikon agar teks sebelahnya sejajar lurus ke bawah */
+            font-size: 18px; 
+            width: 25px; 
             text-align: center;
         }
         .menu-card:active { transform: scale(0.98); }
@@ -131,7 +131,6 @@
         .bg-proses { background-color: var(--proses); color: #000; }
         .bg-cepat { background-color: var(--cepat); }
         .bg-lambat { background-color: var(--lambat); }
-        .bg-tunggu { background-color: #8b5cf6; color: white; }
 
         .export-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-export { flex: 1; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
@@ -213,7 +212,6 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
-                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
@@ -238,10 +236,7 @@
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
             <div class="grid-menu">
                 <div class="menu-card" onclick="navigasi('notulen-menu-screen')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
-                
-                <!-- MENU PERMINTAAN TRIAL -->
                 <div class="menu-card" onclick="bukaMenuPermintaanTrial()" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
-                
                 <div class="menu-card" onclick="navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
                 <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
                 <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 5. LAPORAN MINGGUAN ADMIN</div>
@@ -253,12 +248,9 @@
         </div>
     </div>
 
-
     <!-- ========================================== -->
     <!-- EKOSISTEM: PERMINTAAN TRIAL -->
     <!-- ========================================== -->
-    
-    <!-- LAYAR: MENU PERMINTAAN TRIAL -->
     <div id="permintaan-trial-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem Permintaan Trial</h2></div>
@@ -271,7 +263,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT PERMINTAAN TRIAL -->
+    <!-- INPUT PERMINTAAN TRIAL -->
     <div id="pt-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Permintaan Trial</h2></div>
@@ -285,47 +277,37 @@
         </div>
     </div>
 
-    <!-- LAYAR: 2. VERIFIKASI & UPDATE OLEH ADMIN -->
+    <!-- ADMIN: VERIFIKASI & UPDATE -->
     <div id="pt-admin-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Verifikasi Admin Mold</h2></div>
-            
             <div class="tab-container">
                 <button class="tab-btn tab-active" id="tab-pt-belum" onclick="switchTabPt('belum')">Permintaan Masuk</button>
                 <button class="tab-btn" id="tab-pt-proses" onclick="switchTabPt('proses')">Sedang Proses</button>
             </div>
-
-            <!-- List Permintaan Masuk (Belum Verif) -->
             <div id="list-pt-belum"></div>
-            
-            <!-- List Sedang Proses (Sudah Verif) -->
             <div id="list-pt-proses" style="display: none;"></div>
 
-            <!-- FORM AUTO-FILL: Verifikasi (Ubah Status ke Proses) -->
+            <!-- FORM AUTO-FILL: Verifikasi -->
             <div id="form-pt-verifikasi" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Verifikasi Trial Mold</h3>
                 <input type="hidden" id="pt-verif-id">
-                
                 <div class="form-group"><label>Nama Mold (Otomatis)</label><input type="text" id="pt-verif-nomold" readonly></div>
                 <div class="form-group"><label>Target Trial (Otomatis)</label><input type="date" id="pt-verif-target" readonly></div>
-                
                 <div class="form-group"><label>No Trial (Dibuat Admin)</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
                 <div class="form-group"><label>Tanggal Permintaan Trial</label><input type="date" id="pt-verif-tgl"></div>
-                
                 <div style="display: flex; gap: 10px;">
                     <button class="btn-submit" style="background: gray;" onclick="batalPtAdmin('verif')">Batal</button>
                     <button class="btn-submit" onclick="simpanPtVerifikasi()">VERIFIKASI & PROSES</button>
                 </div>
             </div>
 
-            <!-- FORM AUTO-FILL: Update Hasil (Ubah Status ke Selesai/Gagal) -->
+            <!-- FORM AUTO-FILL: Update Hasil -->
             <div id="form-pt-hasil" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Update Hasil Trial</h3>
                 <input type="hidden" id="pt-hasil-id">
-                
                 <div class="form-group"><label>Nama Mold (Otomatis)</label><input type="text" id="pt-hasil-nomold" readonly></div>
                 <div class="form-group"><label>Target Trial (Otomatis)</label><input type="date" id="pt-hasil-target" readonly></div>
-                
                 <div class="form-group"><label>Hasil Trial</label>
                     <select id="pt-hasil-status">
                         <option value="Selesai">✅ Selesai (Sukses)</option>
@@ -333,35 +315,32 @@
                     </select>
                 </div>
                 <div class="form-group"><label>Keterangan Masalah (Opsional)</label><textarea id="pt-hasil-ket" rows="3" placeholder="Tuliskan jika ada kendala..."></textarea></div>
-                
                 <div class="form-group">
                     <label>Upload Gambar Hasil</label>
                     <label for="pt-hasil-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
                     <input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-pt-foto')">
                     <span id="status-pt-foto" class="file-status"></span>
                 </div>
-                
                 <div style="display: flex; gap: 10px;">
                     <button class="btn-submit" style="background: gray;" onclick="batalPtAdmin('hasil')">Batal</button>
                     <button class="btn-submit" onclick="simpanPtHasil()">SIMPAN HASIL TRIAL</button>
                 </div>
             </div>
-
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- LAYAR: 3. CONTROL PROGRES TRIAL & DETAIL -->
+    <!-- CONTROL PROGRES TRIAL -->
     <div id="pt-progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Trial</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Data berurut berdasarkan request terbaru. Klik pada list untuk melihat detail format Laporan JPG/PDF.</i></p>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail laporan JPG/PDF.</i></p>
             <div id="list-pt-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- LAYAR: DETAIL LAPORAN TRIAL -->
+    <!-- DETAIL LAPORAN TRIAL -->
     <div id="pt-detail-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Laporan Trial</h2></div>
@@ -369,18 +348,14 @@
                 <button class="btn-export btn-jpg" onclick="downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-            
-            <div class="report-sheet" id="report-pt-content">
-                <!-- Injeksi JS -->
-            </div>
-
+            <div class="report-sheet" id="report-pt-content"></div>
             <button class="btn-bottom-back" onclick="bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
 
     <!-- ========================================== -->
-    <!-- MENU EKSKLUSIF: NOTULEN MEETING -->
+    <!-- EKOSISTEM: NOTULEN MEETING -->
     <!-- ========================================== -->
     <div id="notulen-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -393,7 +368,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: INPUT NOTULEN -->
+    <!-- INPUT NOTULEN -->
     <div id="notulen-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Notulen Baru</h2></div>
@@ -441,17 +416,16 @@
         </div>
     </div>
 
-    <!-- LAYAR: HASIL NOTULEN -->
+    <!-- HASIL NOTULEN -->
     <div id="notulen-hasil-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Hasil Laporan Notulen</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 10px;"><i>*Klik pada kartu untuk melihat detail, evaluasi ceklis poin, atau download JPG/PDF.</i></p>
             <div id="list-notulen"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- HALAMAN DETAIL & EVALUASI NOTULEN -->
+    <!-- DETAIL NOTULEN -->
     <div id="detail-notulen-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail & Evaluasi Notulen</h2></div>
@@ -459,16 +433,14 @@
                 <button class="btn-export btn-jpg" onclick="downloadNotulenJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-            <div class="report-sheet" id="report-notulen-content">
-                <!-- Injeksi JS -->
-            </div>
+            <div class="report-sheet" id="report-notulen-content"></div>
             <button class="btn-bottom-back" onclick="bukaHasilNotulen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
 
     <!-- ========================================== -->
-    <!-- MENU EKSKLUSIF: JADWAL BESAR -->
+    <!-- EKOSISTEM: JADWAL BESAR -->
     <!-- ========================================== -->
     <div id="jadwal-besar-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -481,29 +453,25 @@
         </div>
     </div>
 
-    <!-- LAYAR: INPUT JADWAL BESAR -->
+    <!-- INPUT JADWAL BESAR -->
     <div id="jadwal-besar-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Manajemen Jadwal Besar</h2></div>
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                <!-- Bagian Input -->
                 <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input / Update Jadwal Baru</h3>
-                    <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem otomatis memprosesnya menjadi gambar.</p>
+                    <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem akan memprosesnya otomatis.</p>
                     <div class="form-group" style="margin-top: 15px;">
-                        <label>Pilih File (Buka File Manager)</label>
+                        <label>Pilih File</label>
                         <label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label>
                         <input type="file" id="jb-foto" class="input-file-hidden" accept="image/*, application/pdf" onchange="cekFotoFile(this, 'status-jb-foto')">
                         <span id="status-jb-foto" class="file-status"></span>
                     </div>
-                    <button class="btn-submit" onclick="simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN / UPDATE JADWAL</button>
+                    <button class="btn-submit" onclick="simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN JADWAL</button>
                 </div>
-                
-                <!-- Bagian Output Preview -->
                 <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     <h3 style="margin-top:0; color: var(--secondary); font-size: 16px;">Preview Jadwal Aktif</h3>
                     <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                        <!-- Gambar Preview -->
                         <span style="color: gray; font-size: 13px;">Memuat data...</span>
                     </div>
                 </div>
@@ -512,15 +480,13 @@
         </div>
     </div>
 
-    <!-- LAYAR: VIEW JADWAL BESAR ZOOMABLE -->
+    <!-- VIEW JADWAL BESAR ZOOMABLE -->
     <div id="jadwal-besar-view-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>View Jadwal Besar</h2></div>
             <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h3 style="margin-top:0; text-align:center; color: var(--primary); font-size: 18px; border-bottom: 2px solid var(--secondary); padding-bottom:10px;">JADWAL BULANAN</h3>
-                <div id="jb-view-container" style="text-align:center; margin-top:15px;">
-                     <!-- Ruang Khusus Zoom Gambar -->
-                </div>
+                <div id="jb-view-container" style="text-align:center; margin-top:15px;"></div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -620,7 +586,6 @@
                     <button class="btn-filter-action btn-reset" onclick="resetFilter()">Reset Semua</button>
                 </div>
             </div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada nama project untuk melihat laporan detail PDF</i></p>
             <div id="list-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -665,7 +630,6 @@
         let filterTglAwal = "";
         let filterTglAkhir = "";
 
-        // PENGATURAN PDF.JS WORKER
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -706,7 +670,6 @@
             document.getElementById('loader').style.display = show ? 'flex' : 'none';
         }
 
-        // FUNGSI KOMPRESI GAMBAR BIASA
         const compressImage = (file, maxWidth = 1200, maxHeight = 1200, quality = 0.6) => {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -741,6 +704,20 @@
             else target.innerHTML = "";
         }
 
+        // --- SISTEM JAM OTOMATIS RILL TIME ---
+        function dapatkanWaktuRill() {
+            const now = new Date();
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        }
+        setInterval(() => {
+            const el = document.getElementById('notul-waktu-display');
+            if (el) el.value = dapatkanWaktuRill();
+        }, 1000);
+
 
         // =======================================================
         // EKOSISTEM PERMINTAAN TRIAL MOLD
@@ -770,13 +747,13 @@
         }
 
         async function ambilDataPt() {
-            toggleLoader(true, "Sinkronisasi Data Trial..."); ptDatabase = [];
+            toggleLoader(true, "Sinkronisasi Data..."); ptDatabase = [];
             try {
                 const q = query(collection(db, "permintaan_trial"));
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach((doc) => { ptDatabase.push({ id: doc.id, ...doc.data() }); });
                 ptDatabase.sort((a, b) => b.timestamp - a.timestamp); 
-            } catch (e) { console.error("Error data PT: ", e); }
+            } catch (e) {}
             toggleLoader(false);
         }
 
@@ -800,7 +777,7 @@
             const container = document.getElementById(containerId); container.innerHTML = "";
             let filteredData = ptDatabase.filter(d => d.status === filterStatus);
 
-            if(filteredData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Tidak ada data pada kategori ini.</p>`; return; }
+            if(filteredData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Kosong.</p>`; return; }
 
             filteredData.forEach(data => {
                 let badge = filterStatus === 'Menunggu Verifikasi' ? `<span class="status-badge bg-lambat">Menunggu Verifikasi Admin</span>` : `<span class="status-badge bg-proses">Sedang Proses Trial</span>`;
@@ -822,9 +799,9 @@
 
         window.simpanPtVerifikasi = async function() {
             const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value; const tglPermintaan = document.getElementById('pt-verif-tgl').value;
-            if(!noTrial || !tglPermintaan) { alert("No Trial dan Tanggal Permintaan wajib diisi!"); return; }
+            if(!noTrial || !tglPermintaan) { alert("Isi No Trial & Tanggal!"); return; }
             toggleLoader(true, "Memproses Verifikasi...");
-            try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Verifikasi Berhasil! Data dipindahkan ke kolom Proses."); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; document.getElementById('form-pt-verifikasi').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); }
+            try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Terverifikasi!"); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; document.getElementById('form-pt-verifikasi').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); }
             toggleLoader(false);
         }
 
@@ -836,9 +813,9 @@
 
         window.simpanPtHasil = async function() {
             const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto');
-            toggleLoader(true, "Menyimpan Hasil Trial...");
+            toggleLoader(true, "Menyimpan Hasil...");
             let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
-            try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Hasil Trial Berhasil Disimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; document.getElementById('status-pt-foto').innerHTML = ""; document.getElementById('form-pt-hasil').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); }
+            try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; document.getElementById('status-pt-foto').innerHTML = ""; document.getElementById('form-pt-hasil').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) {}
             toggleLoader(false);
         }
 
@@ -846,7 +823,7 @@
 
         window.renderPtProgress = function() {
             const container = document.getElementById('list-pt-progress'); container.innerHTML = "";
-            if(ptDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Belum ada data permintaan trial.</p>`; return; }
+            if(ptDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; }
             ptDatabase.forEach(data => {
                 let badge = ""; let color = "";
                 if(data.status === "Menunggu Verifikasi") { badge = `<span class="status-badge bg-lambat">Menunggu Verifikasi</span>`; color = "var(--lambat)"; }
@@ -860,9 +837,7 @@
         window.bukaPtDetail = function(id) {
             const data = ptDatabase.find(d => d.id === id); if(!data) return;
             let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)");
-
-            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div>
-                <table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${data.targetTrial}</td></tr></table>`;
+            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${data.targetTrial}</td></tr></table>`;
             if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td>${data.noTrial}</td></tr><tr><th>Tanggal Permintaan</th><td>${data.tglPermintaan}</td></tr></table>`; }
             if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`;
                 if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } 
@@ -872,10 +847,10 @@
         }
 
         window.downloadPtJPG = function() {
-            toggleLoader(true, "Mencetak Laporan JPG..."); const targetDiv = document.getElementById('report-pt-content');
+            toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content');
             html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
                 let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false);
-            }).catch(e => { toggleLoader(false); alert("Gagal merender gambar."); });
+            }).catch(e => { toggleLoader(false); alert("Gagal."); });
         }
 
 
