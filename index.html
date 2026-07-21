@@ -99,7 +99,7 @@
         .btn-camera:active { background-color: #334155; transform: scale(0.98); }
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
-        /* --- TABS --- */
+        /* --- TABS (Masih dipakai di Update Project) --- */
         .tab-container { display: flex; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;}
         .tab-btn { flex: 1; padding: 12px; border: none; background: #e2e8f0; font-weight: bold; cursor: pointer; transition: 0.3s; color: #475569;}
         .tab-active { background: var(--secondary); color: white; }
@@ -216,9 +216,9 @@
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="bukaNotulenScreen()" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
+                <div class="menu-card" onclick="navigasi('notulen-menu-screen')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
                 <div class="menu-card" onclick="bukaSubInfo('PERMINTAAN TRIAL')" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
-                <div class="menu-card" onclick="bukaJadwalBesar()" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
+                <div class="menu-card" onclick="navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
                 <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
                 <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 5. LAPORAN MINGGUAN ADMIN</div>
                 <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 6. DATA MASTER MOLD</div>
@@ -229,72 +229,26 @@
         </div>
     </div>
 
+
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: JADWAL BESAR (FILE MANAGER PDF/FOTO) -->
+    <!-- MENU EKSKLUSIF: NOTULEN MEETING -->
     <!-- ========================================== -->
-    <div id="jadwal-besar-screen" class="screen screen-bg">
+    <div id="notulen-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header">
-                <h2>Jadwal Besar</h2>
+            <div class="header"><h2>Menu Notulen Meeting</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigasi('notulen-input-screen')"><i class="fas fa-edit"></i> 1. Input Notulen Baru</div>
+                <div class="menu-card" onclick="bukaHasilNotulen()"><i class="fas fa-folder-open"></i> 2. Lihat Hasil Notulen</div>
             </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-jb-input" onclick="switchTabJb('input')">1. Manajemen (Input / Output)</button>
-                <button class="tab-btn" id="tab-jb-view" onclick="switchTabJb('view')">2. View Jadwal Besar</button>
-            </div>
-
-            <!-- TAB INPUT / OUTPUT JADWAL BESAR -->
-            <div id="area-jb-input">
-                <div style="display: flex; flex-wrap: wrap; gap: 15px;">
-                    <!-- Bagian Input (Upload File Manager) -->
-                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                        <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input / Update Jadwal Baru</h3>
-                        <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem akan otomatis memprosesnya menjadi gambar tabel.</p>
-                        <div class="form-group" style="margin-top: 15px;">
-                            <label>Pilih File (Buka File Manager)</label>
-                            <label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label>
-                            <input type="file" id="jb-foto" class="input-file-hidden" accept="image/*, application/pdf" onchange="cekFotoFile(this, 'status-jb-foto')">
-                            <span id="status-jb-foto" class="file-status"></span>
-                        </div>
-                        <button class="btn-submit" onclick="simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN / UPDATE JADWAL</button>
-                    </div>
-                    
-                    <!-- Bagian Output (Preview Kecil) -->
-                    <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                        <h3 style="margin-top:0; color: var(--secondary); font-size: 16px;">Preview Jadwal Aktif</h3>
-                        <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                            <!-- Gambar Preview dimuat di sini oleh JS -->
-                            <span style="color: gray; font-size: 13px;">Memuat data...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB VIEW JADWAL BESAR (DENGAN FITUR ZOOM) -->
-            <div id="area-jb-view" style="display:none; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <h3 style="margin-top:0; text-align:center; color: var(--primary); font-size: 18px; border-bottom: 2px solid var(--secondary); padding-bottom:10px;">VIEW JADWAL BESAR BULANAN</h3>
-                <div id="jb-view-container" style="text-align:center; margin-top:15px;">
-                     <!-- Ruang Khusus Zoom Gambar (Dimuat via JS) -->
-                </div>
-            </div>
-
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-
-    <!-- ========================================== -->
-    <!-- EKOSISTEM NOTULEN MEETING -->
-    <!-- ========================================== -->
-    <div id="notulen-screen" class="screen screen-bg">
+    <!-- LAYAR: INPUT NOTULEN -->
+    <div id="notulen-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header"><h2>Notulen Meeting</h2></div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-notul-input" onclick="switchTabNotul('input')">1. Input Notulen</button>
-                <button class="tab-btn" id="tab-notul-hasil" onclick="switchTabNotul('hasil')">2. Hasil Notulen</button>
-            </div>
-
-            <!-- TAB INPUT NOTULEN -->
-            <div id="area-notul-input" style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+            <div class="header"><h2>Input Notulen Baru</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <div class="form-group">
                     <label>Jenis Meeting</label>
                     <select id="notul-jenis">
@@ -334,13 +288,16 @@
                 </div>
                 <button class="btn-submit" onclick="simpanNotulen()">SIMPAN NOTULEN KE DATABASE</button>
             </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
 
-            <!-- TAB HASIL NOTULEN -->
-            <div id="area-notul-hasil" style="display:none;">
-                <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 10px;"><i>*Klik pada kartu untuk melihat detail, evaluasi ceklis poin, atau download JPG/PDF.</i></p>
-                <div id="list-notulen"></div>
-            </div>
-
+    <!-- LAYAR: HASIL NOTULEN -->
+    <div id="notulen-hasil-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Hasil Laporan Notulen</h2></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 10px;"><i>*Klik pada kartu untuk melihat detail, evaluasi ceklis poin, atau download JPG/PDF.</i></p>
+            <div id="list-notulen"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -349,22 +306,81 @@
     <div id="detail-notulen-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail & Evaluasi Notulen</h2></div>
-            
             <div class="export-row">
                 <button class="btn-export btn-jpg" onclick="downloadNotulenJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-
             <div class="report-sheet" id="report-notulen-content">
                 <!-- Injeksi JS -->
             </div>
-            
-            <button class="btn-bottom-back" onclick="bukaNotulenScreen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+            <button class="btn-bottom-back" onclick="bukaHasilNotulen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
 
-    <!-- SUB HALAMAN INPUT & LIST INFORMASI LAINNYA (Poin 2, 4, 5, 6, 7, 8) -->
+    <!-- ========================================== -->
+    <!-- MENU EKSKLUSIF: JADWAL BESAR -->
+    <!-- ========================================== -->
+    <div id="jadwal-besar-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Menu Jadwal Besar</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="bukaInputJadwal()"><i class="fas fa-upload"></i> 1. Manajemen (Input / Update)</div>
+                <div class="menu-card" onclick="bukaViewJadwal()"><i class="fas fa-search"></i> 2. View Jadwal Besar</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: INPUT JADWAL BESAR -->
+    <div id="jadwal-besar-input-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Manajemen Jadwal Besar</h2></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <!-- Bagian Input (Upload File Manager) -->
+                <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input / Update Jadwal Baru</h3>
+                    <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem akan otomatis memprosesnya menjadi gambar tabel.</p>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label>Pilih File (Buka File Manager)</label>
+                        <label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label>
+                        <input type="file" id="jb-foto" class="input-file-hidden" accept="image/*, application/pdf" onchange="cekFotoFile(this, 'status-jb-foto')">
+                        <span id="status-jb-foto" class="file-status"></span>
+                    </div>
+                    <button class="btn-submit" onclick="simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN / UPDATE JADWAL</button>
+                </div>
+                
+                <!-- Bagian Output (Preview Kecil) -->
+                <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <h3 style="margin-top:0; color: var(--secondary); font-size: 16px;">Preview Jadwal Aktif</h3>
+                    <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                        <!-- Gambar Preview dimuat di sini oleh JS -->
+                        <span style="color: gray; font-size: 13px;">Memuat data...</span>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- LAYAR: VIEW JADWAL BESAR ZOOMABLE -->
+    <div id="jadwal-besar-view-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>View Jadwal Besar</h2></div>
+            <div style="background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top:0; text-align:center; color: var(--primary); font-size: 18px; border-bottom: 2px solid var(--secondary); padding-bottom:10px;">JADWAL BULANAN</h3>
+                <div id="jb-view-container" style="text-align:center; margin-top:15px;">
+                     <!-- Ruang Khusus Zoom Gambar (Dimuat via JS) -->
+                </div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- SUB HALAMAN INPUT & LIST INFORMASI LAINNYA -->
+    <!-- ========================================== -->
     <div id="sub-info-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2 id="judul-sub-info">Sub Informasi</h2></div>
@@ -592,31 +608,19 @@
 
 
         // =======================================================
-        // EKOSISTEM BARU: 3. JADWAL BESAR (FILE MANAGER & ZOOM)
+        // MENU EKSKLUSIF & LOGIKA JADWAL BESAR
         // =======================================================
-        window.bukaJadwalBesar = async function() {
-            window.navigasi('jadwal-besar-screen');
-            switchTabJb('input');
+        window.bukaInputJadwal = async function() {
+            window.navigasi('jadwal-besar-input-screen');
             await muatJadwalBesar();
         }
 
-        window.switchTabJb = function(tab) {
-            document.getElementById('tab-jb-input').classList.remove('tab-active');
-            document.getElementById('tab-jb-view').classList.remove('tab-active');
-            document.getElementById('area-jb-input').style.display = 'none';
-            document.getElementById('area-jb-view').style.display = 'none';
-            if(tab === 'input') {
-                document.getElementById('tab-jb-input').classList.add('tab-active');
-                document.getElementById('area-jb-input').style.display = 'block';
-            } else {
-                document.getElementById('tab-jb-view').classList.add('tab-active');
-                document.getElementById('area-jb-view').style.display = 'block';
-            }
+        window.bukaViewJadwal = async function() {
+            window.navigasi('jadwal-besar-view-screen');
+            await muatJadwalBesar();
         }
 
-        // Variable Global untuk Fitur Zoom
         window.currentZoomJadwal = 100;
-
         window.zoomJadwal = function(step) {
             const img = document.getElementById('img-zoom-jadwal');
             if(!img) return;
@@ -624,7 +628,6 @@
             if(step === 0) { window.currentZoomJadwal = 100; } 
             else { window.currentZoomJadwal += step; }
             
-            // Batas Zoom
             if(window.currentZoomJadwal < 50) window.currentZoomJadwal = 50;
             if(window.currentZoomJadwal > 350) window.currentZoomJadwal = 350;
 
@@ -677,24 +680,22 @@
             let file = fotoInput.files[0];
 
             try {
-                // JIKA FILE ADALAH PDF
                 if (file.type === "application/pdf") {
                     const arrayBuffer = await file.arrayBuffer();
                     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
                     const page = await pdf.getPage(1); 
                     
-                    const viewport = page.getViewport({ scale: 1.5 }); // Skala Aman
+                    const viewport = page.getViewport({ scale: 1.5 }); 
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     
                     await page.render({ canvasContext: ctx, viewport: viewport }).promise;
-                    fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); // Kompresi 60%
+                    fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); 
                 } 
-                // JIKA FILE ADALAH GAMBAR BIASA
                 else if (file.type.startsWith("image/")) {
-                    fotoBase64 = await compressImage(file, 1200, 1200, 0.6); // Maks 1200px
+                    fotoBase64 = await compressImage(file, 1200, 1200, 0.6); 
                 } 
                 else {
                     alert("Format file tidak didukung! Harap masukkan file berformat PDF atau Gambar (JPG/PNG).");
@@ -702,7 +703,6 @@
                     return;
                 }
 
-                // Proteksi 1MB Limit
                 if(fotoBase64.length > 1000000) {
                      alert("Peringatan: Walau sudah dikompres, file ini masih terlalu padat/besar. Cobalah gunakan file PDF/Foto jadwal yang lebih simpel atau screenshot terlebih dahulu.");
                      toggleLoader(false);
@@ -720,9 +720,9 @@
                 
                 document.getElementById('jb-foto').value = "";
                 document.getElementById('status-jb-foto').innerHTML = "";
-                await muatJadwalBesar();
                 
-                switchTabJb('view');
+                // Kembali ke menu
+                window.navigasi('jadwal-besar-menu-screen');
 
             } catch (e) {
                 alert("Gagal memproses/menyimpan file: " + e.message);
@@ -733,26 +733,11 @@
 
 
         // =======================================================
-        // EKOSISTEM NOTULEN MEETING
+        // MENU EKSKLUSIF & LOGIKA NOTULEN MEETING
         // =======================================================
-        window.bukaNotulenScreen = async function() {
-            window.navigasi('notulen-screen');
-            switchTabNotul('input');
+        window.bukaHasilNotulen = async function() {
+            window.navigasi('notulen-hasil-screen');
             await ambilDataNotulen();
-        }
-
-        window.switchTabNotul = function(tab) {
-            document.getElementById('tab-notul-input').classList.remove('tab-active');
-            document.getElementById('tab-notul-hasil').classList.remove('tab-active');
-            document.getElementById('area-notul-input').style.display = 'none';
-            document.getElementById('area-notul-hasil').style.display = 'none';
-            if(tab === 'input') {
-                document.getElementById('tab-notul-input').classList.add('tab-active');
-                document.getElementById('area-notul-input').style.display = 'block';
-            } else {
-                document.getElementById('tab-notul-hasil').classList.add('tab-active');
-                document.getElementById('area-notul-hasil').style.display = 'block';
-            }
         }
 
         window.aiRapihkanNotulen = function() {
@@ -800,15 +785,15 @@
 
             try {
                 await addDoc(collection(db, "notulen_meeting"), dataNotul);
-                alert("Notulen Meeting Berhasil Disimpan & Dirapihkan!");
+                alert("Notulen Meeting Berhasil Disimpan!");
                 
                 document.getElementById('notul-deskripsi').value = "";
                 document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false);
                 document.getElementById('notul-foto').value = "";
                 document.getElementById('status-notul-foto').innerHTML = "";
 
-                await ambilDataNotulen();
-                switchTabNotul('hasil');
+                // Kembali ke menu notulen
+                window.navigasi('notulen-menu-screen');
             } catch (e) { alert("Gagal menyimpan: " + e.message); }
             toggleLoader(false);
         }
