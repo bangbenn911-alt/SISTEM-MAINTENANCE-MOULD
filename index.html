@@ -9,9 +9,10 @@
     <!-- LIBRARIES UTAMA -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <!-- LIBRARIES PDF TO IMAGE -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+    
+    <!-- LIBRARY GRAFIK PROFESIONAL (CHART.JS) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
         /* --- TEMA & VARIABEL WARNA --- */
@@ -63,83 +64,65 @@
 
         /* --- LAYOUT UTAMA --- */
         .screen { display: none; padding: 20px; padding-bottom: 100px; min-height: 100vh; box-sizing: border-box; }
-        
-        /* EFEK MASUK KEDALAM HALUS (DIVE-IN ZOOM) */
         .active-screen { display: block; animation: diveIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-        @keyframes diveIn { 
-            0% { opacity: 0; transform: scale(0.85); } 
-            100% { opacity: 1; transform: scale(1); } 
-        }
+        @keyframes diveIn { 0% { opacity: 0; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1); } }
 
         .content-wrapper { max-width: 700px; margin: auto; position: relative;} 
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         
-        /* --- TOMBOL KEMBALI BAWAH --- */
-        .btn-bottom-back {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 660px;
-            background: #1e293b; color: white; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: 900;
-            letter-spacing: 1.5px; box-shadow: 0 8px 20px rgba(0,0,0,0.35); cursor: pointer; z-index: 900; display: flex;
-            justify-content: center; align-items: center; gap: 12px; transition: 0.1s ease-out; touch-action: manipulation;
-        }
+        .btn-bottom-back { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 40px); max-width: 660px; background: #1e293b; color: white; padding: 16px; border: none; border-radius: 15px; font-size: 16px; font-weight: 900; letter-spacing: 1.5px; box-shadow: 0 8px 20px rgba(0,0,0,0.35); cursor: pointer; z-index: 900; display: flex; justify-content: center; align-items: center; gap: 12px; transition: 0.1s ease-out; touch-action: manipulation; }
         .btn-bottom-back:active { transform: translateX(-50%) scale(0.95); box-shadow: 0 2px 8px rgba(0,0,0,0.2); background: var(--secondary); }
 
-        /* --- TOMBOL MENU RATA KIRI --- */
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        .menu-card { 
-            background: white; padding: 18px 20px; border-radius: 12px; text-align: left; font-weight: bold; font-size: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border-left: 5px solid var(--secondary); transition: transform 0.2s; 
-            display: flex; align-items: center; gap: 12px; 
-        }
+        .menu-card { background: white; padding: 18px 20px; border-radius: 12px; text-align: left; font-weight: bold; font-size: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer; border-left: 5px solid var(--secondary); transition: transform 0.2s; display: flex; align-items: center; gap: 12px; }
         .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
 
         /* ==================================================== */
-        /* MENU SATELIT LINGKARAN BERPUTAR (KHUSUS ADM MOLD)    */
+        /* MENU SATELIT LINGKARAN BERPUTAR                      */
         /* ==================================================== */
-        .menu-circle-wrap {
-            position: relative; width: 280px; height: 280px; margin: 60px auto 40px auto; 
-            border-radius: 50%; border: 3px dashed #cbd5e1; 
-            animation: spinOrbit 20s linear infinite; 
-        }
+        .menu-circle-wrap { position: relative; width: 280px; height: 280px; margin: 60px auto 40px auto; border-radius: 50%; border: 3px dashed #cbd5e1; animation: spinOrbit 20s linear infinite; }
         @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
-
-        /* Hentikan putaran saat ditekan */
-        .menu-circle-wrap:active, 
-        .menu-circle-wrap:active .counter-spin-1, 
-        .menu-circle-wrap:active .counter-spin-2, 
-        .menu-circle-wrap:active .counter-spin-3 { 
-            animation-play-state: paused; 
-        }
-
-        .circle-orbit {
-            position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px;
-        }
-        
-        /* Posisi Sudut Lingkaran (Tetap) */
+        .menu-circle-wrap:active, .menu-circle-wrap:active .counter-spin-1, .menu-circle-wrap:active .counter-spin-2, .menu-circle-wrap:active .counter-spin-3 { animation-play-state: paused; }
+        .circle-orbit { position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px; }
         .orbit-1 { transform: rotate(0deg) translateX(140px); }
         .orbit-2 { transform: rotate(120deg) translateX(140px); }
         .orbit-3 { transform: rotate(240deg) translateX(140px); }
-
-        /* Animasi Melawan Arah untuk menjaga teks TEGAK SEMPURNA */
         .counter-spin-1 { width: 100%; height: 100%; animation: spinRev1 20s linear infinite; }
         .counter-spin-2 { width: 100%; height: 100%; animation: spinRev2 20s linear infinite; }
         .counter-spin-3 { width: 100%; height: 100%; animation: spinRev3 20s linear infinite; }
-
         @keyframes spinRev1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
         @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } }
         @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
-
-        /* Tombolnya sendiri (Aman dari bentrokan rotasi) */
-        .circle-btn {
-            width: 100%; height: 100%; background: white; border-radius: 50%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2); cursor: pointer;
-            border: 4px solid; transition: transform 0.2s, box-shadow 0.2s;
-        }
+        .circle-btn { width: 100%; height: 100%; background: white; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; box-shadow: 0 8px 15px rgba(0,0,0,0.2); cursor: pointer; border: 4px solid; transition: transform 0.2s, box-shadow 0.2s; }
         .circle-btn:active { transform: scale(0.9); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
         .circle-btn i { font-size: 26px; margin-bottom: 5px; }
+
         /* ==================================================== */
+        /* PANEL ANALISA PERFORMA AI (NEON & 3D ESTETIK)        */
+        /* ==================================================== */
+        .neon-panel {
+            background: linear-gradient(145deg, #0f172a, #1e293b); border-radius: 15px; padding: 20px; margin-top: 40px; margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(59, 130, 246, 0.5), 0 0 20px rgba(59, 130, 246, 0.3);
+            position: relative; overflow: hidden; border: 1px solid #3b82f6;
+        }
+        .neon-panel::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(59,130,246,0.1) 0%, transparent 60%); pointer-events: none;
+        }
+        .neon-title {
+            color: #fff; text-align: center; font-size: 16px; font-weight: 900; letter-spacing: 2px; margin: 0 0 20px 0;
+            text-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .neon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .neon-card {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 15px 5px; text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(16, 185, 129, 0.1); transform-style: preserve-3d; transition: 0.3s ease;
+        }
+        .neon-card:active { transform: translateY(4px) scale(0.95); box-shadow: 0 0px 2px rgba(0,0,0,0.4), inset 0 0 5px rgba(16, 185, 129, 0.3); }
+        .neon-card h4 { margin: 0; font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;}
+        .neon-card .neon-num { font-size: 22px; font-weight: 900; margin: 5px 0 0; color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
+        .neon-chart-container { position: relative; height: 250px; width: 100%; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 15px;}
 
         /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
@@ -148,15 +131,12 @@
         input:read-only { background-color: #f1f5f9; color: #64748b; font-weight: bold; cursor: not-allowed; }
         textarea { resize: vertical; } 
         .btn-submit { width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
         
         .chk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #cbd5e1; }
         .chk-grid label { display: flex; align-items: center; gap: 8px; font-weight: normal; margin: 0; cursor: pointer; }
         .chk-grid input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--secondary); cursor: pointer;}
-
         .input-file-hidden { display: none; } 
         .btn-camera { display: inline-block; width: 100%; padding: 12px; background-color: #475569; color: white; text-align: center; border-radius: 8px; cursor: pointer; font-weight: bold; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.3s; }
-        .btn-camera:active { background-color: #334155; transform: scale(0.98); }
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
         /* --- TABS --- */
@@ -171,7 +151,6 @@
         .bg-proses { background-color: var(--proses); color: #000; }
         .bg-cepat { background-color: var(--cepat); }
         .bg-lambat { background-color: var(--lambat); }
-        .bg-tunggu { background-color: #8b5cf6; color: white; }
 
         .export-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-export { flex: 1; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
@@ -183,11 +162,9 @@
         .report-sheet { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #333; margin-bottom: 20px;}
         .report-header { text-align: center; border-bottom: 3px double #334155; padding-bottom: 15px; margin-bottom: 20px; }
         .report-header h2 { margin: 0; color: var(--primary); font-size: 20px; text-transform: uppercase; }
-        .report-header p { margin: 5px 0 0 0; font-size: 14px; color: #64748b; font-weight: bold; }
         .report-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 13px; }
         .report-table th, .report-table td { border: 1px solid #cbd5e1; padding: 10px; vertical-align: top; }
         .report-table th { background-color: #f8fafc; width: 35%; text-align: left; color: var(--primary); }
-        .report-images { display: flex; gap: 10px; justify-content: space-between; }
         .report-img-box { flex: 1; border: 1px dashed #94a3b8; padding: 10px; text-align: center; border-radius: 5px; font-size: 12px;}
         .report-img-box img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 5px; margin-top: 10px; }
         
@@ -254,8 +231,8 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
-                <!-- MENU ADM MOLD DI BERANDA -->
-                <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
+                <!-- MENU ADM MOLD (AKAN MEMBUKA ANIMASI MENU & GRAFIK) -->
+                <div class="menu-card" onclick="bukaAdmMoldMenu()" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
@@ -275,7 +252,7 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (7 POIN RATA KIRI) -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
@@ -294,53 +271,62 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM BARU: ADM MOLD DENGAN MENU LINGKARAN BERPUTAR (PERBAIKAN ROTASI TEGAK LURUS) -->
+    <!-- EKOSISTEM BARU: ADM MOLD & PANEL AI NEON -->
     <!-- ========================================== -->
-    
     <div id="adm-mold-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem ADM MOLD</h2></div>
             
             <div class="menu-circle-wrap">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                
-                <!-- Orbit 1: Kerja Harian -->
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #cbd5e1; font-size: 50px; opacity: 0.5;"><i class="fas fa-user-tie"></i></div>
                 <div class="circle-orbit orbit-1">
-                    <!-- counter-spin-1 menetralisir putaran global DAN posisi 0 derajat -->
                     <div class="counter-spin-1">
                         <div class="circle-btn" style="border-color: #10b981; color: #10b981;" onclick="navigasi('adm-harian-menu-screen')">
-                            <i class="fas fa-calendar-day"></i>
-                            <span>1. Kerja<br>Harian</span>
+                            <i class="fas fa-calendar-day"></i><span>1. Kerja<br>Harian</span>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Orbit 2: Kerja Mingguan -->
                 <div class="circle-orbit orbit-2">
-                    <!-- counter-spin-2 menetralisir putaran global DAN kemiringan 120 derajat -->
                     <div class="counter-spin-2">
                         <div class="circle-btn" style="border-color: #3b82f6; color: #3b82f6;" onclick="bukaSubInfo('LAPORAN KERJA MINGGUAN')">
-                            <i class="fas fa-calendar-week"></i>
-                            <span>2. Kerja<br>Mingguan</span>
+                            <i class="fas fa-calendar-week"></i><span>2. Kerja<br>Mingguan</span>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Orbit 3: Kerja Bulanan -->
                 <div class="circle-orbit orbit-3">
-                    <!-- counter-spin-3 menetralisir putaran global DAN kemiringan 240 derajat -->
                     <div class="counter-spin-3">
                         <div class="circle-btn" style="border-color: #8b5cf6; color: #8b5cf6;" onclick="bukaSubInfo('LAPORAN KERJA BULANAN')">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>3. Kerja<br>Bulanan</span>
+                            <i class="fas fa-calendar-alt"></i><span>3. Kerja<br>Bulanan</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
             <p style="text-align: center; color: gray; font-size: 12px; margin-top: 50px;"><i>*Tahan menu lingkaran untuk menghentikan putaran.</i></p>
+
+            <!-- PANEL ANALISA PERFORMA AI (NEON & GRAFIK) -->
+            <div class="neon-panel">
+                <h3 class="neon-title"><i class="fas fa-bolt"></i> Analisa Performa AI <i class="fas fa-bolt"></i></h3>
+                
+                <div class="neon-grid">
+                    <div class="neon-card">
+                        <h4>Total Target</h4>
+                        <div class="neon-num" id="neon-val-target" style="color: #3b82f6; text-shadow: 0 0 10px rgba(59,130,246,0.8);">0</div>
+                    </div>
+                    <div class="neon-card">
+                        <h4>Terealisasi</h4>
+                        <div class="neon-num" id="neon-val-selesai">0</div>
+                    </div>
+                    <div class="neon-card">
+                        <h4>Success Rate</h4>
+                        <div class="neon-num" id="neon-val-persen" style="color: #f59e0b; text-shadow: 0 0 10px rgba(245,158,11,0.8);">0%</div>
+                    </div>
+                </div>
+
+                <div class="neon-chart-container">
+                    <canvas id="performaChart"></canvas>
+                </div>
+                <p style="text-align:center; font-size:10px; color:#64748b; margin-top:10px; margin-bottom:0;">*Grafik Real-Time Rencana Harian vs Realisasi (7 Hari Terakhir)</p>
+            </div>
 
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -378,37 +364,30 @@
     <div id="adm-harian-actual-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Update Actual Terealisasi</h2></div>
-            
             <div class="tab-container">
                 <button class="tab-btn tab-active" id="tab-adm-belum" onclick="switchTabAdm('belum')">Belum Terealisasi</button>
                 <button class="tab-btn" id="tab-adm-sudah" onclick="switchTabAdm('sudah')">Sudah Terealisasi</button>
             </div>
-
             <div id="list-adm-belum"></div>
             <div id="list-adm-sudah" style="display: none;"></div>
 
-            <!-- FORM UPDATE ACTUAL -->
             <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Update Actual: <span id="adm-actual-tampil" style="color: var(--secondary);"></span></h3>
                 <input type="hidden" id="adm-actual-id">
-                
                 <div class="form-group"><label>Tanggal Actual Realisasi</label><input type="date" id="adm-actual-tgl"></div>
                 <div class="form-group"><label>Hasil Actual Terealisasi</label><input type="text" id="adm-actual-hasil" placeholder="Hasil singkat pelaksanaan..."></div>
                 <div class="form-group"><label>Keterangan Tambahan</label><textarea id="adm-actual-ket" rows="3" placeholder="Rincian hasil aktual pekerjaan..."></textarea></div>
-                
                 <div class="form-group">
                     <label>Bukti Foto Actual (Opsional)</label>
                     <label for="adm-actual-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
                     <input type="file" id="adm-actual-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-adm-foto')">
                     <span id="status-adm-foto" class="file-status"></span>
                 </div>
-                
                 <div style="display: flex; gap: 10px;">
                     <button class="btn-submit" style="background: gray;" onclick="batalAdmActual()">Batal</button>
                     <button class="btn-submit" onclick="simpanAdmActual()">SIMPAN ACTUAL</button>
                 </div>
             </div>
-
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -638,7 +617,7 @@
             <div style="display: flex; flex-wrap: wrap; gap: 15px;">
                 <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                     <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input / Update Jadwal Baru</h3>
-                    <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda. Sistem akan memprosesnya otomatis.</p>
+                    <p style="font-size:12px; color:gray; line-height:1.4;">Cari File PDF atau Foto (JPG/PNG) dari memori HP Anda.</p>
                     <div class="form-group" style="margin-top: 15px;">
                         <label>Pilih File</label>
                         <label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label>
@@ -811,7 +790,6 @@
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // --- MANAJEMEN RIWAYAT HALAMAN ---
         let riwayatNavigasi = ['landing-page'];
         history.pushState({page: 'landing-page'}, "", "");
 
@@ -882,7 +860,6 @@
             else target.innerHTML = "";
         }
 
-        // --- SISTEM JAM OTOMATIS RILL TIME ---
         function dapatkanWaktuRill() {
             const now = new Date();
             const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -891,14 +868,111 @@
             const m = String(now.getMinutes()).padStart(2, '0');
             return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
-        setInterval(() => {
-            const el = document.getElementById('notul-waktu-display');
-            if (el) el.value = dapatkanWaktuRill();
-        }, 1000);
+        setInterval(() => { const el = document.getElementById('notul-waktu-display'); if (el) el.value = dapatkanWaktuRill(); }, 1000);
 
 
         // =======================================================
-        // EKOSISTEM BARU: LAPORAN KERJA HARIAN ADM
+        // LOGIKA PANEL ANALISA AI (CHART.JS)
+        // =======================================================
+        window.bukaAdmMoldMenu = async function() {
+            window.navigasi('adm-mold-menu-screen');
+            await renderAnalisaPerforma();
+        }
+
+        async function renderAnalisaPerforma() {
+            // Ambil data terbaru
+            await ambilDataAdmHarian();
+            
+            // Hitung Angka Neon Card
+            let totalTarget = admHarianDatabase.length;
+            let totalSelesai = admHarianDatabase.filter(d => d.status === 'Selesai').length;
+            let persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
+
+            document.getElementById('neon-val-target').innerText = totalTarget;
+            document.getElementById('neon-val-selesai').innerText = totalSelesai;
+            document.getElementById('neon-val-persen').innerText = persen + '%';
+
+            // Kelompokkan data per tanggal (Tgl Target)
+            let groupedData = {};
+            admHarianDatabase.forEach(d => {
+                let tgl = d.tglTarget;
+                if(!groupedData[tgl]) { groupedData[tgl] = { target: 0, realisasi: 0 }; }
+                groupedData[tgl].target++;
+                if(d.status === 'Selesai') { groupedData[tgl].realisasi++; }
+            });
+
+            // Urutkan tanggal dari yang terlama ke terbaru (Batasi 7 hari terakhir agar rapi)
+            let sortedDates = Object.keys(groupedData).sort();
+            sortedDates = sortedDates.slice(-7);
+
+            let labels = sortedDates;
+            let dataTarget = sortedDates.map(tgl => groupedData[tgl].target);
+            let dataRealisasi = sortedDates.map(tgl => groupedData[tgl].realisasi);
+
+            // Render Chart.js
+            const ctx = document.getElementById('performaChart').getContext('2d');
+            
+            // Hancurkan chart lama jika ada agar tidak tumpang tindih
+            if(window.myChart) { window.myChart.destroy(); }
+
+            // Buat efek Gradasi Glow untuk Area Garis
+            let gradientFill = ctx.createLinearGradient(0, 0, 0, 300);
+            gradientFill.addColorStop(0, 'rgba(16, 185, 129, 0.6)'); // Hijau terang
+            gradientFill.addColorStop(1, 'rgba(16, 185, 129, 0.0)'); // Transparan
+            
+            window.myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Terealisasi',
+                            data: dataRealisasi,
+                            borderColor: '#10b981',
+                            backgroundColor: gradientFill,
+                            borderWidth: 3,
+                            pointBackgroundColor: '#ffffff',
+                            pointBorderColor: '#10b981',
+                            pointRadius: 4,
+                            fill: true,
+                            tension: 0.4 // Membuat kurva melengkung mulus
+                        },
+                        {
+                            type: 'bar',
+                            label: 'Target Kerja',
+                            data: dataTarget,
+                            backgroundColor: 'rgba(59, 130, 246, 0.4)',
+                            borderColor: '#3b82f6',
+                            borderWidth: 1,
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0', font: { family: "'Segoe UI', sans-serif" } } }
+                    },
+                    scales: {
+                        x: { 
+                            ticks: { color: '#94a3b8' }, 
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' } 
+                        },
+                        y: { 
+                            ticks: { color: '#94a3b8', stepSize: 1 }, 
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // =======================================================
+        // EKOSISTEM: LAPORAN KERJA HARIAN ADM
         // =======================================================
         window.simpanAdmTarget = async function() {
             const tgl = document.getElementById('adm-target-tgl').value;
@@ -922,7 +996,7 @@
         }
 
         async function ambilDataAdmHarian() {
-            toggleLoader(true, "Mengunduh Data Laporan..."); admHarianDatabase = [];
+            toggleLoader(true, "Sinkronisasi Data..."); admHarianDatabase = [];
             try {
                 const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
                 snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()}));
