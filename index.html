@@ -464,7 +464,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA (UPDATED) -->
+    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA -->
     <div id="adm-harian-target-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Target Harian</h2></div>
@@ -506,7 +506,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 2. UPDATE ACTUAL TEREALISASI (UPDATED 3 TABS) -->
+    <!-- LAYAR: 2. UPDATE ACTUAL TEREALISASI (3 TABS) -->
     <div id="adm-harian-actual-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Update Actual Terealisasi</h2></div>
@@ -587,13 +587,14 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM: PERMINTAAN TRIAL -->
+    <!-- EKOSISTEM: PERMINTAAN TRIAL (UPDATED V4) -->
     <!-- ========================================== -->
     <div id="permintaan-trial-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem Permintaan Trial</h2></div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('pt-input-screen')"><i class="fas fa-plus-circle"></i> 1. Input Permintaan Trial Baru</div>
+                <!-- Diupdate memanggil fungsi bukaInputPermintaanTrial() -->
+                <div class="menu-card" onclick="bukaInputPermintaanTrial()"><i class="fas fa-plus-circle"></i> 1. Input Permintaan Trial Baru</div>
                 <div class="menu-card" onclick="bukaPtAdmin()"><i class="fas fa-user-shield"></i> 2. Verifikasi & Update Admin</div>
                 <div class="menu-card" onclick="bukaPtProgress()"><i class="fas fa-chart-bar"></i> 3. Control Progres Trial</div>
             </div>
@@ -605,10 +606,33 @@
         <div class="content-wrapper">
             <div class="header"><h2>Input Permintaan Trial</h2></div>
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Nama Mold (Target Trial)</label><input type="text" id="pt-input-nama" placeholder="Masukkan nama mold..."></div>
-                <div class="form-group"><label>Target Pelaksanaan Trial</label><input type="date" id="pt-input-target"></div>
-                <div class="form-group"><label>Nama User / Pemohon</label><input type="text" id="pt-input-user" placeholder="Nama pekerja / user..."></div>
-                <button class="btn-submit" onclick="simpanPtInput()">KIRIM PERMINTAAN</button>
+                
+                <div class="form-group">
+                    <label>Hari, Tanggal Pengajuan</label>
+                    <input type="text" id="pt-input-waktu" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);">
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Mold (Wajib diisi jelas)</label>
+                    <input type="text" id="pt-input-nama" placeholder="Masukkan nama mold...">
+                </div>
+
+                <div class="form-group">
+                    <label>Target Trial / Permintaan (Bisa tambah banyak)</label>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                        <input type="text" id="pt-input-target-item" placeholder="Ketik target trial...">
+                        <button onclick="tambahTargetTrial()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button>
+                    </div>
+                    <ul id="list-target-trial" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;">
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama Peminta</label>
+                    <input type="text" id="pt-input-user" placeholder="Nama pekerja / peminta...">
+                </div>
+
+                <button class="btn-submit" onclick="simpanPtInput()">SEND TO ADMIN</button>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -628,7 +652,7 @@
                 <h3 style="margin-top:0; color: var(--primary);">Verifikasi Trial Mold</h3>
                 <input type="hidden" id="pt-verif-id">
                 <div class="form-group"><label>Nama Mold (Otomatis)</label><input type="text" id="pt-verif-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial (Otomatis)</label><input type="date" id="pt-verif-target" readonly></div>
+                <div class="form-group"><label>Target Trial (Otomatis)</label><input type="text" id="pt-verif-target" readonly></div>
                 <div class="form-group"><label>No Trial (Dibuat Admin)</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
                 <div class="form-group"><label>Tanggal Permintaan Trial</label><input type="date" id="pt-verif-tgl"></div>
                 <div style="display: flex; gap: 10px;">
@@ -641,7 +665,7 @@
                 <h3 style="margin-top:0; color: var(--primary);">Update Hasil Trial</h3>
                 <input type="hidden" id="pt-hasil-id">
                 <div class="form-group"><label>Nama Mold (Otomatis)</label><input type="text" id="pt-hasil-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial (Otomatis)</label><input type="date" id="pt-hasil-target" readonly></div>
+                <div class="form-group"><label>Target Trial (Otomatis)</label><input type="text" id="pt-hasil-target" readonly></div>
                 <div class="form-group"><label>Hasil Trial</label>
                     <select id="pt-hasil-status">
                         <option value="Selesai">✅ Selesai (Sukses)</option>
@@ -1039,7 +1063,10 @@
             const m = String(now.getMinutes()).padStart(2, '0');
             return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
-        setInterval(() => { const el = document.getElementById('notul-waktu-display'); if (el) el.value = dapatkanWaktuRill(); }, 1000);
+        setInterval(() => { 
+            const el = document.getElementById('notul-waktu-display'); if (el) el.value = dapatkanWaktuRill(); 
+            const ptEl = document.getElementById('pt-input-waktu'); if (ptEl && ptEl.offsetParent !== null) ptEl.value = dapatkanWaktuRill();
+        }, 1000);
 
 
         // =======================================================
@@ -1051,7 +1078,6 @@
         }
 
         window.switchTabAnalisa = async function(kategori) {
-            // Update active state tab
             ['store', 'repair', 'trouble', 'workshop', 'adm', 'all'].forEach(t => {
                 let el = document.getElementById(`ntab-${t}`);
                 if(el) el.classList.remove('active');
@@ -1285,7 +1311,6 @@
             if (statusGroup === 'Belum') {
                 filtered = admHarianDatabase.filter(d => d.status === 'Belum');
             } else if (statusGroup === 'Sudah') {
-                // Selesai Sempurna ATAU Selesai Belum Sempurna masuk ke tab Sudah
                 filtered = admHarianDatabase.filter(d => d.status === 'Selesai Sempurna' || d.status === 'Selesai Belum Sempurna');
             } else if (statusGroup === 'Gagal') {
                 filtered = admHarianDatabase.filter(d => d.status === 'Gagal');
@@ -1538,16 +1563,69 @@
 
 
         // =======================================================
-        // EKOSISTEM PERMINTAAN TRIAL MOLD
+        // EKOSISTEM PERMINTAAN TRIAL MOLD (UPDATED V4)
         // =======================================================
+        window.targetTrialArray = [];
+
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
 
+        window.bukaInputPermintaanTrial = function() {
+            window.targetTrialArray = [];
+            renderTargetTrialUI();
+            document.getElementById('pt-input-waktu').value = dapatkanWaktuRill();
+            document.getElementById('pt-input-nama').value = "";
+            document.getElementById('pt-input-user').value = "";
+            window.navigasi('pt-input-screen');
+        }
+
+        window.tambahTargetTrial = function() {
+            const input = document.getElementById('pt-input-target-item');
+            const val = input.value.trim();
+            if(val) { window.targetTrialArray.push(val); renderTargetTrialUI(); input.value = ""; input.focus(); }
+        }
+
+        window.hapusTargetTrial = function(index) {
+            window.targetTrialArray.splice(index, 1); renderTargetTrialUI();
+        }
+
+        window.renderTargetTrialUI = function() {
+            const ul = document.getElementById('list-target-trial'); ul.innerHTML = "";
+            if(window.targetTrialArray.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada target trial ditambahkan.</li>`; }
+            else { window.targetTrialArray.forEach((item, idx) => {
+                    ul.innerHTML += `<li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary);">
+                        <span style="font-size:13px; font-weight:bold;">${idx + 1}. ${item}</span>
+                        <button onclick="hapusTargetTrial(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </li>`;
+            }); }
+        }
+
         window.simpanPtInput = async function() {
-            const namaMold = document.getElementById('pt-input-nama').value; const target = document.getElementById('pt-input-target').value; const user = document.getElementById('pt-input-user').value;
-            if(!namaMold || !target || !user) { alert("Semua kolom input Trial wajib diisi!"); return; }
+            const namaMold = document.getElementById('pt-input-nama').value; 
+            const user = document.getElementById('pt-input-user').value;
+            
+            if(!namaMold || window.targetTrialArray.length === 0 || !user) { 
+                alert("Semua kolom (Nama Mold, List Target Trial, Nama Peminta) wajib diisi dengan jelas!"); return; 
+            }
+            
             toggleLoader(true, "Mengirim Permintaan Trial...");
-            const dataPt = { namaMold: namaMold, targetTrial: target, namaUser: user, status: "Menunggu Verifikasi", noTrial: "-", tglPermintaan: "-", hasil: "-", keteranganHasil: "-", fotoHasil: "", timestamp: Date.now() };
-            try { await addDoc(collection(db, "permintaan_trial"), dataPt); alert("Permintaan dikirim ke Admin!"); document.getElementById('pt-input-nama').value = ""; document.getElementById('pt-input-target').value = ""; document.getElementById('pt-input-user').value = ""; window.navigasi('permintaan-trial-menu-screen'); } catch (e) { alert("Gagal: " + e.message); }
+            const dataPt = { 
+                namaMold: namaMold, 
+                targetTrialList: window.targetTrialArray, 
+                waktuPengajuan: dapatkanWaktuRill(), // Rill time saat diklik
+                namaUser: user, 
+                status: "Menunggu Verifikasi", 
+                noTrial: "-", 
+                tglPermintaan: "-", 
+                hasil: "-", 
+                keteranganHasil: "-", 
+                fotoHasil: "", 
+                timestamp: Date.now() 
+            };
+            try { 
+                await addDoc(collection(db, "permintaan_trial"), dataPt); 
+                alert("Permintaan dikirim ke Admin!"); 
+                window.navigasi('permintaan-trial-menu-screen'); 
+            } catch (e) { alert("Gagal: " + e.message); }
             toggleLoader(false);
         }
 
@@ -1566,14 +1644,43 @@
             filteredData.forEach(data => {
                 let badge = filterStatus === 'Menunggu Verifikasi' ? `<span class="status-badge bg-lambat">Menunggu Verifikasi Admin</span>` : `<span class="status-badge bg-proses">Sedang Proses Trial</span>`;
                 let clickAction = filterStatus === 'Menunggu Verifikasi' ? `bukaFormPtVerifikasi('${data.id}')` : `bukaFormPtHasil('${data.id}')`;
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${filterStatus === 'Proses' ? 'var(--proses)' : 'var(--lambat)'}; cursor:pointer;" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${data.namaUser} | Target: ${data.targetTrial}</p>${badge}<p style="margin-top:10px; font-size:12px; color:var(--secondary); font-weight:bold;"><i class="fas fa-hand-pointer"></i> Klik untuk Update Data</p></div>`;
+                
+                let targetText = "";
+                if (data.targetTrialList && data.targetTrialList.length > 0) {
+                    targetText = data.targetTrialList.length + " Target Permintaan";
+                } else {
+                    targetText = data.targetTrial || "-";
+                }
+
+                container.innerHTML += `<div class="progress-card" style="border-left-color: ${filterStatus === 'Proses' ? 'var(--proses)' : 'var(--lambat)'}; cursor:pointer;" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${data.namaUser} | Target: ${targetText}</p>${badge}<p style="margin-top:10px; font-size:12px; color:var(--secondary); font-weight:bold;"><i class="fas fa-hand-pointer"></i> Klik untuk Update Data</p></div>`;
             });
         }
 
         window.batalPtAdmin = function(tipe) { if(tipe === 'verif') { document.getElementById('form-pt-verifikasi').style.display = 'none'; document.getElementById('list-pt-belum').style.display = 'block'; } else { document.getElementById('form-pt-hasil').style.display = 'none'; document.getElementById('list-pt-proses').style.display = 'block'; } }
-        window.bukaFormPtVerifikasi = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = data.targetTrial; document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('list-pt-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-verifikasi').offsetTop); }
+        
+        window.bukaFormPtVerifikasi = function(id) { 
+            const data = ptDatabase.find(d => d.id === id); 
+            document.getElementById('pt-verif-id').value = id; 
+            document.getElementById('pt-verif-nomold').value = data.namaMold; 
+            
+            let targetText = data.targetTrialList ? data.targetTrialList.join(', ') : data.targetTrial;
+            document.getElementById('pt-verif-target').value = targetText; 
+            
+            document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('list-pt-belum').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-verifikasi').offsetTop); 
+        }
+
         window.simpanPtVerifikasi = async function() { const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value; const tglPermintaan = document.getElementById('pt-verif-tgl').value; if(!noTrial || !tglPermintaan) { alert("Isi No Trial & Tanggal!"); return; } toggleLoader(true, "Memproses Verifikasi..."); try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Terverifikasi!"); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; document.getElementById('form-pt-verifikasi').style.display = 'none'; await ambilDataPt(); switchTabPt('proses'); } catch(e) { alert("Gagal: " + e.message); } toggleLoader(false); }
-        window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = data.targetTrial; document.getElementById('form-pt-hasil').style.display = 'block'; document.getElementById('list-pt-proses').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
+        
+        window.bukaFormPtHasil = function(id) { 
+            const data = ptDatabase.find(d => d.id === id); 
+            document.getElementById('pt-hasil-id').value = id; 
+            document.getElementById('pt-hasil-nomold').value = data.namaMold; 
+            
+            let targetText = data.targetTrialList ? data.targetTrialList.join(', ') : data.targetTrial;
+            document.getElementById('pt-hasil-target').value = targetText; 
+            
+            document.getElementById('form-pt-hasil').style.display = 'block'; document.getElementById('list-pt-proses').style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); 
+        }
         
         window.simpanPtHasil = async function() {
             const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); }
@@ -1585,7 +1692,16 @@
 
         window.bukaPtDetail = function(id) {
             const data = ptDatabase.find(d => d.id === id); if(!data) return; let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)");
-            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${data.targetTrial}</td></tr></table>`;
+            
+            let listTargetHTML = `<ul style="padding-left:15px; margin:0;">`;
+            if (data.targetTrialList && data.targetTrialList.length > 0) {
+                data.targetTrialList.forEach(item => { listTargetHTML += `<li>${item}</li>`; });
+            } else {
+                listTargetHTML += `<li>${data.targetTrial || "-"}</li>`;
+            }
+            listTargetHTML += `</ul>`;
+
+            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${listTargetHTML}</td></tr><tr><th>Waktu Pengajuan</th><td>${data.waktuPengajuan || "-"}</td></tr></table>`;
             if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td>${data.noTrial}</td></tr><tr><th>Tanggal Permintaan</th><td>${data.tglPermintaan}</td></tr></table>`; }
             if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`;
                 if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } 
