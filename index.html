@@ -131,6 +131,7 @@
         .bg-proses { background-color: var(--proses); color: #000; }
         .bg-cepat { background-color: var(--cepat); }
         .bg-lambat { background-color: var(--lambat); }
+        .bg-tunggu { background-color: #8b5cf6; color: white; }
 
         .export-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-export { flex: 1; padding: 12px; border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1);}
@@ -212,6 +213,11 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
+                
+                <!-- LAPORAN MINGGUAN ADMIN SEKARANG DI BERANDA -->
+                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-signature"></i> LAPORAN MINGGUAN ADMIN</div>
+                
+                <!-- MENU INFORMASI & LAPORAN MOLD -->
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
@@ -230,7 +236,7 @@
         </div>
     </div>
 
-    <!-- 4. MENU UTAMA INFORMASI MOLD (8 POIN RATA KIRI) -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (SEKARANG 7 POIN KARENA LAPORAN MINGGUAN PINDAH) -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Informasi & Laporan Mold</h2></div>
@@ -239,18 +245,20 @@
                 <div class="menu-card" onclick="bukaMenuPermintaanTrial()" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
                 <div class="menu-card" onclick="navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
                 <div class="menu-card" onclick="bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('LAPORAN MINGGUAN ADMIN')" style="border-left-color: #f59e0b;"><i class="fas fa-file-alt"></i> 5. LAPORAN MINGGUAN ADMIN</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 6. DATA MASTER MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 7. ROTASI MOLD</div>
-                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 8. DATA PREVENTIF TAHUNAN MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 5. DATA MASTER MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 6. ROTASI MOLD</div>
+                <div class="menu-card" onclick="bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 7. DATA PREVENTIF TAHUNAN MOLD</div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
+
     <!-- ========================================== -->
     <!-- EKOSISTEM: PERMINTAAN TRIAL -->
     <!-- ========================================== -->
+    
+    <!-- LAYAR: MENU PERMINTAAN TRIAL -->
     <div id="permintaan-trial-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Sistem Permintaan Trial</h2></div>
@@ -263,7 +271,7 @@
         </div>
     </div>
 
-    <!-- INPUT PERMINTAAN TRIAL -->
+    <!-- LAYAR: 1. INPUT PERMINTAAN TRIAL -->
     <div id="pt-input-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Permintaan Trial</h2></div>
@@ -277,15 +285,20 @@
         </div>
     </div>
 
-    <!-- ADMIN: VERIFIKASI & UPDATE -->
+    <!-- LAYAR: 2. VERIFIKASI & UPDATE OLEH ADMIN -->
     <div id="pt-admin-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Verifikasi Admin Mold</h2></div>
+            
             <div class="tab-container">
                 <button class="tab-btn tab-active" id="tab-pt-belum" onclick="switchTabPt('belum')">Permintaan Masuk</button>
                 <button class="tab-btn" id="tab-pt-proses" onclick="switchTabPt('proses')">Sedang Proses</button>
             </div>
+
+            <!-- List Permintaan Masuk -->
             <div id="list-pt-belum"></div>
+            
+            <!-- List Sedang Proses -->
             <div id="list-pt-proses" style="display: none;"></div>
 
             <!-- FORM AUTO-FILL: Verifikasi -->
@@ -326,21 +339,22 @@
                     <button class="btn-submit" onclick="simpanPtHasil()">SIMPAN HASIL TRIAL</button>
                 </div>
             </div>
+
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- CONTROL PROGRES TRIAL -->
+    <!-- LAYAR: 3. CONTROL PROGRES TRIAL & DETAIL -->
     <div id="pt-progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Trial</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail laporan JPG/PDF.</i></p>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Data berurut berdasarkan request terbaru. Klik pada list untuk melihat detail format Laporan JPG/PDF.</i></p>
             <div id="list-pt-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- DETAIL LAPORAN TRIAL -->
+    <!-- LAYAR: DETAIL LAPORAN TRIAL -->
     <div id="pt-detail-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Laporan Trial</h2></div>
@@ -348,7 +362,9 @@
                 <button class="btn-export btn-jpg" onclick="downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button>
                 <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
-            <div class="report-sheet" id="report-pt-content"></div>
+            <div class="report-sheet" id="report-pt-content">
+                <!-- Injeksi JS -->
+            </div>
             <button class="btn-bottom-back" onclick="bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
@@ -586,6 +602,7 @@
                     <button class="btn-filter-action btn-reset" onclick="resetFilter()">Reset Semua</button>
                 </div>
             </div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada nama project untuk melihat laporan detail PDF</i></p>
             <div id="list-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -915,7 +932,7 @@
         }
 
         window.simpanNotulen = async function() {
-            const jenis = document.getElementById('notul-jenis').value; const waktuRill = dapatkanWaktuRill(); const deskripsi = document.getElementById('notul-deskripsi').value; const fotoInput = document.getElementById('notul-foto');
+            const jenis = document.getElementById('notul-jenis').value; const waktuRill = document.getElementById('notul-waktu-display').value; const deskripsi = document.getElementById('notul-deskripsi').value; const fotoInput = document.getElementById('notul-foto');
             if(!deskripsi.trim()) { alert("Deskripsi tidak boleh kosong!"); return; }
             let kehadiran = []; document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value)); if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta");
             let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => { return { id: index, teks: teks.replace(/^•\s*/, ''), done: false }; });
