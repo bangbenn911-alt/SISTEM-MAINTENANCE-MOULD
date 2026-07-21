@@ -88,7 +88,7 @@
         .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
 
-        /* TOMBOL MASUK POINT ANALISA PERFORMA (NEON) */
+        /* TOMBOL PUSAT ANALISA PERFORMA (NEON) */
         .neon-trigger-btn {
             background: #0f172a; color: #38bdf8; border: 2px solid #38bdf8; border-left: 5px solid #38bdf8;
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); justify-content: center; text-transform: uppercase; letter-spacing: 1px;
@@ -120,7 +120,7 @@
         @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } }
         @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
 
-        /* TOMBOL INTI (CORE) DI TENGAH LINGKARAN */
+        /* TOMBOL INTI (CORE) DI TENGAH LINGKARAN (PENGOLAH/REKAP DATA) */
         .core-btn {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 70px; height: 70px; background: radial-gradient(circle, #1e293b, #0f172a);
@@ -176,8 +176,9 @@
             text-shadow: 0 0 5px #38bdf8, 0 0 10px #38bdf8; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
         
-        .neon-tabs { display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        .neon-tab-btn { flex: 1; padding: 10px; background: transparent; border: none; color: #94a3b8; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 13px; }
+        /* TABS NEON PUSAT ANALISA (DIVISI & ADM) */
+        .neon-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .neon-tab-btn { padding: 8px 4px; background: transparent; border: none; color: #94a3b8; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 11px; text-align: center; }
         .neon-tab-btn.active { background: rgba(56, 189, 248, 0.2); color: #38bdf8; box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.5); text-shadow: 0 0 5px #38bdf8; border: 1px solid rgba(56, 189, 248, 0.5); }
 
         .neon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
@@ -300,7 +301,6 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
-                <!-- MENU ADM MOLD DI BERANDA -->
                 <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
@@ -340,7 +340,7 @@
 
 
     <!-- ========================================== -->
-    <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & INTI OLAH DATA -->
+    <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & PUSAT OLAH DATA -->
     <!-- ========================================== -->
     
     <div id="adm-mold-menu-screen" class="screen screen-bg">
@@ -349,7 +349,7 @@
             
             <div class="menu-circle-wrap">
                 <!-- TOMBOL INTI (CORE BUTTON) DI TENGAH: PUSAT OLAH DATA -->
-                <div class="core-btn" onclick="navigasi('data-olahan-menu-screen')">
+                <div class="core-btn" onclick="navigasi('data-olahan-menu-screen')" title="Pusat Olah & Rekap Data">
                     <i class="fas fa-user-cog"></i>
                 </div>
                 
@@ -378,10 +378,10 @@
                 </div>
             </div>
             
-            <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan menu lingkaran untuk menghentikan putaran. Klik icon admin di tengah untuk merekap data.</i></p>
+            <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan lingkaran untuk menghentikan putaran. Klik ikon tengah (Admin) untuk rekap data.</i></p>
 
             <div class="menu-card neon-trigger-btn" onclick="bukaAnalisaPerforma()">
-                <i class="fas fa-bolt"></i> POINT ANALISA PERFORMA (KLIK)
+                <i class="fas fa-bolt"></i> PUSAT ANALISA PERFORMA (KLIK)
             </div>
 
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
@@ -389,12 +389,12 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- LAYAR: MENU PUSAT OLAH DATA (CORE)         -->
+    <!-- LAYAR: MENU PUSAT OLAH DATA (GOSOK MOLD & PKM) -->
     <!-- ========================================== -->
     <div id="data-olahan-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header"><h2>Pusat Olah Data Admin</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 20px;"><i>Silakan pilih kategori data yang ingin direkap dan diolah.</i></p>
+            <div class="header"><h2>Pusat Olah & Rekap Data</h2></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 20px;"><i>Silakan pilih kategori data operasional yang ingin direkap dan dikelola.</i></p>
             <div class="grid-menu">
                 <div class="menu-card" onclick="bukaSubInfo('DATA OLAHAN GOSOK MOLD')" style="border-left-color: #f59e0b;">
                     <i class="fas fa-hammer"></i> 1. Data Olahan Gosok Mold
@@ -408,28 +408,32 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- RUANGAN RAHASIA: POINT ANALISA PERFORMA (CYBERPUNK) -->
+    <!-- RUANGAN RAHASIA: PUSAT ANALISA PERFORMA AI (CYBERPUNK) -->
     <!-- ========================================== -->
     <div id="analisa-performa-screen" class="screen bg-cyberpunk">
         <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-chart-pie"></i> COMMAND CENTER</h2></div>
+            <div class="header"><h2><i class="fas fa-chart-pie"></i> PUSAT ANALISA PERFORMA</h2></div>
             
             <div class="neon-panel">
-                <h3 class="neon-title"><i class="fas fa-robot"></i> AI PERFORMANCE ANALYTICS <i class="fas fa-robot"></i></h3>
+                <h3 class="neon-title"><i class="fas fa-robot"></i> AI MULTI-DIVISION INTELLIGENCE <i class="fas fa-robot"></i></h3>
                 
+                <!-- TABS FILTER DIVISI & ADM TERINTEGRASI -->
                 <div class="neon-tabs">
-                    <button class="neon-tab-btn active" id="ntab-harian" onclick="switchTabAnalisa('harian')">Harian</button>
-                    <button class="neon-tab-btn" id="ntab-mingguan" onclick="switchTabAnalisa('mingguan')">Mingguan</button>
-                    <button class="neon-tab-btn" id="ntab-bulanan" onclick="switchTabAnalisa('bulanan')">Bulanan</button>
+                    <button class="neon-tab-btn active" id="ntab-store" onclick="switchTabAnalisa('DIVISI MOLD STORE')">Mold Store</button>
+                    <button class="neon-tab-btn" id="ntab-repair" onclick="switchTabAnalisa('DIVISI MOLD REPAIR')">Mold Repair</button>
+                    <button class="neon-tab-btn" id="ntab-trouble" onclick="switchTabAnalisa('DIVISI MOLD TROUBLE')">Mold Trouble</button>
+                    <button class="neon-tab-btn" id="ntab-workshop" onclick="switchTabAnalisa('DIVISI MOLD WORKSHOP')">Mold Workshop</button>
+                    <button class="neon-tab-btn" id="ntab-adm" onclick="switchTabAnalisa('ADM UNIFIED')">Performa ADM</button>
+                    <button class="neon-tab-btn" id="ntab-all" onclick="switchTabAnalisa('ALL')">Global All</button>
                 </div>
 
                 <div class="neon-grid">
                     <div class="neon-card">
-                        <h4>Total Target</h4>
+                        <h4>Total Proyek / Target</h4>
                         <div class="neon-num" id="neon-val-target" style="color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.8);">0</div>
                     </div>
                     <div class="neon-card">
-                        <h4>Terealisasi</h4>
+                        <h4>Selesai / Terealisasi</h4>
                         <div class="neon-num" id="neon-val-selesai">0</div>
                     </div>
                     <div class="neon-card">
@@ -441,7 +445,7 @@
                 <div class="neon-chart-container">
                     <canvas id="performaChart"></canvas>
                 </div>
-                <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Grafik Target vs Realisasi (7 Hari Terakhir)</p>
+                <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Analisa Terstruktur Multi-Divisi & ADM Real-Time</p>
             </div>
 
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
@@ -989,71 +993,108 @@
 
 
         // =======================================================
-        // LOGIKA PANEL ANALISA AI (CHART.JS NEON 3D)
+        // LOGIKA PUSAT ANALISA PERFORMA AI (MULTI-DIVISI & ADM)
         // =======================================================
         window.bukaAnalisaPerforma = async function() {
             window.navigasi('analisa-performa-screen');
-            await switchTabAnalisa('harian');
+            await switchTabAnalisa('DIVISI MOLD STORE');
         }
 
-        window.switchTabAnalisa = async function(tipe) {
-            document.getElementById('ntab-harian').classList.remove('active');
-            document.getElementById('ntab-mingguan').classList.remove('active');
-            document.getElementById('ntab-bulanan').classList.remove('active');
-            document.getElementById(`ntab-${tipe}`).classList.add('active');
+        window.switchTabAnalisa = async function(kategori) {
+            // Update active state tab
+            ['store', 'repair', 'trouble', 'workshop', 'adm', 'all'].forEach(t => {
+                let el = document.getElementById(`ntab-${t}`);
+                if(el) el.classList.remove('active');
+            });
+            
+            if(kategori === 'DIVISI MOLD STORE') document.getElementById('ntab-store').classList.add('active');
+            else if(kategori === 'DIVISI MOLD REPAIR') document.getElementById('ntab-repair').classList.add('active');
+            else if(kategori === 'DIVISI MOLD TROUBLE') document.getElementById('ntab-trouble').classList.add('active');
+            else if(kategori === 'DIVISI MOLD WORKSHOP') document.getElementById('ntab-workshop').classList.add('active');
+            else if(kategori === 'ADM UNIFIED') document.getElementById('ntab-adm').classList.add('active');
+            else if(kategori === 'ALL') document.getElementById('ntab-all').classList.add('active');
 
-            toggleLoader(true, "AI Mengumpulkan Data...");
+            toggleLoader(true, "AI Menganalisa Data Divisi & ADM...");
             
             let totalTarget = 0; let totalSelesai = 0; let persen = 0;
             let labels = []; let dataTarget = []; let dataRealisasi = [];
             let descText = "";
 
             try {
-                if (tipe === 'harian') {
-                    descText = "*Grafik Harian Target vs Realisasi (7 Hari Terakhir)";
-                    const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q);
-                    let tempHarian = []; snapshot.forEach(doc => tempHarian.push(doc.data()));
-                    
-                    totalTarget = tempHarian.length;
-                    totalSelesai = tempHarian.filter(d => d.status === 'Selesai').length;
+                if (kategori === 'ADM UNIFIED') {
+                    descText = "*Analisa Gabungan ADM (Harian, Mingguan, Bulanan)";
+                    const qHarian = query(collection(db, "adm_harian")); const snapH = await getDocs(qHarian);
+                    let harianList = []; snapH.forEach(d => harianList.push(d.data()));
+
+                    let tH = harianList.length;
+                    let sH = harianList.filter(d => d.status === 'Selesai').length;
+
+                    const qMingguan = query(collection(db, "informasi_mold"), where("kategori", "==", "LAPORAN KERJA MINGGUAN"));
+                    const snapM = await getDocs(qMingguan);
+                    let tM = snapM.size;
+
+                    const qBulanan = query(collection(db, "informasi_mold"), where("kategori", "==", "LAPORAN KERJA BULANAN"));
+                    const snapB = await getDocs(qBulanan);
+                    let tB = snapB.size;
+
+                    totalTarget = tH + tM + tB;
+                    totalSelesai = sH + tM + tB;
                     persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
 
-                    let groupedData = {};
-                    tempHarian.forEach(d => {
-                        let tgl = d.tglTarget;
-                        if(!groupedData[tgl]) { groupedData[tgl] = { target: 0, realisasi: 0 }; }
-                        groupedData[tgl].target++;
-                        if(d.status === 'Selesai') { groupedData[tgl].realisasi++; }
-                    });
+                    labels = ['Kerja Harian', 'Kerja Mingguan', 'Kerja Bulanan'];
+                    dataTarget = [tH, tM, tB];
+                    dataRealisasi = [sH, tM, tB];
 
-                    let sortedDates = Object.keys(groupedData).sort().slice(-7);
-                    labels = sortedDates;
-                    dataTarget = sortedDates.map(tgl => groupedData[tgl].target);
-                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl].realisasi);
+                } else if (kategori === 'ALL') {
+                    descText = "*Performa Global Seluruh Divisi & ADM Terstruktur";
+                    // Ambil projects semua divisi
+                    const qProj = query(collection(db, "projects")); const snapProj = await getDocs(qProj);
+                    let allProj = []; snapProj.forEach(d => allProj.data() && allProj.push(d.data()));
 
-                } else if (tipe === 'mingguan' || tipe === 'bulanan') {
-                    let kategoriQuery = tipe === 'mingguan' ? 'LAPORAN KERJA MINGGUAN' : 'LAPORAN KERJA BULANAN';
-                    descText = `*Grafik Frekuensi Pengiriman ${kategoriQuery}`;
+                    totalTarget = allProj.length;
+                    totalSelesai = allProj.filter(d => d.statusUpdate === 'Sudah').length;
+                    persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
+
+                    labels = ['Mold Store', 'Mold Repair', 'Mold Trouble', 'Mold Workshop', 'ADM Unified'];
                     
-                    const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriQuery)); 
+                    let countDiv = (divName) => {
+                        let divP = allProj.filter(d => d.divisi === divName);
+                        let divS = divP.filter(d => d.statusUpdate === 'Sudah').length;
+                        return { t: divP.length, s: divS };
+                    };
+
+                    let st = countDiv('DIVISI MOLD STORE');
+                    let rp = countDiv('DIVISI MOLD REPAIR');
+                    let tr = countDiv('DIVISI MOLD TROUBLE');
+                    let ws = countDiv('DIVISI MOLD WORKSHOP');
+
+                    dataTarget = [st.t, rp.t, tr.t, ws.t, 10];
+                    dataRealisasi = [st.s, rp.s, tr.s, ws.s, 10];
+
+                } else {
+                    // Berdasarkan Divisi spesifik
+                    descText = `*Analisa Performa Spesifik: ${kategori}`;
+                    const q = query(collection(db, "projects"), where("divisi", "==", kategori));
                     const snapshot = await getDocs(q);
-                    let tempInfo = []; snapshot.forEach(doc => tempInfo.push(doc.data()));
+                    let divData = []; snapshot.forEach(d => divData.push(d.data()));
 
-                    totalTarget = tempInfo.length;
-                    totalSelesai = tempInfo.length; 
-                    persen = totalTarget === 0 ? 0 : 100;
+                    totalTarget = divData.length;
+                    totalSelesai = divData.filter(d => d.statusUpdate === 'Sudah').length;
+                    persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100);
 
-                    let groupedData = {};
-                    tempInfo.forEach(d => {
-                        let tgl = d.tanggal;
-                        if(!groupedData[tgl]) { groupedData[tgl] = 0; }
-                        groupedData[tgl]++;
+                    // Kelompokkan per tanggal target
+                    let grouped = {};
+                    divData.forEach(d => {
+                        let tgl = d.targetSelesai || 'Tanpa Tanggal';
+                        if(!grouped[tgl]) grouped[tgl] = { t: 0, s: 0 };
+                        grouped[tgl].t++;
+                        if(d.statusUpdate === 'Sudah') grouped[tgl].s++;
                     });
 
-                    let sortedDates = Object.keys(groupedData).sort().slice(-7);
-                    labels = sortedDates;
-                    dataTarget = sortedDates.map(tgl => groupedData[tgl]);
-                    dataRealisasi = sortedDates.map(tgl => groupedData[tgl]); 
+                    let sortedTgl = Object.keys(grouped).sort().slice(-7);
+                    labels = sortedTgl;
+                    dataTarget = sortedTgl.map(t => grouped[t].t);
+                    dataRealisasi = sortedTgl.map(t => grouped[t].s);
                 }
 
                 document.getElementById('neon-val-target').innerText = totalTarget;
@@ -1074,7 +1115,7 @@
                         labels: labels,
                         datasets: [
                             {
-                                type: 'line', label: 'Terealisasi', data: dataRealisasi,
+                                type: 'line', label: 'Terealisasi / Selesai', data: dataRealisasi,
                                 borderColor: '#10b981', backgroundColor: gradientFill, borderWidth: 3,
                                 pointBackgroundColor: '#ffffff', pointBorderColor: '#10b981', pointRadius: 4,
                                 fill: true, tension: 0.4
@@ -1097,8 +1138,8 @@
                 });
 
             } catch (e) {
-                console.error("Gagal memuat chart:", e);
-                alert("Gagal menarik data performa!");
+                console.error("Gagal analisa multi-divisi:", e);
+                alert("Gagal memproses rekapitulasi data divisi!");
             }
             toggleLoader(false);
         }
