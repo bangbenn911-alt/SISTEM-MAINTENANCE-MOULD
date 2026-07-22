@@ -464,7 +464,7 @@
         </div>
     </div>
 
-    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA (UPDATED V5) -->
+    <!-- LAYAR: 1. INPUT TARGET HARIAN KERJA -->
     <div id="adm-harian-target-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input Target Harian</h2></div>
@@ -525,14 +525,15 @@
             <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Update Actual: <br><span id="adm-actual-tampil" style="color: var(--secondary); font-size: 16px;"></span></h3>
                 <input type="hidden" id="adm-actual-id">
-                <input type="hidden" id="adm-actual-tgl-ori"> <!-- Penyimpan Tanggal Target Asli -->
+                <input type="hidden" id="adm-actual-tgl-ori"> 
 
                 <div id="adm-actual-time-warning" style="display:none; background:#fee2e2; border-left:4px solid #ef4444; padding:10px; font-size:12px; font-weight:bold; color:#b91c1c; margin-bottom:15px; border-radius:4px;">
                     <i class="fas fa-lock"></i> Waktu menunjukkan lewat pukul 16:00. Anda diwajibkan mengisi kolom Catatan jika ada pekerjaan yang belum diselesaikan!
                 </div>
 
-                <!-- Tgl Hanya untuk internal info, tak perlu diubah user -->
-                <p style="font-size:12px; color:gray; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:15px;">Waktu Aktual: Menyesuaikan saat Anda menekan tombol Simpan.</p>
+                <!-- Tgl Hanya untuk internal info -->
+                <p style="font-size:12px; color:gray; font-weight:bold; border-bottom:1px solid #ccc; padding-bottom:5px; margin-bottom:15px;">Waktu Aktual: Menyesuaikan jam rill saat Anda menekan tombol Simpan di bawah.</p>
+                <input type="hidden" id="adm-actual-tgl">
                 
                 <div class="form-group" id="adm-actual-list-group">
                     <label>Daftar Rencana Kerja (Ceklis jika selesai):</label>
@@ -1225,7 +1226,7 @@
         }
 
         // =======================================================
-        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED V6 - PINTAR)
+        // EKOSISTEM: LAPORAN KERJA HARIAN ADM (UPDATED V7 - TIME STAMP & GRID NEAT)
         // =======================================================
         
         window.rencanaKerjaArray = [];
@@ -1418,7 +1419,8 @@
             if (data.daftarActual && data.daftarActual.length > 0) {
                 window.actualEditList = JSON.parse(JSON.stringify(data.daftarActual));
             } else {
-                window.actualEditList = data.daftarRencana.map(teks => ({ teks: teks, done: false, type: 'rencana' }));
+                // Struktur baru mendukung waktuSelesai
+                window.actualEditList = data.daftarRencana.map(teks => ({ teks: teks, done: false, type: 'rencana', waktuSelesai: null }));
             }
 
             const now = new Date();
@@ -1468,7 +1470,7 @@
             const input = document.getElementById('adm-actual-input-baru');
             const val = input.value.trim();
             if(val) {
-                window.actualEditList.push({ teks: val, done: false, type: 'tambahan' }); 
+                window.actualEditList.push({ teks: val, done: false, type: 'tambahan', waktuSelesai: null }); 
                 renderActualCeklisUI(); input.value = "";
             }
         }
@@ -1504,6 +1506,17 @@
             const timeNowMins = now.getHours() * 60 + now.getMinutes();
             const targetTimeMins = 16 * 60; // 16:00
             
+            const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB';
+            
+            // Merekam Waktu Real-Time Khusus Tugas yang di Ceklis
+            window.actualEditList.forEach(item => {
+                if (item.done && !item.waktuSelesai) {
+                    item.waktuSelesai = timeStringStr; // Berikan cap waktu jika diceklis
+                } else if (!item.done) {
+                    item.waktuSelesai = null; // Reset jika tidak jadi diceklis
+                }
+            });
+
             const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0);
             const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0);
 
@@ -1578,20 +1591,29 @@
             
             let ui = getAdmStatusUI(data);
             
-            let listRencanaHTML = `<ul style="padding-left:0; margin:0; list-style:none;">`;
+            // DESAIN GRID/FLEX LIST YANG LEBIH RAPIH (Time Stamping Real-time)
+            let listRencanaHTML = `<ul style="padding:0; margin:0; list-style:none;">`;
             if (data.daftarActual && data.daftarActual.length > 0) {
                 let blmList = [];
                 data.daftarActual.forEach(item => { 
-                    let mark = item.done ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-times-circle" style="color:var(--lambat);"></i>`;
-                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706;">*(Diluar rencana)*</span>` : "";
-                    listRencanaHTML += `<li style="margin-bottom:5px;">${mark} ${item.teks}${typeNote}</li>`; 
+                    let timeBadge = item.done && item.waktuSelesai ? `<span style="display:inline-block; font-size:10px; background:#e2e8f0; color:#475569; padding:2px 6px; border-radius:4px; margin-right:6px; white-space:nowrap;"><i class="fas fa-clock"></i> ${item.waktuSelesai}</span>` : '';
+                    let mark = item.done ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:14px;"></i>` : `<i class="fas fa-times-circle" style="color:var(--lambat); font-size:14px;"></i>`;
+                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px; margin-left:5px;">*(Diluar rencana)*</span>` : "";
+                    
+                    listRencanaHTML += `
+                    <li style="display:flex; align-items:flex-start; margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:8px; line-height:1.4;">
+                        <div style="flex-shrink:0; margin-top:2px; margin-right:8px; width:16px; text-align:center;">${mark}</div>
+                        <div style="flex:1; font-size:13px; color:#334155;">${timeBadge}${item.teks}${typeNote}</div>
+                    </li>`; 
                     if(!item.done) blmList.push(item.teks);
                 });
                 if (blmList.length > 0) {
-                    listRencanaHTML += `<li style="margin-top:10px; font-size:11px; color:#b91c1c; background:#fee2e2; padding:8px; border-radius:5px;"><strong>Pemberitahuan:</strong> Terdapat ${blmList.length} tugas yang tidak terealisasi pada target ini.</li>`;
+                    listRencanaHTML += `<li style="margin-top:10px; font-size:11px; color:#b91c1c; background:#fee2e2; padding:10px; border-radius:6px; border-left:4px solid #ef4444;"><strong>Pemberitahuan:</strong> Terdapat ${blmList.length} tugas yang tidak terealisasi pada target ini.</li>`;
                 }
             } else if(data.daftarRencana && data.daftarRencana.length > 0) {
-                data.daftarRencana.forEach(item => { listRencanaHTML += `<li>- ${item}</li>`; });
+                data.daftarRencana.forEach(item => { 
+                    listRencanaHTML += `<li style="display:flex; align-items:flex-start; margin-bottom:8px; line-height:1.4;"><div style="margin-right:8px; color:gray;">-</div><div style="font-size:13px;">${item}</div></li>`; 
+                });
             } else {
                 listRencanaHTML += `<li>${data.detailRencana || "-"}</li>`;
             }
@@ -1606,7 +1628,7 @@
                 <tr><th>Nama Admin</th><td>${data.adminName}</td></tr>
             </table>`;
             
-            if(data.status !== "Belum") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE TEREALISASI</th></tr><tr><th>Tanggal Selesai Update</th><td>${data.tglActual}</td></tr><tr><th>Kesimpulan Hasil</th><td>${data.hasilActual}</td></tr><tr><th>Keterangan Tambahan (Catatan)</th><td>${data.keteranganActual}</td></tr></table>`;
+            if(data.status !== "Belum") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE TEREALISASI</th></tr><tr><th>Waktu Selesai Perekaman</th><td>${data.tglActual}</td></tr><tr><th>Kesimpulan Hasil</th><td><span style="background:${ui.color}; color:white; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">${data.hasilActual}</span></td></tr><tr><th>Keterangan Tambahan (Catatan)</th><td>${data.keteranganActual}</td></tr></table>`;
                 if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; }
                 else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
             } document.getElementById('report-adm-content').innerHTML = html; window.navigasi('adm-harian-detail-screen');
