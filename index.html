@@ -1044,7 +1044,10 @@
     <div id="detail-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Detail Project</h2></div>
-            <button class="btn-print-detail" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download / Cetak Laporan PDF</button>
+            <div class="export-row">
+                <button class="btn-export btn-jpg" onclick="downloadProjectJPG()"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
             <div class="report-sheet" id="report-content"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -1156,7 +1159,6 @@
             else target.innerHTML = "";
         }
 
-        // FUNGSI GLOBAL TANGGAL LOKAL (Mencegah bug tanggal mundur karena zona waktu UTC)
         function dapatkanTanggalLokal() {
             const now = new Date();
             return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
@@ -1170,10 +1172,56 @@
             const m = String(now.getMinutes()).padStart(2, '0');
             return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
+        
         setInterval(() => { 
             const el = document.getElementById('notul-waktu-display'); if (el) el.value = dapatkanWaktuRill(); 
             const ptEl = document.getElementById('pt-input-waktu'); if (ptEl && ptEl.offsetParent !== null) ptEl.value = dapatkanWaktuRill();
         }, 1000);
+
+
+        // =======================================================
+        // --- FUNGSI DOWNLOAD GAMBAR UNIVERSAL (FIX MOBILE) ---
+        // =======================================================
+        window.cetakGambarUniversal = function(targetId, namaFile) {
+            // 1. Scroll ke atas otomatis agar html2canvas tidak memotong gambar
+            window.scrollTo(0, 0); 
+            toggleLoader(true, "Mencetak Laporan JPG...");
+            
+            // 2. Beri jeda 200ms agar browser selesai scroll & render
+            setTimeout(() => {
+                const targetDiv = document.getElementById(targetId);
+                html2canvas(targetDiv, { 
+                    scale: 2, 
+                    useCORS: true, 
+                    allowTaint: true,
+                    backgroundColor: "#ffffff",
+                    scrollX: 0,
+                    scrollY: -window.scrollY
+                }).then(canvas => {
+                    let link = document.createElement('a');
+                    link.download = `${namaFile}_${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.9);
+                    
+                    // 3. FIX CRITICAL ANDROID/IOS: Wajib appendChild sebelum di-click
+                    document.body.appendChild(link); 
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    toggleLoader(false);
+                }).catch(e => {
+                    toggleLoader(false);
+                    console.error(e);
+                    alert("Gagal mencetak gambar. Pastikan memori HP/Browser cukup.");
+                });
+            }, 200);
+        }
+
+        // MAPPING TOMBOL DOWNLOAD KE FUNGSI UNIVERSAL
+        window.downloadAdmJPG = function() { cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
+        window.downloadPtJPG = function() { cetakGambarUniversal('report-pt-content', 'TrialMold'); }
+        window.downloadNotulenJPG = function() { cetakGambarUniversal('report-notulen-content', 'Notulen'); }
+        window.downloadGosokJPG = function() { cetakGambarUniversal('report-gosok-content', 'Laporan_GosokMold'); }
+        window.downloadProjectJPG = function() { cetakGambarUniversal('report-content', 'DetailProject'); }
 
 
         // =======================================================
@@ -1576,7 +1624,6 @@
             } 
             document.getElementById('report-adm-content').innerHTML = html; window.navigasi('adm-harian-detail-screen');
         }
-        window.downloadAdmJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-adm-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `ADMHarian_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
 
         // =======================================================
@@ -1634,7 +1681,6 @@
             }
             document.getElementById('report-pt-content').innerHTML = html; window.navigasi('pt-detail-screen');
         }
-        window.downloadPtJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-pt-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `TrialMold_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
 
         // =======================================================
@@ -1676,7 +1722,6 @@
         function renderNotulenList() { const container = document.getElementById('list-notulen'); container.innerHTML = ""; if (notulenDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } notulenDatabase.forEach(data => { let totalPoin = data.deskripsiData.length; let selesaiPoin = data.deskripsiData.filter(d => d.done).length; let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:bold;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:bold;">${selesaiPoin}/${totalPoin} Poin Evaluasi</span>`; container.innerHTML += `<div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="bukaDetailNotulen('${data.id}')"><h4 style="margin:0 0 5px 0; color:var(--primary);">${data.jenisMeeting}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> ${data.waktuRecord}</p><p style="margin:8px 0 0 0; font-size:13px; border-top:1px dashed #ccc; padding-top:8px;">Status: ${statusEval}</p></div>`; }); }
         window.bukaDetailNotulen = function(id) { const data = notulenDatabase.find(d => d.id === id); if(!data) return; let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>'); let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`; data.deskripsiData.forEach(item => { let checked = item.done ? "checked" : ""; let classDone = item.done ? "done" : ""; htmlDeskripsi += `<li class="${classDone}"><input type="checkbox" id="chk-${item.id}" ${checked} onchange="updateCeklisNotulen('${id}', ${item.id}, this.checked)"><label for="chk-${item.id}" style="font-weight:normal; line-height:1.4;">${item.teks}</label></li>`; }); htmlDeskripsi += `</ul>`; let html = `<div class="report-header"><h2>NOTULEN & EVALUASI MEETING</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Jenis Meeting</th><td><strong style="color:var(--secondary);">${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr><tr><th>Daftar Kehadiran</th><td style="font-size:12px;">${htmlListPeserta}</td></tr></table><h3 style="font-size:15px; color:var(--primary); margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;">Poin Evaluasi / Pembahasan:</h3>${htmlDeskripsi}`; if(data.foto) html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO DOKUMENTASI</strong><br><img src="${data.foto}"></div>`; document.getElementById('report-notulen-content').innerHTML = html; window.navigasi('detail-notulen-screen'); }
         window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { const indexDoc = notulenDatabase.findIndex(n => n.id === docId); if(indexDoc > -1) { notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; if(isChecked) event.target.parentElement.classList.add('done'); else event.target.parentElement.classList.remove('done'); try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) {} } }
-        window.downloadNotulenJPG = function() { toggleLoader(true, "Mencetak JPG..."); const targetDiv = document.getElementById('report-notulen-content'); html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => { let link = document.createElement('a'); link.download = `Notulen_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); toggleLoader(false); }).catch(e => { toggleLoader(false); alert("Gagal."); }); }
 
 
         // --- SISTEM DIVISI & INFORMASI UMUM ---
@@ -1979,18 +2024,6 @@
 
             document.getElementById('report-gosok-content').innerHTML = html;
             window.navigasi('gosok-detail-screen');
-        }
-
-        window.downloadGosokJPG = function() {
-            toggleLoader(true, "Mencetak Laporan JPG...");
-            const targetDiv = document.getElementById('report-gosok-content');
-            html2canvas(targetDiv, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
-                let link = document.createElement('a');
-                link.download = `Laporan_GosokMold_${Date.now()}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
-                toggleLoader(false);
-            }).catch(e => { toggleLoader(false); alert("Gagal mencetak JPG."); });
         }
 
         window.exportGosokExcelLengkap = function() {
