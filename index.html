@@ -558,6 +558,12 @@
         <div class="content-wrapper">
             <div class="header"><h2>Input Target Harian</h2></div>
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                
+                <div class="form-group">
+                    <label>Nama Admin Pembuat</label>
+                    <input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);">
+                </div>
+
                 <div class="form-group">
                     <label>Tanggal Pelaksanaan</label>
                     <input type="date" id="adm-target-tgl" readonly style="background:#f1f5f9; color:var(--primary); font-weight:bold;">
@@ -575,7 +581,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Rencana Kerja (Bisa tambah banyak)</label>
+                    <label>Rencana Kerja</label>
                     <div style="display: flex; gap: 5px; margin-bottom: 10px;">
                         <input type="text" id="adm-input-rencana" placeholder="Ketik rencana kerja...">
                         <button onclick="tambahRencanaKerja()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button>
@@ -585,10 +591,6 @@
                     </ul>
                 </div>
 
-                <div class="form-group">
-                    <label>Nama Admin pembuat</label>
-                    <input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly>
-                </div>
                 <button class="btn-submit" onclick="simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
@@ -699,6 +701,11 @@
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 
                 <div class="form-group">
+                    <label>Nama Peminta / User</label>
+                    <input type="text" id="pt-input-user" placeholder="Nama pekerja / peminta...">
+                </div>
+
+                <div class="form-group">
                     <label>Hari, Tanggal Pengajuan</label>
                     <input type="text" id="pt-input-waktu" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);">
                 </div>
@@ -716,11 +723,6 @@
                     </div>
                     <ul id="list-target-trial" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;">
                     </ul>
-                </div>
-
-                <div class="form-group">
-                    <label>Nama Peminta</label>
-                    <input type="text" id="pt-input-user" placeholder="Nama pekerja / peminta...">
                 </div>
 
                 <button class="btn-submit" onclick="simpanPtInput()">SEND TO ADMIN</button>
@@ -947,10 +949,12 @@
             </div>
             <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
                 <h3 style="margin-top:0; color: var(--primary); font-size: 16px;">Input Data Baru</h3>
+                
+                <div class="form-group"><label>Nama Pembuat / Admin</label><input type="text" id="info-user" placeholder="Nama..."></div>
                 <div class="form-group"><label>Nama / Judul Kegiatan</label><input type="text" id="info-nama" placeholder="Masukkan judul..."></div>
                 <div class="form-group"><label>Keterangan Detail</label><textarea id="info-ket" rows="3" placeholder="Tuliskan rincian kegiatan..."></textarea></div>
                 <div class="form-group"><label>Tanggal Pelaksanaan / Target</label><input type="date" id="info-tgl"></div>
-                <div class="form-group"><label>Nama Pembuat / Admin</label><input type="text" id="info-user" placeholder="Nama..."></div>
+                
                 <button class="btn-submit" onclick="simpanInfoData()">SIMPAN KE DATABASE</button>
             </div>
             <div id="list-sub-info"></div>
@@ -962,10 +966,12 @@
     <div id="new-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input New Project</h2></div>
+            
+            <div class="form-group"><label>Nama User / PIC</label><input type="text" id="np-user" placeholder="Nama pekerja..."></div>
             <div class="form-group"><label>Nama Project</label><input type="text" id="np-nama" placeholder="Masukkan nama project..."></div>
             <div class="form-group"><label>Keterangan Detail Project</label><textarea id="np-keterangan" rows="4" placeholder="Tuliskan detail pekerjaan, rincian, atau keluhan di sini..."></textarea></div>
             <div class="form-group"><label>Tanggal Target Selesai</label><input type="date" id="np-target"></div>
-            <div class="form-group"><label>Nama User</label><input type="text" id="np-user" placeholder="Nama pekerja..."></div>
+            
             <div class="form-group">
                 <label>Bukti Foto Project</label>
                 <label for="np-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label>
@@ -990,10 +996,12 @@
             <div id="form-update-area" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
                 <h3 style="margin-top:0; color: var(--primary);">Update Project: <span id="up-nama-tampil" style="color: var(--secondary);"></span></h3>
                 <input type="hidden" id="up-id">
+                
+                <div class="form-group"><label>Nama User (Updater)</label><input type="text" id="up-user" placeholder="Nama pekerja / updater..."></div>
                 <div class="form-group"><label>Nama Hasil Project</label><input type="text" id="up-hasil" placeholder="Keterangan singkat hasil..."></div>
                 <div class="form-group"><label>Keterangan Detail Hasil</label><textarea id="up-keterangan" rows="4" placeholder="Tuliskan rincian perbaikan yang sudah dilakukan..."></textarea></div>
                 <div class="form-group"><label>Tanggal Project Selesai</label><input type="date" id="up-selesai"></div>
-                <div class="form-group"><label>Nama User (Updater)</label><input type="text" id="up-user"></div>
+                
                 <div class="form-group">
                     <label>Bukti Foto Selesai</label>
                     <label for="up-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label>
@@ -1561,7 +1569,7 @@
             } else { listRencanaHTML += `<li>${data.detailRencana || "-"}</li>`; }
             listRencanaHTML += `</ul>`;
 
-            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Judul / Tanggal</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${ui.color}; font-weight:bold;">${ui.badgeText}</td></tr><tr><th>Waktu Target</th><td>Tgl: ${data.tglTarget}<br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr><tr><th>Daftar Rencana & Realisasi</th><td>${listRencanaHTML}</td></tr><tr><th>Nama Admin</th><td>${data.adminName}</td></tr></table>`;
+            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Admin</th><td><strong>${data.adminName}</strong></td></tr><tr><th>Judul / Tanggal</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${ui.color}; font-weight:bold;">${ui.badgeText}</td></tr><tr><th>Waktu Target</th><td>Tgl: ${data.tglTarget}<br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr><tr><th>Daftar Rencana & Realisasi</th><td>${listRencanaHTML}</td></tr></table>`;
             if(data.status !== "Belum") { 
                 html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE TEREALISASI</th></tr><tr><th>Waktu Selesai Perekaman</th><td>${data.tglActual}</td></tr><tr><th>Kesimpulan Hasil</th><td><span style="background:${ui.color}; color:white; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">${data.hasilActual}</span></td></tr><tr><th>Keterangan Tambahan (Catatan)</th><td>${data.keteranganActual}</td></tr></table>`;
                 if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; } else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
@@ -1619,7 +1627,7 @@
             if (data.targetTrialList && data.targetTrialList.length > 0) { data.targetTrialList.forEach(item => { listTargetHTML += `<li>${item}</li>`; }); } else { listTargetHTML += `<li>${data.targetTrial || "-"}</li>`; }
             listTargetHTML += `</ul>`;
 
-            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Nama Pemohon</th><td>${data.namaUser}</td></tr><tr><th>Target Pelaksanaan</th><td>${listTargetHTML}</td></tr><tr><th>Waktu Pengajuan</th><td>${data.waktuPengajuan || "-"}</td></tr></table>`;
+            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Pemohon</th><td><strong>${data.namaUser}</strong></td></tr><tr><th>Nama Mold</th><td><strong>${data.namaMold}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${colorStatus}; font-weight:bold;">${data.status}</td></tr><tr><th>Target Pelaksanaan</th><td>${listTargetHTML}</td></tr><tr><th>Waktu Pengajuan</th><td>${data.waktuPengajuan || "-"}</td></tr></table>`;
             if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td>${data.noTrial}</td></tr><tr><th>Tanggal Permintaan</th><td>${data.tglPermintaan}</td></tr></table>`; }
             if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td>${data.hasil}</td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil}</td></tr></table>`;
                 if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}"></div>`; } else { html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:30px; color:#cbd5e1;"></i><br><span style="color:gray;">Tidak ada foto dilampirkan</span></div>`; }
@@ -1693,7 +1701,7 @@
         window.terapkanFilter = function() { filterTglAwal = document.getElementById('filter-start').value; filterTglAkhir = document.getElementById('filter-end').value; if(!filterTglAwal || !filterTglAkhir) return; window.renderProgressList(); }
         window.resetFilter = function() { document.getElementById('filter-start').value = ""; document.getElementById('filter-end').value = ""; filterTglAwal = ""; filterTglAkhir = ""; window.renderProgressList(); }
 
-        window.bukaDetailProject = function(id) { const data = currentDatabase.find(d => d.id === id); if(!data) return; let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES" : "✅ SUDAH SELESAI"; let html = `<div class="report-header"><h2>LAPORAN MAINTENANCE</h2><p>${data.divisi}</p></div><table class="report-table"><tr><th>Project</th><td><strong>${data.namaProject}</strong></td></tr><tr><th>Status</th><td style="color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr><tr><th>Target</th><td>${data.targetSelesai}</td></tr></table>`; if(data.statusUpdate === "Sudah") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE</th></tr><tr><th>Tgl Selesai</th><td>${data.tanggalSelesai}</td></tr><tr><th>Hasil</th><td>${data.hasilProject}</td></tr></table>`; } if(data.fotoAwal) html += `<div class="report-images"><div class="report-img-box"><strong>KONDISI AWAL</strong><br><img src="${data.fotoAwal}"></div>`; if(data.fotoAkhir) html += `<div class="report-img-box"><strong>KONDISI AKHIR</strong><br><img src="${data.fotoAkhir}"></div></div>`; document.getElementById('report-content').innerHTML = html; window.navigasi('detail-project-screen'); }
+        window.bukaDetailProject = function(id) { const data = currentDatabase.find(d => d.id === id); if(!data) return; let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES" : "✅ SUDAH SELESAI"; let html = `<div class="report-header"><h2>LAPORAN MAINTENANCE</h2><p>${data.divisi}</p></div><table class="report-table"><tr><th>Nama PIC / User</th><td><strong>${data.userAwal}</strong></td></tr><tr><th>Project</th><td><strong>${data.namaProject}</strong></td></tr><tr><th>Status</th><td style="color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr><tr><th>Target</th><td>${data.targetSelesai}</td></tr></table>`; if(data.statusUpdate === "Sudah") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE</th></tr><tr><th>Nama Updater</th><td><strong>${data.userUpdate}</strong></td></tr><tr><th>Tgl Selesai</th><td>${data.tanggalSelesai}</td></tr><tr><th>Hasil</th><td>${data.hasilProject}</td></tr></table>`; } if(data.fotoAwal) html += `<div class="report-images"><div class="report-img-box"><strong>KONDISI AWAL</strong><br><img src="${data.fotoAwal}"></div>`; if(data.fotoAkhir) html += `<div class="report-img-box"><strong>KONDISI AKHIR</strong><br><img src="${data.fotoAkhir}"></div></div>`; document.getElementById('report-content').innerHTML = html; window.navigasi('detail-project-screen'); }
         window.renderProgressList = function() { const container = document.getElementById('list-progress'); container.innerHTML = ""; let dataDitampilkan = [...currentDatabase]; if (filterTglAwal && filterTglAkhir) { dataDitampilkan = dataDitampilkan.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir); } if (dataDitampilkan.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } dataDitampilkan.forEach(data => { let statusHtml = ""; let borderColor = ""; if (data.statusUpdate === "Belum") { const selisih = hitungSelisihHari(data.targetSelesai, new Date().toISOString().split('T')[0]); if (selisih > 0) { statusHtml = `<span class="status-badge bg-lambat">Telat ${selisih} Hari</span>`; borderColor = "var(--lambat)"; } else { statusHtml = `<span class="status-badge bg-proses">Proses</span>`; borderColor = "var(--proses)"; } } else { statusHtml = `<span class="status-badge bg-cepat">Selesai</span>`; borderColor = "var(--cepat)"; } container.innerHTML += `<div class="progress-card" style="border-left-color: ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')"><h3 style="margin:0;">${data.namaProject}</h3><p style="font-size:12px;">Target: ${data.targetSelesai}</p>${statusHtml}</div>`; }); }
         window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
         window.exportData = function(format) { let dataExport = [...currentDatabase]; if (filterTglAwal && filterTglAkhir) { dataExport = dataExport.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir); } if (dataExport.length === 0) return alert("Kosong!"); const worksheet = XLSX.utils.json_to_sheet(dataExport.map(row => ({"Nama": row.namaProject, "Target": row.targetSelesai, "Status": row.statusUpdate}))); const workbook = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(workbook, worksheet, "Laporan"); const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' }); const dataBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }); const blobUrl = URL.createObjectURL(dataBlob); const downloadLink = document.createElement("a"); downloadLink.href = blobUrl; downloadLink.download = `Rekap.xlsx`; document.body.appendChild(downloadLink); downloadLink.click(); document.body.removeChild(downloadLink); }
