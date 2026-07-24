@@ -2314,13 +2314,7 @@ window.resetTombolSuara = function() {
         alert("Gagal mendeteksi suara, silakan coba tekan tombol mic lagi.");
     };
 
-    recognition.onend = function() {
-        // Kembalikan teks tombol seperti semula (Opsional)
-        // document.getElementById('btn-suara').innerText = "SUARA";
-    };
-}
-
-        window.hapusMoldList = function(index) {
+           window.hapusMoldList = function(index) {
             window.arrayNaikMold.splice(index, 1);
             renderListNaikMoldUI();
         }
