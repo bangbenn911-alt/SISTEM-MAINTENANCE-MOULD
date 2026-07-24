@@ -2174,13 +2174,90 @@ window.tambahMoldManual = function() {
     }
 }
 
-// 2. Fungsi AI Suara (Web Speech API)
-window.mulaiSuara = function() {
-    // Cek apakah browser mendukung fitur suara (Disarankan Google Chrome)
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Browser Anda tidak mendukung fitur AI Suara. Harap gunakan Google Chrome.");
-        return;
+// =================================================================
+// LOGIKA AI SUARA MOLD (DENGAN EFEK TOMBOL & TOGGLE)
+// =================================================================
+
+// Variabel untuk mengingat status mic
+window.isRecording = false;
+window.recognition = null;
+
+window.toggleSuara = function() {
+    const btnSuara = document.getElementById('btn-suara');
+
+    // Jika sistem suara belum pernah dipanggil, kita siapkan dulu
+    if (!window.recognition) {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Browser Anda tidak mendukung fitur AI Suara. Harap gunakan Google Chrome.");
+            return;
+        }
+        window.recognition = new webkitSpeechRecognition();
+        window.recognition.lang = 'id-ID'; 
+        window.recognition.interimResults = false;
+        window.recognition.maxAlternatives = 1;
+
+        // Apa yang terjadi saat AI berhasil mendengar
+        window.recognition.onresult = function(event) {
+            let hasilSuara = event.results[0][0].transcript.toUpperCase();
+            
+            // Kamus Koreksi AI
+            const kamusKoreksi = {
+                "BODI": "BODY", "BOKS": "BOX", "BOK": "BOX",
+                "BIBIN": "BEE BIN", "BI BIN": "BEE BIN",
+                "30 L": "30L", "30EL": "30L",
+                "TIGA PULUH LITER": "30L", "TIGA PULUH L": "30L"
+            };
+
+            for (let kataSalah in kamusKoreksi) {
+                let regex = new RegExp("\\b" + kataSalah + "\\b", "g");
+                hasilSuara = hasilSuara.replace(regex, kamusKoreksi[kataSalah]);
+            }
+            hasilSuara = hasilSuara.replace(/30\s+L/g, "30L");
+
+            // Masukkan ke kolom input
+            document.getElementById('ms-naik-input-manual').value = hasilSuara;
+            
+            // (Opsional) Jika ingin otomatis langsung masuk ke list tanpa pencet tombol +, hapus // di bawah:
+            // window.tambahMoldManual();
+        };
+
+        // Jika terjadi error atau tidak ada suara
+        window.recognition.onerror = function(event) {
+            console.error("Error suara: ", event.error);
+            resetTombolSuara();
+        };
+
+        // Jika proses mendengarkan selesai (berhenti ngomong)
+        window.recognition.onend = function() {
+            resetTombolSuara();
+        };
     }
+
+    // LOGIKA KLIK TOMBOL (Mulai / Hentikan)
+    if (window.isRecording) {
+        // Jika sedang merekam lalu tombol diklik lagi -> MATIKAN
+        window.recognition.stop();
+        resetTombolSuara();
+    } else {
+        // Jika sedang mati lalu tombol diklik -> NYALAKAN & UBAH WARNA
+        window.recognition.start();
+        window.isRecording = true;
+        
+        // Ubah tombol jadi HIJAU tanda sedang aktif mendengarkan
+        btnSuara.style.background = "linear-gradient(135deg, #10b981, #059669)"; 
+        btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+    }
+}
+
+// Fungsi untuk mengembalikan tombol ke bentuk semula (Merah)
+window.resetTombolSuara = function() {
+    window.isRecording = false;
+    const btnSuara = document.getElementById('btn-suara');
+    if(btnSuara) {
+        btnSuara.style.background = "linear-gradient(135deg, #ef4444, #dc2626)"; 
+        btnSuara.innerHTML = '<i class="fas fa-microphone-alt"></i>'; 
+    }
+}
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = 'id-ID'; // Menggunakan bahasa Indonesia agar logat pembacaan tertangkap
