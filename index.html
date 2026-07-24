@@ -2268,55 +2268,79 @@ window.renderListNaikMoldUI = function() {
     }
 }
 
-        // --- SISTEM AI PENDETEKSI SUARA (SPEECH-TO-TEXT) ---
-        window.mulaiRekamSuaraMold = function() {
-            // Cek kompabilitas browser (Chrome/Edge Android sangat mendukung ini)
-            if (!('webkitSpeechRecognition' in window)) {
-                alert("Browser HP Anda tidak mendukung fitur AI Suara. Gunakan Google Chrome versi terbaru.");
-                return;
-            }
+       // =================================================================
+// LOGIKA AI SUARA MOLD (DENGAN EFEK TOMBOL & TOGGLE)
+// =================================================================
 
-            const recognition = new webkitSpeechRecognition();
-            recognition.lang = 'id-ID'; // Bahasa Indonesia
-            recognition.interimResults = false;
-            recognition.maxAlternatives = 1;
+window.isRecording = false;
+window.recognition = null;
 
-            toggleLoader(true, "AI SEDANG MENDENGARKAN...\nSebutkan Nama Mold Sekarang!");
+window.toggleSuara = function() {
+    const btnSuara = document.getElementById('btn-suara');
 
-            recognition.start();
-
-            recognition.onresult = function(event) {
-                let hasilSuara = event.results[0][0].transcript;
-                
-                // --- ALGORITMA PERAPIH TEKS AI ---
-                // 1. Jadikan huruf kapital semua
-                hasilSuara = hasilSuara.toUpperCase().trim();
-                // 2. Jika AI Google menangkap tanda baca (titik/koma di akhir), kita bersihkan
-                hasilSuara = hasilSuara.replace(/[.,]/g, '');
-                // 3. (Opsional) Jika sering terjadi salah tangkap umum (contoh: "BEWE" -> "BW")
-                hasilSuara = hasilSuara.replace(/BE WE/g, 'BW').replace(/BEWE/g, 'BW');
-                
-                // Masukkan ke dalam list
-                window.arrayNaikMold.push(hasilSuara);
-                renderListNaikMoldUI();
-                toggleLoader(false);
-                
-                if (navigator.vibrate) navigator.vibrate(100); // Getaran sukses
-            };
-
-            recognition.onerror = function(event) {
-                toggleLoader(false);
-                if(event.error === 'no-speech') {
-                    alert("Suara tidak terdengar. Pastikan Anda berbicara dekat mic HP.");
-                } else {
-                    alert("Gagal mendengarkan (" + event.error + "). Coba lagi atau ketik manual.");
-                }
-            };
-            
-            recognition.onspeechend = function() {
-                recognition.stop();
-            }
+    if (!window.recognition) {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Browser Anda tidak mendukung fitur AI Suara. Harap gunakan Google Chrome.");
+            return;
         }
+        window.recognition = new webkitSpeechRecognition();
+        window.recognition.lang = 'id-ID'; 
+        window.recognition.interimResults = false;
+        window.recognition.maxAlternatives = 1;
+
+        window.recognition.onresult = function(event) {
+            let hasilSuara = event.results[0][0].transcript.toUpperCase();
+            
+            const kamusKoreksi = {
+                "BODI": "BODY", "BOKS": "BOX", "BOK": "BOX",
+                "BIBIN": "BEE BIN", "BI BIN": "BEE BIN",
+                "30 L": "30L", "30EL": "30L",
+                "TIGA PULUH LITER": "30L", "TIGA PULUH L": "30L"
+            };
+
+            for (let kataSalah in kamusKoreksi) {
+                let regex = new RegExp("\\b" + kataSalah + "\\b", "g");
+                hasilSuara = hasilSuara.replace(regex, kamusKoreksi[kataSalah]);
+            }
+            hasilSuara = hasilSuara.replace(/30\s+L/g, "30L");
+
+            // Masukkan hasil ejaan ke input
+            document.getElementById('ms-naik-input-manual').value = hasilSuara;
+            
+            // FUNGSI OTOMATIS TAMBAH DIMATIKAN (Sesuai permintaanmu)
+            // Operator harus cek teksnya dulu, lalu pencet tombol "+" manual
+            // window.tambahMoldManual(); 
+        };
+
+        window.recognition.onerror = function(event) {
+            console.error("Error deteksi suara: ", event.error);
+            resetTombolSuara();
+        };
+
+        window.recognition.onend = function() {
+            resetTombolSuara();
+        };
+    }
+
+    if (window.isRecording) {
+        window.recognition.stop();
+        resetTombolSuara();
+    } else {
+        window.recognition.start();
+        window.isRecording = true;
+        btnSuara.style.background = "linear-gradient(135deg, #10b981, #059669)"; 
+        btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+    }
+}
+
+window.resetTombolSuara = function() {
+    window.isRecording = false;
+    const btnSuara = document.getElementById('btn-suara');
+    if(btnSuara) {
+        btnSuara.style.background = "linear-gradient(135deg, #ef4444, #dc2626)"; 
+        btnSuara.innerHTML = '<i class="fas fa-microphone-alt"></i>'; 
+    }
+}
 
         // Fungsi Simpan ke Database
         window.simpanNaikMold = async function() {
