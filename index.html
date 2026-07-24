@@ -961,7 +961,76 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+<!-- ========================================== -->
+    <!-- EKOSISTEM KHUSUS: DIVISI MOLD STORE -->
+    <!-- ========================================== -->
+    
+    <!-- 1. MENU UTAMA MOLD STORE -->
+    <div id="mold-store-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>DIVISI MOLD STORE</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-check"></i> 1. Rencana Naik Mold (Harian/Mingguan/Bulanan)</div>
+                <div class="menu-card" onclick="navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;"><i class="fas fa-dolly"></i> 2. Laporan Persiapan Naik/Turun Mold</div>
+                <div class="menu-card" onclick="alert('Fitur Preventiv Sedang Disiapkan')" style="border-left-color: #10b981;"><i class="fas fa-tools"></i> 3. Laporan Preventiv Mold</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE BERANDA</button>
+        </div>
+    </div>
 
+    <!-- 2. SUB-MENU PERSIAPAN NAIK/TURUN -->
+    <div id="ms-persiapan-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Persiapan Naik & Turun Mold</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="bukaInputNaikMold()" style="border-left-color: #8b5cf6;"><i class="fas fa-arrow-up"></i> 1. Input Naik Mold</div>
+                <div class="menu-card" onclick="alert('Fitur Turun Mold Sedang Disiapkan')" style="border-left-color: #ef4444;"><i class="fas fa-arrow-down"></i> 2. Input Turun Mold</div>
+            </div>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- 3. FORM INPUT NAIK MOLD (DENGAN AI VOICE) -->
+    <div id="ms-input-naik-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Naik Mold</h2></div>
+            
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Tanggal Penaikan Mold</label>
+                    <input type="date" id="ms-naik-tgl">
+                </div>
+                
+                <div class="form-group">
+                    <label>Nama Penanggung Jawab</label>
+                    <input type="text" id="ms-naik-pj" value="Bapak Kiki Foreman" readonly style="background:#f1f5f9; color:var(--primary); font-weight:bold;">
+                </div>
+
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="color: var(--secondary); font-size: 16px;"><i class="fas fa-list-ol"></i> List Nama Mold yang Dinaikkan</label>
+                    <p style="font-size:12px; color:gray; line-height:1.4; margin-bottom:10px;">Gunakan tombol <b>Mic / Suara</b> agar AI mendeteksi nama mold secara otomatis tanpa perlu mengetik manual.</p>
+                    
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual jika perlu..." style="flex:1;">
+                        <button onclick="tambahMoldManual()" style="padding: 10px 15px; background: #64748b; color: white; border: none; border-radius: 5px; cursor: pointer;"><i class="fas fa-keyboard"></i></button>
+                        
+                        <!-- TOMBOL AI VOICE -->
+                        <button onclick="mulaiRekamSuaraMold()" style="padding: 10px 20px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); animation: pulse-core 2s infinite;">
+                            <i class="fas fa-microphone-alt"></i> SUARA
+                        </button>
+                    </div>
+
+                    <!-- Tempat List Mold -->
+                    <ul id="list-naik-mold" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 80px; border-radius: 8px; background: #f8fafc;">
+                    </ul>
+                </div>
+
+                <button class="btn-submit" onclick="simpanNaikMold()"><i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD</button>
+            </div>
+            
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
     <!-- PROJECT MANAGEMENT SCREENS -->
     <div id="new-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -1725,7 +1794,18 @@
 
 
         // --- SISTEM DIVISI & INFORMASI UMUM ---
-        window.masukDivisi = async function(namaDivisi) { divisiAktif = namaDivisi; document.getElementById('judul-divisi').innerText = namaDivisi; window.navigasi('divisi-screen'); await ambilDataServer(); }
+        window.masukDivisi = async function(namaDivisi) { 
+            divisiAktif = namaDivisi; 
+            // Jika yang diklik adalah Mold Store, belokkan ke menu khususnya
+            if(namaDivisi === 'DIVISI MOLD STORE') {
+                window.navigasi('mold-store-menu-screen');
+            } else {
+                // Divisi lain tetap ke halaman umum
+                document.getElementById('judul-divisi').innerText = namaDivisi; 
+                window.navigasi('divisi-screen'); 
+                await ambilDataServer(); 
+            }
+        }
         async function ambilDataServer() { toggleLoader(true, "Mengunduh..."); currentDatabase = []; try { const q = query(collection(db, "projects"), where("divisi", "==", divisiAktif)); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { currentDatabase.push({ id: doc.id, ...doc.data() }); }); } catch (error) {} toggleLoader(false); }
 
         window.bukaSubInfo = async function(kategori) { kategoriInfoAktif = kategori; document.getElementById('judul-sub-info').innerText = kategori; window.navigasi('sub-info-screen'); await ambilDataInfoServer(); }
@@ -2063,6 +2143,125 @@
             document.body.appendChild(downloadLink);
             downloadLink.click();
             document.body.removeChild(downloadLink);
+        }
+        // =======================================================
+        // LOGIKA KHUSUS DIVISI MOLD STORE (NAIK MOLD & AI VOICE)
+        // =======================================================
+        window.arrayNaikMold = [];
+
+        window.bukaInputNaikMold = function() {
+            window.arrayNaikMold = []; // Kosongkan list tiap kali masuk
+            renderListNaikMoldUI();
+            document.getElementById('ms-naik-tgl').value = dapatkanTanggalLokal();
+            document.getElementById('ms-naik-input-manual').value = "";
+            window.navigasi('ms-input-naik-screen');
+        }
+
+        window.tambahMoldManual = function() {
+            const input = document.getElementById('ms-naik-input-manual');
+            let val = input.value.trim().toUpperCase(); // Format jadi kapital
+            if(val) {
+                window.arrayNaikMold.push(val);
+                renderListNaikMoldUI();
+                input.value = "";
+                input.focus();
+            }
+        }
+
+        window.hapusMoldList = function(index) {
+            window.arrayNaikMold.splice(index, 1);
+            renderListNaikMoldUI();
+        }
+
+        window.renderListNaikMoldUI = function() {
+            const ul = document.getElementById('list-naik-mold');
+            ul.innerHTML = "";
+            if(window.arrayNaikMold.length === 0) { 
+                ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold yang didata. Gunakan Suara/Ketik.</li>`; 
+            } else { 
+                window.arrayNaikMold.forEach((item, idx) => {
+                    ul.innerHTML += `
+                    <li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary); background: white;">
+                        <span style="font-size:14px; font-weight:bold; color:var(--primary);">${idx + 1}. ${item}</span>
+                        <button onclick="hapusMoldList(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 12px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </li>`;
+                }); 
+            }
+        }
+
+        // --- SISTEM AI PENDETEKSI SUARA (SPEECH-TO-TEXT) ---
+        window.mulaiRekamSuaraMold = function() {
+            // Cek kompabilitas browser (Chrome/Edge Android sangat mendukung ini)
+            if (!('webkitSpeechRecognition' in window)) {
+                alert("Browser HP Anda tidak mendukung fitur AI Suara. Gunakan Google Chrome versi terbaru.");
+                return;
+            }
+
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'id-ID'; // Bahasa Indonesia
+            recognition.interimResults = false;
+            recognition.maxAlternatives = 1;
+
+            toggleLoader(true, "AI SEDANG MENDENGARKAN...\nSebutkan Nama Mold Sekarang!");
+
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                let hasilSuara = event.results[0][0].transcript;
+                
+                // --- ALGORITMA PERAPIH TEKS AI ---
+                // 1. Jadikan huruf kapital semua
+                hasilSuara = hasilSuara.toUpperCase().trim();
+                // 2. Jika AI Google menangkap tanda baca (titik/koma di akhir), kita bersihkan
+                hasilSuara = hasilSuara.replace(/[.,]/g, '');
+                // 3. (Opsional) Jika sering terjadi salah tangkap umum (contoh: "BEWE" -> "BW")
+                hasilSuara = hasilSuara.replace(/BE WE/g, 'BW').replace(/BEWE/g, 'BW');
+                
+                // Masukkan ke dalam list
+                window.arrayNaikMold.push(hasilSuara);
+                renderListNaikMoldUI();
+                toggleLoader(false);
+                
+                if (navigator.vibrate) navigator.vibrate(100); // Getaran sukses
+            };
+
+            recognition.onerror = function(event) {
+                toggleLoader(false);
+                if(event.error === 'no-speech') {
+                    alert("Suara tidak terdengar. Pastikan Anda berbicara dekat mic HP.");
+                } else {
+                    alert("Gagal mendengarkan (" + event.error + "). Coba lagi atau ketik manual.");
+                }
+            };
+            
+            recognition.onspeechend = function() {
+                recognition.stop();
+            }
+        }
+
+        // Fungsi Simpan ke Database
+        window.simpanNaikMold = async function() {
+            const tgl = document.getElementById('ms-naik-tgl').value;
+            const pj = document.getElementById('ms-naik-pj').value;
+            
+            if(!tgl) return alert("Tanggal Penaikan wajib diisi!");
+            if(window.arrayNaikMold.length === 0) return alert("List Mold tidak boleh kosong! Masukkan minimal 1 Mold.");
+
+            toggleLoader(true, "Menyimpan Data Naik Mold...");
+            try {
+                await addDoc(collection(db, "laporan_naik_mold"), {
+                    tanggal: tgl,
+                    penanggungJawab: pj,
+                    listMold: window.arrayNaikMold,
+                    waktuInput: dapatkanWaktuRill(),
+                    timestamp: Date.now()
+                });
+                alert("Laporan Naik Mold Berhasil Disimpan!");
+                window.navigasi('ms-persiapan-menu-screen');
+            } catch (e) {
+                alert("Gagal menyimpan ke Server: " + e.message);
+            }
+            toggleLoader(false);
         }
     </script>
 </body>
