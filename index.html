@@ -2155,114 +2155,118 @@
             window.navigasi('ms-input-naik-screen');
         }
 
-       // =================================================================
-// LOGIKA INPUT MANUAL & AI SUARA MOLD (HURUF KAPITAL & SUPER AKURAT)
+ // =================================================================
+// LOGIKA DAFTAR MOLD & STANDAR PENGECEKAN (FASE 1)
 // =================================================================
 
-// 1. Fungsi Tambah Manual (Otomatis Kapital)
+// Standar Pengecekan dari Form Pabrik (11 Poin)
+window.standarCekMold = [
+    "1. Kesesuaian Nama Mold & Insert",
+    "2. Permukaan Core & Cavity Tidak Kusam",
+    "3. Pergerakan Slider Lancar & Bersih",
+    "4. Kondisi Radius Sprue Bushing",
+    "5. Heater Mold Berfungsi Baik",
+    "6. Limit Switch Lengkap & Normal",
+    "7. Hydrolik Terpasang Lengkap",
+    "8. Locating Ring Terpasang Baik",
+    "9. [Preventif] Ejector Pin Lancar",
+    "10. [Preventif] Sirkulasi Air Lancar",
+    "11. [Preventif] Baut Clamping Kencang"
+];
+
+// Fungsi Menambah Mold ke List (Sekarang menyimpan data ceklis)
 window.tambahMoldManual = function() {
     const inputElement = document.getElementById('ms-naik-input-manual');
-    // Memaksa input menjadi huruf kapital semua dan menghapus spasi berlebih
     let nilai = inputElement.value.toUpperCase().trim(); 
 
     if (nilai !== "") {
-        window.arrayNaikMold.push(nilai);
-        inputElement.value = ""; // Kosongkan input setelah ditambah
-        renderListNaikMoldUI();  // Perbarui tampilan list
+        // Simpan sebagai Object berisi nama dan array 11 ceklis (default: false/belum diceklis)
+        window.arrayNaikMold.push({
+            nama: nilai,
+            ceklis: Array(11).fill(false) 
+        });
+        inputElement.value = ""; 
+        renderListNaikMoldUI();  
     } else {
         alert("Nama mold tidak boleh kosong!");
     }
 }
 
-// =================================================================
-// LOGIKA AI SUARA MOLD (DENGAN EFEK TOMBOL & TOGGLE)
-// =================================================================
+// Fungsi Menghapus Mold
+window.hapusMoldList = function(index) {
+    window.arrayNaikMold.splice(index, 1);
+    renderListNaikMoldUI();
+}
 
-window.isRecording = false;
-window.recognition = null;
+// Fungsi Mengubah Status Ceklis saat Kotak Diklik
+window.toggleCeklis = function(indexMold, indexCek) {
+    window.arrayNaikMold[indexMold].ceklis[indexCek] = !window.arrayNaikMold[indexMold].ceklis[indexCek];
+    renderListNaikMoldUI(); // Refresh UI untuk update status otomatis
+}
 
-window.toggleSuara = function() {
-    const btnSuara = document.getElementById('btn-suara');
+// Fungsi Logika Penentuan Status Mold AI
+window.kalkulasiStatusMold = function(ceklisArr) {
+    let total = ceklisArr.length;
+    let diCeklis = ceklisArr.filter(c => c === true).length;
+    let tidakDiCeklis = total - diCeklis;
 
-    if (!window.recognition) {
-        if (!('webkitSpeechRecognition' in window)) {
-            alert("Browser Anda tidak mendukung fitur AI Suara. Harap gunakan Google Chrome.");
-            return;
-        }
-        window.recognition = new webkitSpeechRecognition();
-        window.recognition.lang = 'id-ID'; 
-        window.recognition.interimResults = false;
-        window.recognition.maxAlternatives = 1;
-
-        window.recognition.onresult = function(event) {
-            let hasilSuara = event.results[0][0].transcript.toUpperCase();
-            
-            const kamusKoreksi = {
-                "BODI": "BODY", "BOKS": "BOX", "BOK": "BOX",
-                "BIBIN": "BEE BIN", "BI BIN": "BEE BIN",
-                "30 L": "30L", "30EL": "30L",
-                "TIGA PULUH LITER": "30L", "TIGA PULUH L": "30L"
-            };
-
-            for (let kataSalah in kamusKoreksi) {
-                let regex = new RegExp("\\b" + kataSalah + "\\b", "g");
-                hasilSuara = hasilSuara.replace(regex, kamusKoreksi[kataSalah]);
-            }
-            hasilSuara = hasilSuara.replace(/30\s+L/g, "30L");
-
-            document.getElementById('ms-naik-input-manual').value = hasilSuara;
-        };
-
-        window.recognition.onerror = function(event) {
-            console.error("Error suara: ", event.error);
-            resetTombolSuara();
-        };
-
-        window.recognition.onend = function() {
-            resetTombolSuara();
-        };
-    }
-
-    if (window.isRecording) {
-        window.recognition.stop();
-        resetTombolSuara();
+    if (diCeklis === total) {
+        return { teks: "SIAP PRODUKSI", warna: "#10b981", bg: "#d1fae5" }; // Hijau
+    } else if (diCeklis === 0 || tidakDiCeklis > diCeklis) {
+        return { teks: "GAGAL NAIK", warna: "#ef4444", bg: "#fee2e2" }; // Merah
     } else {
-        window.recognition.start();
-        window.isRecording = true;
-        btnSuara.style.background = "linear-gradient(135deg, #10b981, #059669)"; 
-        btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; 
+        return { teks: "MOLD SIAP NAIK (PERLU DIPERHATIKAN)", warna: "#f59e0b", bg: "#fef3c7" }; // Kuning
     }
 }
 
-window.resetTombolSuara = function() {
-    window.isRecording = false;
-    const btnSuara = document.getElementById('btn-suara');
-    if(btnSuara) {
-        btnSuara.style.background = "linear-gradient(135deg, #ef4444, #dc2626)"; 
-        btnSuara.innerHTML = '<i class="fas fa-microphone-alt"></i>'; 
+// Fungsi Render UI (Menggambar Tabel Ceklis)
+window.renderListNaikMoldUI = function() {
+    const ul = document.getElementById('list-naik-mold');
+    ul.innerHTML = "";
+    
+    if(window.arrayNaikMold.length === 0) {
+        ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold yang didata. Gunakan Suara/Ketik.</li>`;
+    } else {
+        window.arrayNaikMold.forEach((item, idxMold) => {
+            
+            // Hitung status saat ini
+            let status = kalkulasiStatusMold(item.ceklis);
+
+            // Buat HTML untuk 11 poin ceklis
+            let listCeklisHTML = "";
+            window.standarCekMold.forEach((namaCek, idxCek) => {
+                let isChecked = item.ceklis[idxCek] ? "checked" : "";
+                listCeklisHTML += `
+                    <div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;">
+                        <input type="checkbox" ${isChecked} onchange="toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;">
+                        <label>${namaCek}</label>
+                    </div>
+                `;
+            });
+
+            // Gambar Kotak/Kartu Mold
+            ul.innerHTML += `
+            <li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                
+                <!-- Bagian Header Kartu (Nama & Tombol Hapus) -->
+                <div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;">
+                    <span style="font-size:15px; font-weight:bold; color:var(--primary);"><i class="fas fa-box" style="margin-right:8px;"></i>${idxMold + 1}. ${item.nama}</span>
+                    <button onclick="hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-size:12px;"><i class="fas fa-trash"></i></button>
+                </div>
+
+                <!-- Bagian Tabel Ceklis -->
+                <div style="padding: 15px; display:grid; grid-template-columns: 1fr; gap:5px; background: #ffffff;">
+                    ${listCeklisHTML}
+                </div>
+
+                <!-- Bagian Status Otomatis -->
+                <div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;">
+                    <span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span>
+                </div>
+            </li>`;
+        });
     }
 }
-
-           window.hapusMoldList = function(index) {
-            window.arrayNaikMold.splice(index, 1);
-            renderListNaikMoldUI();
-        }
-
-        window.renderListNaikMoldUI = function() {
-            const ul = document.getElementById('list-naik-mold');
-            ul.innerHTML = "";
-            if(window.arrayNaikMold.length === 0) { 
-                ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold yang didata. Gunakan Suara/Ketik.</li>`; 
-            } else { 
-                window.arrayNaikMold.forEach((item, idx) => {
-                    ul.innerHTML += `
-                    <li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary); background: white;">
-                        <span style="font-size:14px; font-weight:bold; color:var(--primary);">${idx + 1}. ${item}</span>
-                        <button onclick="hapusMoldList(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 12px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button>
-                    </li>`;
-                }); 
-            }
-        }
 
         // --- SISTEM AI PENDETEKSI SUARA (SPEECH-TO-TEXT) ---
         window.mulaiRekamSuaraMold = function() {
