@@ -2414,7 +2414,7 @@ window.resetTombolSuara = function() {
     }
 }
 
-    // Fungsi Simpan ke Database
+ // Fungsi Simpan ke Database
 window.simpanNaikMold = async function() {
     const tgl = document.getElementById('ms-naik-tgl').value;
     const pj = document.getElementById('ms-naik-pj').value;
@@ -2422,23 +2422,22 @@ window.simpanNaikMold = async function() {
     if(!tgl) return alert("Tanggal Penaikan wajib diisi!");
     if(window.arrayNaikMold.length === 0) return alert("List Mold tidak boleh kosong! Masukkan minimal 1 Mold.");
 
-    // --- TAMBAHAN BARU (FASE 2): Menyisipkan status "Proses" ke tiap Mold ---
+    // Menyisipkan status "Proses" ke tiap Mold
     const moldDenganStatus = window.arrayNaikMold.map(mold => {
         return {
             nama: mold.nama,
             ceklis: mold.ceklis,
-            status: "Proses" // Status default agar otomatis masuk ke Tab Proses
+            status: "Proses" 
         };
     });
-    // ----------------------------------------------------------------------
 
     toggleLoader(true, "Menyimpan Data Naik Mold...");
     try {
         await addDoc(collection(db, "laporan_naik_mold"), {
             tanggal: tgl,
             penanggungJawab: pj,
-            listMold: moldDenganStatus, // Menggunakan array yang sudah diberi status
-            waktuInput: dapatkanWaktuRiil(),
+            listMold: moldDenganStatus,
+            waktuInput: new Date().toLocaleString(), // Diperbaiki menggunakan waktu standar JavaScript
             timestamp: Date.now()
         });
         
@@ -2453,12 +2452,11 @@ window.simpanNaikMold = async function() {
         window.navigasi('ms-persiapan-menu-screen');
     } catch (e) {
         console.error("Gagal simpan:", e);
-        alert("Terjadi kesalahan saat menyimpan data!");
+        alert("Terjadi kesalahan saat menyimpan data: " + e.message);
     } finally {
         toggleLoader(false);
     }
 }
-
         // =================================================================
 // FASE 2: FUNGSI MEMUAT & MENGUPDATE DATA MOLD PRODUKSI
 // =================================================================
