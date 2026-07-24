@@ -1236,7 +1236,8 @@
 // Fungsi membuka layar Dasbor Update Mold
 window.bukaUpdateMoldProduksi = function() {
     window.navigasi('ms-update-mold-screen');
-    window.bukaTabMold('proses'); // Otomatis aktifkan tab Proses saat layar dibuka
+    window.bukaTabMold('proses'); 
+    window.muatDataMoldProduksi(); // <-- INI TAMBAHANNYA: Panggil data dari Firebase!
 }
 
 // MESIN UNTUK MENGGESER TAB (SEPERTI DI GAMBAR 1)
@@ -2453,6 +2454,119 @@ window.simpanNaikMold = async function() {
     } catch (e) {
         console.error("Gagal simpan:", e);
         alert("Terjadi kesalahan saat menyimpan data!");
+    } finally {
+        toggleLoader(false);
+    }
+}
+
+        // =================================================================
+// FASE 2: FUNGSI MEMUAT & MENGUPDATE DATA MOLD PRODUKSI
+// =================================================================
+
+window.muatDataMoldProduksi = async function() {
+    const listProses = document.getElementById('kolom-proses-produksi');
+    const listSelesai = document.getElementById('kolom-selesai-baik');
+    const listGagal = document.getElementById('kolom-gagal-naik');
+
+    // Kosongkan tampilan awal
+    if(!listProses) return; // Mencegah error jika belum di layar
+    listProses.innerHTML = '';
+    listSelesai.innerHTML = '';
+    listGagal.innerHTML = '';
+
+    toggleLoader(true, "Menarik Data Produksi...");
+    try {
+        const q = query(collection(db, "laporan_naik_mold"));
+        const querySnapshot = await getDocs(q);
+        
+        let adaProses = false, adaSelesai = false, adaGagal = false;
+
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const idDoc = docSnap.id;
+            
+            if(data.listMold && Array.isArray(data.listMold)) {
+                data.listMold.forEach((mold, index) => {
+                    const li = document.createElement('li');
+                    li.style.background = 'white';
+                    li.style.padding = '12px';
+                    li.style.marginBottom = '12px';
+                    li.style.borderRadius = '8px';
+                    li.style.borderLeft = '5px solid gray';
+                    li.style.boxShadow = '0 2px 5px rgba(0,0,0,0.08)';
+                    
+                    let warnaBorder = 'gray';
+                    let tombolAksi = '';
+
+                    // Jika statusnya PROSES, tampilkan tombol pindah status
+                    if(mold.status === 'Proses') {
+                        warnaBorder = '#f59e0b'; // Kuning
+                        adaProses = true;
+                        tombolAksi = `
+                            <div style="margin-top: 12px; display: flex; gap: 8px;">
+                                <button onclick="updateStatusMold('${idDoc}', ${index}, 'Selesai')" style="flex:1; background:#10b981; color:white; border:none; padding:8px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-check"></i> Selesai Baik</button>
+                                <button onclick="updateStatusMold('${idDoc}', ${index}, 'Gagal')" style="flex:1; background:#ef4444; color:white; border:none; padding:8px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-times"></i> Kendala/Gagal</button>
+                            </div>
+                        `;
+                    } else if(mold.status === 'Selesai') {
+                        warnaBorder = '#10b981'; // Hijau
+                        adaSelesai = true;
+                    } else if(mold.status === 'Gagal') {
+                        warnaBorder = '#ef4444'; // Merah
+                        adaGagal = true;
+                    }
+
+                    li.style.borderLeftColor = warnaBorder;
+                    li.innerHTML = `
+                        <div style="font-weight: 900; font-size: 15px; color: #1e293b;">${mold.nama}</div>
+                        <div style="font-size: 11px; color: #64748b; margin-top: 3px;"><i class="far fa-calendar-alt"></i> ${data.tanggal} | <i class="far fa-user"></i> ${data.penanggungJawab}</div>
+                        ${tombolAksi}
+                    `;
+
+                    // Masukkan kartu ke dalam tab yang sesuai warnanya
+                    if(mold.status === 'Proses') listProses.appendChild(li);
+                    else if(mold.status === 'Selesai') listSelesai.appendChild(li);
+                    else if(mold.status === 'Gagal') listGagal.appendChild(li);
+                });
+            }
+        });
+
+        // Tampilkan pesan kosong jika tidak ada data di tab tersebut
+        if(!adaProses) listProses.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada mold yang sedang diproses.</li>';
+        if(!adaSelesai) listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada laporan mold selesai.</li>';
+        if(!adaGagal) listGagal.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada laporan kendala.</li>';
+
+    } catch (error) {
+        console.error("Gagal memuat data: ", error);
+        alert("Gagal memuat data dari server.");
+    } finally {
+        toggleLoader(false);
+    }
+}
+
+window.updateStatusMold = async function(idDoc, indexArray, statusBaru) {
+    if(!confirm(`Pindahkan mold ini ke daftar "${statusBaru}"?`)) return;
+    
+    toggleLoader(true, "Memperbarui status...");
+    try {
+        const docRef = doc(db, "laporan_naik_mold", idDoc);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            let data = docSnap.data();
+            data.listMold[indexArray].status = statusBaru; // Ubah statusnya
+            
+            // Simpan kembali ke database
+            await updateDoc(docRef, {
+                listMold: data.listMold
+            });
+            
+            // Muat ulang layar agar kartunya otomatis bergeser tab
+            window.muatDataMoldProduksi();
+        }
+    } catch (e) {
+        console.error("Gagal update: ", e);
+        alert("Terjadi kesalahan saat mengupdate status.");
     } finally {
         toggleLoader(false);
     }
