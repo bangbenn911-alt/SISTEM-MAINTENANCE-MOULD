@@ -984,7 +984,7 @@
             <div class="header"><h2>Persiapan Naik & Turun Mold</h2></div>
             <div class="grid-menu">
                 <div class="menu-card" onclick="bukaInputNaikMold()" style="border-left-color: #8b5cf6;"><i class="fas fa-arrow-up"></i> 1. Input Naik Mold</div>
-                <div class="menu-card" onclick="alert('Fitur Turun Mold Sedang Disiapkan')" style="border-left-color: #ef4444;"><i class="fas fa-arrow-down"></i> 2. Input Turun Mold</div>
+                 <div class="menu-card" onclick="bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;"><i class="fas fa-sync-alt"></i> 2. Update Mold Produksi</div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -1119,7 +1119,48 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+<!-- 4. SCREEN UPDATE MOLD PRODUKSI (FASE 2) -->
+<div id="ms-update-mold-screen" class="screen screen-bg" style="display:none;">
+    <div class="content-wrapper" style="max-width: 1200px;">
+        <div class="header" style="display:flex; justify-content:space-between; align-items:center;">
+            <h2>Update Mold Produksi</h2>
+            <!-- Tombol Kembali -->
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()" style="margin:0; padding:5px 15px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
 
+        <!-- Grid 3 Kolom Responsif -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 20px;">
+            
+            <!-- KOLOM 1: PROSES PRODUKSI -->
+            <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #f59e0b; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="font-size: 16px; color: #d97706; margin-bottom: 15px; text-align: center;"><i class="fas fa-cogs"></i> Proses Produksi</h3>
+                <ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: #fef3c7; border-radius: 5px; padding: 10px;">
+                    <!-- Data dari Input Persiapan otomatis masuk ke sini -->
+                    <li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada mold yang diproses.</li>
+                </ul>
+            </div>
+
+            <!-- KOLOM 2: MOLD SELESAI BAIK -->
+            <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #10b981; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="font-size: 16px; color: #059669; margin-bottom: 15px; text-align: center;"><i class="fas fa-check-circle"></i> Mold Selesai Baik</h3>
+                <ul id="kolom-selesai-baik" style="list-style: none; padding: 0; min-height: 400px; background: #d1fae5; border-radius: 5px; padding: 10px;">
+                    <!-- Data Mold Selesai masuk ke sini -->
+                    <li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada mold yang selesai.</li>
+                </ul>
+            </div>
+
+            <!-- KOLOM 3: GANGGUAN / GAGAL NAIK -->
+            <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #ef4444; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h3 style="font-size: 16px; color: #dc2626; margin-bottom: 15px; text-align: center;"><i class="fas fa-exclamation-triangle"></i> Gangguan / Gagal Naik</h3>
+                <ul id="kolom-gagal-naik" style="list-style: none; padding: 0; min-height: 400px; background: #fee2e2; border-radius: 5px; padding: 10px;">
+                    <!-- Data Mold Rusak masuk ke sini -->
+                    <li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada laporan kendala.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI -->
     <!-- ========================================== -->
@@ -1186,7 +1227,11 @@
             }
         }
         window.addEventListener('popstate', function(event) { window.kembaliKeSebelumnya(); });
-
+// Fungsi membuka layar Dasbor Update Mold (3 Kolom) - FASE 2
+window.bukaUpdateMoldProduksi = function() {
+    // Menggunakan fungsi navigasi bawaan aplikasimu agar history tombol KEMBALI tetap aman!
+    window.navigasi('ms-update-mold-screen');
+}
         const toggleLoader = (show, text = "Loading...") => {
             document.getElementById('loader-text').innerText = text;
             document.getElementById('loader').style.display = show ? 'flex' : 'none';
