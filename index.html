@@ -2413,30 +2413,50 @@ window.resetTombolSuara = function() {
     }
 }
 
-        // Fungsi Simpan ke Database
-        window.simpanNaikMold = async function() {
-            const tgl = document.getElementById('ms-naik-tgl').value;
-            const pj = document.getElementById('ms-naik-pj').value;
-            
-            if(!tgl) return alert("Tanggal Penaikan wajib diisi!");
-            if(window.arrayNaikMold.length === 0) return alert("List Mold tidak boleh kosong! Masukkan minimal 1 Mold.");
+    // Fungsi Simpan ke Database
+window.simpanNaikMold = async function() {
+    const tgl = document.getElementById('ms-naik-tgl').value;
+    const pj = document.getElementById('ms-naik-pj').value;
 
-            toggleLoader(true, "Menyimpan Data Naik Mold...");
-            try {
-                await addDoc(collection(db, "laporan_naik_mold"), {
-                    tanggal: tgl,
-                    penanggungJawab: pj,
-                    listMold: window.arrayNaikMold,
-                    waktuInput: dapatkanWaktuRill(),
-                    timestamp: Date.now()
-                });
-                alert("Laporan Naik Mold Berhasil Disimpan!");
-                window.navigasi('ms-persiapan-menu-screen');
-            } catch (e) {
-                alert("Gagal menyimpan ke Server: " + e.message);
-            }
-            toggleLoader(false);
+    if(!tgl) return alert("Tanggal Penaikan wajib diisi!");
+    if(window.arrayNaikMold.length === 0) return alert("List Mold tidak boleh kosong! Masukkan minimal 1 Mold.");
+
+    // --- TAMBAHAN BARU (FASE 2): Menyisipkan status "Proses" ke tiap Mold ---
+    const moldDenganStatus = window.arrayNaikMold.map(mold => {
+        return {
+            nama: mold.nama,
+            ceklis: mold.ceklis,
+            status: "Proses" // Status default agar otomatis masuk ke Tab Proses
+        };
+    });
+    // ----------------------------------------------------------------------
+
+    toggleLoader(true, "Menyimpan Data Naik Mold...");
+    try {
+        await addDoc(collection(db, "laporan_naik_mold"), {
+            tanggal: tgl,
+            penanggungJawab: pj,
+            listMold: moldDenganStatus, // Menggunakan array yang sudah diberi status
+            waktuInput: dapatkanWaktuRiil(),
+            timestamp: Date.now()
+        });
+        
+        alert("Laporan Naik Mold Berhasil Disimpan!");
+        
+        // Bersihkan list setelah sukses tersimpan
+        window.arrayNaikMold = [];
+        if(document.getElementById('list-naik-mold')) {
+            document.getElementById('list-naik-mold').innerHTML = "";
         }
+        
+        window.navigasi('ms-persiapan-menu-screen');
+    } catch (e) {
+        console.error("Gagal simpan:", e);
+        alert("Terjadi kesalahan saat menyimpan data!");
+    } finally {
+        toggleLoader(false);
+    }
+}
     </script>
 </body>
 </html>
