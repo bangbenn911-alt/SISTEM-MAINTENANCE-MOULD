@@ -1012,12 +1012,10 @@
                     
                     <div style="display: flex; gap: 8px; margin-bottom: 15px;">
                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual jika perlu..." style="flex:1; text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
-                        <button onclick="tambahMoldManual()" style="padding: 10px 15px; background: #64748b; color: white; border: none; border-radius: 5px; cursor: pointer;"><i class="fas fa-keyboard"></i></button>
+                      <button onclick="tambahMoldManual()" style="padding: 10px 15px; background: #64748b; color: white; border: none; border-radius: 4px; cursor: pointer;"><i class="fas fa-plus"></i></button>
                         
                         <!-- TOMBOL AI VOICE -->
-                        <button onclick="mulaiSuara()" style="padding: 10px 20px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4); animation: pulse-core 2s infinite;">
-                            <i class="fas fa-microphone-alt"></i> SUARA
-                        </button>
+                       <button id="btn-suara" onclick="toggleSuara()" style="padding: 10px 15px; background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; border-radius: 4px; cursor: pointer; transition: 0.3s;"><i class="fas fa-microphone-alt"></i></button>
                     </div>
 
                     <!-- Tempat List Mold -->
