@@ -972,7 +972,12 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-check"></i> 1. Rencana Naik Mold (Harian/Mingguan/Bulanan)</div>
                 <div class="menu-card" onclick="navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;"><i class="fas fa-dolly"></i> 2. Laporan Persiapan Naik/Turun Mold</div>
-                <div class="menu-card" onclick="alert('Fitur Preventiv Sedang Disiapkan')" style="border-left-color: #10b981;"><i class="fas fa-tools"></i> 3. Laporan Preventiv Mold</div>
+                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="border-left-color: #dc2626; position: relative;">
+    <i class="fas fa-tools"></i> Divisi Mold Trouble
+    <!-- Ini Lonceng Notifikasinya -->
+    <span id="badge-trouble" style="position: absolute; right: 15px; top: 15px; background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+</div>
+
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE BERANDA</button>
         </div>
@@ -1167,6 +1172,96 @@
 
     </div>
 </div>
+<!-- ========================================================= -->
+<!-- 5. SCREEN DIVISI MOLD TROUBLE & FORM 7 PARAMETER          -->
+<!-- ========================================================= -->
+<div id="ms-trouble-screen" class="screen screen-bg">
+    <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
+        
+        <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #dc2626; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-tools"></i> Divisi Mold Trouble</h2>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+
+        <!-- TAB MENU TROUBLE -->
+        <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1;">
+            <button class="tab-btn-trouble" onclick="bukaTabTrouble('belum')" id="btn-tab-trouble-belum" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.3s; background: #dc2626; color: white;">Belum di Update</button>
+            <button class="tab-btn-trouble" onclick="bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.3s; background: transparent; color: #475569;">Sudah Selesai</button>
+        </div>
+
+        <!-- LIST TIKET BELUM UPDATE -->
+        <div id="tab-trouble-belum" class="tab-content-trouble" style="display: block;">
+            <ul id="list-trouble-belum" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+
+        <!-- LIST TIKET SUDAH SELESAI -->
+        <div id="tab-trouble-selesai" class="tab-content-trouble" style="display: none;">
+            <ul id="list-trouble-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL FORM UPDATE PROJECT TROUBLE (POP-UP) -->
+<div id="modal-form-trouble" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:white; width:100%; max-width:500px; border-radius:12px; padding:20px; max-height:90vh; overflow-y:auto; position:relative;">
+        <h3 style="color:#dc2626; margin-top:0; border-bottom:2px solid #fee2e2; padding-bottom:10px;"><i class="fas fa-clipboard-list"></i> Update Project Trouble</h3>
+        
+        <!-- Hidden Inputs penyimpan ID -->
+        <input type="hidden" id="trouble-id-tiket">
+        <input type="hidden" id="trouble-id-produksi">
+        <input type="hidden" id="trouble-index-produksi">
+
+        <div style="margin-bottom:10px;">
+            <label style="font-size:12px; font-weight:bold; color:gray;">Nama Mold</label>
+            <input type="text" id="trouble-nama-mold" readonly style="width:100%; padding:10px; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:6px; font-weight:bold; color:#0f172a;">
+        </div>
+
+        <!-- 7 PARAMETER ISIAN -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div>
+                <label style="font-size:12px; font-weight:bold; color:gray;">1. Type Mold</label>
+                <input type="text" id="tr-type" placeholder="Contoh: Injection" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+            </div>
+            <div>
+                <label style="font-size:12px; font-weight:bold; color:gray;">7. Nama Eksekutor</label>
+                <input type="text" id="tr-eksekutor" placeholder="Nama Teknisi" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+            </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+            <div>
+                <label style="font-size:12px; font-weight:bold; color:gray;">2. Start Penanganan</label>
+                <input type="datetime-local" id="tr-start" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+            </div>
+            <div>
+                <label style="font-size:12px; font-weight:bold; color:gray;">3. Estimasi Waktu</label>
+                <input type="text" id="tr-estimasi" placeholder="Misal: 2 Jam" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+            </div>
+        </div>
+
+        <div style="margin-bottom:10px;">
+            <label style="font-size:12px; font-weight:bold; color:gray;">4. Finish Pengerjaan</label>
+            <input type="datetime-local" id="tr-finish" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+        </div>
+
+        <div style="margin-bottom:10px; padding:10px; background:#fff7ed; border:1px solid #fed7aa; border-radius:6px;">
+            <label style="font-size:12px; font-weight:bold; color:#ea580c;">5. Masalah & Penyebab (Detail)</label>
+            <input type="text" id="tr-masalah" placeholder="Nama Masalah (Misal: Ejector Macet)" style="width:100%; padding:8px; margin-bottom:5px; border:1px solid #cbd5e1; border-radius:6px;">
+            <input type="text" id="tr-penyebab" placeholder="Penyebab (Misal: Spring Patah)" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;">
+        </div>
+
+        <div style="margin-bottom:15px;">
+            <label style="font-size:12px; font-weight:bold; color:gray;">6. Tindakan yang Dilakukan</label>
+            <textarea id="tr-tindakan" rows="3" placeholder="Langkah perbaikan..." style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:6px;"></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+            <button onclick="document.getElementById('modal-form-trouble').style.display='none'" style="flex:1; padding:12px; background:#e2e8f0; border:none; border-radius:6px; font-weight:bold; color:#475569; cursor:pointer;">BATAL</button>
+            <button onclick="simpanLaporanTrouble()" style="flex:2; padding:12px; background:#10b981; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-save"></i> SELESAI & SIMPAN</button>
+        </div>
+    </div>
+</div>
+
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI -->
     <!-- ========================================== -->
@@ -2542,8 +2637,17 @@ window.muatDataMoldProduksi = async function() {
     }
 }
 
+// =================================================================
+// LOGIKA JEMBATAN PRODUKSI <---> DIVISI TROUBLE (GEMINI PRO ALGORITHM)
+// =================================================================
+
+// 1. REVISI: Fungsi Pindah Status di Fase 2 (Menciptakan Tiket Trouble Otomatis)
 window.updateStatusMold = async function(idDoc, indexArray, statusBaru) {
-    if(!confirm(`Pindahkan mold ini ke daftar "${statusBaru}"?`)) return;
+    if(statusBaru === 'Gagal') {
+        if(!confirm(`Mold bermasalah? Data akan dikirim otomatis ke Divisi Mold Trouble!`)) return;
+    } else {
+        if(!confirm(`Pindahkan mold ini ke daftar "Selesai Baik"?`)) return;
+    }
     
     toggleLoader(true, "Memperbarui status...");
     try {
@@ -2552,23 +2656,178 @@ window.updateStatusMold = async function(idDoc, indexArray, statusBaru) {
         
         if (docSnap.exists()) {
             let data = docSnap.data();
-            data.listMold[indexArray].status = statusBaru; // Ubah statusnya
+            const moldTerpilih = data.listMold[indexArray];
+            moldTerpilih.status = statusBaru; // Ubah di produksi jadi Gagal / Selesai
             
-            // Simpan kembali ke database
-            await updateDoc(docRef, {
-                listMold: data.listMold
-            });
+            await updateDoc(docRef, { listMold: data.listMold });
+
+            // JIKA GAGAL, BUAT TIKET OTOMATIS KE KOLEKSI BARU!
+            if(statusBaru === 'Gagal') {
+                await addDoc(collection(db, "mold_trouble_tickets"), {
+                    idAsalProduksi: idDoc,
+                    indexAsalArray: indexArray,
+                    namaMold: moldTerpilih.nama,
+                    waktuMasukTrouble: new Date().toLocaleString(),
+                    statusTrouble: "Belum Update", 
+                    timestamp: Date.now()
+                });
+            }
             
-            // Muat ulang layar agar kartunya otomatis bergeser tab
             window.muatDataMoldProduksi();
+            window.cekNotifTrouble(); // Update lonceng
         }
     } catch (e) {
-        console.error("Gagal update: ", e);
-        alert("Terjadi kesalahan saat mengupdate status.");
-    } finally {
-        toggleLoader(false);
-    }
+        console.error(e); alert("Terjadi kesalahan.");
+    } finally { toggleLoader(false); }
 }
+
+// 2. NAVIGASI TAB TROUBLE
+window.bukaDivisiTrouble = function() {
+    window.navigasi('ms-trouble-screen');
+    window.bukaTabTrouble('belum');
+    window.muatDataTrouble();
+}
+
+window.bukaTabTrouble = function(tab) {
+    document.querySelectorAll('.tab-content-trouble').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.tab-btn-trouble').forEach(btn => {
+        btn.style.background = 'transparent'; btn.style.color = '#475569';
+    });
+    document.getElementById('tab-trouble-' + tab).style.display = 'block';
+    const btnAktif = document.getElementById('btn-tab-trouble-' + tab);
+    btnAktif.style.background = tab === 'belum' ? '#dc2626' : '#10b981';
+    btnAktif.style.color = 'white';
+}
+
+// 3. FUNGSI MENARIK DATA KE LAYAR TROUBLE & CEK NOTIFIKASI
+window.muatDataTrouble = async function() {
+    const listBelum = document.getElementById('list-trouble-belum');
+    const listSelesai = document.getElementById('list-trouble-selesai');
+    if(!listBelum) return;
+    
+    listBelum.innerHTML = ''; listSelesai.innerHTML = '';
+    toggleLoader(true, "Memuat Data Trouble...");
+    
+    try {
+        const q = query(collection(db, "mold_trouble_tickets"));
+        const querySnapshot = await getDocs(q);
+        let countBelum = 0;
+
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            const idDoc = docSnap.id;
+            
+            const li = document.createElement('li');
+            li.style.background = 'white'; li.style.padding = '15px'; 
+            li.style.marginBottom = '12px'; li.style.borderRadius = '8px';
+            li.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+            
+            if(data.statusTrouble === "Belum Update") {
+                countBelum++;
+                li.style.borderLeft = '5px solid #dc2626';
+                li.innerHTML = `
+                    <div style="font-weight: 900; font-size: 16px;">${data.namaMold}</div>
+                    <div style="font-size: 11px; color: gray; margin-bottom: 10px;"><i class="fas fa-clock"></i> Masuk: ${data.waktuMasukTrouble}</div>
+                    <button onclick="bukaFormTrouble('${idDoc}', '${data.namaMold}', '${data.idAsalProduksi}', ${data.indexAsalArray})" style="width:100%; background:#3b82f6; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-edit"></i> UPDATE PROJECT</button>
+                `;
+                listBelum.appendChild(li);
+            } else {
+                li.style.borderLeft = '5px solid #10b981';
+                li.innerHTML = `
+                    <div style="font-weight: 900; font-size: 16px;">${data.namaMold}</div>
+                    <div style="font-size: 12px; margin-top:5px;"><b>Tindakan:</b> ${data.tindakanDilakukan}</div>
+                    <div style="font-size: 11px; color: gray; margin-top: 5px;"><i class="fas fa-user-cog"></i> Teknisi: ${data.eksekutor} | Finish: ${data.finishPengerjaan}</div>
+                `;
+                listSelesai.appendChild(li);
+            }
+        });
+        
+        if(listBelum.innerHTML === '') listBelum.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Hebat! Tidak ada mold bermasalah.</li>';
+        if(listSelesai.innerHTML === '') listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada riwayat perbaikan selesai.</li>';
+
+        // Update Badge Notifikasi di Beranda
+        const badge = document.getElementById('badge-trouble');
+        if(badge) {
+            badge.style.display = countBelum > 0 ? 'inline-block' : 'none';
+            badge.innerText = countBelum;
+        }
+    } catch (e) {
+        console.error(e);
+    } finally { toggleLoader(false); }
+}
+
+// Global Listener agar notifikasi update otomatis saat web dibuka
+window.cekNotifTrouble = window.muatDataTrouble; 
+document.addEventListener("DOMContentLoaded", () => { setTimeout(window.cekNotifTrouble, 2000); });
+
+// 4. MEMBUKA FORM 7 PARAMETER
+window.bukaFormTrouble = function(idTiket, namaMold, idProduksi, indexProduksi) {
+    document.getElementById('trouble-id-tiket').value = idTiket;
+    document.getElementById('trouble-id-produksi').value = idProduksi;
+    document.getElementById('trouble-index-produksi').value = indexProduksi;
+    document.getElementById('trouble-nama-mold').value = namaMold;
+    
+    // Reset isian sebelumnya
+    const inputs = ['tr-type', 'tr-start', 'tr-estimasi', 'tr-finish', 'tr-masalah', 'tr-penyebab', 'tr-tindakan', 'tr-eksekutor'];
+    inputs.forEach(id => document.getElementById(id).value = "");
+
+    document.getElementById('modal-form-trouble').style.display = 'flex';
+}
+
+// 5. PENYIMPANAN AKHIR & SINKRONISASI 2 DATABASE SEKALIGUS
+window.simpanLaporanTrouble = async function() {
+    const idTiket = document.getElementById('trouble-id-tiket').value;
+    const idProduksi = document.getElementById('trouble-id-produksi').value;
+    const indexProduksi = parseInt(document.getElementById('trouble-index-produksi').value);
+    
+    // Ambil 7 Value
+    const d_type = document.getElementById('tr-type').value;
+    const d_start = document.getElementById('tr-start').value;
+    const d_esti = document.getElementById('tr-estimasi').value;
+    const d_finish = document.getElementById('tr-finish').value;
+    const d_masalah = document.getElementById('tr-masalah').value;
+    const d_penyebab = document.getElementById('tr-penyebab').value;
+    const d_tindakan = document.getElementById('tr-tindakan').value;
+    const d_eksekutor = document.getElementById('tr-eksekutor').value;
+
+    if(!d_masalah || !d_tindakan || !d_eksekutor) return alert("Poin 5, 6, dan 7 wajib diisi!");
+
+    toggleLoader(true, "Menyimpan & Mensinkronisasi Data...");
+    try {
+        // A. Update Database Tiket Trouble
+        const gabunganMasalah = d_masalah + " (Penyebab: " + d_penyebab + ")";
+        const docTroubleRef = doc(db, "mold_trouble_tickets", idTiket);
+        await updateDoc(docTroubleRef, {
+            typeMold: d_type,
+            startPenanganan: d_start,
+            estimasiWaktu: d_esti,
+            finishPengerjaan: d_finish,
+            masalahDanPenyebab: gabunganMasalah,
+            tindakanDilakukan: d_tindakan,
+            eksekutor: d_eksekutor,
+            statusTrouble: "Sudah Selesai",
+            waktuSelesaiPerbaikan: new Date().toLocaleString()
+        });
+
+        // B. AUTO-SYNC! Hentikan status "Gagal" di Database Produksi, ubah jadi "Selesai" (Hijau)
+        const docProdRef = doc(db, "laporan_naik_mold", idProduksi);
+        const docProdSnap = await getDoc(docProdRef);
+        if (docProdSnap.exists()) {
+            let dataProd = docProdSnap.data();
+            dataProd.listMold[indexProduksi].status = "Selesai"; // Mengubah paksa ke Hijau!
+            await updateDoc(docProdRef, { listMold: dataProd.listMold });
+        }
+
+        alert("Update Project Berhasil! Mold kembali berstatus Selesai di Produksi.");
+        document.getElementById('modal-form-trouble').style.display = 'none';
+        
+        // Refresh layar
+        window.muatDataTrouble();
+    } catch (e) {
+        console.error(e); alert("Gagal menyimpan update project.");
+    } finally { toggleLoader(false); }
+}
+
     </script>
 </body>
 </html>
