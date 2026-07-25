@@ -299,7 +299,11 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
-                <div class="menu-card" onclick="masukDivisi('DIVISI MOLD TROUBLE')"><i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE</div>
+                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="border-left-color: #dc2626; position: relative;">
+    <i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE
+    <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+</div>
+
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 
                 <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
@@ -315,7 +319,11 @@
             <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
             <div class="grid-menu">
                 <div class="menu-card" onclick="navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
-                <div class="menu-card" onclick="navigasi('update-project-screen'); renderUpdateList();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
+                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
+    <i class="fas fa-edit"></i> 2. Input Update Project
+    <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+</div>
+
                 <div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
@@ -2638,10 +2646,10 @@ window.muatDataMoldProduksi = async function() {
 }
 
 // =================================================================
-// LOGIKA JEMBATAN PRODUKSI <---> DIVISI TROUBLE (GEMINI PRO ALGORITHM)
+// =================================================================
+// LOGIKA JEMBATAN PRODUKSI <---> DIVISI TROUBLE (VERSI 3 LANGKAH)
 // =================================================================
 
-// 1. REVISI: Fungsi Pindah Status di Fase 2 (Menciptakan Tiket Trouble Otomatis)
 window.updateStatusMold = async function(idDoc, indexArray, statusBaru) {
     if(statusBaru === 'Gagal') {
         if(!confirm(`Mold bermasalah? Data akan dikirim otomatis ke Divisi Mold Trouble!`)) return;
@@ -2657,31 +2665,29 @@ window.updateStatusMold = async function(idDoc, indexArray, statusBaru) {
         if (docSnap.exists()) {
             let data = docSnap.data();
             const moldTerpilih = data.listMold[indexArray];
-            moldTerpilih.status = statusBaru; // Ubah di produksi jadi Gagal / Selesai
+            moldTerpilih.status = statusBaru; 
             
             await updateDoc(docRef, { listMold: data.listMold });
 
-            // JIKA GAGAL, BUAT TIKET OTOMATIS KE KOLEKSI BARU!
             if(statusBaru === 'Gagal') {
                 await addDoc(collection(db, "mold_trouble_tickets"), {
                     idAsalProduksi: idDoc,
                     indexAsalArray: indexArray,
                     namaMold: moldTerpilih.nama,
                     waktuMasukTrouble: new Date().toLocaleString(),
-                    statusTrouble: "Belum Update", 
+                    statusTrouble: "Belum Update", // Status awal (Lonceng nyala)
                     timestamp: Date.now()
                 });
             }
             
             window.muatDataMoldProduksi();
-            window.cekNotifTrouble(); // Update lonceng
+            window.cekNotifTrouble(); 
         }
     } catch (e) {
         console.error(e); alert("Terjadi kesalahan.");
     } finally { toggleLoader(false); }
 }
 
-// 2. NAVIGASI TAB TROUBLE
 window.bukaDivisiTrouble = function() {
     window.navigasi('ms-trouble-screen');
     window.bukaTabTrouble('belum');
@@ -2699,7 +2705,20 @@ window.bukaTabTrouble = function(tab) {
     btnAktif.style.color = 'white';
 }
 
-// 3. FUNGSI MENARIK DATA KE LAYAR TROUBLE & CEK NOTIFIKASI
+// FUNGSI BARU: MENERIMA LAPORAN
+window.terimaLaporanTrouble = async function(idTiket) {
+    if(!confirm("Terima tiket ini? Notifikasi akan dimatikan dan status berubah menjadi Sedang Disiapkan.")) return;
+    toggleLoader(true, "Menerima laporan...");
+    try {
+        await updateDoc(doc(db, "mold_trouble_tickets", idTiket), {
+            statusTrouble: "Sedang Dikerjakan" // Mengubah status agar lonceng mati
+        });
+        window.muatDataTrouble();
+    } catch (e) {
+        console.error(e); alert("Gagal menerima laporan.");
+    } finally { toggleLoader(false); }
+}
+
 window.muatDataTrouble = async function() {
     const listBelum = document.getElementById('list-trouble-belum');
     const listSelesai = document.getElementById('list-trouble-selesai');
@@ -2711,7 +2730,7 @@ window.muatDataTrouble = async function() {
     try {
         const q = query(collection(db, "mold_trouble_tickets"));
         const querySnapshot = await getDocs(q);
-        let countBelum = 0;
+        let countLonceng = 0;
 
         querySnapshot.forEach((docSnap) => {
             const data = docSnap.data();
@@ -2722,16 +2741,29 @@ window.muatDataTrouble = async function() {
             li.style.marginBottom = '12px'; li.style.borderRadius = '8px';
             li.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
             
-            if(data.statusTrouble === "Belum Update") {
-                countBelum++;
-                li.style.borderLeft = '5px solid #dc2626';
+            // JIKA BELUM SELESAI (MASIH BARU ATAU SEDANG DIKERJAKAN)
+            if(data.statusTrouble === "Belum Update" || data.statusTrouble === "Sedang Dikerjakan") {
+                
+                const isBaru = data.statusTrouble === "Belum Update";
+                if(isBaru) countLonceng++; // Hanya hitung lonceng jika statusnya "Belum Update"
+
+                li.style.borderLeft = isBaru ? '5px solid #dc2626' : '5px solid #f59e0b'; // Merah (Baru), Kuning (Diterima)
+                
+                // Jika baru, muncul tombol "TERIMA", jika sudah diterima, muncul tombol "UPDATE 7 PARAMETER"
+                const tombolAksi = isBaru 
+                    ? `<button onclick="terimaLaporanTrouble('${idDoc}')" style="width:100%; background:#ef4444; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-hand-pointer"></i> KLIK UNTUK TERIMA TUGAS</button>`
+                    : `<div style="font-size:11px; color:#ea580c; margin-bottom:8px; font-weight:bold;"><i class="fas fa-cog fa-spin"></i> Laporan Diterima & Sedang Disiapkan</div>
+                       <button onclick="bukaFormTrouble('${idDoc}', '${data.namaMold}', '${data.idAsalProduksi}', ${data.indexAsalArray})" style="width:100%; background:#3b82f6; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-edit"></i> UPDATE 7 PARAMETER</button>`;
+
                 li.innerHTML = `
                     <div style="font-weight: 900; font-size: 16px;">${data.namaMold}</div>
-                    <div style="font-size: 11px; color: gray; margin-bottom: 10px;"><i class="fas fa-clock"></i> Masuk: ${data.waktuMasukTrouble}</div>
-                    <button onclick="bukaFormTrouble('${idDoc}', '${data.namaMold}', '${data.idAsalProduksi}', ${data.indexAsalArray})" style="width:100%; background:#3b82f6; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-edit"></i> UPDATE PROJECT</button>
+                    <div style="font-size: 11px; color: gray; margin-bottom: 10px;"><i class="fas fa-clock"></i> Lapor: ${data.waktuMasukTrouble}</div>
+                    ${tombolAksi}
                 `;
                 listBelum.appendChild(li);
-            } else {
+
+            } else if (data.statusTrouble === "Sudah Selesai") {
+                // JIKA SUDAH SELESAI
                 li.style.borderLeft = '5px solid #10b981';
                 li.innerHTML = `
                     <div style="font-weight: 900; font-size: 16px;">${data.namaMold}</div>
@@ -2742,45 +2774,40 @@ window.muatDataTrouble = async function() {
             }
         });
         
-        if(listBelum.innerHTML === '') listBelum.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Hebat! Tidak ada mold bermasalah.</li>';
+        if(listBelum.innerHTML === '') listBelum.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada mold bermasalah.</li>';
         if(listSelesai.innerHTML === '') listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada riwayat perbaikan selesai.</li>';
 
-        // Update Badge Notifikasi di Beranda
-        const badge = document.getElementById('badge-trouble');
-        if(badge) {
-            badge.style.display = countBelum > 0 ? 'inline-block' : 'none';
-            badge.innerText = countBelum;
-        }
-    } catch (e) {
-        console.error(e);
-    } finally { toggleLoader(false); }
+        // UPDATE SEMUA LONCENG NOTIFIKASI SEKALIGUS
+        const badges = document.querySelectorAll('.badge-trouble-notif');
+        badges.forEach(badge => {
+            badge.style.display = countLonceng > 0 ? 'inline-block' : 'none';
+            badge.innerText = countLonceng;
+        });
+
+    } catch (e) { console.error(e); } 
+    finally { toggleLoader(false); }
 }
 
-// Global Listener agar notifikasi update otomatis saat web dibuka
 window.cekNotifTrouble = window.muatDataTrouble; 
 document.addEventListener("DOMContentLoaded", () => { setTimeout(window.cekNotifTrouble, 2000); });
 
-// 4. MEMBUKA FORM 7 PARAMETER
 window.bukaFormTrouble = function(idTiket, namaMold, idProduksi, indexProduksi) {
     document.getElementById('trouble-id-tiket').value = idTiket;
     document.getElementById('trouble-id-produksi').value = idProduksi;
     document.getElementById('trouble-index-produksi').value = indexProduksi;
     document.getElementById('trouble-nama-mold').value = namaMold;
     
-    // Reset isian sebelumnya
     const inputs = ['tr-type', 'tr-start', 'tr-estimasi', 'tr-finish', 'tr-masalah', 'tr-penyebab', 'tr-tindakan', 'tr-eksekutor'];
     inputs.forEach(id => document.getElementById(id).value = "");
 
     document.getElementById('modal-form-trouble').style.display = 'flex';
 }
 
-// 5. PENYIMPANAN AKHIR & SINKRONISASI 2 DATABASE SEKALIGUS
 window.simpanLaporanTrouble = async function() {
     const idTiket = document.getElementById('trouble-id-tiket').value;
     const idProduksi = document.getElementById('trouble-id-produksi').value;
     const indexProduksi = parseInt(document.getElementById('trouble-index-produksi').value);
     
-    // Ambil 7 Value
     const d_type = document.getElementById('tr-type').value;
     const d_start = document.getElementById('tr-start').value;
     const d_esti = document.getElementById('tr-estimasi').value;
@@ -2794,39 +2821,30 @@ window.simpanLaporanTrouble = async function() {
 
     toggleLoader(true, "Menyimpan & Mensinkronisasi Data...");
     try {
-        // A. Update Database Tiket Trouble
         const gabunganMasalah = d_masalah + " (Penyebab: " + d_penyebab + ")";
-        const docTroubleRef = doc(db, "mold_trouble_tickets", idTiket);
-        await updateDoc(docTroubleRef, {
-            typeMold: d_type,
-            startPenanganan: d_start,
-            estimasiWaktu: d_esti,
-            finishPengerjaan: d_finish,
-            masalahDanPenyebab: gabunganMasalah,
-            tindakanDilakukan: d_tindakan,
-            eksekutor: d_eksekutor,
-            statusTrouble: "Sudah Selesai",
-            waktuSelesaiPerbaikan: new Date().toLocaleString()
+        await updateDoc(doc(db, "mold_trouble_tickets", idTiket), {
+            typeMold: d_type, startPenanganan: d_start, estimasiWaktu: d_esti,
+            finishPengerjaan: d_finish, masalahDanPenyebab: gabunganMasalah,
+            tindakanDilakukan: d_tindakan, eksekutor: d_eksekutor,
+            statusTrouble: "Sudah Selesai", waktuSelesaiPerbaikan: new Date().toLocaleString()
         });
 
-        // B. AUTO-SYNC! Hentikan status "Gagal" di Database Produksi, ubah jadi "Selesai" (Hijau)
         const docProdRef = doc(db, "laporan_naik_mold", idProduksi);
         const docProdSnap = await getDoc(docProdRef);
         if (docProdSnap.exists()) {
             let dataProd = docProdSnap.data();
-            dataProd.listMold[indexProduksi].status = "Selesai"; // Mengubah paksa ke Hijau!
+            dataProd.listMold[indexProduksi].status = "Selesai"; 
             await updateDoc(docProdRef, { listMold: dataProd.listMold });
         }
 
         alert("Update Project Berhasil! Mold kembali berstatus Selesai di Produksi.");
         document.getElementById('modal-form-trouble').style.display = 'none';
-        
-        // Refresh layar
         window.muatDataTrouble();
     } catch (e) {
         console.error(e); alert("Gagal menyimpan update project.");
     } finally { toggleLoader(false); }
 }
+
 
     </script>
 </body>
