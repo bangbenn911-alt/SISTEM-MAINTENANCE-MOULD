@@ -318,13 +318,25 @@
         <div class="content-wrapper">
             <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
-                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
-    <i class="fas fa-edit"></i> 2. Input Update Project
+                <!-- 1. Masalah/gagal persiapan mold (Mengarah ke fitur Trouble Internal yang sudah kita buat) -->
+<div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
+    <i class="fas fa-exclamation-circle"></i> 1. Masalah/gagal persiapan mold
+    <!-- Lonceng Notif Trouble Internal -->
     <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
 </div>
 
-                <div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
+<!-- 2. New Data PKM Eltre Mold (Mengarah ke fitur AppSheet yang baru) -->
+<div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
+    <i class="fas fa-file-import"></i> 2. New Data PKM Eltre Mold
+    <!-- Lonceng Notif Impor AppSheet -->
+    <span id="badge-pkm-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #f59e0b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+</div>
+
+<!-- 3. Control Progres -->
+<div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
+    <i class="fas fa-chart-line"></i> 3. Control Progres
+</div>
+
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -1266,6 +1278,59 @@
         <div style="display:flex; gap:10px;">
             <button onclick="document.getElementById('modal-form-trouble').style.display='none'" style="flex:1; padding:12px; background:#e2e8f0; border:none; border-radius:6px; font-weight:bold; color:#475569; cursor:pointer;">BATAL</button>
             <button onclick="simpanLaporanTrouble()" style="flex:2; padding:12px; background:#10b981; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-save"></i> SELESAI & SIMPAN</button>
+        </div>
+    </div>
+</div>
+<!-- ========================================================= -->
+<!-- 6. SCREEN NEW DATA PKM ELTRE MOLD (IMPOR APPSHEET)        -->
+<!-- ========================================================= -->
+<div id="ms-pkm-eltre-screen" class="screen screen-bg">
+    <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
+        
+        <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #2563eb; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+            <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-file-import"></i> Data PKM Eltre</h2>
+            <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+
+        <!-- 4 SUBJUDUL (TAB MENU) -->
+        <div style="display: flex; gap:5px; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1; overflow-x: auto;">
+            <button class="tab-btn-pkm" onclick="bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="flex: 1; min-width: 120px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; transition: 0.3s; background: #2563eb; color: white;">Verifikasi Impor ELTRE</button>
+            <button class="tab-btn-pkm" onclick="bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; transition: 0.3s; background: transparent; color: #475569;">Sedang Dikerjakan</button>
+            <button class="tab-btn-pkm" onclick="bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; transition: 0.3s; background: transparent; color: #475569;">Dipisahkan (Bukan Mold)</button>
+            <button class="tab-btn-pkm" onclick="bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; transition: 0.3s; background: transparent; color: #475569;">Selesai</button>
+        </div>
+
+        <!-- TAB 1: LIST DATA VERIFIKASI (Dari AppSheet) -->
+        <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;">
+            <ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+        <!-- TAB 2: LIST DIKERJAKAN -->
+        <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;">
+            <ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+        <!-- TAB 3: LIST DIPISAHKAN -->
+        <div id="tab-pkm-pisah" class="tab-content-pkm" style="display: none;">
+            <ul id="list-pkm-pisah" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+        <!-- TAB 4: LIST SELESAI -->
+        <div id="tab-pkm-selesai" class="tab-content-pkm" style="display: none;">
+            <ul id="list-pkm-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL AKSI VERIFIKASI -->
+<div id="modal-aksi-pkm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:white; width:100%; max-width:400px; border-radius:12px; padding:25px; text-align:center; position:relative;">
+        <h3 style="color:#2563eb; margin-top:0;"><i class="fas fa-search"></i> Verifikasi Data PKM</h3>
+        <p style="font-size:13px; color:gray; margin-bottom:20px;">Apakah kendala pada mold <b id="pkm-nama-mold-text"></b> ini benar-benar disebabkan oleh masalah Mold?</p>
+        
+        <input type="hidden" id="pkm-id-tiket-verifikasi">
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+            <button onclick="prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:12px; background:#10b981; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-tools"></i> YA, KERJAKAN (KENDALA MOLD)</button>
+            <button onclick="prosesVerifikasiPKM('pisah')" style="width:100%; padding:12px; background:#ef4444; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-ban"></i> BUKAN, PISAHKAN DATA INI</button>
+            <button onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:12px; background:#e2e8f0; border:none; border-radius:6px; font-weight:bold; color:#475569; cursor:pointer; margin-top:10px;">BATAL</button>
         </div>
     </div>
 </div>
@@ -2843,6 +2908,67 @@ window.simpanLaporanTrouble = async function() {
     } catch (e) {
         console.error(e); alert("Gagal menyimpan update project.");
     } finally { toggleLoader(false); }
+}
+// =================================================================
+// LOGIKA PKM ELTRE (INTEGRASI APPSHEET)
+// =================================================================
+
+// 1. Fungsi Navigasi & Buka Tab
+window.bukaPKMEltre = function() {
+    window.navigasi('ms-pkm-eltre-screen');
+    window.bukaTabPKM('verifikasi');
+    // Nantinya fungsi untuk load data dari database dipanggil di sini
+}
+
+window.bukaTabPKM = function(tab) {
+    // Sembunyikan semua konten tab
+    document.querySelectorAll('.tab-content-pkm').forEach(el => el.style.display = 'none');
+    
+    // Reset warna semua tombol tab
+    document.querySelectorAll('.tab-btn-pkm').forEach(btn => {
+        btn.style.background = 'transparent'; btn.style.color = '#475569';
+    });
+    
+    // Tampilkan tab yang dipilih
+    document.getElementById('tab-pkm-' + tab).style.display = 'block';
+    
+    // Warnai tombol tab yang aktif
+    const btnAktif = document.getElementById('btn-tab-pkm-' + tab);
+    btnAktif.style.background = '#2563eb';
+    btnAktif.style.color = 'white';
+}
+
+// 2. Fungsi Buka Modal Verifikasi
+window.bukaAksiVerifikasi = function(idTiket, namaMold) {
+    document.getElementById('pkm-id-tiket-verifikasi').value = idTiket;
+    document.getElementById('pkm-nama-mold-text').innerText = namaMold;
+    document.getElementById('modal-aksi-pkm').style.display = 'flex';
+}
+
+// 3. Fungsi Mengeksekusi Keputusan (Kerjakan / Pisahkan)
+window.prosesVerifikasiPKM = async function(keputusan) {
+    const idTiket = document.getElementById('pkm-id-tiket-verifikasi').value;
+    
+    toggleLoader(true, "Memproses verifikasi...");
+    try {
+        if(keputusan === 'kerjakan') {
+            alert("Data dimasukkan ke daftar 'Sedang Dikerjakan'. Silakan menuju form perbaikan.");
+            // Nanti di sini kita pasang updateDoc ke Firebase dengan status = 'Sedang Dikerjakan'
+        } else if (keputusan === 'pisah') {
+            alert("Data dipisahkan karena bukan masalah mold.");
+            // Nanti di sini kita pasang updateDoc ke Firebase dengan status = 'Dipisahkan'
+        }
+        
+        document.getElementById('modal-aksi-pkm').style.display = 'none';
+        
+        // Refresh layar data pkm
+        // window.muatDataPKMEltre(); (Akan kita buat nanti saat webhook Firebase disambung)
+        
+    } catch (error) {
+        console.error(error); alert("Terjadi kesalahan.");
+    } finally {
+        toggleLoader(false);
+    }
 }
 
 
