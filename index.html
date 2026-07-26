@@ -2295,6 +2295,63 @@
         window.bukaTabPKM = function(tab) { document.querySelectorAll('.tab-content-pkm').forEach(el => el.style.display = 'none'); document.querySelectorAll('.tab-btn-pkm').forEach(btn => { btn.style.background = 'transparent'; btn.style.color = '#475569'; }); document.getElementById('tab-pkm-' + tab).style.display = 'block'; const btnAktif = document.getElementById('btn-tab-pkm-' + tab); btnAktif.style.background = '#2563eb'; btnAktif.style.color = 'white'; }
         window.bukaAksiVerifikasi = function(idTiket, namaMold) { document.getElementById('pkm-id-tiket-verifikasi').value = idTiket; document.getElementById('pkm-nama-mold-text').innerText = namaMold; document.getElementById('modal-aksi-pkm').style.display = 'flex'; }
         window.prosesVerifikasiPKM = async function(keputusan) { const idTiket = document.getElementById('pkm-id-tiket-verifikasi').value; toggleLoader(true, "Memproses verifikasi..."); try { if(keputusan === 'kerjakan') { alert("Data dimasukkan ke daftar 'Sedang Dikerjakan'."); } else if (keputusan === 'pisah') { alert("Data dipisahkan karena bukan masalah mold."); } document.getElementById('modal-aksi-pkm').style.display = 'none'; } catch (error) {} finally { toggleLoader(false); } }
+        // --- LOGIKA PEMBACA DATA PKM ELTRE DARI APPSHEET ---
+        window.bukaPKMEltre = function() { 
+            window.navigasi('ms-pkm-eltre-screen'); 
+            window.bukaTabPKM('verifikasi'); 
+            window.muatDataPKMEltre(); 
+        }
+
+        window.muatDataPKMEltre = async function() {
+            const listVerif = document.getElementById('list-pkm-verifikasi');
+            if(!listVerif) return;
+            listVerif.innerHTML = '';
+            toggleLoader(true, "Menarik Data PKM AppSheet...");
+            
+            try {
+                const q = query(collection(db, "pkm_eltre_masuk"));
+                const snap = await getDocs(q);
+                let countBadge = 0;
+                
+                snap.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const idDoc = docSnap.id;
+                    
+                    // Hanya tampilkan yang butuh diverifikasi
+                    if(data.statusTrouble === "Menunggu Verifikasi") {
+                        countBadge++;
+                        listVerif.innerHTML += `
+                        <li style="background:white; padding:15px; margin-bottom:12px; border-radius:8px; border-left:5px solid #2563eb; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                            <div style="font-weight:900; font-size:16px; color:#1e293b;">${data.namaMold}</div>
+                            <div style="font-size:12px; color:gray; margin-bottom:5px;">Mesin: ${data.typeMold}</div>
+                            <div style="font-size:13px; color:#ea580c; margin-bottom:5px; font-weight:bold;">${data.masalahDanPenyebab}</div>
+                            <div style="font-size:11px; color:gray; margin-bottom:10px;"><i class="fas fa-clock"></i> ${data.waktuMasukTrouble}</div>
+                            <button onclick="bukaAksiVerifikasi('${idDoc}', '${data.namaMold}')" style="width:100%; background:#2563eb; color:white; border:none; padding:10px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-search"></i> VERIFIKASI SEKARANG</button>
+                        </li>`;
+                    }
+                });
+                
+                if(listVerif.innerHTML === '') {
+                    listVerif.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Belum ada data PKM baru dari produksi.</li>';
+                }
+                
+                // Menyalakan Lonceng Kuning di Menu PKM
+                const badgePKM = document.getElementById('badge-pkm-notif');
+                if(badgePKM) {
+                    badgePKM.style.display = countBadge > 0 ? 'inline-block' : 'none';
+                    badgePKM.innerText = countBadge;
+                }
+            } catch(e) { 
+                console.error(e); 
+            } finally { 
+                toggleLoader(false); 
+            }
+        }
+
+        // Pengecekan lonceng otomatis saat APK dibuka
+        document.addEventListener("DOMContentLoaded", () => { 
+            setTimeout(window.muatDataPKMEltre, 2500); 
+        });
 
     </script>
 </body>
