@@ -299,7 +299,9 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD REPAIR')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
-                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="border-left-color: #dc2626; position: relative;">
+                <div class="menu-card" onclick="navigasi('trouble-menu-screen')" style="border-left-color: #dc2626; position: relative;">
+
+
     <i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE
     <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
 </div>
@@ -318,29 +320,53 @@
         <div class="content-wrapper">
             <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
             <div class="grid-menu">
-                <!-- 1. Masalah/gagal persiapan mold (Mengarah ke fitur Trouble Internal yang sudah kita buat) -->
-<div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
-    <i class="fas fa-exclamation-circle"></i> 1. Masalah/gagal persiapan mold
-    <!-- Lonceng Notif Trouble Internal -->
-    <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+<!-- KEMBALI KE TOMBOL ASLI UNTUK DIVISI LAIN -->
+<div class="menu-card" onclick="navigasi('new-project-screen')">
+    <i class="fas fa-plus-circle"></i> 1. Input New Project
+</div>
+<div class="menu-card" onclick="navigasi('update-project-screen')">
+    <i class="fas fa-edit"></i> 2. Input Update Project
+</div>
+<div class="menu-card" onclick="navigasi('progress-screen'); resetFilter(); renderProgressList();">
+    <i class="fas fa-chart-line"></i> 3. Control Progres Project
 </div>
 
-<!-- 2. New Data PKM Eltre Mold (Mengarah ke fitur AppSheet yang baru) -->
-<div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
-    <i class="fas fa-file-import"></i> 2. New Data PKM Eltre Mold
-    <!-- Lonceng Notif Impor AppSheet -->
-    <span id="badge-pkm-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #f59e0b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
-</div>
-
-<!-- 3. Control Progres -->
-<div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
-    <i class="fas fa-chart-line"></i> 3. Control Progres
-</div>
 
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+<!-- ========================================================= -->
+<!-- MENU KHUSUS SUB-JUDUL DIVISI MOLD TROUBLE                 -->
+<!-- ========================================================= -->
+<div id="trouble-menu-screen" class="screen screen-bg" style="display: none;">
+    <div class="content-wrapper">
+        <div class="header" style="background: #1e293b;">
+            <h2 style="color: white; margin: 0;">Divisi Mold Trouble</h2>
+        </div>
+        
+        <div class="grid-menu">
+            <!-- 1. Masalah/gagal persiapan mold (Mengarah ke layar UI Merah) -->
+            <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
+                <i class="fas fa-exclamation-circle"></i> 1. Masalah/gagal persiapan mold
+                <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+            </div>
+
+            <!-- 2. New Data PKM Eltre Mold -->
+            <div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
+                <i class="fas fa-file-import"></i> 2. New Data PKM Eltre Mold
+                <span id="badge-pkm-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #f59e0b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">0</span>
+            </div>
+
+            <!-- 3. Control Progres -->
+            <div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
+                <i class="fas fa-chart-line"></i> 3. Control Progres
+            </div>
+        </div>
+        
+        <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+    </div>
+</div>
 
     <!-- 4. MENU UTAMA INFORMASI MOLD -->
     <div id="informasi-mold-screen" class="screen screen-bg">
