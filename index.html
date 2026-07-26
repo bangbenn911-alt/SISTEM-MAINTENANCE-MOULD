@@ -435,11 +435,11 @@
                     </div>
                 </div>
                 
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
-                <button type="button" id="btnTambahJob" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">+ Tambah Job Ke Bawah</button>
-                <button type="button" id="btnSimpanUpdateMR" class="btn-submit">SIMPAN RENCANA KERJA</button>
-            </div>
-        </div>
+               <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                <button type="button" id="btnTambahJob" onclick="tambahJobMR()" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">+ Tambah Job Ke Bawah</button>
+                 <button type="button" id="btnSimpanUpdateMR" onclick="simpanRencanaKerjaMR()" class="btn-submit" style="margin-top: 10px;">SIMPAN RENCANA KERJA</button>
+                </div>
+
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -1650,90 +1650,87 @@
         // --- LOGIKA MOLD REPAIR (ROMBAKAN BARU LOXLEY) ---
         // =======================================================
         
-        // --- 1. Form Rencana Kerja Dinamis ---
-        document.addEventListener("DOMContentLoaded", function() {
-            const btnTambahJob = document.getElementById("btnTambahJob");
-            const btnSimpanUpdateMR = document.getElementById("btnSimpanUpdateMR");
+        // --- 1. Form Rencana Kerja Dinamis (Diperbarui Anti-Macet) ---
+        window.tambahJobMR = function() {
+            const container = document.getElementById("mr-jobListContainer");
+            const cards = container.querySelectorAll(".job-card");
+            const nextNumber = cards.length + 1;
             
-            if(btnTambahJob) {
-                btnTambahJob.addEventListener("click", function() {
-                    const container = document.getElementById("mr-jobListContainer");
-                    const cards = container.querySelectorAll(".job-card");
-                    const nextNumber = cards.length + 1;
-                    
-                    const newCard = cards[0].cloneNode(true);
-                    const inputs = newCard.querySelectorAll("input, textarea, select");
-                    inputs.forEach(inp => inp.value = "");
-                    
-                    newCard.querySelector(".job-number").innerText = "Job #" + nextNumber;
-                    const btnHapus = newCard.querySelector(".btn-hapus-job");
-                    btnHapus.style.display = "block";
-                    
-                    btnHapus.addEventListener("click", function() {
-                        newCard.remove();
-                        const currentCards = container.querySelectorAll(".job-card");
-                        currentCards.forEach((c, idx) => {
-                            c.querySelector(".job-number").innerText = "Job #" + (idx + 1);
-                        });
-                    });
-                    
-                    container.appendChild(newCard);
+            const newCard = cards[0].cloneNode(true);
+            const inputs = newCard.querySelectorAll("input, textarea, select");
+            inputs.forEach(inp => inp.value = "");
+            
+            newCard.querySelector(".job-number").innerText = "Job #" + nextNumber;
+            const btnHapus = newCard.querySelector(".btn-hapus-job");
+            btnHapus.style.display = "block";
+            
+            btnHapus.onclick = function() {
+                newCard.remove();
+                const currentCards = container.querySelectorAll(".job-card");
+                currentCards.forEach((c, idx) => { c.querySelector(".job-number").innerText = "Job #" + (idx + 1); });
+            };
+            
+            container.appendChild(newCard);
+        };
+
+        window.simpanRencanaKerjaMR = async function() {
+            const foreman = document.getElementById("mr-nama-foreman").value || "Bapak Tarmuji";
+            const allCards = document.querySelectorAll("#mr-jobListContainer .job-card");
+            
+            if(allCards.length === 0) return alert("Belum ada job / rencana kerja yang ditambahkan!");
+
+            let batchData = [];
+            let pesanError = "";
+
+            allCards.forEach((card, index) => {
+                let jobNo = index + 1;
+                const namaMold = card.querySelector(".input-mold").value.trim();
+                const masalah = card.querySelector(".input-masalah").value.trim();
+                const penyebab = card.querySelector(".input-penyebab").value.trim();
+                const tindakan = card.querySelector(".input-tindakan").value.trim();
+                const tglMulai = card.querySelector(".input-tgl-mulai").value;
+                const tglSelesai = card.querySelector(".input-tgl-selesai").value;
+                
+                const estJam = parseInt(card.querySelector(".est-jam").value) || 0;
+                const estMenit = parseInt(card.querySelector(".est-menit").value) || 0;
+                const targetJam = parseInt(card.querySelector(".target-jam").value) || 0;
+                const targetMenit = parseInt(card.querySelector(".target-menit").value) || 0;
+                const pic = card.querySelector(".input-pic").value;
+
+                const totalEstimasiMenit = (estJam * 60) + estMenit;
+                const totalTargetHarianMenit = (targetJam * 60) + targetMenit;
+
+                if (!namaMold) pesanError += `\n- Job #${jobNo}: Nama Mold kosong.`;
+                if (!masalah) pesanError += `\n- Job #${jobNo}: Masalah kosong.`;
+                if (!tglMulai || !tglSelesai) pesanError += `\n- Job #${jobNo}: Tanggal Mulai/Selesai belum diisi.`;
+                if (totalEstimasiMenit === 0) pesanError += `\n- Job #${jobNo}: Estimasi total waktu masih 0.`;
+                if (!pic) pesanError += `\n- Job #${jobNo}: PIC belum dipilih.`;
+
+                batchData.push({
+                    namaForeman: foreman, namaMold: namaMold || "Tanpa Nama", masalah: masalah || "-", 
+                    penyebab: penyebab || "-", tindakan: tindakan || "-", tglMulai: tglMulai || "-", 
+                    tglSelesai: tglSelesai || "-", estimasiMenit: totalEstimasiMenit, targetHarianMenit: totalTargetHarianMenit,
+                    pic: pic || "Belum Dipilih", statusProyek: "Berjalan", timestamp: Date.now(), waktuAktualTotalMenit: 0 
                 });
+            });
+
+            if (pesanError !== "") return alert("Harap lengkapi data berikut sebelum menyimpan:" + pesanError);
+
+            toggleLoader(true, "Menyimpan Rencana Kerja...");
+            try {
+                for(let job of batchData) { await addDoc(collection(db, "mold_repair_jobs"), job); }
+                alert("Berhasil! Rencana Kerja Mold Repair Telah Disimpan.");
+                
+                // Reset form kembali kosong setelah sukses
+                allCards.forEach((c, idx) => { if(idx > 0) c.remove(); else { const inputs = c.querySelectorAll("input, textarea, select"); inputs.forEach(inp => inp.value = ""); } });
+                window.navigasi('menu-mold-repair-screen');
+            } catch (error) { 
+                console.error(error); 
+                alert("Gagal menyimpan ke server: " + error.message); 
+            } finally { 
+                toggleLoader(false); 
             }
-
-            if(btnSimpanUpdateMR) {
-                btnSimpanUpdateMR.addEventListener("click", async function() {
-                    const foreman = document.getElementById("mr-nama-foreman").value;
-                    const allCards = document.querySelectorAll("#mr-jobListContainer .job-card");
-                    let dataValid = true;
-                    let batchData = [];
-
-                    allCards.forEach(card => {
-                        const namaMold = card.querySelector(".input-mold").value;
-                        const masalah = card.querySelector(".input-masalah").value;
-                        const penyebab = card.querySelector(".input-penyebab").value;
-                        const tindakan = card.querySelector(".input-tindakan").value;
-                        const tglMulai = card.querySelector(".input-tgl-mulai").value;
-                        const tglSelesai = card.querySelector(".input-tgl-selesai").value;
-                        const estJam = parseInt(card.querySelector(".est-jam").value) || 0;
-                        const estMenit = parseInt(card.querySelector(".est-menit").value) || 0;
-                        const targetJam = parseInt(card.querySelector(".target-jam").value) || 0;
-                        const targetMenit = parseInt(card.querySelector(".target-menit").value) || 0;
-                        const pic = card.querySelector(".input-pic").value;
-
-                        const totalEstimasiMenit = (estJam * 60) + estMenit;
-                        const totalTargetHarianMenit = (targetJam * 60) + targetMenit;
-
-                        if (!namaMold || !pic || !tglMulai || !tglSelesai || totalEstimasiMenit === 0) {
-                            dataValid = false;
-                        }
-
-                        batchData.push({
-                            namaForeman: foreman, namaMold, masalah, penyebab, tindakan,
-                            tglMulai, tglSelesai, totalEstimasiMenit, targetHarianMenit,
-                            pic, statusProyek: "Berjalan", timestamp: Date.now(), 
-                            waktuAktualTotalMenit: 0 // Modal awal
-                        });
-                    });
-
-                    if (!dataValid) {
-                        return alert("Gagal Simpan: Harap lengkapi semua kolom di semua Job (Pastikan PIC dan Jam tidak kosong)!");
-                    }
-
-                    toggleLoader(true, "Menyimpan Rencana Kerja...");
-                    try {
-                        for(let job of batchData) {
-                            await addDoc(collection(db, "mold_repair_jobs"), job);
-                        }
-                        alert("Semua Rencana Kerja Berhasil Disimpan & Dikirim!");
-                        window.navigasi('menu-mold-repair-screen');
-                    } catch (error) {
-                        alert("Gagal menyimpan ke server: " + error.message);
-                    }
-                    toggleLoader(false);
-                });
-            }
-        });
+        };
 
         // --- 2. Update Proyek Mold Repair ---
         window.switchTabMR = function(tab) {
