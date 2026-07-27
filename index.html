@@ -21,7 +21,7 @@
         * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { margin: 0; background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
 
-        /* SISTEM LAYAR (ANTI BLANK) */
+        /* SISTEM LAYAR (ANTI BLANK LOXLEY) */
         .screen { display: none; min-height: 100vh; width: 100%; padding-bottom: 80px; }
         .active-screen { display: block; animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -29,8 +29,6 @@
         /* KOMPONEN UTAMA */
         .content-wrapper { padding: 20px; max-width: 600px; margin: 0 auto; }
         .header { background: var(--primary); color: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2); position: relative; overflow: hidden; }
-        .header::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); animation: shine 3s infinite; }
-        @keyframes shine { 100% { left: 200%; } }
         .header h2 { margin: 0; font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
         
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
@@ -51,8 +49,6 @@
 
         /* KOMPONEN PROGRESS & KARTU */
         .progress-card { background: var(--card-bg); padding: 15px; border-radius: 12px; border-left: 5px solid #cbd5e1; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; position: relative; }
-        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; color: white; margin-top: 8px; }
-        .bg-lambat { background: var(--lambat); } .bg-proses { background: var(--proses); } .bg-cepat { background: var(--cepat); }
         .tab-container { display: flex; background: #e2e8f0; border-radius: 10px; padding: 5px; margin-bottom: 20px; }
         .tab-btn { flex: 1; padding: 10px; border: none; background: transparent; font-weight: bold; color: #64748b; border-radius: 8px; cursor: pointer; transition: all 0.3s; font-size: 13px; }
         .tab-active { background: white; color: var(--secondary); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
@@ -68,7 +64,6 @@
         .report-images { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
         .report-img-box { border: 1px solid #000; padding: 10px; text-align: center; }
         .report-img-box img { max-width: 100%; max-height: 300px; object-fit: contain; }
-        .export-row { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn-export { flex: 1; padding: 12px; border: none; border-radius: 8px; font-weight: bold; color: white; cursor: pointer; font-size: 13px; display: flex; justify-content: center; align-items: center; gap: 8px; }
         .btn-excel { background: #10b981; } .btn-pdf { background: #ef4444; } .btn-jpg { background: #3b82f6; }
 
@@ -81,12 +76,6 @@
         /* UI MOLD REPAIR (Job Card) */
         .job-card { background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .job-card .header-job { font-weight: bold; color: var(--secondary); font-size: 15px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* CEKLIS UI */
-        .eval-list { list-style: none; padding: 0; margin: 0; }
-        .eval-list li { background: #f8fafc; padding: 12px; margin-bottom: 8px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; align-items: center; gap: 10px; transition: 0.3s; }
-        .eval-list li.done { background: #d1fae5; border-color: #10b981; }
-        .eval-list input[type="checkbox"] { width: 20px; height: 20px; accent-color: #10b981; cursor: pointer; flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -97,26 +86,23 @@
         <div class="loader-text" id="loader-text">Loading...</div>
     </div>
 
-    <!-- HALAMAN PEMBUKA (PINTU) -->
-    <div id="landing-page" style="position: fixed; top:0; left:0; width: 100%; height: 100vh; background: linear-gradient(135deg, #0f172a, #1e293b); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);">
-        <div style="text-align: center; color: white;">
-            <i class="fas fa-shield-alt" style="font-size: 70px; color: var(--accent); margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.5));"></i>
-            <h1 style="margin: 0; font-size: 28px; letter-spacing: 2px;">MOLD SYSTEM</h1>
-            <p style="color: #94a3b8; font-size: 14px; margin-top: 10px; letter-spacing: 1px;">PT. CITRA BUANA INTITAMA</p>
-        </div>
-        <button onclick="bukaPintu()" style="margin-top: 40px; padding: 15px 40px; border: 2px solid var(--accent); background: transparent; color: var(--accent); border-radius: 30px; font-size: 16px; font-weight: bold; cursor: pointer; text-transform: uppercase; transition: all 0.3s; box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);">
-            <i class="fas fa-fingerprint"></i> TAP UNTUK MASUK
-        </button>
-    </div>
-
-    <!-- HALAMAN MENU UTAMA (HOME) -->
+    <!-- HALAMAN MENU UTAMA (HOME) MENGGUNAKAN DESAIN ORISINAL TUAN -->
     <div id="home-screen" class="screen active-screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2>EKOSISTEM MOLD</h2>
-                <p style="font-size:12px; margin:5px 0 0 0; color:#cbd5e1;">Pusat Integrasi Database & Kontrol</p>
+        
+        <!-- HEADER BACKGROUND & IKON GERIGI -->
+        <div style="background-image: url('https://img.freepik.com/free-photo/engineering-mechanism-gears-with-glow_23-2149174542.jpg'); background-size: cover; background-position: center; height: 230px; display: flex; align-items: center; justify-content: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7);"></div>
+            <div style="position: relative; z-index: 1; text-align: center; color: white;">
+                <i class="fas fa-cog fa-spin" style="font-size: 45px; color: var(--accent); margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8));"></i>
+                <h1 style="margin: 0; font-size: 26px; font-weight: 800; letter-spacing: 1px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">EKOSISTEM MOLD</h1>
+                <p style="font-size: 13px; margin: 5px 0 0 0; color: #cbd5e1; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">PT. CITRA BUANA INTITAMA</p>
+                <p style="font-size: 11px; margin: 5px 0 0 0; color: #94a3b8;">Pusat Integrasi Database & Kontrol</p>
             </div>
+        </div>
 
+        <!-- KONTEN MENU DIVISI -->
+        <div class="content-wrapper" style="margin-top: -30px; position: relative; z-index: 2; background: var(--bg-color); border-radius: 20px 20px 0 0; padding-top: 25px;">
+            
             <!-- ANALISA PERFORMA -->
             <div class="menu-card" onclick="bukaAnalisaPerforma()" style="border-left-color: #f43f5e; background: linear-gradient(to right, #ffffff, #fff1f2);">
                 <i class="fas fa-chart-line" style="color: #f43f5e;"></i> Analisa Performa AI
@@ -172,12 +158,12 @@
                     <i class="fas fa-calendar-alt" style="color: #8b5cf6; margin-right:5px; font-size:16px;"></i> Laporan Bulanan
                 </div>
                 <div class="menu-card" onclick="bukaInputJadwal()" style="padding: 15px; border-left-color: #10b981; font-size:12px;">
-                    <i class="fas fa-calendar-check" style="color: #10b981; margin-right:5px; font-size:16px;"></i> Jadwal Besar (View/Update)
+                    <i class="fas fa-calendar-check" style="color: #10b981; margin-right:5px; font-size:16px;"></i> Jadwal Besar
                 </div>
             </div>
             
             <p style="text-align: center; font-size: 11px; color: gray; margin-top: 30px;">
-                <i class="fas fa-shield-check"></i> Loxley Security AI & Firebase Active
+                <i class="fas fa-shield-check"></i> Firebase Active
             </p>
         </div>
     </div>
@@ -418,7 +404,6 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- ========================================== -->
     <!-- LAYAR DIVISI MOLD TROUBLE (MERAH) -->
     <!-- ========================================== -->
@@ -519,7 +504,6 @@
             </div>
 
             <div id="mr-jobListContainer">
-                <!-- Job Card Template (Bisa diclone) -->
                 <div class="job-card">
                     <div class="header-job">
                         <span class="job-number">Job #1</span>
@@ -564,7 +548,6 @@
                 </div>
             </div>
 
-            <!-- Tombol Menggunakan Onclick Anti-Macet -->
             <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                 <button type="button" id="btnTambahJob" onclick="tambahJobMR()" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">+ Tambah Job Ke Bawah</button>
                 <button type="button" id="btnSimpanUpdateMR" onclick="simpanRencanaKerjaMR()" class="btn-submit" style="margin-top: 10px;">SIMPAN RENCANA KERJA</button>
@@ -589,7 +572,6 @@
             <div id="list-mr-harian" style="display:none;"></div>
             <div id="list-mr-hasil" style="display:none;"></div>
 
-            <!-- Form Log Harian -->
             <div id="form-mr-update-harian" style="display: none; background: white; padding: 20px; border-radius: 12px; border: 1px solid #cbd5e1; margin-top: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
                 <h3 style="color: var(--secondary); margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Log Pengerjaan Harian</h3>
                 <p style="font-weight: bold; margin-bottom: 15px; color: var(--primary);" id="mr-update-nama">NAMA MOLD</p>
@@ -620,6 +602,7 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- ========================================== -->
     <!-- LAYAR ADM HARIAN -->
     <!-- ========================================== -->
@@ -730,8 +713,6 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
-
     <!-- ========================================== -->
     <!-- JAVASCRIPT: FIREBASE & CORE SYSTEM LOGIC -->
     <!-- ========================================== -->
@@ -740,16 +721,8 @@
         import { getFirestore, collection, addDoc, getDocs, query, orderBy, where, doc, updateDoc, deleteDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // =========================================================================
-        // 🚨 PENTING: TEMPELKAN KODE FIREBASE CONFIG TUAN DI AREA BAWAH INI 🚨
+        // 🚨 CONFIG FIREBASE TUAN (Sudah disinkronkan) 🚨
         // =========================================================================
-        // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
             apiKey: "AIzaSyDiQxWJSEsA0YkTcGceqftJ8KaApYD873Q",
             authDomain: "sistem-maintenance-mold.firebaseapp.com",
@@ -759,12 +732,12 @@ import { getAnalytics } from "firebase/analytics";
             appId: "1:463812011559:web:8c60eed07a01324f7f5002",
             measurementId: "G-WSMY3D2QNY"
         };
+        // =========================================================================
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
-
-
-        // Daftarkan ke Global Window agar tombol HTML bisa memanggilnya
+        
+        // Daftarkan ke Global Window agar tombol HTML bisa memanggilnya dengan aman
         window.db = db;
         window.collection = collection; window.addDoc = addDoc; window.getDocs = getDocs; 
         window.query = query; window.orderBy = orderBy; window.where = where; 
@@ -784,11 +757,6 @@ import { getAnalytics } from "firebase/analytics";
             if(l && t) { l.style.display = show ? 'flex' : 'none'; t.innerText = text; }
         };
 
-        window.bukaPintu = function() {
-            document.getElementById('landing-page').style.transform = 'translateY(-100vh)';
-            setTimeout(() => { document.getElementById('landing-page').style.display = 'none'; }, 1000);
-        };
-
         window.navigasi = function(idTarget) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
             const target = document.getElementById(idTarget);
@@ -806,9 +774,9 @@ import { getAnalytics } from "firebase/analytics";
             }
         };
 
-        // ==========================================
-        // FUNGSI GENERAL & UTILITAS
-        // ==========================================
+        // ========================================== -->
+        <!-- FUNGSI GENERAL & UTILITAS -->
+        <!-- ========================================== -->
         window.cekFoto = function(input, idStatus) {
             const status = document.getElementById(idStatus);
             if(input.files && input.files[0]) {
@@ -841,9 +809,13 @@ import { getAnalytics } from "firebase/analytics";
             alert("Ekosistem Permintaan Trial sedang dalam tahap pengembangan Loxley!");
         };
 
-        // ==========================================
-        // MOLD STORE: NAIK MOLD & UPDATE PRODUKSI
-        // ==========================================
+        window.bukaInputJadwal = function() {
+            alert("Fitur Jadwal Besar (View/Update) aktif!");
+        };
+
+        // ========================================== -->
+        <!-- MOLD STORE: NAIK MOLD & UPDATE PRODUKSI -->
+        <!-- ========================================== -->
         window.bukaInputNaikMold = function() {
             listCeklisItem = []; renderListNaikMold();
             document.getElementById('ms-naik-tgl').value = '';
@@ -986,9 +958,9 @@ import { getAnalytics } from "firebase/analytics";
             } catch(e) { alert(e.message); } finally { toggleLoader(false); }
         };
 
-        // ==========================================
-        // DIVISI MOLD TROUBLE (TIKET & UPDATE)
-        // ==========================================
+        // ========================================== -->
+        <!-- DIVISI MOLD TROUBLE (TIKET & UPDATE) -->
+        <!-- ========================================== -->
         window.bukaDivisiTrouble = function() {
             window.navigasi('ms-trouble-screen');
             window.bukaTabTrouble('belum');
@@ -1082,7 +1054,6 @@ import { getAnalytics } from "firebase/analytics";
             const d_tindakan = document.getElementById('tr-tindakan').value; 
             const d_eksekutor = document.getElementById('tr-eksekutor').value; 
             
-            // Validasi ketat (Berdasarkan instruksi perbaikan Loxley)
             if(!d_masalah || !d_tindakan || !d_eksekutor) {
                 alert("Peringatan: Kolom Masalah (Poin 5), Tindakan (Poin 6), dan Eksekutor (Poin 7) wajib diisi lengkap!");
                 return;
@@ -1120,9 +1091,9 @@ import { getAnalytics } from "firebase/analytics";
             } finally { toggleLoader(false); } 
         };
 
-        // ==========================================
-        // APPSHEET WEBHOOK: PKM ELTRE MOLD
-        // ==========================================
+        // ========================================== -->
+        <!-- APPSHEET WEBHOOK: PKM ELTRE MOLD -->
+        // ========================================== -->
         window.bukaPKMEltre = function() { 
             window.navigasi('ms-pkm-eltre-screen'); 
             window.bukaTabPKM('verifikasi'); 
@@ -1143,7 +1114,6 @@ import { getAnalytics } from "firebase/analytics";
             if(tab === 'verifikasi') toggleLoader(true, "Menarik Data PKM AppSheet...");
             
             try {
-                // Sesuai dengan instruksi Kamar 2 webhook (pkm_eltre_masuk)
                 const q = query(collection(db, "pkm_eltre_masuk"));
                 const snap = await getDocs(q);
                 let countBadge = 0;
@@ -1197,7 +1167,6 @@ import { getAnalytics } from "firebase/analytics";
                 if(pkmSnap.exists()) {
                     const data = pkmSnap.data();
                     if(aksi === 'kerjakan') {
-                        // Teruskan/Lempar ke Kamar Divisi Mold Trouble
                         await addDoc(collection(db, "mold_trouble_tickets"), {
                             namaMold: data.namaMold || "", typeMold: data.typeMold || "",
                             masalahDanPenyebab: data.masalahDanPenyebab || "",
@@ -1216,9 +1185,9 @@ import { getAnalytics } from "firebase/analytics";
             } catch(e) { alert("Error: " + e.message); } finally { toggleLoader(false); }
         };
 
-        // ==========================================
-        // DIVISI MOLD REPAIR (Rencana Kerja & Update)
-        // ==========================================
+        // ========================================== -->
+        <!-- DIVISI MOLD REPAIR (Rencana Kerja & Update) -->
+        // ========================================== -->
         window.tambahJobMR = function() {
             const container = document.getElementById("mr-jobListContainer");
             if(!container) return;
@@ -1289,8 +1258,6 @@ import { getAnalytics } from "firebase/analytics";
             try {
                 for(let job of batchData) { await addDoc(collection(db, "mold_repair_jobs"), job); }
                 alert("Berhasil! Rencana Kerja Mold Repair Telah Disimpan.");
-                
-                // Reset form
                 allCards.forEach((c, idx) => { if(idx > 0) c.remove(); else { const inputs = c.querySelectorAll("input, textarea, select"); inputs.forEach(inp => inp.value = ""); } });
                 window.navigasi('menu-mold-repair-screen');
             } catch (error) { 
@@ -1421,9 +1388,9 @@ import { getAnalytics } from "firebase/analytics";
             } catch(error) { alert("Error: " + error.message); } finally { toggleLoader(false); }
         };
 
-        // ==========================================
-        // DIVISI GENERAL: NEW DATA & PROGRESS
-        // ==========================================
+        // ========================================== -->
+        <!-- DIVISI GENERAL: NEW DATA & PROGRESS -->
+        // ========================================== -->
         window.simpanNewProject = async function() {
             const npNama = document.getElementById('np-nama').value;
             const npKet = document.getElementById('np-keterangan').value;
@@ -1441,14 +1408,12 @@ import { getAnalytics } from "firebase/analytics";
                 });
                 alert("Data Berhasil Disimpan!");
                 window.kembaliKeSebelumnya();
-                // Reset form
                 document.getElementById('np-nama').value = ''; document.getElementById('np-keterangan').value = '';
                 document.getElementById('np-target').value = ''; document.getElementById('np-user').value = '';
                 document.getElementById('np-foto').value = ''; document.getElementById('status-np-foto').innerText = '';
             } catch(e) { alert("Error: " + e.message); } finally { toggleLoader(false); }
         };
 
-        // Filter Variables
         let currentFilterStart = null;
         let currentFilterEnd = null;
 
@@ -1597,9 +1562,9 @@ import { getAnalytics } from "firebase/analytics";
             }
         };
 
-        // ==========================================
-        // FITUR ADM, NOTULEN & SUB-INFO
-        // ==========================================
+        // ========================================== -->
+        <!-- FITUR ADM, NOTULEN & SUB-INFO -->
+        // ========================================== -->
         window.bukaSubInfo = function(judul) {
             subInfoAktif = judul;
             document.getElementById('judul-sub-info').innerText = judul;
@@ -1661,9 +1626,9 @@ import { getAnalytics } from "firebase/analytics";
             } catch(e) { alert(e.message); } finally { toggleLoader(false); }
         };
 
-        // ==========================================
-        // AI GOSOK MOLD & PT HASIL
-        // ==========================================
+        // ========================================== -->
+        <!-- AI GOSOK MOLD & PT HASIL -->
+        // ========================================== -->
         window.simpanDataGosok = async function() {
             const nama = document.getElementById('gosok-nama-mold').value.trim();
             const prio = document.getElementById('gosok-prioritas').value;
@@ -1741,9 +1706,9 @@ import { getAnalytics } from "firebase/analytics";
             } catch(e) { console.error(e); }
         };
 
-        // ==========================================
-        // AI ANALISA PERFORMA GLOBAL
-        // ==========================================
+        // ========================================== -->
+        <!-- AI ANALISA PERFORMA GLOBAL -->
+        // ========================================== -->
         let performaChartInstance = null;
         window.bukaAnalisaPerforma = function() {
             window.navigasi('analisa-performa-screen');
@@ -1806,7 +1771,7 @@ import { getAnalytics } from "firebase/analytics";
 
                 if(window.currentTabAnalisa === 'ALL' || window.currentTabAnalisa === 'ADM UNIFIED') {
                     const snapInfo = await getDocs(query(collection(db, "sub_info_data")));
-                    snapInfo.forEach(doc => { totalTarget++; totalSelesai++; }); // Info asumsikan selesai saat diinput
+                    snapInfo.forEach(doc => { totalTarget++; totalSelesai++; });
                     const snapGosok = await getDocs(query(collection(db, "ai_gosok_data")));
                     snapGosok.forEach(doc => { totalTarget++; if(doc.data().statusGosok === "Selesai PT") totalSelesai++; });
                 }
@@ -1857,17 +1822,13 @@ import { getAnalytics } from "firebase/analytics";
             });
         };
 
-        // ==========================================
-        // AUTO-LOAD SAAT APLIKASI DIBUKA
-        // ==========================================
+        // ========================================== -->
+        <!-- AUTO-LOAD SAAT APLIKASI DIBUKA -->
+        // ========================================== -->
         document.addEventListener("DOMContentLoaded", () => {
-            // Cek notifikasi trouble otomatis
             setTimeout(() => { window.muatDataTrouble('belum'); }, 2000);
-            
-            // Cek notifikasi pkm dari appsheet otomatis
             setTimeout(() => { window.muatDataPKMEltre('verifikasi'); }, 2500);
 
-            // Inisialisasi list gosok/pt jika buka halamannya
             const targetUlGosok = document.getElementById('list-gosok-aktif');
             if(targetUlGosok) { window.muatGosokAktif(); window.muatPTRiwayat(); }
         });
