@@ -158,22 +158,27 @@
     </div>
 
     <!-- HOME SCREEN -->
+    <!-- 2. BERANDA UTAMA -->
     <div id="home-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>BERANDA UTAMA</h2></div>
             <div class="grid-menu">
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="navigasi('menu-mold-repair-screen')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
-                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="border-left-color: #dc2626; position: relative;">
+                
+                <!-- INI YANG DIPERBAIKI LOXLEY: Mengembalikan arah ke Menu Sub-Judul (trouble-menu-screen) -->
+                <div class="menu-card" onclick="navigasi('trouble-menu-screen')" style="border-left-color: #dc2626; position: relative;">
                     <i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE
                     <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none;">0</span>
                 </div>
+
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 <div class="menu-card" onclick="navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 <div class="menu-card" onclick="navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
             </div>
         </div>
     </div>
+
 
     <!-- BERANDA DIVISI WORKSHOP -->
     <div id="divisi-screen" class="screen screen-bg">
