@@ -270,7 +270,7 @@
                 <div class="menu-card" onclick="masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="navigasi('menu-mold-repair-screen')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
                 
-                <!-- PERBAIKAN LOXLEY: Menuju ke Menu Sub-Judul Trouble (Tidak langsung ke tabel) -->
+                <!-- MENU DIVISI MOLD TROUBLE -->
                 <div class="menu-card" onclick="navigasi('trouble-menu-screen')" style="border-left-color: #dc2626; position: relative;">
                     <i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE
                     <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none;">0</span>
@@ -436,7 +436,7 @@
         </div>
     </div>
 
-    <!-- CONTROL REPORT MOLD REPAIR -->
+    <!-- MR CONTROL REPORT SCREEN -->
     <div id="mr-control-report-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control & Report Progres</h2></div>
@@ -1658,7 +1658,7 @@
         window.simpanAdmActual = async function() { const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const ket = document.getElementById('adm-actual-ket').value; const targetTglOri = document.getElementById('adm-actual-tgl-ori').value; const fotoInput = document.getElementById('adm-actual-foto'); const total = window.actualEditList.length; const selesai = window.actualEditList.filter(d => d.done).length; const belum = total - selesai; const now = new Date(); const timeNowMins = now.getHours() * 60 + now.getMinutes(); const targetTimeMins = 16 * 60; const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0); const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0); const isDayPastTarget = actualDateObj > targetDateObj; const isPast16 = timeNowMins > targetTimeMins || isDayPastTarget; if (isPast16 && belum > 0 && !ket.trim()) { return alert("Terdapat tugas yang belum terealisasi! Waktu sudah melewati batas target. Anda WAJIB mengisi 'Catatan' untuk alasan penundaan agar tugas dapat ditarik besok."); } toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); } const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB'; window.actualEditList.forEach(item => { if (item.done && !item.waktuSelesai) { item.waktuSelesai = timeStringStr; } else if (!item.done) { item.waktuSelesai = null; } }); let statusBaru = "Belum"; if (!isPast16) { if (belum === 0) { const diffMins = targetTimeMins - timeNowMins; statusBaru = diffMins > 5 ? `Selesai Lebih Cepat (${diffMins} Menit)` : "Selesai Tepat Waktu"; } else { statusBaru = "Belum"; } } else { if (belum === 0) { statusBaru = (isDayPastTarget || timeNowMins > targetTimeMins) ? "Selesai Melebihi Target" : "Selesai Tepat Waktu"; } else if (selesai >= belum && selesai > 0) { statusBaru = "Belum Selesai Sempurna"; } else { statusBaru = "Gagal Terealisasi"; } } const exactTimestampString = `${tgl} Pukul ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; try { await updateDoc(doc(db, "adm_harian", id), { status: statusBaru, tglActual: exactTimestampString, daftarActual: window.actualEditList, hasilActual: statusBaru, keteranganActual: ket || "-", fotoActual: fotoBase64 }); if (statusBaru === "Belum") { alert("Progress Berhasil Disimpan!"); } else if(belum > 0) { alert("Finalisasi Tersimpan!"); } else { alert("Pekerjaan Selesai Sepenuhnya!"); } document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; const saf = document.getElementById('status-adm-foto'); if(saf) saf.innerHTML = ""; const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; await ambilDataAdmHarian(); if (statusBaru === "Belum") { window.switchTabAdm('belum'); } else if (statusBaru === 'Gagal Terealisasi') { window.switchTabAdm('gagal'); } else { window.switchTabAdm('sudah'); } } catch(e) {} toggleLoader(false); }
         window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await ambilDataAdmHarian(); const container = document.getElementById('list-adm-progress'); if(!container) return; container.innerHTML = ""; if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } admHarianDatabase.forEach(data => { let ui = getAdmStatusUI(data); container.innerHTML += `<div class="progress-card" style="border-left-color:${ui.color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color}">${ui.badgeText}</span></div>`; }); }
         
-        // --- 🚀 PERBAIKAN LOXLEY: LAPORAN ADMIN SISTEM ACH ---
+        // --- 🚀 PERBAIKAN LOXLEY: LAPORAN ADMIN SISTEM ACH (LOGIKA WAKTU) ---
         window.bukaDetailAdmHarian = function(id) { 
             const data = admHarianDatabase.find(d => d.id === id); 
             if(!data) return; 
@@ -1666,23 +1666,39 @@
             let ui = getAdmStatusUI(data); 
             
             let tasksSukses = [];
-            let tasksGagal = [];
+            let tasksPending = []; 
+            let tasksGagal = [];   
+            
             let globalKeterangan = data.keteranganActual && data.keteranganActual !== "-" ? data.keteranganActual : "Belum ada keterangan / Tanpa alasan";
 
+            const now = new Date();
+            const targetDateObj = new Date(data.tglTarget);
+            targetDateObj.setHours(16, 0, 0, 0); 
+            const isPastDeadline = now > targetDateObj || data.status.includes("Gagal") || data.status.includes("Belum Selesai Sempurna");
+
+            let rawList = [];
             if (data.daftarActual && data.daftarActual.length > 0) {
-                data.daftarActual.forEach(item => {
-                    if(item.done) tasksSukses.push(item);
-                    else tasksGagal.push(item);
-                });
+                rawList = data.daftarActual;
             } else if (data.daftarRencana && data.daftarRencana.length > 0) {
-                data.daftarRencana.forEach(item => {
-                    tasksGagal.push({ teks: item, done: false, type: 'rencana', waktuSelesai: null });
-                });
+                rawList = data.daftarRencana.map(item => ({ teks: item, done: false, type: 'rencana', waktuSelesai: null }));
             }
 
-            let totalTasks = tasksSukses.length + tasksGagal.length;
+            rawList.forEach(item => {
+                if (item.done) {
+                    tasksSukses.push(item);
+                } else {
+                    if (isPastDeadline) {
+                        tasksGagal.push(item);
+                    } else {
+                        tasksPending.push(item);
+                    }
+                }
+            });
+
+            let totalTasks = tasksSukses.length + tasksPending.length + tasksGagal.length;
             let ach = totalTasks === 0 ? 0 : Math.round((tasksSukses.length / totalTasks) * 100);
             let failRate = totalTasks === 0 ? 0 : Math.round((tasksGagal.length / totalTasks) * 100);
+            let pendingRate = totalTasks === 0 ? 0 : Math.round((tasksPending.length / totalTasks) * 100);
 
             let htmlSukses = `<ul style="padding:0; margin:0; list-style:none;">`;
             if(tasksSukses.length === 0) {
@@ -1703,10 +1719,36 @@
             }
             htmlSukses += `</ul>`;
 
-            let htmlGagal = `<ul style="padding:0; margin:0; list-style:none;">`;
-            if(tasksGagal.length === 0) {
-                htmlGagal += `<li style="text-align:center; color:#059669; font-weight:bold; font-size:12px; padding:10px; background:#d1fae5; border-radius:6px; border:1px dashed #10b981;"><i class="fas fa-star"></i> Luar Biasa! Semua rencana berhasil terealisasi!</li>`;
-            } else {
+            let htmlPending = "";
+            if (tasksPending.length > 0) {
+                htmlPending += `
+                <h3 style="font-size:14px; color:#d97706; border-bottom:2px solid #f59e0b; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:18px;"></i> DAFTAR TUGAS DALAM PROSES
+                </h3>
+                <div style="margin-bottom:25px; margin-top:15px;">
+                    <ul style="padding:0; margin:0; list-style:none;">`;
+                tasksPending.forEach((item) => {
+                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px; font-weight:bold;">*(Tambahan)*</span>` : "";
+                    htmlPending += `
+                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fffbeb; padding:12px; border-radius:8px; border-left:4px solid #f59e0b; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-clock" style="color:#f59e0b;"></i></div>
+                        <div style="flex:1; font-size:13px; color:#92400e;">
+                            <span style="font-weight:600;">${item.teks}</span> ${typeNote}
+                            <div style="font-size:11px; margin-top:5px; color:#b45309;"><i class="fas fa-info-circle"></i> Sedang dikerjakan (Batas waktu 16:00)</div>
+                        </div>
+                    </li>`;
+                });
+                htmlPending += `</ul></div>`;
+            }
+
+            let htmlGagal = "";
+            if (isPastDeadline && tasksGagal.length > 0) {
+                htmlGagal += `
+                <h3 style="font-size:14px; color:#dc2626; border-bottom:2px solid #ef4444; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
+                    <i class="fas fa-times-circle" style="font-size:18px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA
+                </h3>
+                <div style="margin-bottom:25px; margin-top:15px;">
+                    <ul style="padding:0; margin:0; list-style:none;">`;
                 tasksGagal.forEach((item) => {
                     let textBersih = item.teks;
                     let alasanSpesifik = globalKeterangan;
@@ -1715,20 +1757,19 @@
                         textBersih = parts[0].trim();
                         alasanSpesifik = parts[1].replace(")", "").trim();
                     }
-
                     htmlGagal += `
                     <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fef2f2; padding:12px; border-radius:8px; border-left:4px solid #ef4444; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
                         <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i></div>
                         <div style="flex:1; font-size:13px; color:#7f1d1d;">
                             <div style="font-weight:bold; margin-bottom:6px;">${textBersih}</div>
                             <div style="font-size:11px; color:#b91c1c; background:#fee2e2; padding:6px 10px; border-radius:6px; display:inline-block; border:1px solid #fca5a5;">
-                                <i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${data.status === "Belum" ? "Masih dalam proses (Belum ditutup)" : alasanSpesifik}
+                                <i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${alasanSpesifik}
                             </div>
                         </div>
                     </li>`;
                 });
+                htmlGagal += `</ul></div>`;
             }
-            htmlGagal += `</ul>`;
 
             let html = `
             <div class="report-header">
@@ -1749,12 +1790,8 @@
                 ${htmlSukses}
             </div>
 
-            <h3 style="font-size:14px; color:#dc2626; border-bottom:2px solid #ef4444; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-times-circle" style="font-size:18px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA
-            </h3>
-            <div style="margin-bottom:25px; margin-top:15px;">
-                ${htmlGagal}
-            </div>
+            ${htmlPending}
+            ${htmlGagal}
 
             ${data.fotoActual ? `<div class="report-img-box" style="margin-top:25px; border-color:#cbd5e1; background:#f8fafc; padding:15px;"><strong>BUKTI FOTO AKTUAL LAPANGAN</strong><br><img src="${data.fotoActual}" style="border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-top:10px;"></div>` : ''}
 
@@ -1768,8 +1805,8 @@
                     <span style="font-size:26px; font-weight:900; color:#059669; text-shadow:1px 1px 0px white;">${ach}%</span>
                 </div>
                 <div style="flex:1; background:linear-gradient(135deg, #fee2e2, #fecaca); padding:15px 5px; border-radius:10px; border:1px solid #ef4444; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px;">Gagal</h4>
-                    <span style="font-size:26px; font-weight:900; color:#dc2626; text-shadow:1px 1px 0px white;">${failRate}%</span>
+                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px;">${isPastDeadline ? 'Gagal' : 'Proses'}</h4>
+                    <span style="font-size:26px; font-weight:900; color:${isPastDeadline ? '#dc2626' : '#d97706'}; text-shadow:1px 1px 0px white;">${isPastDeadline ? failRate : pendingRate}%</span>
                 </div>
             </div>
             <p style="text-align:center; font-size:10px; color:gray; margin-top:15px; font-style:italic;">*Performa dihitung otomatis oleh AI berdasarkan perbandingan total tugas dan realisasi.</p>
