@@ -1649,6 +1649,7 @@
         window.switchTabAdm = function(tab) { ['belum', 'sudah', 'gagal'].forEach(t => { const tb = document.getElementById(`tab-adm-${t}`); const lb = document.getElementById(`list-adm-${t}`); if(tb) tb.classList.remove('tab-active'); if(lb) lb.style.display = 'none'; }); const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; const tabBtn = document.getElementById(`tab-adm-${tab}`); const tabLst = document.getElementById(`list-adm-${tab}`); if(tabBtn) tabBtn.classList.add('tab-active'); if(tabLst) tabLst.style.display = 'block'; if(tab === 'belum') { renderAdmActualList('Belum', 'list-adm-belum'); } else if (tab === 'sudah') { renderAdmActualList('Sudah', 'list-adm-sudah'); } else { renderAdmActualList('Gagal', 'list-adm-gagal'); } }
         function getAdmStatusUI(data) { let color = "var(--primary)"; let badgeText = data.status; if (data.status === "Belum") { const now = new Date(); const targetDateObj = new Date(data.tglTarget); targetDateObj.setHours(16, 0, 0, 0); if (now > targetDateObj) { color = "var(--lambat)"; badgeText = "Melewati Batas Waktu"; } else { color = "#eab308"; badgeText = "Proses"; } } else if (data.status === "Selesai Melebihi Target") { color = "#ec4899"; } else if (data.status === "Selesai Tepat Waktu" || data.status.startsWith("Selesai Lebih Cepat")) { color = "var(--cepat)"; } else if (data.status === "Belum Selesai Sempurna") { color = "#f97316"; } else if (data.status === "Gagal Terealisasi") { color = "var(--lambat)"; } return { color, badgeText }; }
         function renderAdmActualList(statusGroup, containerId) { const container = document.getElementById(containerId); if(!container) return; container.innerHTML = ""; let filtered = []; if (statusGroup === 'Belum') { filtered = admHarianDatabase.filter(d => d.status === 'Belum'); } else if (statusGroup === 'Sudah') { filtered = admHarianDatabase.filter(d => d.status === 'Selesai Melebihi Target' || d.status === 'Selesai Tepat Waktu' || d.status.startsWith('Selesai Lebih Cepat') || d.status === 'Belum Selesai Sempurna'); } else if (statusGroup === 'Gagal') { filtered = admHarianDatabase.filter(d => d.status === 'Gagal Terealisasi'); } if(filtered.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Belum Ada Data.</p>`; return; } filtered.forEach(data => { let ui = getAdmStatusUI(data); let clickAction = statusGroup === 'Belum' ? `bukaFormAdmActual('${data.id}')` : ''; container.innerHTML += `<div class="progress-card" style="border-left-color: ${ui.color}; cursor:${statusGroup === 'Belum'?'pointer':'default'};" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color};">${ui.badgeText}</span>${statusGroup === 'Belum' ? `<p style="margin-top:10px; font-size:12px; color:var(--secondary); font-weight:bold;"><i class="fas fa-hand-pointer"></i> Klik untuk Update Actual</p>` : ''}</div>`; }); }
+        
         window.bukaFormAdmActual = function(id) { const data = admHarianDatabase.find(d => d.id === id); document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tgl-ori').value = data.tglTarget; document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; document.getElementById('adm-actual-tgl').value = dapatkanTanggalLokal(); if (data.daftarActual && data.daftarActual.length > 0) { window.actualEditList = JSON.parse(JSON.stringify(data.daftarActual)); } else { window.actualEditList = data.daftarRencana.map(teks => ({ teks: teks, done: false, type: 'rencana', waktuSelesai: null })); } const now = new Date(); window.isLateActual = (now.getHours() > 16) || (now.getHours() === 16 && now.getMinutes() >= 1); const tw = document.getElementById('adm-actual-time-warning'); const aag = document.getElementById('adm-actual-add-group'); const bsa = document.getElementById('btn-simpan-actual'); if (window.isLateActual) { if(tw) tw.style.display = 'block'; if(aag) aag.style.display = 'none'; if(bsa) { bsa.innerHTML = "<i class='fas fa-check-circle'></i> FINALISASI / TUTUP BUKU"; bsa.style.background = "#e11d48"; } } else { if(tw) tw.style.display = 'none'; if(aag) aag.style.display = 'flex'; if(bsa) { bsa.innerText = "UPDATE & SIMPAN PROGRESS"; bsa.style.background = "var(--secondary)"; } } renderActualCeklisUI(); const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'block'; const lab = document.getElementById('list-adm-belum'); if(lab) lab.style.display = 'none'; window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop); }
         window.renderActualCeklisUI = function() { const ul = document.getElementById('adm-actual-ceklis'); if(!ul) return; ul.innerHTML = ""; window.actualEditList.forEach((item, idx) => { const isChecked = item.done ? "checked" : ""; const classDone = item.done ? "done" : ""; const badgeTag = item.type === 'tambahan' ? `<span style="font-size:11px; background:#fef3c7; color:#d97706; padding:2px 6px; border-radius:10px; margin-left:5px;">(Penambahan diluar rencana)</span>` : ''; const disableProp = window.isLateActual ? "disabled" : ""; const timeTag = item.done && item.waktuSelesai ? `<span style="display:block; font-size:10px; color:#10b981; font-weight:bold; margin-top:2px;"><i class="fas fa-clock"></i> Selesai pada: ${item.waktuSelesai}</span>` : ''; ul.innerHTML += `<li class="${classDone}"><input type="checkbox" id="chk-act-${idx}" ${isChecked} ${disableProp} onchange="toggleActualCeklis(${idx}, this.checked)"><label for="chk-act-${idx}" style="font-weight:normal; width:100%; font-size:13px;">${item.teks} ${badgeTag} ${timeTag}</label></li>`; }); }
         window.toggleActualCeklis = function(idx, checked) { window.actualEditList[idx].done = checked; renderActualCeklisUI(); }
@@ -1656,10 +1657,129 @@
         window.batalAdmActual = function() { const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; const lab = document.getElementById('list-adm-belum'); if(lab) lab.style.display = 'block'; }
         window.simpanAdmActual = async function() { const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const ket = document.getElementById('adm-actual-ket').value; const targetTglOri = document.getElementById('adm-actual-tgl-ori').value; const fotoInput = document.getElementById('adm-actual-foto'); const total = window.actualEditList.length; const selesai = window.actualEditList.filter(d => d.done).length; const belum = total - selesai; const now = new Date(); const timeNowMins = now.getHours() * 60 + now.getMinutes(); const targetTimeMins = 16 * 60; const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0); const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0); const isDayPastTarget = actualDateObj > targetDateObj; const isPast16 = timeNowMins > targetTimeMins || isDayPastTarget; if (isPast16 && belum > 0 && !ket.trim()) { return alert("Terdapat tugas yang belum terealisasi! Waktu sudah melewati batas target. Anda WAJIB mengisi 'Catatan' untuk alasan penundaan agar tugas dapat ditarik besok."); } toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); } const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB'; window.actualEditList.forEach(item => { if (item.done && !item.waktuSelesai) { item.waktuSelesai = timeStringStr; } else if (!item.done) { item.waktuSelesai = null; } }); let statusBaru = "Belum"; if (!isPast16) { if (belum === 0) { const diffMins = targetTimeMins - timeNowMins; statusBaru = diffMins > 5 ? `Selesai Lebih Cepat (${diffMins} Menit)` : "Selesai Tepat Waktu"; } else { statusBaru = "Belum"; } } else { if (belum === 0) { statusBaru = (isDayPastTarget || timeNowMins > targetTimeMins) ? "Selesai Melebihi Target" : "Selesai Tepat Waktu"; } else if (selesai >= belum && selesai > 0) { statusBaru = "Belum Selesai Sempurna"; } else { statusBaru = "Gagal Terealisasi"; } } const exactTimestampString = `${tgl} Pukul ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; try { await updateDoc(doc(db, "adm_harian", id), { status: statusBaru, tglActual: exactTimestampString, daftarActual: window.actualEditList, hasilActual: statusBaru, keteranganActual: ket || "-", fotoActual: fotoBase64 }); if (statusBaru === "Belum") { alert("Progress Berhasil Disimpan!"); } else if(belum > 0) { alert("Finalisasi Tersimpan!"); } else { alert("Pekerjaan Selesai Sepenuhnya!"); } document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; const saf = document.getElementById('status-adm-foto'); if(saf) saf.innerHTML = ""; const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; await ambilDataAdmHarian(); if (statusBaru === "Belum") { window.switchTabAdm('belum'); } else if (statusBaru === 'Gagal Terealisasi') { window.switchTabAdm('gagal'); } else { window.switchTabAdm('sudah'); } } catch(e) {} toggleLoader(false); }
         window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await ambilDataAdmHarian(); const container = document.getElementById('list-adm-progress'); if(!container) return; container.innerHTML = ""; if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } admHarianDatabase.forEach(data => { let ui = getAdmStatusUI(data); container.innerHTML += `<div class="progress-card" style="border-left-color:${ui.color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color}">${ui.badgeText}</span></div>`; }); }
-        window.bukaDetailAdmHarian = function(id) { const data = admHarianDatabase.find(d => d.id === id); if(!data) return; let ui = getAdmStatusUI(data); let listRencanaHTML = `<ul style="padding:0; margin:0; list-style:none;">`; if (data.daftarActual && data.daftarActual.length > 0) { let blmList = []; data.daftarActual.forEach(item => { let timeBadge = item.done && item.waktuSelesai ? `<span style="display:inline-block; font-size:10px; background:#e2e8f0; color:#475569; padding:2px 6px; border-radius:4px; margin-right:6px;"><i class="fas fa-clock"></i> ${item.waktuSelesai}</span>` : ''; let mark = item.done ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-times-circle" style="color:var(--lambat);"></i>`; let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px;">*(Diluar rencana)*</span>` : ""; listRencanaHTML += `<li style="display:flex; align-items:flex-start; margin-bottom:8px; border-bottom:1px dashed #e2e8f0; padding-bottom:8px;"><div style="margin-right:8px;">${mark}</div><div style="flex:1; font-size:13px;">${timeBadge}${item.teks}${typeNote}</div></li>`; if(!item.done) blmList.push(item.teks); }); if (blmList.length > 0) { listRencanaHTML += `<li style="margin-top:10px; font-size:11px; color:#b91c1c; background:#fee2e2; padding:10px; border-radius:6px;"><strong>Pemberitahuan:</strong> Terdapat ${blmList.length} tugas yang tidak terealisasi.</li>`; } } else if(data.daftarRencana && data.daftarRencana.length > 0) { data.daftarRencana.forEach(item => { listRencanaHTML += `<li style="display:flex; align-items:flex-start; margin-bottom:8px;"><div style="margin-right:8px;">-</div><div style="font-size:13px;">${item}</div></li>`; }); } listRencanaHTML += `</ul>`; let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Admin</th><td><strong>${data.adminName}</strong></td></tr><tr><th>Judul / Tanggal</th><td><strong style="color:var(--secondary);">${data.namaKegiatan}</strong></td></tr><tr><th>Status Saat Ini</th><td style="color:${ui.color}; font-weight:bold;">${ui.badgeText}</td></tr><tr><th>Waktu Target</th><td>Tgl: ${data.tglTarget}<br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr><tr><th>Daftar Rencana</th><td>${listRencanaHTML}</td></tr></table>`; if(data.status !== "Belum") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL TEREALISASI</th></tr><tr><th>Waktu Selesai</th><td>${data.tglActual}</td></tr><tr><th>Hasil</th><td><span style="background:${ui.color}; color:white; padding:4px 8px; border-radius:4px; font-size:11px; font-weight:bold;">${data.hasilActual}</span></td></tr><tr><th>Keterangan</th><td>${data.keteranganActual}</td></tr></table>`; if(data.fotoActual) { html += `<div class="report-img-box" style="margin-top:20px;"><strong>BUKTI FOTO ACTUAL</strong><br><img src="${data.fotoActual}"></div>`; } } const rac = document.getElementById('report-adm-content'); if(rac) rac.innerHTML = html; window.navigasi('adm-harian-detail-screen'); }
+        
+        // --- 🚀 PERBAIKAN LOXLEY: LAPORAN ADMIN SISTEM ACH ---
+        window.bukaDetailAdmHarian = function(id) { 
+            const data = admHarianDatabase.find(d => d.id === id); 
+            if(!data) return; 
+            
+            let ui = getAdmStatusUI(data); 
+            
+            let tasksSukses = [];
+            let tasksGagal = [];
+            let globalKeterangan = data.keteranganActual && data.keteranganActual !== "-" ? data.keteranganActual : "Belum ada keterangan / Tanpa alasan";
 
-        window.bukaAnalisaPerforma = async function() { window.navigasi('analisa-performa-screen'); await switchTabAnalisa('DIVISI MOLD STORE'); }
-        window.switchTabAnalisa = async function(kategori) { ['store', 'repair', 'trouble', 'workshop', 'adm', 'all'].forEach(t => { let el = document.getElementById(`ntab-${t}`); if(el) el.classList.remove('active'); }); if(kategori === 'DIVISI MOLD STORE') document.getElementById('ntab-store').classList.add('active'); else if(kategori === 'DIVISI MOLD REPAIR') document.getElementById('ntab-repair').classList.add('active'); else if(kategori === 'DIVISI MOLD TROUBLE') document.getElementById('ntab-trouble').classList.add('active'); else if(kategori === 'DIVISI MOLD WORKSHOP') document.getElementById('ntab-workshop').classList.add('active'); else if(kategori === 'ADM UNIFIED') document.getElementById('ntab-adm').classList.add('active'); else if(kategori === 'ALL') document.getElementById('ntab-all').classList.add('active'); toggleLoader(true, "AI Menganalisa Data..."); let totalTarget = 0; let totalSelesai = 0; let persen = 0; let labels = []; let dataTarget = []; let dataRealisasi = []; let descText = ""; try { if (kategori === 'ADM UNIFIED') { descText = "*Analisa Gabungan ADM"; const qHarian = query(collection(db, "adm_harian")); const snapH = await getDocs(qHarian); let harianList = []; snapH.forEach(d => harianList.push(d.data())); let tH = harianList.length; let sH = harianList.filter(d => d.status.includes('Selesai')).length; const qMingguan = query(collection(db, "informasi_mold"), where("kategori", "==", "LAPORAN KERJA MINGGUAN")); const snapM = await getDocs(qMingguan); let tM = snapM.size; const qBulanan = query(collection(db, "informasi_mold"), where("kategori", "==", "LAPORAN KERJA BULANAN")); const snapB = await getDocs(qBulanan); let tB = snapB.size; totalTarget = tH + tM + tB; totalSelesai = sH + tM + tB; persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100); labels = ['Kerja Harian', 'Kerja Mingguan', 'Kerja Bulanan']; dataTarget = [tH, tM, tB]; dataRealisasi = [sH, tM, tB]; } else if (kategori === 'ALL') { descText = "*Performa Global Seluruh Divisi"; const qProj = query(collection(db, "projects")); const snapProj = await getDocs(qProj); let allProj = []; snapProj.forEach(d => allProj.data() && allProj.push(d.data())); totalTarget = allProj.length; totalSelesai = allProj.filter(d => d.statusUpdate === 'Sudah').length; persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100); labels = ['Mold Store', 'Mold Repair', 'Mold Trouble', 'Mold Workshop', 'ADM']; let countDiv = (divName) => { let divP = allProj.filter(d => d.divisi === divName); let divS = divP.filter(d => d.statusUpdate === 'Sudah').length; return { t: divP.length, s: divS }; }; let st = countDiv('DIVISI MOLD STORE'); let rp = countDiv('DIVISI MOLD REPAIR'); let tr = countDiv('DIVISI MOLD TROUBLE'); let ws = countDiv('DIVISI MOLD WORKSHOP'); dataTarget = [st.t, rp.t, tr.t, ws.t, 10]; dataRealisasi = [st.s, rp.s, tr.s, ws.s, 10]; } else { descText = `*Analisa Spesifik: ${kategori}`; const q = query(collection(db, "projects"), where("divisi", "==", kategori)); const snapshot = await getDocs(q); let divData = []; snapshot.forEach(d => divData.push(d.data())); totalTarget = divData.length; totalSelesai = divData.filter(d => d.statusUpdate === 'Sudah').length; persen = totalTarget === 0 ? 0 : Math.round((totalSelesai / totalTarget) * 100); let grouped = {}; divData.forEach(d => { let tgl = d.targetSelesai || 'Tanpa Tanggal'; if(!grouped[tgl]) grouped[tgl] = { t: 0, s: 0 }; grouped[tgl].t++; if(d.statusUpdate === 'Sudah') grouped[tgl].s++; }); let sortedTgl = Object.keys(grouped).sort().slice(-7); labels = sortedTgl; dataTarget = sortedTgl.map(t => grouped[t].t); dataRealisasi = sortedTgl.map(t => grouped[t].s); } document.getElementById('neon-val-target').innerText = totalTarget; document.getElementById('neon-val-selesai').innerText = totalSelesai; document.getElementById('neon-val-persen').innerText = persen + '%'; document.getElementById('neon-chart-desc').innerText = descText; const ctx = document.getElementById('performaChart').getContext('2d'); if(window.myChart) { window.myChart.destroy(); } window.myChart = new Chart(ctx, { type: 'bar', data: { labels: labels, datasets: [ { type: 'line', label: 'Terealisasi', data: dataRealisasi, borderColor: '#10b981', borderWidth: 3, tension: 0.4 }, { type: 'bar', label: 'Target', data: dataTarget, backgroundColor: 'rgba(56, 189, 248, 0.4)', borderColor: '#38bdf8', borderWidth: 1 } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { ticks: { color: '#94a3b8' } }, y: { ticks: { color: '#94a3b8' }, beginAtZero: true } } } }); } catch (e) { console.error(e); } toggleLoader(false); }
+            if (data.daftarActual && data.daftarActual.length > 0) {
+                data.daftarActual.forEach(item => {
+                    if(item.done) tasksSukses.push(item);
+                    else tasksGagal.push(item);
+                });
+            } else if (data.daftarRencana && data.daftarRencana.length > 0) {
+                data.daftarRencana.forEach(item => {
+                    tasksGagal.push({ teks: item, done: false, type: 'rencana', waktuSelesai: null });
+                });
+            }
+
+            let totalTasks = tasksSukses.length + tasksGagal.length;
+            let ach = totalTasks === 0 ? 0 : Math.round((tasksSukses.length / totalTasks) * 100);
+            let failRate = totalTasks === 0 ? 0 : Math.round((tasksGagal.length / totalTasks) * 100);
+
+            let htmlSukses = `<ul style="padding:0; margin:0; list-style:none;">`;
+            if(tasksSukses.length === 0) {
+                htmlSukses += `<li style="text-align:center; color:gray; font-size:12px; padding:10px; background:#f8fafc; border-radius:6px; border:1px dashed #cbd5e1;">Belum ada tugas yang terealisasi.</li>`;
+            } else {
+                tasksSukses.forEach((item) => {
+                    let timeBadge = item.waktuSelesai ? `<span style="display:inline-block; font-size:10px; background:white; color:#059669; padding:2px 6px; border-radius:4px; border:1px solid #10b981; margin-right:6px; font-weight:bold;"><i class="fas fa-clock"></i> ${item.waktuSelesai}</span>` : '';
+                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px; font-weight:bold;">*(Tambahan)*</span>` : "";
+                    htmlSukses += `
+                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#ecfdf5; padding:12px; border-radius:8px; border-left:4px solid #10b981; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-check-circle" style="color:#10b981;"></i></div>
+                        <div style="flex:1; font-size:13px; color:#064e3b;">
+                            <div style="margin-bottom:5px;">${timeBadge}</div>
+                            <span style="font-weight:600;">${item.teks}</span> ${typeNote}
+                        </div>
+                    </li>`;
+                });
+            }
+            htmlSukses += `</ul>`;
+
+            let htmlGagal = `<ul style="padding:0; margin:0; list-style:none;">`;
+            if(tasksGagal.length === 0) {
+                htmlGagal += `<li style="text-align:center; color:#059669; font-weight:bold; font-size:12px; padding:10px; background:#d1fae5; border-radius:6px; border:1px dashed #10b981;"><i class="fas fa-star"></i> Luar Biasa! Semua rencana berhasil terealisasi!</li>`;
+            } else {
+                tasksGagal.forEach((item) => {
+                    let textBersih = item.teks;
+                    let alasanSpesifik = globalKeterangan;
+                    if(textBersih.includes("(Terlambat karna:")) {
+                        let parts = textBersih.split("(Terlambat karna:");
+                        textBersih = parts[0].trim();
+                        alasanSpesifik = parts[1].replace(")", "").trim();
+                    }
+
+                    htmlGagal += `
+                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fef2f2; padding:12px; border-radius:8px; border-left:4px solid #ef4444; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i></div>
+                        <div style="flex:1; font-size:13px; color:#7f1d1d;">
+                            <div style="font-weight:bold; margin-bottom:6px;">${textBersih}</div>
+                            <div style="font-size:11px; color:#b91c1c; background:#fee2e2; padding:6px 10px; border-radius:6px; display:inline-block; border:1px solid #fca5a5;">
+                                <i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${data.status === "Belum" ? "Masih dalam proses (Belum ditutup)" : alasanSpesifik}
+                            </div>
+                        </div>
+                    </li>`;
+                });
+            }
+            htmlGagal += `</ul>`;
+
+            let html = `
+            <div class="report-header">
+                <h2>LAPORAN KERJA HARIAN ADMIN</h2>
+                <p>PT. CITRA BUANA INTITAMA</p>
+            </div>
+            
+            <table class="report-table" style="box-shadow:0 2px 5px rgba(0,0,0,0.05); margin-bottom:25px;">
+                <tr><th style="width:35%;">Nama Admin</th><td><strong>${data.adminName}</strong></td></tr>
+                <tr><th>Waktu Target</th><td>Tgl: <strong>${data.tglTarget}</strong><br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr>
+                <tr><th>Status Harian</th><td style="color:${ui.color}; font-weight:bold; font-size:14px;">${ui.badgeText}</td></tr>
+            </table>
+
+            <h3 style="font-size:14px; color:#059669; border-bottom:2px solid #10b981; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-check-circle" style="font-size:18px;"></i> DAFTAR TUGAS TEREALISASI
+            </h3>
+            <div style="margin-bottom:25px; margin-top:15px;">
+                ${htmlSukses}
+            </div>
+
+            <h3 style="font-size:14px; color:#dc2626; border-bottom:2px solid #ef4444; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
+                <i class="fas fa-times-circle" style="font-size:18px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA
+            </h3>
+            <div style="margin-bottom:25px; margin-top:15px;">
+                ${htmlGagal}
+            </div>
+
+            ${data.fotoActual ? `<div class="report-img-box" style="margin-top:25px; border-color:#cbd5e1; background:#f8fafc; padding:15px;"><strong>BUKTI FOTO AKTUAL LAPANGAN</strong><br><img src="${data.fotoActual}" style="border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-top:10px;"></div>` : ''}
+
+            <div style="display:flex; gap:10px; margin-top:30px; text-align:center;">
+                <div style="flex:1; background:linear-gradient(135deg, #f1f5f9, #e2e8f0); padding:15px 5px; border-radius:10px; border:1px solid #cbd5e1; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#475569; text-transform:uppercase; letter-spacing:1px;">ACH Rate</h4>
+                    <span style="font-size:26px; font-weight:900; color:var(--secondary); text-shadow:1px 1px 0px white;">${ach}%</span>
+                </div>
+                <div style="flex:1; background:linear-gradient(135deg, #d1fae5, #a7f3d0); padding:15px 5px; border-radius:10px; border:1px solid #10b981; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#064e3b; text-transform:uppercase; letter-spacing:1px;">Berhasil</h4>
+                    <span style="font-size:26px; font-weight:900; color:#059669; text-shadow:1px 1px 0px white;">${ach}%</span>
+                </div>
+                <div style="flex:1; background:linear-gradient(135deg, #fee2e2, #fecaca); padding:15px 5px; border-radius:10px; border:1px solid #ef4444; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
+                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px;">Gagal</h4>
+                    <span style="font-size:26px; font-weight:900; color:#dc2626; text-shadow:1px 1px 0px white;">${failRate}%</span>
+                </div>
+            </div>
+            <p style="text-align:center; font-size:10px; color:gray; margin-top:15px; font-style:italic;">*Performa dihitung otomatis oleh AI berdasarkan perbandingan total tugas dan realisasi.</p>
+            `;
+
+            const rac = document.getElementById('report-adm-content'); 
+            if(rac) rac.innerHTML = html; 
+            window.navigasi('adm-harian-detail-screen'); 
+        }
+        // --- 🚀 PERBAIKAN LOXLEY SELESAI ---
 
         // Permintaan Trial, Notulen, Jadwal, Info & Gosok
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
