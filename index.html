@@ -1244,18 +1244,16 @@
                 await ambilDataServerWS(); 
             }
         }
-
         // =======================================================
         // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (NEW LOGIC)
         // =======================================================
         window.tugasWorkshopArray = [];
-        // PERBAIKAN: Penambahan 6 Proses Mesin Baru
         window.pilihanProsesMesin = ["BUBUT", "EDM", "BOR RADIAL", "ROUTER", "MILLING", "CNC", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
         
         window.inisialisasiFormWS = function() {
             document.getElementById('ws-np-nama').value = "";
             window.tugasWorkshopArray = [];
-            window.tambahTugasUtamaWS(); // Auto kasih 1 tugas awal
+            window.tambahTugasUtamaWS(); 
         }
 
         window.tambahTugasUtamaWS = function() {
@@ -1268,8 +1266,8 @@
 
         window.tambahSubTugasWS = function(indexUtama) {
             window.tugasWorkshopArray[indexUtama].punyaSub = true;
-            window.tugasWorkshopArray[indexUtama].proses = ""; // Kosongkan proses karena jadi parent
-            window.tugasWorkshopArray[indexUtama].estimasiJam = 0; // Kosongkan, dihitung dari sub
+            window.tugasWorkshopArray[indexUtama].proses = "Multi-Proses"; 
+            window.tugasWorkshopArray[indexUtama].estimasiJam = 0; 
             window.tugasWorkshopArray[indexUtama].subTugas.push({
                 namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0
             });
@@ -1279,7 +1277,10 @@
         window.hapusTugasWS = function(indexUtama, indexSub = null) {
             if(indexSub !== null) {
                 window.tugasWorkshopArray[indexUtama].subTugas.splice(indexSub, 1);
-                if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) window.tugasWorkshopArray[indexUtama].punyaSub = false;
+                if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) {
+                    window.tugasWorkshopArray[indexUtama].punyaSub = false;
+                    window.tugasWorkshopArray[indexUtama].proses = "";
+                }
             } else {
                 window.tugasWorkshopArray.splice(indexUtama, 1);
             }
@@ -1304,13 +1305,12 @@
                 if(tugas.punyaSub) {
                     let sumSub = 0;
                     tugas.subTugas.forEach(sub => sumSub += sub.estimasiJam);
-                    tugas.estimasiJam = sumSub; // Auto sum to parent
+                    tugas.estimasiJam = sumSub; 
                     totalJam += sumSub;
                 } else {
                     totalJam += tugas.estimasiJam;
                 }
             });
-            // Asumsi pabrik: 1 Hari = 24 Jam. Jika ingin 8 jam, ubah angka 24 jadi 8.
             let totalHari = (totalJam / 24).toFixed(1); 
             document.getElementById('ws-np-jam').value = totalJam + " Jam";
             document.getElementById('ws-np-hari').value = totalHari + " Hari";
@@ -1328,44 +1328,42 @@
                 let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;">
                     <div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;">
                         <span>Tugas #${idx + 1}</span>
-                        <button onclick="hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button>
+                        <button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button>
                     </div>
                     <div style="padding: 15px;">
-                        <div class="form-group"><label>Nama Tugas</label><input type="text" value="${tugas.namaTugas}" onchange="updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
+                        <div class="form-group"><label>Nama Tugas</label><input type="text" value="${tugas.namaTugas}" onchange="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
                 
                 if(!tugas.punyaSub) {
                     html += `<div style="display:flex; gap:10px;">
-                        <div style="flex:2;" class="form-group"><label>Proses</label><select onchange="updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div>
-                        <div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" onchange="updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div>
+                        <div style="flex:2;" class="form-group"><label>Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div>
+                        <div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" onchange="window.updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div>
                     </div>`;
                 }
 
-                // Render Sub Tugas jika ada
                 if(tugas.punyaSub) {
                     html += `<div style="margin-top:10px; border-left: 3px solid var(--secondary); padding-left: 10px; margin-bottom:10px;">`;
                     tugas.subTugas.forEach((sub, subIdx) => {
                         html += `<div style="background: white; padding: 10px; border-radius: 6px; border: 1px dashed #94a3b8; margin-bottom: 10px; position:relative;">
-                            <button onclick="hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button>
-                            <div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${sub.namaTugas}" onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div>
+                            <button type="button" onclick="window.hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button>
+                            <div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${sub.namaTugas}" onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div>
                             <div style="display:flex; gap:10px;">
-                                <div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div>
-                                <div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div>
+                                <div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div>
+                                <div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div>
                             </div>
                         </div>`;
                     });
                     html += `</div>`;
-                    // Tampilkan total akumulasi jam di parent
                     html += `<div style="font-size:12px; color:var(--secondary); font-weight:bold; margin-bottom:10px;">Total Estimasi Sub: ${tugas.estimasiJam} Jam</div>`;
                 }
 
-                html += `<button onclick="tambahSubTugasWS(${idx})" style="background:#e2e8f0; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button>
+                html += `<button type="button" onclick="window.tambahSubTugasWS(${idx})" style="background:#e2e8f0; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button>
                     </div></div>`;
                 container.innerHTML += html;
             });
             window.kalkulasiTotalWaktuWS();
         }
 
-                // PERBAIKAN TOTAL FUNGSI SIMPAN WORKSHOP
+        // --- FUNGSI SIMPAN KHUSUS ANTI ERROR & FREEZE ---
         window.simpanNewProjectWS = async function() {
             try {
                 const inputNamaMold = document.getElementById('ws-np-nama');
@@ -1375,79 +1373,91 @@
                 const estHari = document.getElementById('ws-np-hari').value || "0 Hari";
                 const estJam = document.getElementById('ws-np-jam').value || "0 Jam";
 
-                // 1. Validasi Anti-Lupa (Nama Proyek)
                 if(namaMold === "") {
-                    alert("⚠️ PERHATIAN: Nama Proyek / MOLD paling atas wajib diisi!");
+                    alert("⚠️ PERHATIAN: Nama Proyek / MOLD (paling atas) wajib diisi!");
                     inputNamaMold.focus();
                     window.scrollTo(0, 0);
                     return;
                 }
 
-                // 2. Validasi Anti-Lupa (Tugas Utama)
                 if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) {
                     return alert("⚠️ PERHATIAN: Minimal harus ada 1 Tugas Utama!");
                 }
 
-                // 3. PEMURNIAN DATA ARRAY SEBELUM DITEMBAK KE FIREBASE
-                // Teknik ini membuang fungsi atau referensi DOM tersembunyi yang membuat Firebase error
-                const dataBersih = JSON.parse(JSON.stringify(window.tugasWorkshopArray));
-
-                for (let i = 0; i < dataBersih.length; i++) {
-                    let tugas = dataBersih[i];
+                // VALIDASI KETAT
+                for (let i = 0; i < window.tugasWorkshopArray.length; i++) {
+                    let tugas = window.tugasWorkshopArray[i];
                     
-                    if (!tugas.namaTugas || tugas.namaTugas.trim() === "") {
-                        return alert(`⚠️ Nama Tugas pada Tugas Utama #${i + 1} belum diisi!`);
-                    }
+                    if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return alert(`⚠️ Nama Tugas pada Tugas Utama #${i + 1} belum diisi!`);
                     
                     if (!tugas.punyaSub) {
                         if (!tugas.proses || tugas.proses === "") return alert(`⚠️ Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`);
-                        // Paksa jadi angka valid
-                        tugas.estimasiJam = Number(tugas.estimasiJam) || 0; 
                     } else {
                         if (!tugas.subTugas || tugas.subTugas.length === 0) return alert(`⚠️ Tugas Utama #${i + 1} memiliki Sub Tugas, tapi isinya kosong!`);
                         for (let j = 0; j < tugas.subTugas.length; j++) {
                             let sub = tugas.subTugas[j];
-                            if (!sub.namaTugas || sub.namaTugas.trim() === "") return alert(`⚠️ Sub Tugas ke-${j + 1} (Tugas Utama #${i + 1}) belum diberi nama!`);
-                            if (!sub.proses || sub.proses === "") return alert(`⚠️ Proses mesin pada Sub Tugas ke-${j + 1} (Tugas Utama #${i + 1}) belum dipilih!`);
-                            sub.estimasiJam = Number(sub.estimasiJam) || 0;
+                            if (!sub.namaTugas || sub.namaTugas.trim() === "") return alert(`⚠️ Sub Tugas ke-${j + 1} (pada Tugas #${i + 1}) belum diisi namanya!`);
+                            if (!sub.proses || sub.proses === "") return alert(`⚠️ Proses mesin pada Sub Tugas ke-${j + 1} (Tugas #${i + 1}) belum dipilih!`);
                         }
                     }
                 }
 
-                // 4. Loading
+                // PEMURNIAN DATA: Menyaring agar 100% aman masuk Firebase
+                let dataSiapTembak = [];
+                window.tugasWorkshopArray.forEach(tugas => {
+                    let tugasBersih = {
+                        namaTugas: tugas.namaTugas,
+                        proses: tugas.proses || "Multi-Proses",
+                        estimasiJam: Number(tugas.estimasiJam) || 0,
+                        status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0,
+                        punyaSub: tugas.punyaSub,
+                        subTugas: []
+                    };
+
+                    if (tugas.punyaSub) {
+                        tugas.subTugas.forEach(sub => {
+                            tugasBersih.subTugas.push({
+                                namaTugas: sub.namaTugas,
+                                proses: sub.proses,
+                                estimasiJam: Number(sub.estimasiJam) || 0,
+                                status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0
+                            });
+                        });
+                    }
+                    dataSiapTembak.push(tugasBersih);
+                });
+
+                // TAMPILKAN LOADER
                 const loader = document.getElementById('loader');
                 const loaderText = document.getElementById('loader-text');
-                if(loaderText) loaderText.innerText = "Menyimpan Data Proyek...";
+                if(loaderText) loaderText.innerText = "Menyimpan ke Database...";
                 if(loader) loader.style.display = 'flex';
 
-                // 5. Tembak Database (Menggunakan Data Bersih)
+                // TEMBAK DATABASE
                 await addDoc(collection(db, "projects"), { 
                     divisi: "DIVISI MOLD WORKSHOP", 
                     namaProject: namaMold,
                     totalEstimasiHari: estHari, 
                     totalEstimasiJam: estJam,
-                    rencanaKerja: dataBersih, 
+                    rencanaKerja: dataSiapTembak, 
                     statusProject: "Proses",
                     waktuDibuat: dapatkanWaktuRill(), 
                     timestamp: Date.now() 
                 });
 
-                // 6. Selesai
                 if(loader) loader.style.display = 'none';
                 alert("✅ Proyek Baru Berhasil Disimpan!");
                 
-                // Gunakan window.navigasi untuk kembali ke layar divisi
+                // KEMBALI & SINKRONISASI
+                window.inisialisasiFormWS();
                 if(typeof window.navigasi === 'function') window.navigasi('divisi-screen');
-                
-                if(typeof window.ambilDataServerWS === 'function') {
-                    await window.ambilDataServerWS();
-                }
+                if(typeof window.ambilDataServerWS === 'function') await window.ambilDataServerWS();
 
             } catch (error) {
                 const loader = document.getElementById('loader');
                 if(loader) loader.style.display = 'none';
-                console.error("ERROR SISTEM SIMPAN:", error);
-                alert("❌ Terjadi Kendala Saat Menyimpan: " + error.message);
+                console.error("FIREBASE ERROR:", error);
+                alert("❌ Terjadi Kendala Saat Menyimpan! Error: " + error.message);
             }
         }
 
