@@ -398,14 +398,13 @@
         <div class="content-wrapper">
             <div class="header"><h2>Detail & Tracking Project</h2></div>
             <div class="export-row">
-                <button class="btn-export btn-jpg" onclick="window.cetakGambarUniversal('report-ws-content', 'Tracking_Project')"><i class="fas fa-image"></i> Download JPG</button>
-                <button class="btn-export btn-pdf" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn-export btn-jpg" type="button" onclick="window.cetakGambarUniversal('report-ws-content', 'Tracking_Project')"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
             <div class="report-sheet" id="report-ws-content"></div>
             <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- MENU MOLD REPAIR -->
     <!-- ========================================================= -->
@@ -417,7 +416,7 @@
                 <div class="menu-card" onclick="window.navigasi('mr-update-proyek-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-tools"></i> 2. Update Proyek</div>
                 <div class="menu-card" onclick="window.navigasi('mr-control-report-screen')" style="border-left-color: #10b981;"><i class="fas fa-chart-pie"></i> 3. Control & Report Progres</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -444,7 +443,7 @@
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;"><button type="button" onclick="window.tambahJobMR()" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">+ Tambah Job</button><button type="button" onclick="window.simpanRencanaKerjaMR()" class="btn-submit">SIMPAN RENCANA KERJA</button></div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -453,9 +452,9 @@
         <div class="content-wrapper">
             <div class="header"><h2>Update Proyek Repair</h2></div>
             <div class="tab-container" style="background: white; border: 1px solid #cbd5e1; padding: 4px;">
-                <button class="tab-btn tab-active" id="tab-mr-proses" onclick="window.switchTabMR('proses')" style="border-radius: 6px;">List Proses</button>
-                <button class="tab-btn" id="tab-mr-harian" onclick="window.switchTabMR('harian')" style="border-radius: 6px;">Target Harian</button>
-                <button class="tab-btn" id="tab-mr-hasil" onclick="window.switchTabMR('hasil')" style="border-radius: 6px;">Hasil Proyek</button>
+                <button class="tab-btn tab-active" type="button" id="tab-mr-proses" onclick="window.switchTabMR('proses')" style="border-radius: 6px;">List Proses</button>
+                <button class="tab-btn" type="button" id="tab-mr-harian" onclick="window.switchTabMR('harian')" style="border-radius: 6px;">Target Harian</button>
+                <button class="tab-btn" type="button" id="tab-mr-hasil" onclick="window.switchTabMR('hasil')" style="border-radius: 6px;">Hasil Proyek</button>
             </div>
             <div id="list-mr-proses"></div><div id="list-mr-harian" style="display: none;"></div><div id="list-mr-hasil" style="display: none;"></div>
             <div id="form-mr-update-harian" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 5px solid var(--secondary);">
@@ -466,7 +465,7 @@
                 <div style="display: flex; gap: 10px; margin-top: 15px;"><button class="btn-submit" type="button" style="flex:1; background: gray;" onclick="window.batalUpdateMR()">BATAL</button><button class="btn-submit" type="button" style="flex:1; background: var(--secondary);" onclick="window.simpanLogHarianMR()">UPDATE HARIAN</button></div>
                 <button class="btn-submit" type="button" style="width:100%; margin-top:10px; background: var(--cepat);" onclick="window.selesaikanProyekMR()">TUTUP TIKET (SELESAI)</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -475,7 +474,7 @@
         <div style="background:white; width:100%; max-width:500px; border-radius:12px; padding:20px; max-height:90vh; overflow-y:auto; position:relative;">
             <h3 style="color:var(--primary); margin-top:0; border-bottom:2px solid #cbd5e1; padding-bottom:10px;"><i class="fas fa-info-circle"></i> Detail Info Proyek</h3>
             <div id="mr-detail-content" style="font-size:14px; line-height:1.6;"></div>
-            <button onclick="document.getElementById('modal-detail-mr').style.display='none'" style="width:100%; margin-top:15px; padding:12px; background:var(--primary); border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;">TUTUP DETAIL</button>
+            <button type="button" onclick="document.getElementById('modal-detail-mr').style.display='none'" style="width:100%; margin-top:15px; padding:12px; background:var(--primary); border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;">TUTUP DETAIL</button>
         </div>
     </div>
 
@@ -488,9 +487,10 @@
                 <div class="menu-card" onclick="alert('Report Mingguan sedang dikonstruksi Tuan!')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-week"></i> 2. Report Mingguan</div>
                 <div class="menu-card" onclick="alert('Report Bulanan sedang dikonstruksi Tuan!')" style="border-left-color: #10b981;"><i class="fas fa-chart-bar"></i> 3. Report Bulanan</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- 4. MENU UTAMA INFORMASI MOLD                              -->
     <!-- ========================================================= -->
@@ -506,7 +506,7 @@
                 <div class="menu-card" onclick="window.bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 6. ROTASI MOLD</div>
                 <div class="menu-card" onclick="window.bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 7. DATA PREVENTIF TAHUNAN MOLD</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -553,7 +553,7 @@
                 <i class="fas fa-bolt"></i> PUSAT ANALISA PERFORMA (KLIK)
             </div>
 
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -567,7 +567,7 @@
                 <div class="menu-card" onclick="window.bukaRiwayatGosokMold()" style="border-left-color: #eab308;"><i class="fas fa-history"></i> 2. Riwayat & Export Gosok Mold</div>
                 <div class="menu-card" onclick="window.bukaSubInfo('DATA OLAHAN PKM')" style="border-left-color: #10b981;"><i class="fas fa-cogs"></i> 3. Data Olahan PKM</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -592,7 +592,7 @@
                 </div>
                 <button class="btn-submit" type="button" onclick="window.simpanOlahanGosokMold()" style="margin-top: 15px;"><i class="fas fa-save"></i> SIMPAN REKAPAN KE DATABASE</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -603,7 +603,7 @@
             <div class="export-row"><button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelLengkap()" style="width: 100%;"><i class="fas fa-file-excel"></i> Download Rekap Semua Data (Excel)</button></div>
             <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail dan cetak PDF/JPG.</i></p>
             <div id="list-gosok-riwayat"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -612,7 +612,7 @@
             <div class="header"><h2>Detail Laporan Gosok</h2></div>
             <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadGosokJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak PDF</button></div>
             <div class="report-sheet" id="report-gosok-content"></div>
-            <button class="btn-bottom-back" onclick="window.bukaRiwayatGosokMold()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaRiwayatGosokMold()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
@@ -623,12 +623,12 @@
             <div class="neon-panel">
                 <h3 class="neon-title"><i class="fas fa-robot"></i> AI MULTI-DIVISION INTELLIGENCE <i class="fas fa-robot"></i></h3>
                 <div class="neon-tabs">
-                    <button class="neon-tab-btn active" id="ntab-store" onclick="window.switchTabAnalisa('DIVISI MOLD STORE')">Mold Store</button>
-                    <button class="neon-tab-btn" id="ntab-repair" onclick="window.switchTabAnalisa('DIVISI MOLD REPAIR')">Mold Repair</button>
-                    <button class="neon-tab-btn" id="ntab-trouble" onclick="window.switchTabAnalisa('DIVISI MOLD TROUBLE')">Mold Trouble</button>
-                    <button class="neon-tab-btn" id="ntab-workshop" onclick="window.switchTabAnalisa('DIVISI MOLD WORKSHOP')">Mold Workshop</button>
-                    <button class="neon-tab-btn" id="ntab-adm" onclick="window.switchTabAnalisa('ADM UNIFIED')">Performa ADM</button>
-                    <button class="neon-tab-btn" id="ntab-all" onclick="window.switchTabAnalisa('ALL')">Global All</button>
+                    <button class="neon-tab-btn active" type="button" id="ntab-store" onclick="window.switchTabAnalisa('DIVISI MOLD STORE')">Mold Store</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-repair" onclick="window.switchTabAnalisa('DIVISI MOLD REPAIR')">Mold Repair</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-trouble" onclick="window.switchTabAnalisa('DIVISI MOLD TROUBLE')">Mold Trouble</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-workshop" onclick="window.switchTabAnalisa('DIVISI MOLD WORKSHOP')">Mold Workshop</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-adm" onclick="window.switchTabAnalisa('ADM UNIFIED')">Performa ADM</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-all" onclick="window.switchTabAnalisa('ALL')">Global All</button>
                 </div>
                 <div class="neon-grid">
                     <div class="neon-card"><h4>Total Proyek</h4><div class="neon-num" id="neon-val-target" style="color: #38bdf8;">0</div></div>
@@ -638,7 +638,7 @@
                 <div class="neon-chart-container"><canvas id="performaChart"></canvas></div>
                 <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Analisa Terstruktur Multi-Divisi & ADM Real-Time</p>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
         </div>
     </div>
 
@@ -651,7 +651,7 @@
                 <div class="menu-card" onclick="window.bukaAdmHarianActual()" style="border-left-color: #14b8a6;"><i class="fas fa-check-double"></i> 2. Update Actual Terealisasi</div>
                 <div class="menu-card" onclick="window.bukaAdmHarianProgress()" style="border-left-color: #ec4899;"><i class="fas fa-chart-line"></i> 3. Control Progres Kinerja</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -672,7 +672,7 @@
                 </div>
                 <button class="btn-submit" type="button" onclick="window.simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -680,9 +680,9 @@
         <div class="content-wrapper">
             <div class="header"><h2>Update Actual Terealisasi</h2></div>
             <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-adm-belum" onclick="window.switchTabAdm('belum')">Belum Terealisasi</button>
-                <button class="tab-btn" id="tab-adm-sudah" onclick="window.switchTabAdm('sudah')">Sudah Terealisasi</button>
-                <button class="tab-btn" id="tab-adm-gagal" onclick="window.switchTabAdm('gagal')">Gagal Terealisasi</button>
+                <button class="tab-btn tab-active" type="button" id="tab-adm-belum" onclick="window.switchTabAdm('belum')">Belum Terealisasi</button>
+                <button class="tab-btn" type="button" id="tab-adm-sudah" onclick="window.switchTabAdm('sudah')">Sudah Terealisasi</button>
+                <button class="tab-btn" type="button" id="tab-adm-gagal" onclick="window.switchTabAdm('gagal')">Gagal Terealisasi</button>
             </div>
             <div id="list-adm-belum"></div>
             <div id="list-adm-sudah" style="display: none;"></div>
@@ -705,7 +705,7 @@
                 </div>
                 <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalAdmActual()">BATAL</button><button class="btn-submit" type="button" id="btn-simpan-actual" onclick="window.simpanAdmActual()">UPDATE & SIMPAN</button></div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -714,7 +714,7 @@
             <div class="header"><h2>Control Progres Kinerja Admin</h2></div>
             <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail.</i></p>
             <div id="list-adm-progress"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -723,7 +723,7 @@
             <div class="header"><h2>Detail Laporan Harian Admin</h2></div>
             <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadAdmJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
             <div class="report-sheet" id="report-adm-content"></div>
-            <button class="btn-bottom-back" onclick="window.bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
@@ -736,7 +736,7 @@
                 <div class="menu-card" onclick="window.bukaPtAdmin()"><i class="fas fa-user-shield"></i> 2. Verifikasi & Update Admin</div>
                 <div class="menu-card" onclick="window.bukaPtProgress()"><i class="fas fa-chart-bar"></i> 3. Control Progres Trial</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -754,7 +754,7 @@
                 </div>
                 <button class="btn-submit" type="button" onclick="window.simpanPtInput()">SEND TO ADMIN</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -762,8 +762,8 @@
         <div class="content-wrapper">
             <div class="header"><h2>Verifikasi Admin Mold</h2></div>
             <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-pt-belum" onclick="window.switchTabPt('belum')">Permintaan Masuk</button>
-                <button class="tab-btn" id="tab-pt-proses" onclick="window.switchTabPt('proses')">Sedang Proses</button>
+                <button class="tab-btn tab-active" type="button" id="tab-pt-belum" onclick="window.switchTabPt('belum')">Permintaan Masuk</button>
+                <button class="tab-btn" type="button" id="tab-pt-proses" onclick="window.switchTabPt('proses')">Sedang Proses</button>
             </div>
             <div id="list-pt-belum"></div><div id="list-pt-proses" style="display: none;"></div>
             <div id="form-pt-verifikasi" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
@@ -783,7 +783,7 @@
                 <div class="form-group"><label>Upload Gambar</label><label for="pt-hasil-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-pt-foto')"><span id="status-pt-foto" class="file-status"></span></div>
                 <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalPtAdmin('hasil')">Batal</button><button class="btn-submit" type="button" onclick="window.simpanPtHasil()">SIMPAN HASIL</button></div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -791,7 +791,7 @@
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Trial</h2></div>
             <div id="list-pt-progress"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -800,7 +800,7 @@
             <div class="header"><h2>Detail Laporan Trial</h2></div>
             <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
             <div class="report-sheet" id="report-pt-content"></div>
-            <button class="btn-bottom-back" onclick="window.bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
@@ -812,7 +812,7 @@
                 <div class="menu-card" onclick="window.navigasi('notulen-input-screen')"><i class="fas fa-edit"></i> 1. Input Notulen Baru</div>
                 <div class="menu-card" onclick="window.bukaHasilNotulen()"><i class="fas fa-folder-open"></i> 2. Lihat Hasil Notulen</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -839,7 +839,7 @@
                 <div class="form-group"><label>Foto Dokumentasi</label><label for="notul-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-notul-foto')"><span id="status-notul-foto" class="file-status"></span></div>
                 <button class="btn-submit" type="button" onclick="window.simpanNotulen()">SIMPAN NOTULEN</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -847,7 +847,7 @@
         <div class="content-wrapper">
             <div class="header"><h2>Hasil Laporan Notulen</h2></div>
             <div id="list-notulen"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -856,7 +856,7 @@
             <div class="header"><h2>Detail & Evaluasi Notulen</h2></div>
             <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadNotulenJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
             <div class="report-sheet" id="report-notulen-content"></div>
-            <button class="btn-bottom-back" onclick="window.bukaHasilNotulen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaHasilNotulen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
 
@@ -868,7 +868,7 @@
                 <div class="menu-card" onclick="window.bukaInputJadwal()"><i class="fas fa-upload"></i> 1. Manajemen (Input / Update)</div>
                 <div class="menu-card" onclick="window.bukaViewJadwal()"><i class="fas fa-search"></i> 2. View Jadwal Besar</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -886,7 +886,7 @@
                     <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;"><span style="color: gray;">Memuat data...</span></div>
                 </div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -894,7 +894,7 @@
         <div class="content-wrapper">
             <div class="header"><h2>View Jadwal Besar</h2></div>
             <div style="background: white; padding: 15px; border-radius: 10px;"><div id="jb-view-container" style="text-align:center; margin-top:15px;"></div></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -912,7 +912,7 @@
                 <button class="btn-submit" type="button" onclick="window.simpanInfoData()">SIMPAN KE DATABASE</button>
             </div>
             <div id="list-sub-info"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -924,7 +924,7 @@
                 <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-check"></i> 1. Rencana Naik Mold</div>
                 <div class="menu-card" onclick="window.navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;"><i class="fas fa-dolly"></i> 2. Laporan Persiapan Naik/Turun Mold</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE BERANDA</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE BERANDA</button>
         </div>
     </div>
 
@@ -935,7 +935,7 @@
                 <div class="menu-card" onclick="window.bukaInputNaikMold()" style="border-left-color: #8b5cf6;"><i class="fas fa-arrow-up"></i> 1. Input Naik Mold</div>
                 <div class="menu-card" onclick="window.bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;"><i class="fas fa-sync-alt"></i> 2. Update Mold Produksi</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -956,7 +956,7 @@
                 </div>
                 <button class="btn-submit" type="button" onclick="window.simpanNaikMold()"><i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -964,12 +964,12 @@
         <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
             <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #0f172a; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                 <h2 style="color: white; margin: 0; font-size: 16px;">Update Mold Produksi</h2>
-                <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
             </div>
             <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1;">
-                <button class="tab-btn" onclick="window.bukaTabMold('proses')" id="btn-tab-proses" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #3b82f6; color: white;">Proses Produksi</button>
-                <button class="tab-btn" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Selesai Baik</button>
-                <button class="tab-btn" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Gagal / Gangguan</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('proses')" id="btn-tab-proses" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #3b82f6; color: white;">Proses Produksi</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Selesai Baik</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Gagal / Gangguan</button>
             </div>
             <div id="tab-proses" class="tab-content" style="display: block;">
                 <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #f59e0b;"><h3 style="font-size: 16px; color: #d97706; text-align: center;"><i class="fas fa-cogs"></i> Proses Produksi</h3><ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: #fef3c7; border-radius: 5px; padding: 10px;"></ul></div>
@@ -1004,7 +1004,7 @@
                     <i class="fas fa-chart-line"></i> 3. Control Progres
                 </div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -1013,11 +1013,11 @@
         <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
             <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #dc2626; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                 <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-tools"></i> Daftar Mold Trouble</h2>
-                <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
             </div>
             <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1;">
-                <button class="tab-btn-trouble" onclick="window.bukaTabTrouble('belum')" id="btn-tab-trouble-belum" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #dc2626; color: white;">Belum di Update</button>
-                <button class="tab-btn-trouble" onclick="window.bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Sudah Selesai</button>
+                <button class="tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('belum')" id="btn-tab-trouble-belum" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #dc2626; color: white;">Belum di Update</button>
+                <button class="tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Sudah Selesai</button>
             </div>
             <div id="tab-trouble-belum" class="tab-content-trouble" style="display: block;"><ul id="list-trouble-belum" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
             <div id="tab-trouble-selesai" class="tab-content-trouble" style="display: none;"><ul id="list-trouble-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
@@ -1057,13 +1057,13 @@
         <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
             <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #2563eb; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
                 <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-file-import"></i> Data PKM Eltre</h2>
-                <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
             </div>
             <div style="display: flex; gap:5px; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; overflow-x: auto;">
-                <button class="tab-btn-pkm" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="flex: 1; min-width: 110px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: #2563eb; color: white;">Verifikasi ELTRE</button>
-                <button class="tab-btn-pkm" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dikerjakan</button>
-                <button class="tab-btn-pkm" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dipisahkan</button>
-                <button class="tab-btn-pkm" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="flex: 1; min-width: 80px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Selesai</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="flex: 1; min-width: 110px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: #2563eb; color: white;">Verifikasi ELTRE</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dikerjakan</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dipisahkan</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="flex: 1; min-width: 80px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Selesai</button>
             </div>
             <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;"><ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
             <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
@@ -1085,6 +1085,9 @@
             </div>
         </div>
     </div>
+    <!-- ========================================== -->
+    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI (OTAK SISTEM) -->
+    <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, getDoc, query, where } 
@@ -1322,7 +1325,6 @@
             window.pilihanProsesMesin.forEach(m => opsiMesinHtml += `<option value="${m}">${m}</option>`);
 
             window.tugasWorkshopArray.forEach((tugas, idx) => {
-                // PENTING: Perubahan ke oninput agar inputan instan masuk ke array anti freeze!
                 let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;">
                     <div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;">
                         <span>Tugas #${idx + 1}</span>
@@ -1361,6 +1363,7 @@
             window.kalkulasiTotalWaktuWS();
         }
 
+        // --- FUNGSI SIMPAN WORKSHOP YANG 100% AMAN & ANTI TERPENTAL ---
         window.simpanNewProjectWS = async function() {
             try {
                 const inputNamaMold = document.getElementById('ws-np-nama');
@@ -1381,10 +1384,8 @@
                     return alert("⚠️ PERHATIAN: Minimal harus ada 1 Tugas Utama!");
                 }
 
-                // VALIDASI KETAT
                 for (let i = 0; i < window.tugasWorkshopArray.length; i++) {
                     let tugas = window.tugasWorkshopArray[i];
-                    
                     if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return alert(`⚠️ Nama Tugas pada Tugas Utama #${i + 1} belum diisi!`);
                     
                     if (!tugas.punyaSub) {
@@ -1422,7 +1423,7 @@
                     dataSiapTembak.push(tugasBersih);
                 });
 
-                window.toggleLoader(true, "Menyimpan ke Database...");
+                window.toggleLoader(true, "Menyimpan ke Database Firebase...");
 
                 await addDoc(collection(db, "projects"), { 
                     divisi: "DIVISI MOLD WORKSHOP", 
@@ -1435,12 +1436,15 @@
                     timestamp: Date.now() 
                 });
 
-                window.toggleLoader(false);
-                alert("✅ Proyek Baru Berhasil Disimpan!");
+                // Perbaikan Anti Terpental (Tahan Loader Tampilkan Sukses 2 Detik)
+                window.toggleLoader(true, "✅ BERHASIL! Proyek Tersimpan.");
                 
-                window.inisialisasiFormWS();
-                window.navigasi('divisi-screen');
-                await window.ambilDataServerWS();
+                setTimeout(async () => {
+                    window.toggleLoader(false);
+                    window.inisialisasiFormWS();
+                    window.navigasi('divisi-screen');
+                    await window.ambilDataServerWS();
+                }, 2000); 
 
             } catch (error) {
                 window.toggleLoader(false);
