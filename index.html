@@ -170,7 +170,7 @@
         /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
-        input[type="text"], input[type="time"], input[type="date"], input[type="number"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
+        input[type="text"], input[type="time"], input[type="datetime-local"], input[type="date"], input[type="number"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
         input:read-only { background-color: #f1f5f9; color: #64748b; font-weight: bold; cursor: not-allowed; }
         textarea { resize: vertical; } 
         .btn-submit { width: 100%; padding: 15px; background: var(--secondary); color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.2s;}
@@ -282,15 +282,14 @@
             </div>
         </div>
     </div>
-
     <!-- 3. BERANDA DIVISI WORKSHOP -->
     <div id="divisi-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2 id="judul-divisi">Nama Divisi</h2></div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
-                <div class="menu-card" onclick="navigasi('update-project-screen'); window.renderUpdateList();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
-                <div class="menu-card" onclick="navigasi('progress-screen'); window.resetFilter(); window.renderProgressList();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
+                <div class="menu-card" onclick="inisialisasiFormWS(); navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
+                <div class="menu-card" onclick="navigasi('update-project-screen'); window.renderUpdateListWS();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
+                <div class="menu-card" onclick="navigasi('progress-screen'); window.resetFilterWS(); window.renderProgressListWS();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -301,15 +300,26 @@
         <div class="content-wrapper">
             <div class="header"><h2>Input New Project</h2></div>
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Nama User / PIC</label><input type="text" id="np-user" placeholder="Nama pekerja..."></div>
-                <div class="form-group"><label>Nama Project</label><input type="text" id="np-nama" placeholder="Masukkan nama project..."></div>
-                <div class="form-group"><label>Keterangan Detail</label><textarea id="np-keterangan" rows="4" placeholder="Detail pekerjaan..."></textarea></div>
-                <div class="form-group"><label>Tanggal Target Selesai</label><input type="date" id="np-target"></div>
                 <div class="form-group">
-                    <label>Bukti Foto</label><label for="np-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label>
-                    <input type="file" id="np-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-np-foto')"><span id="status-np-foto" class="file-status"></span>
+                    <label>Nama Proyek / MOLD</label>
+                    <input type="text" id="ws-np-nama" placeholder="Masukkan nama proyek..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
                 </div>
-                <button class="btn-submit" onclick="simpanNewProject()">SIMPAN KE DATABASE</button>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Estimasi Hari</label><input type="text" id="ws-np-hari" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Hari"></div>
+                    <div style="flex: 1;"><label>Estimasi Jam</label><input type="text" id="ws-np-jam" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Jam"></div>
+                </div>
+                
+                <div class="form-group" style="margin-top: 20px;">
+                    <label style="color: var(--secondary); font-size: 16px; border-bottom: 2px solid var(--secondary); padding-bottom: 5px; display:block; margin-bottom:15px;">Rencana Kerja</label>
+                    
+                    <div id="ws-rencana-kerja-container"></div>
+                    
+                    <button class="btn-submit" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); margin-top: 10px; margin-bottom: 20px;" onclick="tambahTugasUtamaWS()">
+                        <i class="fas fa-plus"></i> TAMBAH TUGAS UTAMA
+                    </button>
+                </div>
+                
+                <button class="btn-submit" onclick="simpanNewProjectWS()"><i class="fas fa-save"></i> SIMPAN PROJECT</button>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -320,19 +330,44 @@
         <div class="content-wrapper">
             <div class="header"><h2>Input Update Project</h2></div>
             <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-belum" onclick="switchTab('belum')">Belum Diupdate</button>
-                <button class="tab-btn" id="tab-sudah" onclick="switchTab('sudah')">Sudah Selesai</button>
+                <button class="tab-btn tab-active" id="tab-ws-proses" onclick="switchTabWS('proses')">Proses Pengerjaan</button>
+                <button class="tab-btn" id="tab-ws-selesai" onclick="switchTabWS('selesai')">Sudah Selesai</button>
             </div>
-            <div id="list-belum-update"></div><div id="list-sudah-update" style="display: none;"></div>
-            <div id="form-update-area" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                <h3 style="margin-top:0; color: var(--primary);">Update: <span id="up-nama-tampil" style="color: var(--secondary);"></span></h3>
-                <input type="hidden" id="up-id">
-                <div class="form-group"><label>Nama User</label><input type="text" id="up-user" placeholder="Nama pekerja..."></div>
-                <div class="form-group"><label>Nama Hasil</label><input type="text" id="up-hasil" placeholder="Hasil singkat..."></div>
-                <div class="form-group"><label>Detail Hasil</label><textarea id="up-keterangan" rows="4"></textarea></div>
-                <div class="form-group"><label>Tanggal Selesai</label><input type="date" id="up-selesai"></div>
-                <div class="form-group"><label>Bukti Foto Selesai</label><label for="up-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="up-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="cekFoto(this, 'status-up-foto')"><span id="status-up-foto" class="file-status"></span></div>
-                <div style="display: flex; gap: 10px;"><button class="btn-submit" style="background: gray;" onclick="batalUpdate()">Batal</button><button class="btn-submit" onclick="simpanUpdateProject()">SIMPAN UPDATE</button></div>
+            <div id="list-ws-proses"></div><div id="list-ws-selesai" style="display: none;"></div>
+            
+            <!-- AREA LIST TUGAS DALAM PROJECT UNTUK DIKERJAKAN -->
+            <div id="ws-task-list-area" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3 style="margin-top:0; color: var(--primary);">Update: <span id="ws-nama-proyek-tampil" style="color: var(--secondary);"></span></h3>
+                <input type="hidden" id="ws-update-id-project">
+                <div id="ws-tasks-container" style="margin-bottom: 15px;"></div>
+                <button class="btn-submit" style="background: gray; width: 100%;" onclick="tutupWsTaskList()">KEMBALI KE LIST PROJECT</button>
+            </div>
+
+            <!-- FORM INPUT REALISASI TUGAS / SUB TUGAS -->
+            <div id="ws-form-update-task" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 5px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                <h4 style="margin-top:0; color: var(--primary); border-bottom: 1px solid #cbd5e1; padding-bottom: 10px;">Target: <span id="ws-nama-tugas-tampil" style="color: var(--secondary);"></span></h4>
+                <input type="hidden" id="ws-update-task-index">
+                <input type="hidden" id="ws-update-subtask-index">
+                
+                <div class="form-group"><label>Nama PIC (Pekerja)</label><input type="text" id="ws-up-pic" placeholder="Nama Pekerja..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()"></div>
+                <div class="form-group">
+                    <label>Shift Pekerjaan</label>
+                    <select id="ws-up-shift">
+                        <option value="Shift 1">Shift 1</option>
+                        <option value="Shift 2">Shift 2</option>
+                        <option value="Shift 3">Shift 3</option>
+                    </select>
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Waktu Start</label><input type="datetime-local" id="ws-up-start" onchange="hitungDurasiUpdateWS()"></div>
+                    <div style="flex: 1;"><label>Waktu Finish</label><input type="datetime-local" id="ws-up-finish" onchange="hitungDurasiUpdateWS()"></div>
+                </div>
+                <div class="form-group"><label>Durasi (Otomatis)</label><input type="text" id="ws-up-durasi" readonly style="background:#f1f5f9; font-weight:bold; color:var(--proses); text-align:center;"></div>
+                
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn-submit" style="background: gray; flex: 1;" onclick="batalUpdateTaskWS()">BATAL</button>
+                    <button class="btn-submit" style="flex: 2; background: var(--cepat);" onclick="simpanUpdateTaskWS()"><i class="fas fa-check"></i> SELESAIKAN TUGAS</button>
+                </div>
             </div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
@@ -341,14 +376,18 @@
     <!-- CONTROL PROGRES (WORKSHOP) -->
     <div id="progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header"><h2>Control Progres</h2></div>
-            <div class="export-row"><button class="btn-export btn-excel" onclick="exportData('Excel')"><i class="fas fa-file-excel"></i> Rekap Excel</button><button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak List PDF</button></div>
+            <div class="header"><h2>Control Progres Project</h2></div>
             <div class="filter-box" style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color: var(--primary); font-size: 14px; font-weight:bold;"><i class="fas fa-filter"></i> Filter Target Selesai:</label>
-                <div style="display: flex; gap:10px; align-items:center; margin-top:10px;"><input type="date" id="filter-start" style="flex:1;"><span>S/D</span><input type="date" id="filter-end" style="flex:1;"></div>
-                <div style="display: flex; gap:10px; margin-top:10px;"><button class="btn-submit" style="flex:2;" onclick="terapkanFilter()">Cari Data</button><button class="btn-submit" style="flex:1; background:#ef4444;" onclick="resetFilter()">Reset Semua</button></div>
+                <label style="color: var(--primary); font-size: 14px; font-weight:bold;"><i class="fas fa-search"></i> Pencarian Proyek:</label>
+                <div style="display: flex; gap:10px; align-items:center; margin-top:10px;">
+                    <input type="text" id="ws-filter-nama" placeholder="Ketik nama proyek/mold..." style="flex:1; text-transform: uppercase;">
+                </div>
+                <div style="display: flex; gap:10px; margin-top:10px;">
+                    <button class="btn-submit" style="flex:2;" onclick="terapkanFilterWS()">Cari Data</button>
+                    <button class="btn-submit" style="flex:1; background:#ef4444;" onclick="resetFilterWS()">Reset</button>
+                </div>
             </div>
-            <div id="list-progress"></div>
+            <div id="list-ws-progress"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -356,9 +395,12 @@
     <!-- DETAIL PROJECT (WORKSHOP) -->
     <div id="detail-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
-            <div class="header"><h2>Detail Project</h2></div>
-            <div class="export-row"><button class="btn-export btn-jpg" onclick="downloadProjectJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
-            <div class="report-sheet" id="report-content"></div>
+            <div class="header"><h2>Detail & Tracking Project</h2></div>
+            <div class="export-row">
+                <button class="btn-export btn-jpg" onclick="cetakGambarUniversal('report-ws-content', 'Tracking_Project')"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" onclick="cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
+            <div class="report-sheet" id="report-ws-content"></div>
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -448,6 +490,7 @@
             <button class="btn-bottom-back" onclick="kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- 4. MENU UTAMA INFORMASI MOLD                              -->
     <!-- ========================================================= -->
@@ -941,10 +984,8 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- MOLD TROUBLE (TELAH DIPERBAIKI LOXLEY)                    -->
+    <!-- MOLD TROUBLE                                              -->
     <!-- ========================================================= -->
-    
-    <!-- INI ADALAH MENU SUB-JUDUL YANG TADI HILANG! -->
     <div id="trouble-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header" style="background: #1e293b;">
@@ -1192,9 +1233,6 @@
             return `${jam} Jam ${menit} Menit`;
         }
 
-        // ==========================================
-        // 1. DIVISI WORKSHOP & UMUM (PROJECTS)
-        // ==========================================
         window.masukDivisi = async function(namaDivisi) { 
             divisiAktif = namaDivisi; 
             if(namaDivisi === 'DIVISI MOLD STORE') { 
@@ -1203,117 +1241,451 @@
                 const judul = document.getElementById('judul-divisi');
                 if(judul) judul.innerText = namaDivisi; 
                 window.navigasi('divisi-screen'); 
-                await ambilDataServer(); 
-                window.switchTab('belum');
+                await ambilDataServerWS(); 
             }
         }
 
-        async function ambilDataServer() { 
-            toggleLoader(true, "Mengunduh Data Proyek..."); currentDatabase = []; 
-            try { 
-                const q = query(collection(db, "projects"), where("divisi", "==", divisiAktif)); 
-                const querySnapshot = await getDocs(q); 
-                querySnapshot.forEach((doc) => { currentDatabase.push({ id: doc.id, ...doc.data() }); }); 
+        // =======================================================
+        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (NEW LOGIC)
+        // =======================================================
+        window.tugasWorkshopArray = [];
+        window.pilihanProsesMesin = ["BUBUT", "EDM 1", "EDM 2", "EDM 3", "EDM 4", "BOR RADIAL", "ROUTER", "MILLING 1", "MILLING 2", "VMC 1000 1", "VMC 1000 2", "VMC 1300"];
+        
+        window.inisialisasiFormWS = function() {
+            document.getElementById('ws-np-nama').value = "";
+            window.tugasWorkshopArray = [];
+            window.tambahTugasUtamaWS(); // Auto kasih 1 tugas awal
+        }
+
+        window.tambahTugasUtamaWS = function() {
+            window.tugasWorkshopArray.push({
+                namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0,
+                punyaSub: false, subTugas: []
+            });
+            window.renderRencanaKerjaWS();
+        }
+
+        window.tambahSubTugasWS = function(indexUtama) {
+            window.tugasWorkshopArray[indexUtama].punyaSub = true;
+            window.tugasWorkshopArray[indexUtama].proses = ""; // Kosongkan proses karena jadi parent
+            window.tugasWorkshopArray[indexUtama].estimasiJam = 0; // Kosongkan, dihitung dari sub
+            window.tugasWorkshopArray[indexUtama].subTugas.push({
+                namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0
+            });
+            window.renderRencanaKerjaWS();
+        }
+
+        window.hapusTugasWS = function(indexUtama, indexSub = null) {
+            if(indexSub !== null) {
+                window.tugasWorkshopArray[indexUtama].subTugas.splice(indexSub, 1);
+                if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) window.tugasWorkshopArray[indexUtama].punyaSub = false;
+            } else {
+                window.tugasWorkshopArray.splice(indexUtama, 1);
+            }
+            window.renderRencanaKerjaWS();
+        }
+
+        window.updateNilaiTugasWS = function(indexUtama, indexSub, field, nilai) {
+            if(field === "namaTugas") nilai = nilai.toUpperCase();
+            if(indexSub !== null) {
+                if(field === "estimasiJam") nilai = parseFloat(nilai) || 0;
+                window.tugasWorkshopArray[indexUtama].subTugas[indexSub][field] = nilai;
+            } else {
+                if(field === "estimasiJam") nilai = parseFloat(nilai) || 0;
+                window.tugasWorkshopArray[indexUtama][field] = nilai;
+            }
+            if(field === "estimasiJam") window.kalkulasiTotalWaktuWS();
+        }
+
+        window.kalkulasiTotalWaktuWS = function() {
+            let totalJam = 0;
+            window.tugasWorkshopArray.forEach(tugas => {
+                if(tugas.punyaSub) {
+                    let sumSub = 0;
+                    tugas.subTugas.forEach(sub => sumSub += sub.estimasiJam);
+                    tugas.estimasiJam = sumSub; // Auto sum to parent
+                    totalJam += sumSub;
+                } else {
+                    totalJam += tugas.estimasiJam;
+                }
+            });
+            // Asumsi pabrik: 1 Hari = 24 Jam. Jika ingin 8 jam, ubah angka 24 jadi 8.
+            let totalHari = (totalJam / 24).toFixed(1); 
+            document.getElementById('ws-np-jam').value = totalJam + " Jam";
+            document.getElementById('ws-np-hari').value = totalHari + " Hari";
+        }
+
+        window.renderRencanaKerjaWS = function() {
+            const container = document.getElementById('ws-rencana-kerja-container');
+            if(!container) return;
+            container.innerHTML = "";
+            
+            let opsiMesinHtml = `<option value="" disabled selected>Pilih Proses</option>`;
+            window.pilihanProsesMesin.forEach(m => opsiMesinHtml += `<option value="${m}">${m}</option>`);
+
+            window.tugasWorkshopArray.forEach((tugas, idx) => {
+                let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;">
+                    <div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;">
+                        <span>Tugas #${idx + 1}</span>
+                        <button onclick="hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button>
+                    </div>
+                    <div style="padding: 15px;">
+                        <div class="form-group"><label>Nama Tugas</label><input type="text" value="${tugas.namaTugas}" onchange="updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
+                
+                if(!tugas.punyaSub) {
+                    html += `<div style="display:flex; gap:10px;">
+                        <div style="flex:2;" class="form-group"><label>Proses</label><select onchange="updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div>
+                        <div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" onchange="updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div>
+                    </div>`;
+                }
+
+                // Render Sub Tugas jika ada
+                if(tugas.punyaSub) {
+                    html += `<div style="margin-top:10px; border-left: 3px solid var(--secondary); padding-left: 10px; margin-bottom:10px;">`;
+                    tugas.subTugas.forEach((sub, subIdx) => {
+                        html += `<div style="background: white; padding: 10px; border-radius: 6px; border: 1px dashed #94a3b8; margin-bottom: 10px; position:relative;">
+                            <button onclick="hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button>
+                            <div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${sub.namaTugas}" onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div>
+                            <div style="display:flex; gap:10px;">
+                                <div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div>
+                                <div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" onchange="updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div>
+                            </div>
+                        </div>`;
+                    });
+                    html += `</div>`;
+                    // Tampilkan total akumulasi jam di parent
+                    html += `<div style="font-size:12px; color:var(--secondary); font-weight:bold; margin-bottom:10px;">Total Estimasi Sub: ${tugas.estimasiJam} Jam</div>`;
+                }
+
+                html += `<button onclick="tambahSubTugasWS(${idx})" style="background:#e2e8f0; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button>
+                    </div></div>`;
+                container.innerHTML += html;
+            });
+            window.kalkulasiTotalWaktuWS();
+        }
+
+        window.simpanNewProjectWS = async function() {
+            const namaMold = document.getElementById('ws-np-nama').value;
+            const estHari = document.getElementById('ws-np-hari').value;
+            const estJam = document.getElementById('ws-np-jam').value;
+            
+            if(!namaMold || window.tugasWorkshopArray.length === 0) return alert("Nama Mold dan Minimal 1 Tugas wajib diisi!");
+            
+            toggleLoader(true, "Menyimpan Project...");
+            try {
+                await addDoc(collection(db, "projects"), { 
+                    divisi: "DIVISI MOLD WORKSHOP", namaProject: namaMold,
+                    totalEstimasiHari: estHari, totalEstimasiJam: estJam,
+                    rencanaKerja: window.tugasWorkshopArray, statusProject: "Proses",
+                    waktuDibuat: dapatkanWaktuRill(), timestamp: Date.now() 
+                });
+                alert("Project Tersimpan!");
+                window.navigasi('divisi-screen');
+                await ambilDataServerWS();
+            } catch (e) { alert("Error: "+e.message); }
+            toggleLoader(false);
+        }
+
+        async function ambilDataServerWS() {
+            toggleLoader(true, "Sinkronisasi Workshop...");
+            currentDatabase = [];
+            try {
+                const q = query(collection(db, "projects"), where("divisi", "==", "DIVISI MOLD WORKSHOP"));
+                const snap = await getDocs(q);
+                snap.forEach(doc => currentDatabase.push({ id: doc.id, ...doc.data() }));
                 currentDatabase.sort((a, b) => b.timestamp - a.timestamp);
-                window.renderUpdateList(); window.renderProgressList();
-            } catch (error) { console.error(error); } 
-            toggleLoader(false); 
+                if (document.getElementById('list-ws-proses')) {
+                    window.renderUpdateListWS();
+                    window.renderProgressListWS();
+                }
+            } catch(e){}
+            toggleLoader(false);
         }
 
-        window.simpanNewProject = async function() { 
-            const nama = document.getElementById('np-nama').value; const ket = document.getElementById('np-keterangan').value; const tgl = document.getElementById('np-target').value; const user = document.getElementById('np-user').value; const fotoInput = document.getElementById('np-foto'); 
-            if(!nama || !tgl || !user || !ket) { alert("Semua form wajib diisi!"); return; } 
-            toggleLoader(true, "Menyimpan..."); 
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); } 
-            try { 
-                await addDoc(collection(db, "projects"), { divisi: divisiAktif, namaProject: nama, keteranganAwal: ket, targetSelesai: tgl, userAwal: user, statusUpdate: "Belum", tanggalSelesai: null, hasilProject: "", keteranganUpdate: "", fotoAwal: fotoBase64, timestamp: Date.now() }); 
-                alert("Tersimpan!"); document.getElementById('np-nama').value = ""; document.getElementById('np-keterangan').value = ""; document.getElementById('np-target').value = ""; document.getElementById('np-user').value = ""; const statFoto = document.getElementById('status-np-foto'); if(statFoto) statFoto.innerHTML = ""; 
-                await ambilDataServer(); window.navigasi('divisi-screen'); 
-            } catch (error) { alert("Gagal menyimpan data!"); } toggleLoader(false); 
+        window.switchTabWS = function(tab) {
+            document.getElementById('tab-ws-proses').classList.remove('tab-active');
+            document.getElementById('tab-ws-selesai').classList.remove('tab-active');
+            document.getElementById('list-ws-proses').style.display = 'none';
+            document.getElementById('list-ws-selesai').style.display = 'none';
+            document.getElementById('ws-task-list-area').style.display = 'none';
+            document.getElementById('ws-form-update-task').style.display = 'none';
+
+            document.getElementById('tab-ws-' + tab).classList.add('tab-active');
+            document.getElementById('list-ws-' + tab).style.display = 'block';
         }
 
-        window.switchTab = function(tab) { 
-            const tb = document.getElementById('tab-belum'); const ts = document.getElementById('tab-sudah');
-            const lb = document.getElementById('list-belum-update'); const ls = document.getElementById('list-sudah-update'); const fua = document.getElementById('form-update-area');
-            if(tb) tb.classList.remove('tab-active'); if(ts) ts.classList.remove('tab-active'); 
-            if(lb) lb.style.display = 'none'; if(ls) ls.style.display = 'none'; if(fua) fua.style.display = 'none'; 
-            if(tab === 'belum') { 
-                if(tb) tb.classList.add('tab-active'); if(lb) lb.style.display = 'block'; 
-            } else { 
-                if(ts) ts.classList.add('tab-active'); if(ls) ls.style.display = 'block'; 
-            } 
+        window.renderUpdateListWS = async function() {
+            if(currentDatabase.length === 0) await ambilDataServerWS();
+            const lstProses = document.getElementById('list-ws-proses');
+            const lstSelesai = document.getElementById('list-ws-selesai');
+            if(!lstProses || !lstSelesai) return;
+            lstProses.innerHTML = ""; lstSelesai.innerHTML = "";
+
+            currentDatabase.forEach(data => {
+                let htmlCard = `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Proses' ? 'var(--proses)' : 'var(--cepat)'}; margin-bottom:12px;">
+                    <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4>
+                    <p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> Est: ${data.totalEstimasiHari} (${data.totalEstimasiJam})</p>
+                    ${data.statusProject === 'Proses' ? 
+                        `<button onclick="bukaDaftarTugasWS('${data.id}')" style="width:100%; margin-top:10px; padding:10px; background:var(--secondary); color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-cogs"></i> KERJAKAN PROJECT</button>` : 
+                        `<span class="status-badge bg-cepat" style="display:block; text-align:center; margin-top:10px;"><i class="fas fa-check-double"></i> PROJECT SELESAI</span>`
+                    }
+                </div>`;
+                if(data.statusProject === 'Proses') lstProses.innerHTML += htmlCard;
+                else lstSelesai.innerHTML += htmlCard;
+            });
+            if(lstProses.innerHTML === "") lstProses.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project dikerjakan.</p>`;
+            if(lstSelesai.innerHTML === "") lstSelesai.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project selesai.</p>`;
         }
 
-        window.renderUpdateList = function() { 
-            const listBelum = document.getElementById('list-belum-update'); const listSudah = document.getElementById('list-sudah-update'); 
-            if(!listBelum || !listSudah) return;
-            listBelum.innerHTML = ""; listSudah.innerHTML = ""; 
-            if(currentDatabase.length === 0) {
-                listBelum.innerHTML = `<p style="text-align:center; color:gray;">Belum ada proyek.</p>`; listSudah.innerHTML = `<p style="text-align:center; color:gray;">Belum ada proyek.</p>`; return;
+        window.bukaDaftarTugasWS = function(idProject) {
+            const data = currentDatabase.find(d => d.id === idProject);
+            document.getElementById('ws-update-id-project').value = idProject;
+            document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProject;
+            
+            const cont = document.getElementById('ws-tasks-container');
+            cont.innerHTML = "";
+
+            data.rencanaKerja.forEach((tugas, idxUtama) => {
+                if(tugas.punyaSub) {
+                    let subHtml = "";
+                    tugas.subTugas.forEach((sub, idxSub) => {
+                        let isSelesai = sub.status === "Selesai";
+                        let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
+                        let tombolKerjakan = isSelesai ? `` : `<button onclick="bukaFormUpdateTaskWS(${idxUtama}, ${idxSub})" style="background:#3b82f6; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">KERJAKAN</button>`;
+                        
+                        subHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px 12px; border-radius:6px; margin-bottom:6px; border:1px solid #e2e8f0;">
+                            <div style="display:flex; align-items:center; gap:8px;">${ikon} <div><div style="font-weight:bold; font-size:12px;">${sub.namaTugas}</div><div style="font-size:10px; color:gray;">Proses: ${sub.proses} | Est: ${sub.estimasiJam} Jam</div></div></div>
+                            ${tombolKerjakan}
+                        </div>`;
+                    });
+                    
+                    cont.innerHTML += `<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:12px;">
+                        <h4 style="margin:0 0 10px 0; color:var(--primary); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">${tugas.namaTugas}</h4>
+                        ${subHtml}
+                    </div>`;
+                } else {
+                    let isSelesai = tugas.status === "Selesai";
+                    let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
+                    let tombolKerjakan = isSelesai ? `` : `<button onclick="bukaFormUpdateTaskWS(${idxUtama}, null)" style="background:#3b82f6; color:white; border:none; padding:8px 15px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">KERJAKAN</button>`;
+                    
+                    cont.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
+                        <div style="display:flex; align-items:center; gap:10px;">${ikon} <div><div style="font-weight:bold; font-size:14px; color:var(--primary);">${tugas.namaTugas}</div><div style="font-size:11px; color:gray;">Proses: ${tugas.proses} | Est: ${tugas.estimasiJam} Jam</div></div></div>
+                        ${tombolKerjakan}
+                    </div>`;
+                }
+            });
+
+            document.getElementById('list-ws-proses').style.display = 'none';
+            document.getElementById('ws-task-list-area').style.display = 'block';
+            window.scrollTo(0, document.getElementById('ws-task-list-area').offsetTop);
+        }
+
+        window.tutupWsTaskList = function() {
+            document.getElementById('ws-task-list-area').style.display = 'none';
+            document.getElementById('list-ws-proses').style.display = 'block';
+        }
+
+        window.bukaFormUpdateTaskWS = function(idxUtama, idxSub) {
+            const idProject = document.getElementById('ws-update-id-project').value;
+            const data = currentDatabase.find(d => d.id === idProject);
+            let targetTugas = idxSub !== null ? data.rencanaKerja[idxUtama].subTugas[idxSub] : data.rencanaKerja[idxUtama];
+            
+            document.getElementById('ws-update-task-index').value = idxUtama;
+            document.getElementById('ws-update-subtask-index').value = idxSub !== null ? idxSub : "";
+            document.getElementById('ws-nama-tugas-tampil').innerText = targetTugas.namaTugas;
+            
+            // Reset input
+            document.getElementById('ws-up-pic').value = "";
+            document.getElementById('ws-up-start').value = "";
+            document.getElementById('ws-up-finish').value = "";
+            document.getElementById('ws-up-durasi').value = "";
+
+            document.getElementById('ws-task-list-area').style.display = 'none';
+            document.getElementById('ws-form-update-task').style.display = 'block';
+        }
+
+        window.hitungDurasiUpdateWS = function() {
+            const startVal = document.getElementById('ws-up-start').value;
+            const finishVal = document.getElementById('ws-up-finish').value;
+            if(startVal && finishVal) {
+                let start = new Date(startVal);
+                let finish = new Date(finishVal);
+                let diffMs = finish - start;
+                if(diffMs < 0) { document.getElementById('ws-up-durasi').value = "Error: Waktu Mundur"; return; }
+                let diffHrs = (diffMs / (1000 * 60 * 60)).toFixed(2);
+                document.getElementById('ws-up-durasi').value = diffHrs + " Jam";
             }
-            currentDatabase.forEach(data => { 
-                const html = `<div class="progress-card" style="border-left: 5px solid ${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}; cursor:pointer;" onclick="${data.statusUpdate === 'Belum' ? `bukaFormUpdate('${data.id}')` : ''}"><h4 style="margin:0 0 5px 0;">${data.namaProject}</h4><p style="margin:0; font-size:12px; color:gray;">Target: ${data.targetSelesai}</p><br>${data.statusUpdate === 'Belum' ? `<span class="status-badge bg-proses">Klik untuk Update</span>` : `<span class="status-badge bg-cepat">Selesai: ${data.tanggalSelesai}</span>`}</div>`; 
-                if(data.statusUpdate === 'Belum') listBelum.innerHTML += html; else listSudah.innerHTML += html; 
-            }); 
         }
 
-        window.bukaFormUpdate = function(id) { 
-            const data = currentDatabase.find(d => d.id === id); 
-            document.getElementById('up-id').value = id; 
-            const tampil = document.getElementById('up-nama-tampil'); if(tampil) tampil.innerText = data.namaProject; 
-            const area = document.getElementById('form-update-area'); if(area) area.style.display = 'block'; 
-            const lb = document.getElementById('list-belum-update'); if(lb) lb.style.display = 'none'; 
-            window.scrollTo(0, document.getElementById('form-update-area').offsetTop); 
+        window.batalUpdateTaskWS = function() {
+            document.getElementById('ws-form-update-task').style.display = 'none';
+            document.getElementById('ws-task-list-area').style.display = 'block';
         }
 
-        window.batalUpdate = function() { 
-            const area = document.getElementById('form-update-area'); if(area) area.style.display = 'none'; 
-            const lb = document.getElementById('list-belum-update'); if(lb) lb.style.display = 'block'; 
-        }
-        
-        window.simpanUpdateProject = async function() { 
-            const idFirestore = document.getElementById('up-id').value; const hasil = document.getElementById('up-hasil').value; const ketUpdate = document.getElementById('up-keterangan').value; const tglSelesai = document.getElementById('up-selesai').value; const updater = document.getElementById('up-user').value; const fotoInput = document.getElementById('up-foto'); 
-            if(!tglSelesai || !hasil || !updater) { alert("Isi form hasil, tanggal, dan nama updater!"); return; } 
-            toggleLoader(true, "Mengupdate..."); 
-            let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.6); } 
-            try { 
-                await updateDoc(doc(db, "projects", idFirestore), { statusUpdate: "Sudah", hasilProject: hasil, keteranganUpdate: ketUpdate, tanggalSelesai: tglSelesai, userUpdate: updater, fotoAkhir: fotoBase64 }); 
-                alert("Update Berhasil!"); const area = document.getElementById('form-update-area'); if(area) area.style.display = 'none'; 
-                document.getElementById('up-hasil').value = ""; document.getElementById('up-keterangan').value = ""; document.getElementById('up-selesai').value = ""; document.getElementById('up-user').value = ""; const suf = document.getElementById('status-up-foto'); if(suf) suf.innerHTML = ""; 
-                await ambilDataServer(); window.renderUpdateList(); 
-            } catch(error) {} toggleLoader(false); 
+        window.simpanUpdateTaskWS = async function() {
+            const pic = document.getElementById('ws-up-pic').value;
+            const shift = document.getElementById('ws-up-shift').value;
+            const start = document.getElementById('ws-up-start').value;
+            const finish = document.getElementById('ws-up-finish').value;
+            const durasi = document.getElementById('ws-up-durasi').value;
+            
+            if(!pic || !start || !finish || durasi.includes("Error")) return alert("Data PIC, Start, dan Finish wajib diisi dengan benar!");
+
+            const idProject = document.getElementById('ws-update-id-project').value;
+            const idxUtama = parseInt(document.getElementById('ws-update-task-index').value);
+            const idxSubRaw = document.getElementById('ws-update-subtask-index').value;
+            
+            let projIndex = currentDatabase.findIndex(d => d.id === idProject);
+            let projData = currentDatabase[projIndex];
+
+            // Update status & history task
+            if(idxSubRaw !== "") {
+                let sIdx = parseInt(idxSubRaw);
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].status = "Selesai";
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].pic = pic;
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].shift = shift;
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].start = start;
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].finish = finish;
+                projData.rencanaKerja[idxUtama].subTugas[sIdx].durasiAktual = parseFloat(durasi);
+            } else {
+                projData.rencanaKerja[idxUtama].status = "Selesai";
+                projData.rencanaKerja[idxUtama].pic = pic;
+                projData.rencanaKerja[idxUtama].shift = shift;
+                projData.rencanaKerja[idxUtama].start = start;
+                projData.rencanaKerja[idxUtama].finish = finish;
+                projData.rencanaKerja[idxUtama].durasiAktual = parseFloat(durasi);
+            }
+
+            // Pengecekan apakah SEMUA tugas sudah "Selesai"
+            let isAllDone = true;
+            projData.rencanaKerja.forEach(t => {
+                if(t.punyaSub) {
+                    t.subTugas.forEach(s => { if(s.status !== "Selesai") isAllDone = false; });
+                } else {
+                    if(t.status !== "Selesai") isAllDone = false;
+                }
+            });
+
+            if(isAllDone) projData.statusProject = "Selesai";
+
+            toggleLoader(true, "Menyimpan Progress...");
+            try {
+                await updateDoc(doc(db, "projects", idProject), { 
+                    rencanaKerja: projData.rencanaKerja,
+                    statusProject: projData.statusProject,
+                    tanggalSelesaiProject: isAllDone ? dapatkanWaktuRill() : null
+                });
+                alert("Progress Berhasil Disimpan!");
+                document.getElementById('ws-form-update-task').style.display = 'none';
+                
+                if(isAllDone) {
+                    alert("YAY! Seluruh tugas pada Mold ini telah Selesai.");
+                    await ambilDataServerWS();
+                    window.renderUpdateListWS();
+                    window.switchTabWS('selesai');
+                } else {
+                    window.bukaDaftarTugasWS(idProject);
+                }
+            } catch(e) { alert("Error: "+e.message); }
+            toggleLoader(false);
         }
 
-        function hitungSelisihHari(tgl1, tgl2) { return Math.floor((new Date(tgl2) - new Date(tgl1)) / (1000 * 60 * 60 * 24)); }
-        window.terapkanFilter = function() { filterTglAwal = document.getElementById('filter-start').value; filterTglAkhir = document.getElementById('filter-end').value; if(!filterTglAwal || !filterTglAkhir) return; window.renderProgressList(); }
-        window.resetFilter = function() { const fs = document.getElementById('filter-start'); const fe = document.getElementById('filter-end'); if(fs) fs.value = ""; if(fe) fe.value = ""; filterTglAwal = ""; filterTglAkhir = ""; window.renderProgressList(); }
-        
-        window.renderProgressList = function() { 
-            const container = document.getElementById('list-progress'); if(!container) return; container.innerHTML = ""; 
-            let dataDitampilkan = [...currentDatabase]; 
-            if (filterTglAwal && filterTglAkhir) { dataDitampilkan = dataDitampilkan.filter(d => d.targetSelesai >= filterTglAwal && d.targetSelesai <= filterTglAkhir); } 
-            if (dataDitampilkan.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } 
-            dataDitampilkan.forEach(data => { 
-                let statusHtml = ""; let borderColor = ""; 
-                if (data.statusUpdate === "Belum") { 
-                    const selisih = hitungSelisihHari(data.targetSelesai, new Date().toISOString().split('T')[0]); 
-                    if (selisih > 0) { statusHtml = `<span class="status-badge bg-lambat">Telat ${selisih} Hari</span>`; borderColor = "var(--lambat)"; } 
-                    else { statusHtml = `<span class="status-badge bg-proses">Proses</span>`; borderColor = "var(--proses)"; } 
-                } else { statusHtml = `<span class="status-badge bg-cepat">Selesai</span>`; borderColor = "var(--cepat)"; } 
-                container.innerHTML += `<div class="progress-card" style="border-left: 5px solid ${borderColor}; cursor: pointer;" onclick="bukaDetailProject('${data.id}')"><h3 style="margin:0;">${data.namaProject}</h3><p style="font-size:12px; color:gray;">Target: ${data.targetSelesai}</p>${statusHtml}</div>`; 
-            }); 
+        window.wsKataKunciFilter = "";
+        window.terapkanFilterWS = function() {
+            window.wsKataKunciFilter = document.getElementById('ws-filter-nama').value;
+            window.renderProgressListWS();
+        }
+        window.resetFilterWS = function() {
+            document.getElementById('ws-filter-nama').value = "";
+            window.wsKataKunciFilter = "";
+            window.renderProgressListWS();
         }
 
-        window.bukaDetailProject = function(id) { 
-            const data = currentDatabase.find(d => d.id === id); if(!data) return; 
-            let statusText = data.statusUpdate === "Belum" ? "⏳ SEDANG DIPROSES" : "✅ SUDAH SELESAI"; 
-            let html = `<div class="report-header"><h2>LAPORAN MAINTENANCE</h2><p>${data.divisi}</p></div><table class="report-table"><tr><th>Nama PIC / User</th><td><strong>${data.userAwal}</strong></td></tr><tr><th>Project</th><td><strong>${data.namaProject}</strong></td></tr><tr><th>Status</th><td style="color:${data.statusUpdate === 'Belum' ? 'var(--proses)' : 'var(--cepat)'}">${statusText}</td></tr><tr><th>Target</th><td>${data.targetSelesai}</td></tr></table>`; 
-            if(data.statusUpdate === "Sudah") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#e2e8f0;">HASIL UPDATE</th></tr><tr><th>Nama Updater</th><td><strong>${data.userUpdate}</strong></td></tr><tr><th>Tgl Selesai</th><td>${data.tanggalSelesai}</td></tr><tr><th>Hasil</th><td>${data.hasilProject}</td></tr></table>`; } 
-            if(data.fotoAwal) html += `<div class="report-images"><div class="report-img-box"><strong>KONDISI AWAL</strong><br><img src="${data.fotoAwal}"></div>`; 
-            if(data.fotoAkhir) html += `<div class="report-img-box"><strong>KONDISI AKHIR</strong><br><img src="${data.fotoAkhir}"></div></div>`; 
-            const rc = document.getElementById('report-content'); if(rc) rc.innerHTML = html; window.navigasi('detail-project-screen'); 
+        window.renderProgressListWS = async function() {
+            if(currentDatabase.length === 0) await ambilDataServerWS();
+            const container = document.getElementById('list-ws-progress');
+            if(!container) return;
+            container.innerHTML = "";
+
+            let dataTampil = currentDatabase;
+            if(window.wsKataKunciFilter) {
+                dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter));
+            }
+
+            if(dataTampil.length === 0) return container.innerHTML = `<p style="text-align:center;">Data tidak ditemukan.</p>`;
+
+            dataTampil.forEach(data => {
+                let badge = data.statusProject === "Selesai" ? `<span class="status-badge bg-cepat"><i class="fas fa-check-double"></i> Selesai</span>` : `<span class="status-badge bg-proses"><i class="fas fa-cog fa-spin"></i> Proses</span>`;
+                container.innerHTML += `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Selesai' ? 'var(--cepat)' : 'var(--proses)'}; cursor:pointer;" onclick="bukaDetailProjectWS('${data.id}')">
+                    <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4>
+                    <p style="margin:0; font-size:12px; color:gray;">Mulai: ${data.waktuDibuat}</p>
+                    ${badge}
+                </div>`;
+            });
         }
 
+        window.bukaDetailProjectWS = function(id) {
+            const data = currentDatabase.find(d => d.id === id);
+            if(!data) return;
+            
+            let htmlTasks = "";
+            let akumulasiAktualJam = 0;
+
+            data.rencanaKerja.forEach((t, i) => {
+                if(t.punyaSub) {
+                    let subHtml = "";
+                    t.subTugas.forEach(s => {
+                        akumulasiAktualJam += (s.durasiAktual || 0);
+                        let icn = s.status === 'Selesai' ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-clock" style="color:var(--proses);"></i>`;
+                        subHtml += `<tr><td style="padding-left:20px;">${icn} ${s.namaTugas}</td><td>${s.proses}</td><td style="text-align:center;">${s.estimasiJam}</td><td style="text-align:center;">${s.durasiAktual || 0}</td><td>${s.pic || '-'}</td></tr>`;
+                    });
+                    htmlTasks += `<tr style="background:#f1f5f9;"><td colspan="5" style="font-weight:bold; color:var(--primary);"><i class="fas fa-folder-open"></i> ${t.namaTugas}</td></tr>${subHtml}`;
+                } else {
+                    akumulasiAktualJam += (t.durasiAktual || 0);
+                    let icn = t.status === 'Selesai' ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-clock" style="color:var(--proses);"></i>`;
+                    htmlTasks += `<tr><td>${icn} <strong>${t.namaTugas}</strong></td><td>${t.proses}</td><td style="text-align:center;">${t.estimasiJam}</td><td style="text-align:center;">${t.durasiAktual || 0}</td><td>${t.pic || '-'}</td></tr>`;
+                }
+            });
+
+            let statusProjUI = data.statusProject === "Selesai" ? `<span style="color:var(--cepat); font-weight:bold;">SELESAI (${data.tanggalSelesaiProject})</span>` : `<span style="color:var(--proses); font-weight:bold;">SEDANG PROSES</span>`;
+
+            let html = `
+            <div class="report-header">
+                <h2>TRACKING MOLD WORKSHOP</h2>
+                <p>PT. CITRA BUANA INTITAMA</p>
+            </div>
+            <table class="report-table">
+                <tr><th>Project / MOLD</th><td style="font-size:16px; font-weight:900; color:var(--primary);">${data.namaProject}</td></tr>
+                <tr><th>Status Project</th><td>${statusProjUI}</td></tr>
+                <tr><th>Waktu Input</th><td>${data.waktuDibuat}</td></tr>
+            </table>
+            
+            <div style="display:flex; gap:10px; margin-top:15px; margin-bottom:15px;">
+                <div style="flex:1; background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; text-align:center;">
+                    <span style="font-size:11px; color:gray; font-weight:bold;">Estimasi Jam Global</span><br>
+                    <span style="font-size:20px; font-weight:900; color:var(--secondary);">${data.totalEstimasiJam}</span>
+                </div>
+                <div style="flex:1; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:8px; text-align:center;">
+                    <span style="font-size:11px; color:#064e3b; font-weight:bold;">Aktual Pengerjaan</span><br>
+                    <span style="font-size:20px; font-weight:900; color:#059669;">${akumulasiAktualJam.toFixed(2)} Jam</span>
+                </div>
+            </div>
+
+            <h3 style="font-size:14px; color:var(--primary); border-bottom:2px solid #cbd5e1; padding-bottom:5px;">Rincian Pengerjaan Tugas</h3>
+            <table class="report-table" style="font-size:11px; margin-top:10px;">
+                <tr style="background:#e2e8f0; color:#334155;">
+                    <th style="width:35%;">Nama Tugas</th>
+                    <th>Proses</th>
+                    <th style="text-align:center;">Est (Jam)</th>
+                    <th style="text-align:center;">Act (Jam)</th>
+                    <th>PIC</th>
+                </tr>
+                ${htmlTasks}
+            </table>`;
+
+            document.getElementById('report-ws-content').innerHTML = html;
+            window.navigasi('detail-project-screen');
+        }
         // =======================================================
         // 2. MOLD REPAIR (Form Update & Modal Detail)
         // =======================================================
@@ -1474,7 +1846,6 @@
 
         window.bukaUpdateMoldProduksi = function() { window.navigasi('ms-update-mold-screen'); window.bukaTabMold('proses'); window.muatDataMoldProduksi(); }
         
-        // FUNGSI INI WAJIB ADA AGAR TAB SELESAI BAIK DAN GAGAL BISA DITEKAN
         window.bukaTabMold = function(namaTab) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
             document.querySelectorAll('.tab-btn').forEach(btn => { btn.style.background = 'transparent'; btn.style.color = '#475569'; });
@@ -1867,12 +2238,13 @@
         async function ambilDataGosokMold() { toggleLoader(true, "Mengunduh..."); gosokDatabase = []; try { const q = query(collection(db, "laporan_gosok_mold")); const snapshot = await getDocs(q); snapshot.forEach(doc => gosokDatabase.push({id: doc.id, ...doc.data()})); gosokDatabase.sort((a,b) => b.timestamp - a.timestamp); const container = document.getElementById('list-gosok-riwayat'); if(!container) return; container.innerHTML = ""; if (gosokDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } gosokDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; }); } catch(e) {} toggleLoader(false); }
         window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; border: 1px solid #cbd5e1;">${idx + 1}</td><td style="border: 1px solid #cbd5e1;"><strong>${item.mesin}</strong></td><td style="border: 1px solid #cbd5e1;">${item.mold}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.start}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.finish}</td><td style="text-align:center; font-weight:bold; border: 1px solid #cbd5e1;">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong>${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td>${data.waktuRecord}</td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th>No</th><th>Mesin</th><th>Nama Mold</th><th>Start</th><th>Finish</th><th>Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
 
+        // EKSPOR & CETAK
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); toggleLoader(false); }).catch(() => toggleLoader(false)); }, 200); }
         window.downloadAdmJPG = function() { cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { cetakGambarUniversal('report-pt-content', 'TrialMold'); }
         window.downloadNotulenJPG = function() { cetakGambarUniversal('report-notulen-content', 'Notulen'); }
         window.downloadGosokJPG = function() { cetakGambarUniversal('report-gosok-content', 'Laporan_GosokMold'); }
-        window.downloadProjectJPG = function() { cetakGambarUniversal('report-content', 'DetailProject'); }
+        
         window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
         window.exportData = function() { alert("Fitur Export Excel siap!"); }
         window.exportInfoExcel = function() { alert("Fitur Export Excel Info siap!"); }
