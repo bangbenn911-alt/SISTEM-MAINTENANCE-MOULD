@@ -1249,6 +1249,7 @@
         // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (NEW LOGIC)
         // =======================================================
         window.tugasWorkshopArray = [];
+        // PERBAIKAN: Penambahan 6 Proses Mesin Baru
         window.pilihanProsesMesin = ["BUBUT", "EDM 1", "EDM 2", "EDM 3", "EDM 4", "BOR RADIAL", "ROUTER", "MILLING 1", "MILLING 2", "VMC 1000 1", "VMC 1000 2", "VMC 1300", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
         
         window.inisialisasiFormWS = function() {
@@ -1386,13 +1387,20 @@
             toggleLoader(false);
         }
 
+        // PERBAIKAN: Filter Gembok (Mencegah Data Undefined/Lama masuk)
         async function ambilDataServerWS() {
             toggleLoader(true, "Sinkronisasi Workshop...");
             currentDatabase = [];
             try {
                 const q = query(collection(db, "projects"), where("divisi", "==", "DIVISI MOLD WORKSHOP"));
                 const snap = await getDocs(q);
-                snap.forEach(doc => currentDatabase.push({ id: doc.id, ...doc.data() }));
+                snap.forEach(doc => {
+                    let dataProj = doc.data();
+                    // FILTER KETAT: Hanya izinkan data masuk jika memiliki format "rencanaKerja" dan "waktuDibuat" versi baru
+                    if (dataProj.rencanaKerja && dataProj.waktuDibuat) {
+                        currentDatabase.push({ id: doc.id, ...dataProj });
+                    }
+                });
                 currentDatabase.sort((a, b) => b.timestamp - a.timestamp);
                 if (document.getElementById('list-ws-proses')) {
                     window.renderUpdateListWS();
@@ -2029,7 +2037,7 @@
         window.simpanAdmActual = async function() { const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const ket = document.getElementById('adm-actual-ket').value; const targetTglOri = document.getElementById('adm-actual-tgl-ori').value; const fotoInput = document.getElementById('adm-actual-foto'); const total = window.actualEditList.length; const selesai = window.actualEditList.filter(d => d.done).length; const belum = total - selesai; const now = new Date(); const timeNowMins = now.getHours() * 60 + now.getMinutes(); const targetTimeMins = 16 * 60; const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0); const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0); const isDayPastTarget = actualDateObj > targetDateObj; const isPast16 = timeNowMins > targetTimeMins || isDayPastTarget; if (isPast16 && belum > 0 && !ket.trim()) { return alert("Terdapat tugas yang belum terealisasi! Waktu sudah melewati batas target. Anda WAJIB mengisi 'Catatan' untuk alasan penundaan agar tugas dapat ditarik besok."); } toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await compressImage(fotoInput.files[0], 800, 800, 0.7); } const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB'; window.actualEditList.forEach(item => { if (item.done && !item.waktuSelesai) { item.waktuSelesai = timeStringStr; } else if (!item.done) { item.waktuSelesai = null; } }); let statusBaru = "Belum"; if (!isPast16) { if (belum === 0) { const diffMins = targetTimeMins - timeNowMins; statusBaru = diffMins > 5 ? `Selesai Lebih Cepat (${diffMins} Menit)` : "Selesai Tepat Waktu"; } else { statusBaru = "Belum"; } } else { if (belum === 0) { statusBaru = (isDayPastTarget || timeNowMins > targetTimeMins) ? "Selesai Melebihi Target" : "Selesai Tepat Waktu"; } else if (selesai >= belum && selesai > 0) { statusBaru = "Belum Selesai Sempurna"; } else { statusBaru = "Gagal Terealisasi"; } } const exactTimestampString = `${tgl} Pukul ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; try { await updateDoc(doc(db, "adm_harian", id), { status: statusBaru, tglActual: exactTimestampString, daftarActual: window.actualEditList, hasilActual: statusBaru, keteranganActual: ket || "-", fotoActual: fotoBase64 }); if (statusBaru === "Belum") { alert("Progress Berhasil Disimpan!"); } else if(belum > 0) { alert("Finalisasi Tersimpan!"); } else { alert("Pekerjaan Selesai Sepenuhnya!"); } document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; const saf = document.getElementById('status-adm-foto'); if(saf) saf.innerHTML = ""; const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; await ambilDataAdmHarian(); if (statusBaru === "Belum") { window.switchTabAdm('belum'); } else if (statusBaru === 'Gagal Terealisasi') { window.switchTabAdm('gagal'); } else { window.switchTabAdm('sudah'); } } catch(e) {} toggleLoader(false); }
         window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await ambilDataAdmHarian(); const container = document.getElementById('list-adm-progress'); if(!container) return; container.innerHTML = ""; if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } admHarianDatabase.forEach(data => { let ui = getAdmStatusUI(data); container.innerHTML += `<div class="progress-card" style="border-left-color:${ui.color}; cursor:pointer;" onclick="bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color}">${ui.badgeText}</span></div>`; }); }
         
-        // --- 🚀 PERBAIKAN LOXLEY: LAPORAN ADMIN SISTEM ACH (LOGIKA WAKTU) ---
+        // --- LAPORAN ADMIN SISTEM ACH (LOGIKA WAKTU) ---
         window.bukaDetailAdmHarian = function(id) { 
             const data = admHarianDatabase.find(d => d.id === id); 
             if(!data) return; 
@@ -2187,7 +2195,6 @@
             if(rac) rac.innerHTML = html; 
             window.navigasi('adm-harian-detail-screen'); 
         }
-        // --- 🚀 PERBAIKAN LOXLEY SELESAI ---
 
         // Permintaan Trial, Notulen, Jadwal, Info & Gosok
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
