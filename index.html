@@ -282,7 +282,6 @@
             </div>
         </div>
     </div>
-
     <!-- 3. BERANDA DIVISI WORKSHOP -->
     <div id="divisi-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -292,7 +291,7 @@
                 <div class="menu-card" onclick="window.navigasi('update-project-screen'); window.renderUpdateListWS();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
                 <div class="menu-card" onclick="window.navigasi('progress-screen'); window.resetFilterWS(); window.renderProgressListWS();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -322,7 +321,7 @@
                 
                 <button class="btn-submit" type="button" onclick="window.simpanNewProjectWS()"><i class="fas fa-save"></i> SIMPAN PROJECT</button>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -331,8 +330,8 @@
         <div class="content-wrapper">
             <div class="header"><h2>Input Update Project</h2></div>
             <div class="tab-container">
-                <button class="tab-btn tab-active" id="tab-ws-proses" onclick="window.switchTabWS('proses')">Proses Pengerjaan</button>
-                <button class="tab-btn" id="tab-ws-selesai" onclick="window.switchTabWS('selesai')">Sudah Selesai</button>
+                <button class="tab-btn tab-active" type="button" id="tab-ws-proses" onclick="window.switchTabWS('proses')">Proses Pengerjaan</button>
+                <button class="tab-btn" type="button" id="tab-ws-selesai" onclick="window.switchTabWS('selesai')">Sudah Selesai</button>
             </div>
             <div id="list-ws-proses"></div><div id="list-ws-selesai" style="display: none;"></div>
             
@@ -370,7 +369,7 @@
                     <button class="btn-submit" type="button" style="flex: 2; background: var(--cepat);" onclick="window.simpanUpdateTaskWS()"><i class="fas fa-check"></i> SELESAIKAN TUGAS</button>
                 </div>
             </div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -389,7 +388,7 @@
                 </div>
             </div>
             <div id="list-ws-progress"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
@@ -402,9 +401,10 @@
                 <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
             </div>
             <div class="report-sheet" id="report-ws-content"></div>
-            <button class="btn-bottom-back" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- MENU MOLD REPAIR -->
     <!-- ========================================================= -->
@@ -490,7 +490,6 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- 4. MENU UTAMA INFORMASI MOLD                              -->
     <!-- ========================================================= -->
@@ -1244,7 +1243,7 @@
         }
 
         // =======================================================
-        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (PERBAIKAN TOTAL)
+        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (ANTI-BLOKIR)
         // =======================================================
         window.tugasWorkshopArray = [];
         window.pilihanProsesMesin = ["BUBUT", "EDM", "BOR RADIAL", "ROUTER", "MILLING", "CNC", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
@@ -1365,6 +1364,11 @@
 
         // --- FUNGSI SIMPAN WORKSHOP YANG 100% AMAN & ANTI TERPENTAL ---
         window.simpanNewProjectWS = async function() {
+            const NotifLayar = (msg, isError = false) => {
+                window.toggleLoader(true, isError ? `❌ ${msg}` : `✅ ${msg}`);
+                setTimeout(() => window.toggleLoader(false), 2500);
+            };
+
             try {
                 const inputNamaMold = document.getElementById('ws-np-nama');
                 if(!inputNamaMold) return alert("System Error: Kotak Nama Proyek tidak ditemukan.");
@@ -1374,28 +1378,28 @@
                 const estJam = document.getElementById('ws-np-jam').value || "0 Jam";
 
                 if(namaMold === "") {
-                    alert("⚠️ PERHATIAN: Nama Proyek / MOLD (paling atas) wajib diisi!");
                     inputNamaMold.focus();
                     window.scrollTo(0, 0);
-                    return;
+                    return NotifLayar("PERHATIAN: Nama Proyek / MOLD wajib diisi!", true);
                 }
 
                 if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) {
-                    return alert("⚠️ PERHATIAN: Minimal harus ada 1 Tugas Utama!");
+                    return NotifLayar("PERHATIAN: Minimal harus ada 1 Tugas Utama!", true);
                 }
 
+                // Validasi Ketat
                 for (let i = 0; i < window.tugasWorkshopArray.length; i++) {
                     let tugas = window.tugasWorkshopArray[i];
-                    if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return alert(`⚠️ Nama Tugas pada Tugas Utama #${i + 1} belum diisi!`);
+                    if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return NotifLayar(`Nama Tugas Utama #${i + 1} belum diisi!`, true);
                     
                     if (!tugas.punyaSub) {
-                        if (!tugas.proses || tugas.proses === "") return alert(`⚠️ Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`);
+                        if (!tugas.proses || tugas.proses === "") return NotifLayar(`Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`, true);
                     } else {
-                        if (!tugas.subTugas || tugas.subTugas.length === 0) return alert(`⚠️ Tugas Utama #${i + 1} memiliki Sub Tugas, tapi isinya kosong!`);
+                        if (!tugas.subTugas || tugas.subTugas.length === 0) return NotifLayar(`Tugas Utama #${i + 1} memiliki Sub Tugas, tapi isinya kosong!`, true);
                         for (let j = 0; j < tugas.subTugas.length; j++) {
                             let sub = tugas.subTugas[j];
-                            if (!sub.namaTugas || sub.namaTugas.trim() === "") return alert(`⚠️ Nama Sub Tugas ke-${j + 1} (pada Tugas #${i + 1}) belum diisi namanya!`);
-                            if (!sub.proses || sub.proses === "") return alert(`⚠️ Proses mesin pada Sub Tugas ke-${j + 1} (Tugas #${i + 1}) belum dipilih!`);
+                            if (!sub.namaTugas || sub.namaTugas.trim() === "") return NotifLayar(`Nama Sub Tugas ke-${j + 1} (pada Tugas #${i + 1}) belum diisi!`, true);
+                            if (!sub.proses || sub.proses === "") return NotifLayar(`Proses mesin pada Sub Tugas ke-${j + 1} (Tugas #${i + 1}) belum dipilih!`, true);
                         }
                     }
                 }
@@ -1436,7 +1440,6 @@
                     timestamp: Date.now() 
                 });
 
-                // Perbaikan Anti Terpental (Tahan Loader Tampilkan Sukses 2 Detik)
                 window.toggleLoader(true, "✅ BERHASIL! Proyek Tersimpan.");
                 
                 setTimeout(async () => {
@@ -1448,8 +1451,7 @@
 
             } catch (error) {
                 window.toggleLoader(false);
-                console.error("FIREBASE ERROR:", error);
-                alert("❌ Terjadi Kendala Saat Menyimpan! Error: " + error.message);
+                alert("Terjadi Kendala Saat Menyimpan! Error: " + error.message);
             }
         }
 
@@ -2278,7 +2280,7 @@
         window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = data.targetTrialList ? data.targetTrialList.join(', ') : data.targetTrial; const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'block'; const lp = document.getElementById('list-pt-proses'); if(lp) lp.style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
         window.simpanPtHasil = async function() { const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); window.toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; const spf = document.getElementById('status-pt-foto'); if(spf) spf.innerHTML = ""; const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'none'; await window.ambilDataPt(); window.switchTabPt('proses'); } catch(e) {} window.toggleLoader(false); }
         
-        // PUSAT PERBAIKAN PROGRESS TRIAL
+        // --- PUSAT PERBAIKAN PROGRESS TRIAL ---
         window.bukaPtProgress = async function() { 
             window.navigasi('pt-progress-screen'); 
             await window.ambilDataPt(); 
