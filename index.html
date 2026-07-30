@@ -83,7 +83,11 @@
         .menu-card i { font-size: 18px; width: 25px; text-align: center; }
         .menu-card:active { transform: scale(0.98); }
 
-        .neon-trigger-btn { background: #0f172a; color: #38bdf8; border: 2px solid #38bdf8; border-left: 5px solid #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); justify-content: center; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; transition: 0.3s; }
+        .neon-trigger-btn {
+            background: #0f172a; color: #38bdf8; border: 2px solid #38bdf8; border-left: 5px solid #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); justify-content: center; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 10px; transition: 0.3s;
+        }
         .neon-trigger-btn:active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
 
         /* --- DASHBOARD AI EXECUTIVE STYLE --- */
@@ -114,7 +118,24 @@
         @keyframes pulse-core { 0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 10px rgba(56, 189, 248, 0.2); } 50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.8), inset 0 0 20px rgba(56, 189, 248, 0.5); } }
         .circle-btn { width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; cursor: pointer; border: 2px solid; transition: transform 0.2s, filter 0.2s; background: radial-gradient(circle at 30% 30%, #1e293b, #020617); }
         .circle-btn:active { transform: scale(0.9); filter: brightness(1.5); } .circle-btn i { font-size: 26px; margin-bottom: 5px; }
+        @keyframes pulse-neon-green { 0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); } 50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.8); } }
+        @keyframes pulse-neon-blue { 0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 50% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.8); } }
+        @keyframes pulse-neon-purple { 0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); } 50% { box-shadow: 0 0 35px rgba(139, 92, 246, 0.8); } }
+        .neon-green { border-color: rgba(16, 185, 129, 0.8); color: #34d399; text-shadow: 0 0 10px #34d399; animation: pulse-neon-green 3s infinite ease-in-out; }
+        .neon-blue { border-color: rgba(59, 130, 246, 0.8); color: #60a5fa; text-shadow: 0 0 10px #60a5fa; animation: pulse-neon-blue 3s infinite ease-in-out 1s; } 
+        .neon-purple { border-color: rgba(139, 92, 246, 0.8); color: #a78bfa; text-shadow: 0 0 10px #a78bfa; animation: pulse-neon-purple 3s infinite ease-in-out 2s; } 
+        .neon-panel { background: linear-gradient(145deg, rgba(15,23,42,0.6), rgba(30,41,59,0.8)); border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 20px rgba(56, 189, 248, 0.1); position: relative; overflow: hidden; border: 1px solid #38bdf8; backdrop-filter: blur(10px); }
+        .neon-title { color: #fff; text-align: center; font-size: 16px; font-weight: 900; letter-spacing: 2px; margin: 0 0 20px 0; text-shadow: 0 0 5px #38bdf8, 0 0 10px #38bdf8; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .neon-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .neon-tab-btn { padding: 8px 4px; background: transparent; border: none; color: #94a3b8; font-weight: bold; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 11px; text-align: center; }
+        .neon-tab-btn.active { background: rgba(56, 189, 248, 0.2); color: #38bdf8; box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.5); text-shadow: 0 0 5px #38bdf8; border: 1px solid rgba(56, 189, 248, 0.5); }
+        .neon-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+        .neon-card { background: rgba(2, 6, 23, 0.8); border: 1px solid rgba(16, 185, 129, 0.4); border-radius: 10px; padding: 15px 5px; text-align: center; box-shadow: 0 8px 15px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
+        .neon-card h4 { margin: 0; font-size: 10px; color: #cbd5e1; text-transform: uppercase;}
+        .neon-card .neon-num { font-size: 22px; font-weight: 900; margin: 5px 0 0; color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
+        .neon-chart-container { position: relative; height: 260px; width: 100%; border-top: 1px dashed rgba(56,189,248,0.3); padding-top: 15px;}
 
+        /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
         input[type="text"], input[type="time"], input[type="datetime-local"], input[type="date"], input[type="number"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
@@ -130,10 +151,12 @@
         .btn-camera { display: inline-block; width: 100%; padding: 12px; background-color: #475569; color: white; text-align: center; border-radius: 8px; cursor: pointer; font-weight: bold; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.3s; }
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
+        /* --- TABS --- */
         .tab-container { display: flex; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;}
         .tab-btn { flex: 1; padding: 10px 4px; border: none; background: #e2e8f0; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.3s; color: #475569;}
         .tab-active { background: var(--secondary); color: white; }
 
+        /* --- KARTU PROGRES --- */
         .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; color: black; display: flex; flex-direction: column; justify-content: space-between;}
         .progress-card:active { transform: scale(0.98); }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; margin-top: 10px;}
@@ -147,6 +170,7 @@
         .btn-pdf { background-color: #db2777; }
         .btn-jpg { background-color: #f59e0b; color: #000; }
 
+        /* --- LEMBAR LAPORAN --- */
         .report-sheet { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #333; margin-bottom: 20px;}
         .report-header { text-align: center; border-bottom: 3px double #334155; padding-bottom: 15px; margin-bottom: 20px; }
         .report-header h2 { margin: 0; color: var(--primary); font-size: 20px; text-transform: uppercase; }
@@ -157,6 +181,7 @@
         .report-img-box { flex: 1; border: 1px dashed #94a3b8; padding: 10px; text-align: center; border-radius: 5px; font-size: 12px;}
         .report-img-box img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 5px; margin-top: 10px; }
         
+        /* GANTT CHART MASTER MOLD */
         .gantt-table { width: 100%; border-collapse: collapse; min-width: 1000px; font-size: 11px; background: white; color: #1e293b; border: 2px solid #1e293b; }
         .gantt-table th, .gantt-table td { border: 1px solid #64748b; padding: 6px 4px; text-align: center; vertical-align: middle; }
         .gantt-th-bg { background-color: #a7f3d0; color: #064e3b; font-weight: bold; }
@@ -200,7 +225,6 @@
         <div class="spinner"></div>
         <h3 id="loader-text">Menyambungkan ke Server...</h3>
     </div>
-
     <!-- 1. LANDING PAGE -->
     <div id="landing-page">
         <div class="landing-top">
@@ -223,10 +247,13 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="window.masukDivisi('DIVISI MOLD STORE')"><i class="fas fa-warehouse"></i> DIVISI MOLD STORE</div>
                 <div class="menu-card" onclick="window.navigasi('menu-mold-repair-screen')"><i class="fas fa-tools"></i> DIVISI MOLD REPAIR</div>
+                
+                <!-- MENU DIVISI MOLD TROUBLE -->
                 <div class="menu-card" onclick="window.navigasi('trouble-menu-screen')" style="border-left-color: #dc2626; position: relative;">
                     <i class="fas fa-exclamation-triangle"></i> DIVISI MOLD TROUBLE
                     <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none;">0</span>
                 </div>
+
                 <div class="menu-card" onclick="window.masukDivisi('DIVISI MOLD WORKSHOP')"><i class="fas fa-cogs"></i> DIVISI MOLD WORKSHOP</div>
                 <div class="menu-card" onclick="window.navigasi('adm-mold-menu-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-user-tie"></i> ADM MOLD</div>
                 <div class="menu-card" onclick="window.navigasi('informasi-mold-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-clipboard-list"></i> INFORMASI & LAPORAN MOLD</div>
@@ -247,23 +274,510 @@
         </div>
     </div>
 
-    <!-- FORM INPUT NEW PROJECT (WORKSHOP) -->
+    <!-- FORM INPUT NEW PROJECT (WORKSHOP) - TAMBAHAN MULAI & SELESAI -->
     <div id="new-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input New Project</h2></div>
             <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Nama Proyek / MOLD</label><input type="text" id="ws-np-nama" placeholder="Masukkan nama proyek..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()"></div>
-                <div class="form-group" style="display: flex; gap: 10px;"><div style="flex: 1;"><label>Mulai Pekerjaan</label><input type="date" id="ws-np-start-date" required></div><div style="flex: 1;"><label>Target Selesai</label><input type="date" id="ws-np-finish-date" required></div></div>
-                <div class="form-group" style="display: flex; gap: 10px;"><div style="flex: 1;"><label>Estimasi Hari</label><input type="text" id="ws-np-hari" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Hari"></div><div style="flex: 1;"><label>Estimasi Jam</label><input type="text" id="ws-np-jam" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Jam"></div></div>
+                <div class="form-group">
+                    <label>Nama Proyek / MOLD</label>
+                    <input type="text" id="ws-np-nama" placeholder="Masukkan nama proyek..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Mulai Pekerjaan</label><input type="date" id="ws-np-start-date" required></div>
+                    <div style="flex: 1;"><label>Target Selesai</label><input type="date" id="ws-np-finish-date" required></div>
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Estimasi Hari</label><input type="text" id="ws-np-hari" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Hari"></div>
+                    <div style="flex: 1;"><label>Estimasi Jam</label><input type="text" id="ws-np-jam" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Jam"></div>
+                </div>
                 
                 <div class="form-group" style="margin-top: 20px;">
                     <label style="color: var(--secondary); font-size: 16px; border-bottom: 2px solid var(--secondary); padding-bottom: 5px; display:block; margin-bottom:15px;">Rencana Kerja</label>
                     <div id="ws-rencana-kerja-container"></div>
-                    <button class="btn-submit" type="button" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); margin-top: 10px; margin-bottom: 20px;" onclick="window.tambahTugasUtamaWS()"><i class="fas fa-plus"></i> TAMBAH TUGAS UTAMA</button>
+                    <button class="btn-submit" type="button" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); margin-top: 10px; margin-bottom: 20px;" onclick="window.tambahTugasUtamaWS()">
+                        <i class="fas fa-plus"></i> TAMBAH TUGAS UTAMA
+                    </button>
                 </div>
                 <button class="btn-submit" type="button" onclick="window.simpanNewProjectWS()"><i class="fas fa-save"></i> SIMPAN PROJECT</button>
             </div>
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- UPDATE PROJECT (WORKSHOP) -->
+    <div id="update-project-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Update Project</h2></div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" id="tab-ws-proses" onclick="window.switchTabWS('proses')">Proses Pengerjaan</button>
+                <button class="tab-btn" type="button" id="tab-ws-selesai" onclick="window.switchTabWS('selesai')">Sudah Selesai</button>
+            </div>
+            <div id="list-ws-proses"></div><div id="list-ws-selesai" style="display: none;"></div>
+            
+            <!-- AREA LIST TUGAS -->
+            <div id="ws-task-list-area" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3 style="margin-top:0; color: var(--primary);">Update: <span id="ws-nama-proyek-tampil" style="color: var(--secondary);"></span></h3>
+                <input type="hidden" id="ws-update-id-project">
+                <div id="ws-tasks-container" style="margin-bottom: 15px;"></div>
+                <button class="btn-submit" type="button" style="background: gray; width: 100%;" onclick="window.tutupWsTaskList()">KEMBALI KE LIST PROJECT</button>
+            </div>
+
+            <!-- FORM INPUT REALISASI (DENGAN OPSI MULTI-SHIFT) -->
+            <div id="ws-form-update-task" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 5px solid var(--secondary); box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+                <h4 style="margin-top:0; color: var(--primary); border-bottom: 1px solid #cbd5e1; padding-bottom: 10px;">Target: <span id="ws-nama-tugas-tampil" style="color: var(--secondary);"></span></h4>
+                <input type="hidden" id="ws-update-task-index">
+                <input type="hidden" id="ws-update-subtask-index">
+                <div class="form-group"><label>Nama PIC (Pekerja)</label><input type="text" id="ws-up-pic" placeholder="Nama Pekerja..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()"></div>
+                <div class="form-group"><label>Shift Pekerjaan</label><select id="ws-up-shift"><option value="Shift 1">Shift 1</option><option value="Shift 2">Shift 2</option><option value="Shift 3">Shift 3</option></select></div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Waktu Start</label><input type="datetime-local" id="ws-up-start" onchange="window.hitungDurasiUpdateWS()"></div>
+                    <div style="flex: 1;"><label>Waktu Finish</label><input type="datetime-local" id="ws-up-finish" onchange="window.hitungDurasiUpdateWS()"></div>
+                </div>
+                <div class="form-group"><label>Durasi (Otomatis)</label><input type="text" id="ws-up-durasi" readonly style="background:#f1f5f9; font-weight:bold; color:var(--proses); text-align:center;"></div>
+                
+                <!-- TAMBAHAN FITUR MULTI-SHIFT -->
+                <div class="form-group" style="margin-top: 10px;">
+                    <label>Status Pekerjaan Aktual</label>
+                    <select id="ws-up-status" style="background:#fffbeb; color:#b45309; font-weight:bold; border-color:#f59e0b;">
+                        <option value="Belum Selesai">⏳ BELUM SELESAI (Masih Lanjut Nanti)</option>
+                        <option value="Selesai">✅ SUDAH SELESAI (Tuntas 100%)</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button class="btn-submit" type="button" style="background: gray; flex: 1;" onclick="window.batalUpdateTaskWS()">BATAL</button>
+                    <button class="btn-submit" type="button" style="flex: 2; background: var(--secondary);" onclick="window.simpanUpdateTaskWS()"><i class="fas fa-save"></i> SIMPAN AKTUAL</button>
+                </div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- CONTROL PROGRES (WORKSHOP) - VIEW & REPORT DATA -->
+    <div id="progress-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Control Progres Project</h2></div>
+            
+            <div class="tab-container" style="background: white; border: 1px solid #cbd5e1; padding: 4px;">
+                <button class="tab-btn tab-active" type="button" id="tab-prog-view" onclick="window.switchTabProgressWS('data')" style="border-radius: 6px;">View Data</button>
+                <button class="tab-btn" type="button" id="tab-prog-report" onclick="window.switchTabProgressWS('report')" style="border-radius: 6px;">Report Data</button>
+            </div>
+
+            <!-- BAGIAN VIEW DATA -->
+            <div id="ws-prog-view-data" style="display:block;">
+                <div class="filter-box" style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <label style="color: var(--primary); font-size: 14px; font-weight:bold;"><i class="fas fa-search"></i> Pencarian & Filter Tanggal:</label>
+                    <div style="display: flex; gap:10px; align-items:center; margin-top:10px;">
+                        <input type="text" id="ws-filter-nama" placeholder="NAMA PROYEK..." style="flex:2; text-transform: uppercase;">
+                        <input type="date" id="ws-filter-tanggal" style="flex:1;">
+                    </div>
+                    <div style="display: flex; gap:10px; margin-top:10px;">
+                        <button class="btn-submit" type="button" style="flex:2;" onclick="window.terapkanFilterWS()">Filter Data</button>
+                        <button class="btn-submit" type="button" style="flex:1; background:#ef4444;" onclick="window.resetFilterWS()">Reset</button>
+                    </div>
+                </div>
+                <div id="list-ws-progress"></div>
+            </div>
+
+            <!-- BAGIAN REPORT DATA (CHECKBOX AI) -->
+            <div id="ws-prog-report-data" style="display:none;">
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="margin:0 0 10px 0; font-size:13px; color:gray;"><i>Centang proyek yang ingin dianalisa oleh AI, lalu tekan tombol di bawah.</i></p>
+                    <div id="list-ws-report-checkbox" style="max-height: 400px; overflow-y:auto; border:1px solid #e2e8f0; padding:10px; border-radius:6px; background:#f8fafc;">
+                        <!-- Diisi oleh Javascript -->
+                    </div>
+                    <button type="button" onclick="window.generateAIReport()" style="width:100%; padding:15px; margin-top:15px; background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:white; border:none; border-radius:8px; font-weight:900; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(139,92,246,0.4); transition:0.2s;"><i class="fas fa-brain"></i> AI BUAT REPORT EXECUTIVE</button>
+                </div>
+            </div>
+
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- DETAIL PROJECT (WORKSHOP) DUAL VIEW -->
+    <div id="detail-project-screen" class="screen screen-bg">
+        <div class="content-wrapper" style="max-width: 1000px !important;">
+            <div class="header"><h2>Detail & Tracking Project</h2></div>
+            <div class="export-row">
+                <button class="btn-export btn-jpg" type="button" onclick="window.cetakGambarUniversal('report-ws-content', 'Tracking_Project')"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
+            
+            <!-- TAB VIEW MOLD WORKSHOP -->
+            <div class="tab-container" style="background: white; border: 1px solid #cbd5e1; padding: 4px;">
+                <button class="tab-btn tab-active" type="button" id="tab-view-harian" onclick="window.switchViewWS('harian')" style="border-radius: 6px;">View Rincian Harian</button>
+                <button class="tab-btn" type="button" id="tab-view-global" onclick="window.switchViewWS('global')" style="border-radius: 6px;">View Global Master</button>
+            </div>
+
+            <div class="report-sheet" id="report-ws-content" style="overflow-x: auto; padding: 10px;"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- AI EXECUTIVE DASHBOARD SCREEN -->
+    <div id="ai-dashboard-screen" class="screen screen-bg">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background:#0f172a; border-bottom:4px solid #8b5cf6;">
+                <h2 style="color:#a78bfa; margin:0;"><i class="fas fa-chart-line"></i> EXECUTIVE AI DASHBOARD</h2>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#cbd5e1;">Multivariate Analytics Report</p>
+            </div>
+            
+            <div class="export-row" style="max-width:700px; margin:0 auto 20px auto;">
+                <button class="btn-export btn-jpg" type="button" onclick="window.cetakGambarUniversal('dashboard-report-content', 'AI_Dashboard')"><i class="fas fa-image"></i> Download Dashboard JPG</button>
+                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
+
+            <div id="dashboard-report-content" style="background:white; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                <!-- KPI CARDS -->
+                <div class="dash-kpi-grid">
+                    <div class="dash-kpi-card" style="border-top-color:#3b82f6;">
+                        <h4><i class="fas fa-project-diagram"></i> Total Proyek Dianalisa</h4>
+                        <div class="val" id="dash-kpi-proyek" style="color:#3b82f6; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#10b981;">
+                        <h4><i class="fas fa-clock"></i> Estimasi Jam Global</h4>
+                        <div class="val" id="dash-kpi-est" style="color:#10b981; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#f59e0b;">
+                        <h4><i class="fas fa-stopwatch"></i> Actual Pengerjaan</h4>
+                        <div class="val" id="dash-kpi-act" style="color:#f59e0b; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#8b5cf6;">
+                        <h4><i class="fas fa-chart-pie"></i> ACH Rate Global</h4>
+                        <div class="val" id="dash-kpi-ach" style="color:#8b5cf6; text-shadow:none;">0%</div>
+                    </div>
+                </div>
+
+                <!-- CHARTS -->
+                <div class="dash-chart-grid">
+                    <div class="dash-chart-box">
+                        <h3><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Distribusi Proses (Univariate)</h3>
+                        <div class="chart-container-inner"><canvas id="chartUnivariate"></canvas></div>
+                    </div>
+                    <div class="dash-chart-box">
+                        <h3><i class="fas fa-chart-bar" style="color:#10b981;"></i> Estimasi vs Actual (Bivariate)</h3>
+                        <div class="chart-container-inner"><canvas id="chartBivariate"></canvas></div>
+                    </div>
+                </div>
+                
+                <div class="dash-chart-box" style="margin-bottom:25px;">
+                    <h3><i class="fas fa-project-diagram" style="color:#8b5cf6;"></i> Tren Estimasi vs ACH Rate (Multivariate)</h3>
+                    <div class="chart-container-inner" style="height:350px;"><canvas id="chartMultivariate"></canvas></div>
+                </div>
+                
+                <!-- SUMMARY TABLE -->
+                <h3 style="color:var(--primary); font-size:16px; border-bottom:2px solid #cbd5e1; padding-bottom:5px;">Rincian Komparasi Proyek</h3>
+                <div style="overflow-x:auto;">
+                    <table class="report-table" style="font-size:11px;">
+                        <thead>
+                            <tr style="background:#e2e8f0;">
+                                <th>Nama Proyek</th>
+                                <th style="text-align:center;">Estimasi (Jam)</th>
+                                <th style="text-align:center;">Actual (Jam)</th>
+                                <th style="text-align:center;">ACH Rate (%)</th>
+                                <th>Status Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dash-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <button class="btn-bottom-back" type="button" onclick="window.navigasi('progress-screen')"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
+        </div>
+    </div>
+    <!-- ========================================== -->
+    <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & PUSAT OLAH DATA -->
+    <!-- ========================================== -->
+    <div id="adm-mold-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Sistem ADM MOLD</h2></div>
+            
+            <div class="menu-circle-wrap">
+                <div class="core-btn" onclick="window.navigasi('data-olahan-menu-screen')" title="Pusat Olah & Rekap Data">
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                
+                <div class="circle-orbit orbit-1">
+                    <div class="counter-spin-1">
+                        <div class="circle-btn neon-green" onclick="window.navigasi('adm-harian-menu-screen')">
+                            <i class="fas fa-calendar-day"></i><span>1. Kerja<br>Harian</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="circle-orbit orbit-2">
+                    <div class="counter-spin-2">
+                        <div class="circle-btn neon-blue" onclick="window.bukaSubInfo('LAPORAN KERJA MINGGUAN')">
+                            <i class="fas fa-calendar-week"></i><span>2. Kerja<br>Mingguan</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="circle-orbit orbit-3">
+                    <div class="counter-spin-3">
+                        <div class="circle-btn neon-purple" onclick="window.bukaSubInfo('LAPORAN KERJA BULANAN')">
+                            <i class="fas fa-calendar-alt"></i><span>3. Kerja<br>Bulanan</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan lingkaran untuk menghentikan putaran. Klik ikon tengah (Admin) untuk rekap data.</i></p>
+
+            <div class="menu-card neon-trigger-btn" onclick="window.navigasi('analisa-performa-screen')">
+                <i class="fas fa-bolt"></i> PUSAT ANALISA PERFORMA (KLIK)
+            </div>
+
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- PUSAT OLAH DATA -->
+    <div id="data-olahan-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Pusat Olah & Rekap Data</h2></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 20px;"><i>Silakan pilih kategori data operasional yang ingin direkap dan dikelola.</i></p>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputGosokMold()" style="border-left-color: #f59e0b;"><i class="fas fa-hammer"></i> 1. Input Gosok Mold (AI)</div>
+                <div class="menu-card" onclick="window.bukaRiwayatGosokMold()" style="border-left-color: #eab308;"><i class="fas fa-history"></i> 2. Riwayat & Export Gosok Mold</div>
+                <div class="menu-card" onclick="window.bukaSubInfo('DATA OLAHAN PKM')" style="border-left-color: #10b981;"><i class="fas fa-cogs"></i> 3. Data Olahan PKM</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- GOSOK MOLD AI -->
+    <div id="gosok-mold-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Data Olahan Gosok Mold</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                <div class="form-group">
+                    <label>Paste Laporan Mentah Lapangan</label>
+                    <textarea id="gosok-raw-input" rows="6" placeholder="Contoh:&#10;1. HTF 470 W9&#10;BW x Sambung 1i&#10;16:15-16:17"></textarea>
+                    <button type="button" onclick="window.aiProsesGosokMold()" style="width:100%; padding:12px; margin-top:8px; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-robot"></i> AI Rekap & Sortir Laporan</button>
+                </div>
+            </div>
+            <div id="gosok-result-container" style="display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <h3 style="margin-top:0; color: var(--primary); font-size: 16px; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px;">Hasil Olahan Otomatis (Bisa Diedit Manual)</h3>
+                <div style="overflow-x: auto;">
+                    <table class="report-table" style="min-width: 550px;">
+                        <thead><tr><th style="width: 25%;">Nama Mesin</th><th style="width: 30%;">Nama Mold</th><th style="width: 15%;">Start</th><th style="width: 15%;">Finish</th><th style="width: 15%; text-align:center;">Durasi</th></tr></thead>
+                        <tbody id="gosok-table-body"></tbody>
+                    </table>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanOlahanGosokMold()" style="margin-top: 15px;"><i class="fas fa-save"></i> SIMPAN REKAPAN KE DATABASE</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- RIWAYAT GOSOK MOLD -->
+    <div id="gosok-riwayat-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Riwayat Gosok Mold</h2></div>
+            <div class="export-row"><button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelLengkap()" style="width: 100%;"><i class="fas fa-file-excel"></i> Download Rekap Semua Data (Excel)</button></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail dan cetak PDF/JPG.</i></p>
+            <div id="list-gosok-riwayat"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="gosok-detail-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Detail Laporan Gosok</h2></div>
+            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadGosokJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak PDF</button></div>
+            <div class="report-sheet" id="report-gosok-content"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaRiwayatGosokMold()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+        </div>
+    </div>
+
+    <!-- PUSAT ANALISA PERFORMA GLOBAL -->
+    <div id="analisa-performa-screen" class="screen bg-cyberpunk">
+        <div class="content-wrapper">
+            <div class="header"><h2><i class="fas fa-chart-pie"></i> PUSAT ANALISA PERFORMA</h2></div>
+            <div class="neon-panel">
+                <h3 class="neon-title"><i class="fas fa-robot"></i> AI MULTI-DIVISION INTELLIGENCE <i class="fas fa-robot"></i></h3>
+                <div class="neon-tabs">
+                    <button class="neon-tab-btn active" type="button" id="ntab-store" onclick="window.switchTabAnalisa('DIVISI MOLD STORE')">Mold Store</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-repair" onclick="window.switchTabAnalisa('DIVISI MOLD REPAIR')">Mold Repair</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-trouble" onclick="window.switchTabAnalisa('DIVISI MOLD TROUBLE')">Mold Trouble</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-workshop" onclick="window.switchTabAnalisa('DIVISI MOLD WORKSHOP')">Mold Workshop</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-adm" onclick="window.switchTabAnalisa('ADM UNIFIED')">Performa ADM</button>
+                    <button class="neon-tab-btn" type="button" id="ntab-all" onclick="window.switchTabAnalisa('ALL')">Global All</button>
+                </div>
+                <div class="neon-grid">
+                    <div class="neon-card"><h4>Total Proyek</h4><div class="neon-num" id="neon-val-target" style="color: #38bdf8;">0</div></div>
+                    <div class="neon-card"><h4>Selesai</h4><div class="neon-num" id="neon-val-selesai">0</div></div>
+                    <div class="neon-card"><h4>Success Rate</h4><div class="neon-num" id="neon-val-persen" style="color: #f59e0b;">0%</div></div>
+                </div>
+                <div class="neon-chart-container"><canvas id="performaChart"></canvas></div>
+                <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Analisa Terstruktur Multi-Divisi & ADM Real-Time</p>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
+        </div>
+    </div>
+
+    <!-- ADM HARIAN -->
+    <div id="adm-harian-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Laporan Kerja Harian</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputTargetAdm()" style="border-left-color: #f97316;"><i class="fas fa-bullseye"></i> 1. Target Harian Kerja</div>
+                <div class="menu-card" onclick="window.bukaAdmHarianActual()" style="border-left-color: #14b8a6;"><i class="fas fa-check-double"></i> 2. Update Actual Terealisasi</div>
+                <div class="menu-card" onclick="window.bukaAdmHarianProgress()" style="border-left-color: #ec4899;"><i class="fas fa-chart-line"></i> 3. Control Progres Kinerja</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="adm-harian-target-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Target Harian</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <div class="form-group"><label>Nama Admin Pembuat</label><input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);"></div>
+                <div class="form-group"><label>Tanggal Pelaksanaan</label><input type="date" id="adm-target-tgl" readonly style="background:#f1f5f9; color:var(--primary); font-weight:bold;"></div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Waktu Dimulai</label><input type="time" id="adm-target-mulai" value="08:00"></div>
+                    <div style="flex: 1;"><label>Target Waktu Selesai</label><input type="time" id="adm-target-selesai" value="16:00"></div>
+                </div>
+                <div class="form-group">
+                    <label>Rencana Kerja</label>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;"><input type="text" id="adm-input-rencana" placeholder="Ketik rencana kerja..."><button type="button" onclick="window.tambahRencanaKerja()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button></div>
+                    <ul id="list-rencana-kerja" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;"></ul>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="adm-harian-actual-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Update Actual Terealisasi</h2></div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" id="tab-adm-belum" onclick="window.switchTabAdm('belum')">Belum Terealisasi</button>
+                <button class="tab-btn" type="button" id="tab-adm-sudah" onclick="window.switchTabAdm('sudah')">Sudah Terealisasi</button>
+                <button class="tab-btn" type="button" id="tab-adm-gagal" onclick="window.switchTabAdm('gagal')">Gagal Terealisasi</button>
+            </div>
+            <div id="list-adm-belum"></div>
+            <div id="list-adm-sudah" style="display: none;"></div>
+            <div id="list-adm-gagal" style="display: none;"></div>
+
+            <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+                <h3 style="margin-top:0; color: var(--primary);">Update Actual: <br><span id="adm-actual-tampil" style="color: var(--secondary); font-size: 16px;"></span></h3>
+                <input type="hidden" id="adm-actual-id"><input type="hidden" id="adm-actual-tgl-ori"> 
+                <div id="adm-actual-time-warning" style="display:none; background:#fee2e2; border-left:4px solid #ef4444; padding:10px; font-size:12px; font-weight:bold; color:#b91c1c; margin-bottom:15px; border-radius:4px;"><i class="fas fa-lock"></i> Waktu menunjukkan lewat pukul 16:00. Anda WAJIB mengisi 'Catatan' di bawah!</div>
+                <input type="hidden" id="adm-actual-tgl">
+                <div class="form-group" id="adm-actual-list-group">
+                    <label>Daftar Rencana Kerja:</label>
+                    <ul id="adm-actual-ceklis" class="eval-list" style="margin-bottom:10px;"></ul>
+                    <div id="adm-actual-add-group" style="display: flex; gap: 5px;"><input type="text" id="adm-actual-input-baru" placeholder="Tugas baru di luar rencana..."><button type="button" onclick="window.tambahTugasBaruActual()" style="padding: 10px 15px; background: var(--proses); color: white; border: none; border-radius: 5px;"><i class="fas fa-plus"></i></button></div>
+                </div>
+                <div class="form-group"><label>Catatan Actual</label><textarea id="adm-actual-ket" rows="3" placeholder="Isi kendala atau alasan..."></textarea></div>
+                <div class="form-group">
+                    <label>Bukti Foto Actual (Opsional)</label><label for="adm-actual-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label>
+                    <input type="file" id="adm-actual-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-adm-foto')"><span id="status-adm-foto" class="file-status"></span>
+                </div>
+                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalAdmActual()">BATAL</button><button class="btn-submit" type="button" id="btn-simpan-actual" onclick="window.simpanAdmActual()">UPDATE & SIMPAN</button></div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="adm-harian-progress-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Control Progres Kinerja Admin</h2></div>
+            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail.</i></p>
+            <div id="list-adm-progress"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="adm-harian-detail-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Detail Laporan Harian Admin</h2></div>
+            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadAdmJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
+            <div class="report-sheet" id="report-adm-content"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+        </div>
+    </div>
+
+    <!-- PERMINTAAN TRIAL -->
+    <div id="permintaan-trial-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Sistem Permintaan Trial</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputPermintaanTrial()"><i class="fas fa-plus-circle"></i> 1. Input Permintaan Trial Baru</div>
+                <div class="menu-card" onclick="window.bukaPtAdmin()"><i class="fas fa-user-shield"></i> 2. Verifikasi & Update Admin</div>
+                <div class="menu-card" onclick="window.bukaPtProgress()"><i class="fas fa-chart-bar"></i> 3. Control Progres Trial</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="pt-input-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Permintaan Trial</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <div class="form-group"><label>Nama Peminta / User</label><input type="text" id="pt-input-user" placeholder="Nama pekerja..."></div>
+                <div class="form-group"><label>Hari, Tanggal Pengajuan</label><input type="text" id="pt-input-waktu" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);"></div>
+                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-input-nama" placeholder="Masukkan nama mold..."></div>
+                <div class="form-group">
+                    <label>Target Trial / Permintaan</label>
+                    <div style="display: flex; gap: 5px; margin-bottom: 10px;"><input type="text" id="pt-input-target-item" placeholder="Ketik target trial..."><button type="button" onclick="window.tambahTargetTrial()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button></div>
+                    <ul id="list-target-trial" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;"></ul>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanPtInput()">SEND TO ADMIN</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="pt-admin-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Verifikasi Admin Mold</h2></div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" id="tab-pt-belum" onclick="window.switchTabPt('belum')">Permintaan Masuk</button>
+                <button class="tab-btn" type="button" id="tab-pt-proses" onclick="window.switchTabPt('proses')">Sedang Proses</button>
+            </div>
+            <div id="list-pt-belum"></div><div id="list-pt-proses" style="display: none;"></div>
+            <div id="form-pt-verifikasi" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3 style="margin-top:0; color: var(--primary);">Verifikasi Trial Mold</h3><input type="hidden" id="pt-verif-id">
+                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-verif-nomold" readonly></div>
+                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-verif-target" readonly></div>
+                <div class="form-group"><label>No Trial</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
+                <div class="form-group"><label>Tanggal Permintaan</label><input type="date" id="pt-verif-tgl"></div>
+                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalPtAdmin('verif')">Batal</button><button class="btn-submit" type="button" onclick="window.simpanPtVerifikasi()">VERIFIKASI & PROSES</button></div>
+            </div>
+            <div id="form-pt-hasil" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h3 style="margin-top:0; color: var(--primary);">Update Hasil Trial</h3><input type="hidden" id="pt-hasil-id">
+                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-hasil-nomold" readonly></div>
+                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-hasil-target" readonly></div>
+                <div class="form-group"><label>Hasil Trial</label><select id="pt-hasil-status"><option value="Selesai">✅ Selesai (Sukses)</option><option value="Gagal">❌ Gagal (Bermasalah)</option></select></div>
+                <div class="form-group"><label>Keterangan Masalah</label><textarea id="pt-hasil-ket" rows="3"></textarea></div>
+                <div class="form-group"><label>Upload Gambar</label><label for="pt-hasil-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-pt-foto')"><span id="status-pt-foto" class="file-status"></span></div>
+                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalPtAdmin('hasil')">Batal</button><button class="btn-submit" type="button" onclick="window.simpanPtHasil()">SIMPAN HASIL</button></div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="pt-progress-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Control Progres Trial</h2></div>
+            <div id="list-pt-progress"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="pt-detail-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Detail Laporan Trial</h2></div>
+            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
+            <div class="report-sheet" id="report-pt-content"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
     <!-- ========================================== -->
@@ -632,14 +1146,13 @@
         window.simpanUpdateTaskWS = async function() {
             const pic = document.getElementById('ws-up-pic').value; const shift = document.getElementById('ws-up-shift').value;
             const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const durasi = document.getElementById('ws-up-durasi').value;
-            const statusTarget = document.getElementById('ws-up-status').value; // Fitur Multi-Shift status
+            const statusTarget = document.getElementById('ws-up-status').value;
             
             if(!pic || !start || !finish || durasi.includes("Error")) return alert("Data PIC, Start, dan Finish wajib diisi dengan benar!");
 
             const idProject = document.getElementById('ws-update-id-project').value; const idxUtama = parseInt(document.getElementById('ws-update-task-index').value); const idxSubRaw = document.getElementById('ws-update-subtask-index').value;
             let projIndex = currentDatabase.findIndex(d => d.id === idProject); let projData = currentDatabase[projIndex];
             
-            // LOGIKA RIWAYAT HARIAN (AGAR BISA GANTT CHART)
             let tanggalHariIni = start.split('T')[0];
             let objRiwayat = { tanggal: tanggalHariIni, durasi: parseFloat(durasi), pic: pic };
 
@@ -701,7 +1214,6 @@
             let dataTampil = currentDatabase;
             if(window.wsKataKunciFilter) dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter));
             
-            // Logic Filter Tanggal Baru (Mencari di riwayatHarian atau waktuDibuat)
             if(window.wsTanggalFilter) {
                 dataTampil = dataTampil.filter(d => {
                     let match = false;
@@ -735,21 +1247,18 @@
             });
         }
 
-        // --- SISTEM SWITCH DUAL VIEW DETAIL WORKSHOP ---
         window.switchViewWS = function(viewType) {
             document.getElementById('tab-view-harian').classList.remove('tab-active'); document.getElementById('tab-view-global').classList.remove('tab-active');
             document.getElementById('ws-view-harian').style.display = 'none'; document.getElementById('ws-view-global').style.display = 'none';
             document.getElementById('tab-view-' + viewType).classList.add('tab-active'); document.getElementById('ws-view-' + viewType).style.display = 'block';
         }
 
-        // --- PEMBANGUNAN MASTER VIEW (HARIAN & GANTT CHART) ---
         window.bukaDetailProjectWS = function(id) {
             const data = currentDatabase.find(d => d.id === id); if(!data) return;
             
             let htmlTasks = ""; let akumulasiAktualJam = 0; let totalEstJamMaster = 0;
-            let dateSet = new Set(); // Koleksi seluruh tanggal unik
+            let dateSet = new Set();
 
-            // 1. BUILD VIEW HARIAN (STANDARD + PERSENTASE)
             data.rencanaKerja.forEach((t, i) => {
                 if(t.punyaSub) {
                     let subHtml = "";
@@ -796,7 +1305,6 @@
                 </table>
             </div>`;
 
-            // 2. BUILD VIEW GLOBAL (GANTT CHART EXCEL STYLE ENGINEERING)
             let dateArr = Array.from(dateSet).sort();
             if(dateArr.length === 0) { let d = new Date(); for(let i=0; i<5; i++) { dateArr.push(d.toISOString().split('T')[0]); d.setDate(d.getDate()+1); } }
 
@@ -811,7 +1319,7 @@
 
             let ganttRows = ""; let noUtama = 1;
             let totalEstSeluruhnya = 0; let totalActSeluruhnya = 0;
-            let arrayGlobalKumulatifAktual = new Array(dateArr.length).fill(0); // Untuk simpan total actual harian keseluruhan
+            let arrayGlobalKumulatifAktual = new Array(dateArr.length).fill(0);
 
             data.rencanaKerja.forEach((tugas, idx) => {
                 if(tugas.punyaSub) {
@@ -827,8 +1335,7 @@
                         let eJam = Number(sub.estimasiJam) || 0; let aJamTotalTask = Number(sub.durasiAktual) || 0;
                         let pctFinal = eJam > 0 ? Math.min(100, Math.round((aJamTotalTask/eJam)*100)) : 0;
                         
-                        let dateColsHtml = "";
-                        let taskKumulatifAktual = 0;
+                        let dateColsHtml = ""; let taskKumulatifAktual = 0;
                         
                         dateArr.forEach((dt, dateIdx) => {
                             let actHariIni = 0;
@@ -852,13 +1359,7 @@
 
                     let groupPctTotal = totalEstGroup > 0 ? Math.min(100, Math.round((totalActGroup/totalEstGroup)*100)) : 0;
                     
-                    let groupDateHtml = "";
-                    let kumulatifGroupHinggaHariIni = 0;
-                    dateArr.forEach((dt, dateIdx) => {
-                        kumulatifGroupHinggaHariIni += arrayGroupKumulatifAktual[dateIdx]; 
-                    });
-
-                    let kumulatifActGroupRunning = 0;
+                    let groupDateHtml = ""; let kumulatifActGroupRunning = 0;
                     dateArr.forEach((dt, dateIdx) => {
                         let actGroupHariIni = arrayGroupKumulatifAktual[dateIdx];
                         kumulatifActGroupRunning += actGroupHariIni;
@@ -879,7 +1380,7 @@
                         let actHariIni = 0;
                         if(tugas.riwayatHarian) { tugas.riwayatHarian.forEach(r => { if(r.tanggal === dt) actHariIni += r.durasi; }); }
                         taskKumulatifAktual += actHariIni;
-                        arrayGlobalKumulatifAktual[dateIdx] += actHariIni; // tambahkan ke master
+                        arrayGlobalKumulatifAktual[dateIdx] += actHariIni;
                         let taskKumulatifPct = eJam > 0 ? Math.min(100, Math.round((taskKumulatifAktual/eJam)*100)) : 0;
 
                         if(actHariIni > 0 || taskKumulatifAktual > 0) {
@@ -893,7 +1394,6 @@
                 }
             });
 
-            // HEADER SUMMARY MASTER
             let headerDatesHtml = ""; let headerActHtml = ""; let headerAchHtml = "";
             let runningGlobalAct = 0;
             dateArr.forEach((dt, idx) => {
@@ -917,7 +1417,6 @@
                 <tr><th colspan="2" style="border:1px solid #ccc; background:#fde047; text-align:center;">ACH RATE</th>${headerAchHtml}</tr>
             </table>`;
 
-            // ROW KUNING GLOBAL PALING BAWAH
             let globalPct = totalEstSeluruhnya > 0 ? Math.min(100, Math.round((totalActSeluruhnya/totalEstSeluruhnya)*100)) : 0;
             let globalDateHtml = ""; let kumulatifActGlobalRunning = 0;
             dateArr.forEach((dt, dateIdx) => {
@@ -961,13 +1460,12 @@
             
             setTimeout(() => {
                 let totalEstAll = 0; let totalActAll = 0;
-                let processCounts = {}; // Univariate
-                let projectNames = []; let projectEsts = []; let projectActs = []; // Bivariate
-                let projectACH = []; // Multivariate
+                let processCounts = {}; 
+                let projectNames = []; let projectEsts = []; let projectActs = []; 
+                let projectACH = []; 
                 let tableHtml = "";
 
                 targetProjects.forEach(proj => {
-                    // BUGFIX: Menghilangkan huruf teks " Jam" jika ada, agar terbaca sebagai angka murni
                     let stringEstimasi = String(proj.totalEstimasiJam || "0");
                     let pEst = parseFloat(stringEstimasi.replace(/[^\d.]/g, '')) || 0;
                     let pAct = 0;
@@ -1004,7 +1502,6 @@
 
                 if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
 
-                // BUGFIX: Menampilkan Rincian (Angka) di Label Doughnut Chart
                 let uniLabels = Object.keys(processCounts).map(k => `${k} (${processCounts[k]} Tugas)`); 
                 let uniData = Object.values(processCounts);
                 let ctxUni = document.getElementById('chartUnivariate').getContext('2d');
@@ -1174,7 +1671,7 @@
         window.hapusMoldList = function(index) { window.arrayNaikMold.splice(index, 1); window.renderListNaikMoldUI(); }
         window.toggleCeklis = function(indexMold, indexCek) { window.arrayNaikMold[indexMold].ceklis[indexCek] = !window.arrayNaikMold[indexMold].ceklis[indexCek]; window.renderListNaikMoldUI(); }
         window.kalkulasiStatusMold = function(ceklisArr) { let total = ceklisArr.length; let diCeklis = ceklisArr.filter(c => c === true).length; let tidakDiCeklis = total - diCeklis; if (diCeklis === total) { return { teks: "SIAP PRODUKSI", warna: "#10b981", bg: "#d1fae5" }; } else if (diCeklis === 0 || tidakDiCeklis > diCeklis) { return { teks: "GAGAL NAIK", warna: "#ef4444", bg: "#fee2e2" }; } else { return { teks: "MOLD SIAP NAIK (PERLU DIPERHATIKAN)", warna: "#f59e0b", bg: "#fef3c7" }; } }
-        window.renderListNaikMoldUI = function() { const ul = document.getElementById('list-naik-mold'); if(!ul) return; ul.innerHTML = ""; if(window.arrayNaikMold.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold didata.</li>`; } else { window.arrayNaikMold.forEach((item, idxMold) => { let status = window.kalkulasiStatusMold(item.ceklis); let listCeklisHTML = ""; window.standarCekMold.forEach((namaCek, idxCek) => { let isChecked = item.ceklis[idxCek] ? "checked" : ""; listCeklisHTML += `<div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;"><input type="checkbox" id="chk-${idxMold}-${idxCek}" ${isChecked} onchange="window.toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;"><label for="chk-${idxMold}-${idxCek}">${namaCek}</label></div>`; }); ul.innerHTML += `<li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;"><span style="font-size:15px; font-weight:bold; color:var(--primary);">${idxMold + 1}. ${item.nama}</span><button type="button" onclick="window.hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button></div><div style="padding: 15px;">${listCeklisHTML}</div><div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;"><span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span></div></li>`; }); } }
+        window.renderListNaikMoldUI = function() { const ul = document.getElementById('list-naik-mold'); if(!ul) return; ul.innerHTML = ""; if(window.arrayNaikMold.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold didata.</li>`; } else { window.arrayNaikMold.forEach((item, idxMold) => { let status = window.kalkulasiStatusMold(item.ceklis); let listCeklisHTML = ""; window.standarCekMold.forEach((namaCek, idxCek) => { let isChecked = item.ceklis[idxCek] ? "checked" : ""; listCeklisHTML += `<div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;"><input type="checkbox" id="chk-${idxMold}-${idxCek}" ${isChecked} onchange="window.toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;"><label for="chk-${idxMold}-${idxCek}">${namaCek}</label></div>`; }); ul.innerHTML += `<li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;"><span style="font-size:15px; font-weight:bold; color:var(--primary);">${idxMold + 1}. ${item.name}</span><button type="button" onclick="window.hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button></div><div style="padding: 15px;">${listCeklisHTML}</div><div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;"><span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span></div></li>`; }); } }
 
         window.isRecording = false; window.recognition = null;
         window.toggleSuara = function() { const btnSuara = document.getElementById('btn-suara'); if (!window.recognition) { if (!('webkitSpeechRecognition' in window)) { alert("Browser tidak mendukung AI Suara."); return; } window.recognition = new webkitSpeechRecognition(); window.recognition.lang = 'id-ID'; window.recognition.interimResults = false; window.recognition.onresult = function(event) { let hasilSuara = event.results[0][0].transcript.toUpperCase(); const manual = document.getElementById('ms-naik-input-manual'); if(manual) manual.value = hasilSuara; }; window.recognition.onend = function() { window.resetTombolSuara(); }; } if (window.isRecording) { window.recognition.stop(); window.resetTombolSuara(); } else { window.recognition.start(); window.isRecording = true; if(btnSuara) { btnSuara.style.background = "#10b981"; btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; } } }
@@ -1373,41 +1870,24 @@
         window.simpanAdmActual = async function() { const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const ket = document.getElementById('adm-actual-ket').value; const targetTglOri = document.getElementById('adm-actual-tgl-ori').value; const fotoInput = document.getElementById('adm-actual-foto'); const total = window.actualEditList.length; const selesai = window.actualEditList.filter(d => d.done).length; const belum = total - selesai; const now = new Date(); const timeNowMins = now.getHours() * 60 + now.getMinutes(); const targetTimeMins = 16 * 60; const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0); const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0); const isDayPastTarget = actualDateObj > targetDateObj; const isPast16 = timeNowMins > targetTimeMins || isDayPastTarget; if (isPast16 && belum > 0 && !ket.trim()) { return alert("Terdapat tugas yang belum terealisasi! Waktu sudah melewati batas target. Anda WAJIB mengisi 'Catatan' untuk alasan penundaan agar tugas dapat ditarik besok."); } window.toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB'; window.actualEditList.forEach(item => { if (item.done && !item.waktuSelesai) { item.waktuSelesai = timeStringStr; } else if (!item.done) { item.waktuSelesai = null; } }); let statusBaru = "Belum"; if (!isPast16) { if (belum === 0) { const diffMins = targetTimeMins - timeNowMins; statusBaru = diffMins > 5 ? `Selesai Lebih Cepat (${diffMins} Menit)` : "Selesai Tepat Waktu"; } else { statusBaru = "Belum"; } } else { if (belum === 0) { statusBaru = (isDayPastTarget || timeNowMins > targetTimeMins) ? "Selesai Melebihi Target" : "Selesai Tepat Waktu"; } else if (selesai >= belum && selesai > 0) { statusBaru = "Belum Selesai Sempurna"; } else { statusBaru = "Gagal Terealisasi"; } } const exactTimestampString = `${tgl} Pukul ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; try { await updateDoc(doc(db, "adm_harian", id), { status: statusBaru, tglActual: exactTimestampString, daftarActual: window.actualEditList, hasilActual: statusBaru, keteranganActual: ket || "-", fotoActual: fotoBase64 }); if (statusBaru === "Belum") { alert("Progress Berhasil Disimpan!"); } else if(belum > 0) { alert("Finalisasi Tersimpan!"); } else { alert("Pekerjaan Selesai Sepenuhnya!"); } document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; const saf = document.getElementById('status-adm-foto'); if(saf) saf.innerHTML = ""; const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; await window.ambilDataAdmHarian(); if (statusBaru === "Belum") { window.switchTabAdm('belum'); } else if (statusBaru === 'Gagal Terealisasi') { window.switchTabAdm('gagal'); } else { window.switchTabAdm('sudah'); } } catch(e) {} window.toggleLoader(false); }
         window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await window.ambilDataAdmHarian(); const container = document.getElementById('list-adm-progress'); if(!container) return; container.innerHTML = ""; if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } admHarianDatabase.forEach(data => { let ui = window.getAdmStatusUI(data); container.innerHTML += `<div class="progress-card" style="border-left-color:${ui.color}; cursor:pointer;" onclick="window.bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color}">${ui.badgeText}</span></div>`; }); }
         
-        // --- LAPORAN ADMIN SISTEM ACH (LOGIKA WAKTU) ---
         window.bukaDetailAdmHarian = function(id) { 
             const data = admHarianDatabase.find(d => d.id === id); 
             if(!data) return; 
             
             let ui = window.getAdmStatusUI(data); 
-            
-            let tasksSukses = [];
-            let tasksPending = []; 
-            let tasksGagal = [];   
-            
+            let tasksSukses = []; let tasksPending = []; let tasksGagal = [];   
             let globalKeterangan = data.keteranganActual && data.keteranganActual !== "-" ? data.keteranganActual : "Belum ada keterangan / Tanpa alasan";
 
-            const now = new Date();
-            const targetDateObj = new Date(data.tglTarget);
-            targetDateObj.setHours(16, 0, 0, 0); 
+            const now = new Date(); const targetDateObj = new Date(data.tglTarget); targetDateObj.setHours(16, 0, 0, 0); 
             const isPastDeadline = now > targetDateObj || data.status.includes("Gagal") || data.status.includes("Belum Selesai Sempurna");
 
             let rawList = [];
-            if (data.daftarActual && data.daftarActual.length > 0) {
-                rawList = data.daftarActual;
-            } else if (data.daftarRencana && data.daftarRencana.length > 0) {
-                rawList = data.daftarRencana.map(item => ({ teks: item, done: false, type: 'rencana', waktuSelesai: null }));
-            }
+            if (data.daftarActual && data.daftarActual.length > 0) { rawList = data.daftarActual; } 
+            else if (data.daftarRencana && data.daftarRencana.length > 0) { rawList = data.daftarRencana.map(item => ({ teks: item, done: false, type: 'rencana', waktuSelesai: null })); }
 
             rawList.forEach(item => {
-                if (item.done) {
-                    tasksSukses.push(item);
-                } else {
-                    if (isPastDeadline) {
-                        tasksGagal.push(item);
-                    } else {
-                        tasksPending.push(item);
-                    }
-                }
+                if (item.done) { tasksSukses.push(item); } 
+                else { if (isPastDeadline) { tasksGagal.push(item); } else { tasksPending.push(item); } }
             });
 
             let totalTasks = tasksSukses.length + tasksPending.length + tasksGagal.length;
@@ -1416,125 +1896,44 @@
             let pendingRate = totalTasks === 0 ? 0 : Math.round((tasksPending.length / totalTasks) * 100);
 
             let htmlSukses = `<ul style="padding:0; margin:0; list-style:none;">`;
-            if(tasksSukses.length === 0) {
-                htmlSukses += `<li style="text-align:center; color:gray; font-size:12px; padding:10px; background:#f8fafc; border-radius:6px; border:1px dashed #cbd5e1;">Belum ada tugas yang terealisasi.</li>`;
-            } else {
+            if(tasksSukses.length === 0) { htmlSukses += `<li style="text-align:center; color:gray; font-size:12px; padding:10px; background:#f8fafc; border-radius:6px; border:1px dashed #cbd5e1;">Belum ada tugas yang terealisasi.</li>`; } 
+            else {
                 tasksSukses.forEach((item) => {
                     let timeBadge = item.waktuSelesai ? `<span style="display:inline-block; font-size:10px; background:white; color:#059669; padding:2px 6px; border-radius:4px; border:1px solid #10b981; margin-right:6px; font-weight:bold;"><i class="fas fa-clock"></i> ${item.waktuSelesai}</span>` : '';
                     let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px; font-weight:bold;">*(Tambahan)*</span>` : "";
-                    htmlSukses += `
-                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#ecfdf5; padding:12px; border-radius:8px; border-left:4px solid #10b981; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-check-circle" style="color:#10b981;"></i></div>
-                        <div style="flex:1; font-size:13px; color:#064e3b;">
-                            <div style="margin-bottom:5px;">${timeBadge}</div>
-                            <span style="font-weight:600;">${item.teks}</span> ${typeNote}
-                        </div>
-                    </li>`;
+                    htmlSukses += `<li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#ecfdf5; padding:12px; border-radius:8px; border-left:4px solid #10b981; box-shadow:0 2px 4px rgba(0,0,0,0.05);"><div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-check-circle" style="color:#10b981;"></i></div><div style="flex:1; font-size:13px; color:#064e3b;"><div style="margin-bottom:5px;">${timeBadge}</div><span style="font-weight:600;">${item.teks}</span> ${typeNote}</div></li>`;
                 });
             }
             htmlSukses += `</ul>`;
 
             let htmlPending = "";
             if (tasksPending.length > 0) {
-                htmlPending += `
-                <h3 style="font-size:14px; color:#d97706; border-bottom:2px solid #f59e0b; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
-                    <i class="fas fa-spinner fa-spin" style="font-size:18px;"></i> DAFTAR TUGAS DALAM PROSES
-                </h3>
-                <div style="margin-bottom:25px; margin-top:15px;">
-                    <ul style="padding:0; margin:0; list-style:none;">`;
+                htmlPending += `<h3 style="font-size:14px; color:#d97706; border-bottom:2px solid #f59e0b; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;"><i class="fas fa-spinner fa-spin" style="font-size:18px;"></i> DAFTAR TUGAS DALAM PROSES</h3><div style="margin-bottom:25px; margin-top:15px;"><ul style="padding:0; margin:0; list-style:none;">`;
                 tasksPending.forEach((item) => {
                     let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:2px 5px; border-radius:4px; font-weight:bold;">*(Tambahan)*</span>` : "";
-                    htmlPending += `
-                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fffbeb; padding:12px; border-radius:8px; border-left:4px solid #f59e0b; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-clock" style="color:#f59e0b;"></i></div>
-                        <div style="flex:1; font-size:13px; color:#92400e;">
-                            <span style="font-weight:600;">${item.teks}</span> ${typeNote}
-                            <div style="font-size:11px; margin-top:5px; color:#b45309;"><i class="fas fa-info-circle"></i> Sedang dikerjakan (Batas waktu 16:00)</div>
-                        </div>
-                    </li>`;
+                    htmlPending += `<li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fffbeb; padding:12px; border-radius:8px; border-left:4px solid #f59e0b; box-shadow:0 2px 4px rgba(0,0,0,0.05);"><div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-clock" style="color:#f59e0b;"></i></div><div style="flex:1; font-size:13px; color:#92400e;"><span style="font-weight:600;">${item.teks}</span> ${typeNote}<div style="font-size:11px; margin-top:5px; color:#b45309;"><i class="fas fa-info-circle"></i> Sedang dikerjakan (Batas waktu 16:00)</div></div></li>`;
                 });
                 htmlPending += `</ul></div>`;
             }
 
             let htmlGagal = "";
             if (isPastDeadline && tasksGagal.length > 0) {
-                htmlGagal += `
-                <h3 style="font-size:14px; color:#dc2626; border-bottom:2px solid #ef4444; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
-                    <i class="fas fa-times-circle" style="font-size:18px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA
-                </h3>
-                <div style="margin-bottom:25px; margin-top:15px;">
-                    <ul style="padding:0; margin:0; list-style:none;">`;
+                htmlGagal += `<h3 style="font-size:14px; color:#dc2626; border-bottom:2px solid #ef4444; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;"><i class="fas fa-times-circle" style="font-size:18px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA</h3><div style="margin-bottom:25px; margin-top:15px;"><ul style="padding:0; margin:0; list-style:none;">`;
                 tasksGagal.forEach((item) => {
-                    let textBersih = item.teks;
-                    let alasanSpesifik = globalKeterangan;
-                    if(textBersih.includes("(Terlambat karna:")) {
-                        let parts = textBersih.split("(Terlambat karna:");
-                        textBersih = parts[0].trim();
-                        alasanSpesifik = parts[1].replace(")", "").trim();
-                    }
-                    htmlGagal += `
-                    <li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fef2f2; padding:12px; border-radius:8px; border-left:4px solid #ef4444; box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                        <div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i></div>
-                        <div style="flex:1; font-size:13px; color:#7f1d1d;">
-                            <div style="font-weight:bold; margin-bottom:6px;">${textBersih}</div>
-                            <div style="font-size:11px; color:#b91c1c; background:#fee2e2; padding:6px 10px; border-radius:6px; display:inline-block; border:1px solid #fca5a5;">
-                                <i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${alasanSpesifik}
-                            </div>
-                        </div>
-                    </li>`;
+                    let textBersih = item.teks; let alasanSpesifik = globalKeterangan;
+                    if(textBersih.includes("(Terlambat karna:")) { let parts = textBersih.split("(Terlambat karna:"); textBersih = parts[0].trim(); alasanSpesifik = parts[1].replace(")", "").trim(); }
+                    htmlGagal += `<li style="display:flex; align-items:flex-start; margin-bottom:10px; background:#fef2f2; padding:12px; border-radius:8px; border-left:4px solid #ef4444; box-shadow:0 2px 4px rgba(0,0,0,0.05);"><div style="margin-right:10px; font-size:18px; margin-top:2px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i></div><div style="flex:1; font-size:13px; color:#7f1d1d;"><div style="font-weight:bold; margin-bottom:6px;">${textBersih}</div><div style="font-size:11px; color:#b91c1c; background:#fee2e2; padding:6px 10px; border-radius:6px; display:inline-block; border:1px solid #fca5a5;"><i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${alasanSpesifik}</div></div></li>`;
                 });
                 htmlGagal += `</ul></div>`;
             }
 
-            let html = `
-            <div class="report-header">
-                <h2>LAPORAN KERJA HARIAN ADMIN</h2>
-                <p>PT. CITRA BUANA INTITAMA</p>
-            </div>
-            
-            <table class="report-table" style="box-shadow:0 2px 5px rgba(0,0,0,0.05); margin-bottom:25px;">
-                <tr><th style="width:35%;">Nama Admin</th><td><strong>${data.adminName}</strong></td></tr>
-                <tr><th>Waktu Target</th><td>Tgl: <strong>${data.tglTarget}</strong><br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr>
-                <tr><th>Status Harian</th><td style="color:${ui.color}; font-weight:bold; font-size:14px;">${ui.badgeText}</td></tr>
-            </table>
-
-            <h3 style="font-size:14px; color:#059669; border-bottom:2px solid #10b981; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;">
-                <i class="fas fa-check-circle" style="font-size:18px;"></i> DAFTAR TUGAS TEREALISASI
-            </h3>
-            <div style="margin-bottom:25px; margin-top:15px;">
-                ${htmlSukses}
-            </div>
-
-            ${htmlPending}
-            ${htmlGagal}
-
-            ${data.fotoActual ? `<div class="report-img-box" style="margin-top:25px; border-color:#cbd5e1; background:#f8fafc; padding:15px;"><strong>BUKTI FOTO AKTUAL LAPANGAN</strong><br><img src="${data.fotoActual}" style="border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-top:10px;"></div>` : ''}
-
-            <div style="display:flex; gap:10px; margin-top:30px; text-align:center;">
-                <div style="flex:1; background:linear-gradient(135deg, #f1f5f9, #e2e8f0); padding:15px 5px; border-radius:10px; border:1px solid #cbd5e1; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#475569; text-transform:uppercase; letter-spacing:1px;">ACH Rate</h4>
-                    <span style="font-size:26px; font-weight:900; color:var(--secondary); text-shadow:1px 1px 0px white;">${ach}%</span>
-                </div>
-                <div style="flex:1; background:linear-gradient(135deg, #d1fae5, #a7f3d0); padding:15px 5px; border-radius:10px; border:1px solid #10b981; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#064e3b; text-transform:uppercase; letter-spacing:1px;">Berhasil</h4>
-                    <span style="font-size:26px; font-weight:900; color:#059669; text-shadow:1px 1px 0px white;">${ach}%</span>
-                </div>
-                <div style="flex:1; background:linear-gradient(135deg, #fee2e2, #fecaca); padding:15px 5px; border-radius:10px; border:1px solid #ef4444; box-shadow:0 4px 6px rgba(0,0,0,0.05);">
-                    <h4 style="margin:0 0 5px 0; font-size:11px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px;">${isPastDeadline ? 'Gagal' : 'Proses'}</h4>
-                    <span style="font-size:26px; font-weight:900; color:${isPastDeadline ? '#dc2626' : '#d97706'}; text-shadow:1px 1px 0px white;">${isPastDeadline ? failRate : pendingRate}%</span>
-                </div>
-            </div>
-            <p style="text-align:center; font-size:10px; color:gray; margin-top:15px; font-style:italic;">*Performa dihitung otomatis oleh AI berdasarkan perbandingan total tugas dan realisasi.</p>
-            `;
+            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table" style="box-shadow:0 2px 5px rgba(0,0,0,0.05); margin-bottom:25px;"><tr><th style="width:35%;">Nama Admin</th><td><strong>${data.adminName}</strong></td></tr><tr><th>Waktu Target</th><td>Tgl: <strong>${data.tglTarget}</strong><br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr><tr><th>Status Harian</th><td style="color:${ui.color}; font-weight:bold; font-size:14px;">${ui.badgeText}</td></tr></table><h3 style="font-size:14px; color:#059669; border-bottom:2px solid #10b981; padding-bottom:8px; margin-top:20px; display:flex; align-items:center; gap:8px;"><i class="fas fa-check-circle" style="font-size:18px;"></i> DAFTAR TUGAS TEREALISASI</h3><div style="margin-bottom:25px; margin-top:15px;">${htmlSukses}</div>${htmlPending}${htmlGagal}${data.fotoActual ? `<div class="report-img-box" style="margin-top:25px; border-color:#cbd5e1; background:#f8fafc; padding:15px;"><strong>BUKTI FOTO AKTUAL LAPANGAN</strong><br><img src="${data.fotoActual}" style="border-radius:8px; box-shadow:0 4px 10px rgba(0,0,0,0.1); margin-top:10px;"></div>` : ''}<div style="display:flex; gap:10px; margin-top:30px; text-align:center;"><div style="flex:1; background:linear-gradient(135deg, #f1f5f9, #e2e8f0); padding:15px 5px; border-radius:10px; border:1px solid #cbd5e1; box-shadow:0 4px 6px rgba(0,0,0,0.05);"><h4 style="margin:0 0 5px 0; font-size:11px; color:#475569; text-transform:uppercase; letter-spacing:1px;">ACH Rate</h4><span style="font-size:26px; font-weight:900; color:var(--secondary); text-shadow:1px 1px 0px white;">${ach}%</span></div><div style="flex:1; background:linear-gradient(135deg, #d1fae5, #a7f3d0); padding:15px 5px; border-radius:10px; border:1px solid #10b981; box-shadow:0 4px 6px rgba(0,0,0,0.05);"><h4 style="margin:0 0 5px 0; font-size:11px; color:#064e3b; text-transform:uppercase; letter-spacing:1px;">Berhasil</h4><span style="font-size:26px; font-weight:900; color:#059669; text-shadow:1px 1px 0px white;">${ach}%</span></div><div style="flex:1; background:linear-gradient(135deg, #fee2e2, #fecaca); padding:15px 5px; border-radius:10px; border:1px solid #ef4444; box-shadow:0 4px 6px rgba(0,0,0,0.05);"><h4 style="margin:0 0 5px 0; font-size:11px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px;">${isPastDeadline ? 'Gagal' : 'Proses'}</h4><span style="font-size:26px; font-weight:900; color:${isPastDeadline ? '#dc2626' : '#d97706'}; text-shadow:1px 1px 0px white;">${isPastDeadline ? failRate : pendingRate}%</span></div></div><p style="text-align:center; font-size:10px; color:gray; margin-top:15px; font-style:italic;">*Performa dihitung otomatis oleh AI berdasarkan perbandingan total tugas dan realisasi.</p>`;
 
             const rac = document.getElementById('report-adm-content'); 
             if(rac) rac.innerHTML = html; 
             window.navigasi('adm-harian-detail-screen'); 
         }
 
-        // =======================================================
-        // Permintaan Trial, Notulen, Jadwal, Info & Gosok
-        // =======================================================
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
         window.bukaInputPermintaanTrial = function() { window.targetTrialArray = []; window.renderTargetTrialUI(); const iptW = document.getElementById('pt-input-waktu'); if(iptW) iptW.value = window.dapatkanWaktuRill(); const iptN = document.getElementById('pt-input-nama'); if(iptN) iptN.value = ""; const iptU = document.getElementById('pt-input-user'); if(iptU) iptU.value = ""; window.navigasi('pt-input-screen'); }
         window.tambahTargetTrial = function() { const input = document.getElementById('pt-input-target-item'); const val = input.value.trim(); if(val) { window.targetTrialArray.push(val); window.renderTargetTrialUI(); input.value = ""; input.focus(); } }
@@ -1546,7 +1945,6 @@
         window.bukaPtAdmin = async function() { window.navigasi('pt-admin-screen'); await window.ambilDataPt(); window.switchTabPt('belum'); }
         window.switchTabPt = function(tab) { const tb = document.getElementById('tab-pt-belum'); const tp = document.getElementById('tab-pt-proses'); const lb = document.getElementById('list-pt-belum'); const lp = document.getElementById('list-pt-proses'); const fv = document.getElementById('form-pt-verifikasi'); const fh = document.getElementById('form-pt-hasil'); if(tb) tb.classList.remove('tab-active'); if(tp) tp.classList.remove('tab-active'); if(lb) lb.style.display = 'none'; if(lp) lp.style.display = 'none'; if(fv) fv.style.display = 'none'; if(fh) fh.style.display = 'none'; if(tab === 'belum') { if(tb) tb.classList.add('tab-active'); if(lb) lb.style.display = 'block'; window.renderListAdminPt('Menunggu Verifikasi', 'list-pt-belum'); } else { if(tp) tp.classList.add('tab-active'); if(lp) lp.style.display = 'block'; window.renderListAdminPt('Proses', 'list-pt-proses'); } }
         
-        // BUGFIX BLANK PT ADMIN
         window.renderListAdminPt = function(filterStatus, containerId) { 
             const container = document.getElementById(containerId); 
             if(!container) return; container.innerHTML = ""; 
@@ -1569,7 +1967,6 @@
         window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = (data.targetTrialList && Array.isArray(data.targetTrialList)) ? data.targetTrialList.join(', ') : (data.targetTrial || "-"); const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'block'; const lp = document.getElementById('list-pt-proses'); if(lp) lp.style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
         window.simpanPtHasil = async function() { const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); window.toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; const spf = document.getElementById('status-pt-foto'); if(spf) spf.innerHTML = ""; const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'none'; await window.ambilDataPt(); window.switchTabPt('proses'); } catch(e) {} window.toggleLoader(false); }
         
-        // --- PUSAT PERBAIKAN PROGRESS TRIAL (BUGFIX BLANK) ---
         window.bukaPtProgress = async function() { 
             window.navigasi('pt-progress-screen'); 
             await window.ambilDataPt(); 
@@ -1642,7 +2039,6 @@
         window.ambilDataGosokMold = async function() { window.toggleLoader(true, "Mengunduh..."); gosokDatabase = []; try { const q = query(collection(db, "laporan_gosok_mold")); const snapshot = await getDocs(q); snapshot.forEach(doc => gosokDatabase.push({id: doc.id, ...doc.data()})); gosokDatabase.sort((a,b) => b.timestamp - a.timestamp); const container = document.getElementById('list-gosok-riwayat'); if(!container) return; container.innerHTML = ""; if (gosokDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } gosokDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; }); } catch(e) {} window.toggleLoader(false); }
         window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; border: 1px solid #cbd5e1;">${idx + 1}</td><td style="border: 1px solid #cbd5e1;"><strong>${item.mesin}</strong></td><td style="border: 1px solid #cbd5e1;">${item.mold}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.start}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.finish}</td><td style="text-align:center; font-weight:bold; border: 1px solid #cbd5e1;">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong>${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td>${data.waktuRecord}</td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th>No</th><th>Mesin</th><th>Nama Mold</th><th>Start</th><th>Finish</th><th>Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
 
-        // EKSPOR & CETAK
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(() => window.toggleLoader(false)); }, 200); }
         window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
