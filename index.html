@@ -71,6 +71,7 @@
         @keyframes diveIn { 0% { opacity: 0; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1); } }
 
         .content-wrapper { max-width: 700px; margin: auto; position: relative;} 
+        .content-wrapper-wide { max-width: 1100px; margin: auto; position: relative; }
         .header { background: var(--primary); color: white; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.2);}
         .bg-cyberpunk .header { background: #0f172a; border: 1px solid #38bdf8; box-shadow: 0 0 15px rgba(56,189,248,0.3); color: #38bdf8; text-shadow: 0 0 5px rgba(56,189,248,0.8); }
 
@@ -89,59 +90,40 @@
         }
         .neon-trigger-btn:active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); }
 
-        .menu-circle-wrap { 
-            position: relative; width: 280px; height: 280px; margin: 40px auto 30px auto; border-radius: 50%; 
-            border: 2px dashed rgba(56, 189, 248, 0.3); 
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.1), inset 0 0 30px rgba(56, 189, 248, 0.1);
-            animation: spinOrbit 20s linear infinite; 
-        }
+        /* --- DASHBOARD AI EXECUTIVE STYLE --- */
+        .dash-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .dash-kpi-card { background: linear-gradient(145deg, #1e293b, #0f172a); padding: 20px; border-radius: 12px; border-top: 4px solid #3b82f6; box-shadow: 0 5px 15px rgba(0,0,0,0.2); color: white; display:flex; flex-direction:column; justify-content:space-between;}
+        .dash-kpi-card h4 { margin: 0 0 10px 0; font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items:center; gap:8px;}
+        .dash-kpi-card .val { font-size: 28px; font-weight: 900; color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.4); margin:0;}
+        .dash-kpi-card.green { border-top-color: #10b981; } .dash-kpi-card.green .val { color: #34d399; text-shadow: 0 0 10px rgba(52,211,153,0.4); }
+        .dash-kpi-card.orange { border-top-color: #f59e0b; } .dash-kpi-card.orange .val { color: #fbbf24; text-shadow: 0 0 10px rgba(251,191,36,0.4); }
+        .dash-kpi-card.purple { border-top-color: #8b5cf6; } .dash-kpi-card.purple .val { color: #a78bfa; text-shadow: 0 0 10px rgba(167,139,250,0.4); }
+
+        .dash-chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .dash-chart-box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 1px solid #cbd5e1; }
+        .dash-chart-box h3 { margin: 0 0 15px 0; font-size: 14px; color: #334155; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; text-transform:uppercase;}
+        .chart-container-inner { position: relative; height: 280px; width: 100%; }
+        @media (max-width: 768px) { .dash-chart-grid { grid-template-columns: 1fr; } }
+
+        /* MENU SATELIT LINGKARAN BERPUTAR BOLA 3D NEON */
+        .menu-circle-wrap { position: relative; width: 280px; height: 280px; margin: 40px auto 30px auto; border-radius: 50%; border: 2px dashed rgba(56, 189, 248, 0.3); box-shadow: 0 0 30px rgba(56, 189, 248, 0.1), inset 0 0 30px rgba(56, 189, 248, 0.1); animation: spinOrbit 20s linear infinite; }
         @keyframes spinOrbit { 100% { transform: rotate(360deg); } }
         .menu-circle-wrap:active, .menu-circle-wrap:active .counter-spin-1, .menu-circle-wrap:active .counter-spin-2, .menu-circle-wrap:active .counter-spin-3 { animation-play-state: paused; }
-        
         .circle-orbit { position: absolute; top: 50%; left: 50%; width: 110px; height: 110px; margin: -55px; }
-        .orbit-1 { transform: rotate(0deg) translateX(140px); }
-        .orbit-2 { transform: rotate(120deg) translateX(140px); }
-        .orbit-3 { transform: rotate(240deg) translateX(140px); }
-        
-        .counter-spin-1 { width: 100%; height: 100%; animation: spinRev1 20s linear infinite; }
-        .counter-spin-2 { width: 100%; height: 100%; animation: spinRev2 20s linear infinite; }
-        .counter-spin-3 { width: 100%; height: 100%; animation: spinRev3 20s linear infinite; }
-        @keyframes spinRev1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } }
-        @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } }
-        @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
-
-        .core-btn {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 70px; height: 70px; background: radial-gradient(circle, #1e293b, #0f172a);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            color: #38bdf8; font-size: 30px; cursor: pointer; border: 2px solid #38bdf8;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3);
-            transition: all 0.3s ease; z-index: 10;
-            animation: pulse-core 2s infinite;
-        }
+        .orbit-1 { transform: rotate(0deg) translateX(140px); } .orbit-2 { transform: rotate(120deg) translateX(140px); } .orbit-3 { transform: rotate(240deg) translateX(140px); }
+        .counter-spin-1 { width: 100%; height: 100%; animation: spinRev1 20s linear infinite; } .counter-spin-2 { width: 100%; height: 100%; animation: spinRev2 20s linear infinite; } .counter-spin-3 { width: 100%; height: 100%; animation: spinRev3 20s linear infinite; }
+        @keyframes spinRev1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(-360deg); } } @keyframes spinRev2 { 0% { transform: rotate(-120deg); } 100% { transform: rotate(-480deg); } } @keyframes spinRev3 { 0% { transform: rotate(-240deg); } 100% { transform: rotate(-600deg); } }
+        .core-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 70px; height: 70px; background: radial-gradient(circle, #1e293b, #0f172a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #38bdf8; font-size: 30px; cursor: pointer; border: 2px solid #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3); transition: all 0.3s ease; z-index: 10; animation: pulse-core 2s infinite; }
         .core-btn:active { transform: translate(-50%, -50%) scale(0.9); background: #38bdf8; color: #0f172a; box-shadow: 0 0 25px rgba(56, 189, 248, 0.8); animation: none; }
-        @keyframes pulse-core {
-            0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 10px rgba(56, 189, 248, 0.2); }
-            50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.8), inset 0 0 20px rgba(56, 189, 248, 0.5); }
-        }
-
-        .circle-btn { 
-            width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; cursor: pointer; border: 2px solid; 
-            transition: transform 0.2s, filter 0.2s; 
-            background: radial-gradient(circle at 30% 30%, #1e293b, #020617); 
-        }
-        .circle-btn:active { transform: scale(0.9); filter: brightness(1.5); }
-        .circle-btn i { font-size: 26px; margin-bottom: 5px; }
-
+        @keyframes pulse-core { 0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.4), inset 0 0 10px rgba(56, 189, 248, 0.2); } 50% { box-shadow: 0 0 25px rgba(56, 189, 248, 0.8), inset 0 0 20px rgba(56, 189, 248, 0.5); } }
+        .circle-btn { width: 100%; height: 100%; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 12px; font-weight: 900; line-height: 1.3; cursor: pointer; border: 2px solid; transition: transform 0.2s, filter 0.2s; background: radial-gradient(circle at 30% 30%, #1e293b, #020617); }
+        .circle-btn:active { transform: scale(0.9); filter: brightness(1.5); } .circle-btn i { font-size: 26px; margin-bottom: 5px; }
         @keyframes pulse-neon-green { 0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.4); } 50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.8); } }
         @keyframes pulse-neon-blue { 0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.4); } 50% { box-shadow: 0 0 35px rgba(59, 130, 246, 0.8); } }
         @keyframes pulse-neon-purple { 0%, 100% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); } 50% { box-shadow: 0 0 35px rgba(139, 92, 246, 0.8); } }
-
         .neon-green { border-color: rgba(16, 185, 129, 0.8); color: #34d399; text-shadow: 0 0 10px #34d399; animation: pulse-neon-green 3s infinite ease-in-out; }
         .neon-blue { border-color: rgba(59, 130, 246, 0.8); color: #60a5fa; text-shadow: 0 0 10px #60a5fa; animation: pulse-neon-blue 3s infinite ease-in-out 1s; } 
         .neon-purple { border-color: rgba(139, 92, 246, 0.8); color: #a78bfa; text-shadow: 0 0 10px #a78bfa; animation: pulse-neon-purple 3s infinite ease-in-out 2s; } 
-
         .neon-panel { background: linear-gradient(145deg, rgba(15,23,42,0.6), rgba(30,41,59,0.8)); border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(56, 189, 248, 0.3), 0 0 20px rgba(56, 189, 248, 0.1); position: relative; overflow: hidden; border: 1px solid #38bdf8; backdrop-filter: blur(10px); }
         .neon-title { color: #fff; text-align: center; font-size: 16px; font-weight: 900; letter-spacing: 2px; margin: 0 0 20px 0; text-shadow: 0 0 5px #38bdf8, 0 0 10px #38bdf8; display: flex; align-items: center; justify-content: center; gap: 10px; }
         .neon-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 20px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
@@ -153,6 +135,7 @@
         .neon-card .neon-num { font-size: 22px; font-weight: 900; margin: 5px 0 0; color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.8); }
         .neon-chart-container { position: relative; height: 260px; width: 100%; border-top: 1px dashed rgba(56,189,248,0.3); padding-top: 15px;}
 
+        /* --- FORMULIR --- */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-weight: bold; color: #334155; }
         input[type="text"], input[type="time"], input[type="datetime-local"], input[type="date"], input[type="number"], select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; background: white; font-family: inherit; }
@@ -168,11 +151,13 @@
         .btn-camera { display: inline-block; width: 100%; padding: 12px; background-color: #475569; color: white; text-align: center; border-radius: 8px; cursor: pointer; font-weight: bold; box-sizing: border-box; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: 0.3s; }
         .file-status { display: block; margin-top: 8px; font-size: 14px; color: var(--cepat); font-weight: bold; text-align: center;}
 
+        /* --- TABS --- */
         .tab-container { display: flex; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;}
         .tab-btn { flex: 1; padding: 10px 4px; border: none; background: #e2e8f0; font-weight: bold; font-size: 12px; cursor: pointer; transition: 0.3s; color: #475569;}
         .tab-active { background: var(--secondary); color: white; }
 
-        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; color: black;}
+        /* --- KARTU PROGRES --- */
+        .progress-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-left: 5px solid gray; transition: transform 0.2s; color: black; display: flex; flex-direction: column; justify-content: space-between;}
         .progress-card:active { transform: scale(0.98); }
         .status-badge { display: inline-block; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; color: white; margin-top: 10px;}
         .bg-proses { background-color: var(--proses); color: #000; }
@@ -185,6 +170,7 @@
         .btn-pdf { background-color: #db2777; }
         .btn-jpg { background-color: #f59e0b; color: #000; }
 
+        /* --- LEMBAR LAPORAN --- */
         .report-sheet { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); color: #333; margin-bottom: 20px;}
         .report-header { text-align: center; border-bottom: 3px double #334155; padding-bottom: 15px; margin-bottom: 20px; }
         .report-header h2 { margin: 0; color: var(--primary); font-size: 20px; text-transform: uppercase; }
@@ -195,7 +181,7 @@
         .report-img-box { flex: 1; border: 1px dashed #94a3b8; padding: 10px; text-align: center; border-radius: 5px; font-size: 12px;}
         .report-img-box img { max-width: 100%; max-height: 250px; object-fit: contain; border-radius: 5px; margin-top: 10px; }
         
-        /* --- GANTT CHART MASTER MOLD --- */
+        /* GANTT CHART MASTER MOLD */
         .gantt-table { width: 100%; border-collapse: collapse; min-width: 1000px; font-size: 11px; background: white; color: #1e293b; border: 2px solid #1e293b; }
         .gantt-table th, .gantt-table td { border: 1px solid #64748b; padding: 6px 4px; text-align: center; vertical-align: middle; }
         .gantt-th-bg { background-color: #a7f3d0; color: #064e3b; font-weight: bold; }
@@ -215,17 +201,21 @@
         .spinner { border: 5px solid #334155; border-top: 5px solid var(--secondary); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom: 15px;}
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* SETINGAN CETAK PDF PINTAR */
         @media print {
             body { background: white !important; }
             .screen:not(.active-screen) { display: none !important; } 
             .header, .export-row, .btn-bottom-back, .btn-print-detail, .tab-container, .filter-box { display: none !important; }
             .screen { padding: 0 !important; }
-            .content-wrapper { max-width: 100% !important; margin: 0; }
+            .content-wrapper, .content-wrapper-wide { max-width: 100%; margin: 0; }
             .progress-card { border: 1px solid #ccc; box-shadow: none; break-inside: avoid; }
             .report-sheet { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; color: black; }
             .report-table th, .report-table td { border: 1px solid black !important; }
             .report-header { border-bottom-color: black !important; }
             .eval-list li { border: 1px solid #ccc; background: transparent; text-decoration: none; page-break-inside: avoid;}
+            .dash-kpi-card { background: white !important; color: black !important; border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid;}
+            .dash-kpi-card .val { color: black !important; text-shadow: none !important;}
+            .dash-chart-box { border: 1px solid #ccc !important; box-shadow: none !important; break-inside: avoid;}
         }
     </style>
 </head>
@@ -279,13 +269,13 @@
             <div class="grid-menu">
                 <div class="menu-card" onclick="window.inisialisasiFormWS(); window.navigasi('new-project-screen')"><i class="fas fa-plus-circle"></i> 1. Input New Project</div>
                 <div class="menu-card" onclick="window.navigasi('update-project-screen'); window.renderUpdateListWS();"><i class="fas fa-edit"></i> 2. Input Update Project</div>
-                <div class="menu-card" onclick="window.navigasi('progress-screen'); window.resetFilterWS(); window.renderProgressListWS();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
+                <div class="menu-card" onclick="window.navigasi('progress-screen'); window.switchTabProgressWS('data'); window.renderProgressListWS();"><i class="fas fa-chart-line"></i> 3. Control Progres Project</div>
             </div>
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
 
-    <!-- FORM INPUT NEW PROJECT (WORKSHOP) -->
+    <!-- FORM INPUT NEW PROJECT (WORKSHOP) - TAMBAHAN MULAI & SELESAI -->
     <div id="new-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Input New Project</h2></div>
@@ -293,6 +283,10 @@
                 <div class="form-group">
                     <label>Nama Proyek / MOLD</label>
                     <input type="text" id="ws-np-nama" placeholder="Masukkan nama proyek..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+                </div>
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;"><label>Mulai Pekerjaan</label><input type="date" id="ws-np-start-date" required></div>
+                    <div style="flex: 1;"><label>Target Selesai</label><input type="date" id="ws-np-finish-date" required></div>
                 </div>
                 <div class="form-group" style="display: flex; gap: 10px;">
                     <div style="flex: 1;"><label>Estimasi Hari</label><input type="text" id="ws-np-hari" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary); text-align:center;" value="0 Hari"></div>
@@ -311,7 +305,6 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- UPDATE PROJECT (WORKSHOP) -->
     <div id="update-project-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -350,21 +343,44 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-    <!-- CONTROL PROGRES (WORKSHOP) -->
+
+    <!-- CONTROL PROGRES (WORKSHOP) - VIEW & REPORT DATA -->
     <div id="progress-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2>Control Progres Project</h2></div>
-            <div class="filter-box" style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-                <label style="color: var(--primary); font-size: 14px; font-weight:bold;"><i class="fas fa-search"></i> Pencarian Proyek:</label>
-                <div style="display: flex; gap:10px; align-items:center; margin-top:10px;">
-                    <input type="text" id="ws-filter-nama" placeholder="Ketik nama proyek/mold..." style="flex:1; text-transform: uppercase;">
+            
+            <div class="tab-container" style="background: white; border: 1px solid #cbd5e1; padding: 4px;">
+                <button class="tab-btn tab-active" type="button" id="tab-prog-view" onclick="window.switchTabProgressWS('data')" style="border-radius: 6px;">View Data</button>
+                <button class="tab-btn" type="button" id="tab-prog-report" onclick="window.switchTabProgressWS('report')" style="border-radius: 6px;">Report Data</button>
+            </div>
+
+            <!-- BAGIAN VIEW DATA -->
+            <div id="ws-prog-view-data" style="display:block;">
+                <div class="filter-box" style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <label style="color: var(--primary); font-size: 14px; font-weight:bold;"><i class="fas fa-search"></i> Pencarian & Filter Tanggal:</label>
+                    <div style="display: flex; gap:10px; align-items:center; margin-top:10px;">
+                        <input type="text" id="ws-filter-nama" placeholder="NAMA PROYEK..." style="flex:2; text-transform: uppercase;">
+                        <input type="date" id="ws-filter-tanggal" style="flex:1;">
+                    </div>
+                    <div style="display: flex; gap:10px; margin-top:10px;">
+                        <button class="btn-submit" type="button" style="flex:2;" onclick="window.terapkanFilterWS()">Filter Data</button>
+                        <button class="btn-submit" type="button" style="flex:1; background:#ef4444;" onclick="window.resetFilterWS()">Reset</button>
+                    </div>
                 </div>
-                <div style="display: flex; gap:10px; margin-top:10px;">
-                    <button class="btn-submit" type="button" style="flex:2;" onclick="window.terapkanFilterWS()">Cari Data</button>
-                    <button class="btn-submit" type="button" style="flex:1; background:#ef4444;" onclick="window.resetFilterWS()">Reset</button>
+                <div id="list-ws-progress"></div>
+            </div>
+
+            <!-- BAGIAN REPORT DATA (CHECKBOX AI) -->
+            <div id="ws-prog-report-data" style="display:none;">
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p style="margin:0 0 10px 0; font-size:13px; color:gray;"><i>Centang proyek yang ingin dianalisa oleh AI, lalu tekan tombol di bawah.</i></p>
+                    <div id="list-ws-report-checkbox" style="max-height: 400px; overflow-y:auto; border:1px solid #e2e8f0; padding:10px; border-radius:6px; background:#f8fafc;">
+                        <!-- Diisi oleh Javascript -->
+                    </div>
+                    <button type="button" onclick="window.generateAIReport()" style="width:100%; padding:15px; margin-top:15px; background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:white; border:none; border-radius:8px; font-weight:900; font-size:16px; cursor:pointer; box-shadow:0 4px 10px rgba(139,92,246,0.4); transition:0.2s;"><i class="fas fa-brain"></i> AI BUAT REPORT EXECUTIVE</button>
                 </div>
             </div>
-            <div id="list-ws-progress"></div>
+
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -386,6 +402,79 @@
 
             <div class="report-sheet" id="report-ws-content" style="overflow-x: auto; padding: 10px;"></div>
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- AI EXECUTIVE DASHBOARD SCREEN -->
+    <div id="ai-dashboard-screen" class="screen screen-bg">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background:#0f172a; border-bottom:4px solid #8b5cf6;">
+                <h2 style="color:#a78bfa; margin:0;"><i class="fas fa-chart-line"></i> EXECUTIVE AI DASHBOARD</h2>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#cbd5e1;">Multivariate Analytics Report</p>
+            </div>
+            
+            <div class="export-row" style="max-width:700px; margin:0 auto 20px auto;">
+                <button class="btn-export btn-jpg" type="button" onclick="window.cetakGambarUniversal('dashboard-report-content', 'AI_Dashboard')"><i class="fas fa-image"></i> Download Dashboard JPG</button>
+                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button>
+            </div>
+
+            <div id="dashboard-report-content" style="background:white; padding:20px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1);">
+                <!-- KPI CARDS -->
+                <div class="dash-kpi-grid">
+                    <div class="dash-kpi-card" style="border-top-color:#3b82f6;">
+                        <h4><i class="fas fa-project-diagram"></i> Total Proyek Dianalisa</h4>
+                        <div class="val" id="dash-kpi-proyek" style="color:#3b82f6; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#10b981;">
+                        <h4><i class="fas fa-clock"></i> Estimasi Jam Global</h4>
+                        <div class="val" id="dash-kpi-est" style="color:#10b981; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#f59e0b;">
+                        <h4><i class="fas fa-stopwatch"></i> Actual Pengerjaan</h4>
+                        <div class="val" id="dash-kpi-act" style="color:#f59e0b; text-shadow:none;">0</div>
+                    </div>
+                    <div class="dash-kpi-card" style="border-top-color:#8b5cf6;">
+                        <h4><i class="fas fa-chart-pie"></i> ACH Rate Global</h4>
+                        <div class="val" id="dash-kpi-ach" style="color:#8b5cf6; text-shadow:none;">0%</div>
+                    </div>
+                </div>
+
+                <!-- CHARTS -->
+                <div class="dash-chart-grid">
+                    <div class="dash-chart-box">
+                        <h3><i class="fas fa-chart-pie" style="color:#3b82f6;"></i> Distribusi Proses (Univariate)</h3>
+                        <div class="chart-container-inner"><canvas id="chartUnivariate"></canvas></div>
+                    </div>
+                    <div class="dash-chart-box">
+                        <h3><i class="fas fa-chart-bar" style="color:#10b981;"></i> Estimasi vs Actual (Bivariate)</h3>
+                        <div class="chart-container-inner"><canvas id="chartBivariate"></canvas></div>
+                    </div>
+                </div>
+                
+                <div class="dash-chart-box" style="margin-bottom:25px;">
+                    <h3><i class="fas fa-project-diagram" style="color:#8b5cf6;"></i> Tren Estimasi vs ACH Rate (Multivariate)</h3>
+                    <div class="chart-container-inner" style="height:350px;"><canvas id="chartMultivariate"></canvas></div>
+                </div>
+                
+                <!-- SUMMARY TABLE -->
+                <h3 style="color:var(--primary); font-size:16px; border-bottom:2px solid #cbd5e1; padding-bottom:5px;">Rincian Komparasi Proyek</h3>
+                <div style="overflow-x:auto;">
+                    <table class="report-table" style="font-size:11px;">
+                        <thead>
+                            <tr style="background:#e2e8f0;">
+                                <th>Nama Proyek</th>
+                                <th style="text-align:center;">Estimasi (Jam)</th>
+                                <th style="text-align:center;">Actual (Jam)</th>
+                                <th style="text-align:center;">ACH Rate (%)</th>
+                                <th>Status Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dash-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <button class="btn-bottom-back" type="button" onclick="window.navigasi('progress-screen')"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
         </div>
     </div>
 
@@ -430,7 +519,6 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- UPDATE MOLD REPAIR -->
     <div id="mr-update-proyek-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -588,6 +676,7 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- SUB INFORMASI -->
     <div id="sub-info-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -673,303 +762,7 @@
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & PUSAT OLAH DATA -->
-    <!-- ========================================== -->
-    <div id="adm-mold-menu-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Sistem ADM MOLD</h2></div>
-            
-            <div class="menu-circle-wrap">
-                <div class="core-btn" onclick="window.navigasi('data-olahan-menu-screen')" title="Pusat Olah & Rekap Data">
-                    <i class="fas fa-user-cog"></i>
-                </div>
-                
-                <div class="circle-orbit orbit-1">
-                    <div class="counter-spin-1">
-                        <div class="circle-btn neon-green" onclick="window.navigasi('adm-harian-menu-screen')">
-                            <i class="fas fa-calendar-day"></i><span>1. Kerja<br>Harian</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="circle-orbit orbit-2">
-                    <div class="counter-spin-2">
-                        <div class="circle-btn neon-blue" onclick="window.bukaSubInfo('LAPORAN KERJA MINGGUAN')">
-                            <i class="fas fa-calendar-week"></i><span>2. Kerja<br>Mingguan</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="circle-orbit orbit-3">
-                    <div class="counter-spin-3">
-                        <div class="circle-btn neon-purple" onclick="window.bukaSubInfo('LAPORAN KERJA BULANAN')">
-                            <i class="fas fa-calendar-alt"></i><span>3. Kerja<br>Bulanan</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <p style="text-align: center; color: gray; font-size: 12px; margin: 10px 0 30px 0;"><i>*Tahan lingkaran untuk menghentikan putaran. Klik ikon tengah (Admin) untuk rekap data.</i></p>
-
-            <div class="menu-card neon-trigger-btn" onclick="window.bukaAnalisaPerforma()">
-                <i class="fas fa-bolt"></i> PUSAT ANALISA PERFORMA (KLIK)
-            </div>
-
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <!-- PUSAT OLAH DATA -->
-    <div id="data-olahan-menu-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Pusat Olah & Rekap Data</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 20px;"><i>Silakan pilih kategori data operasional yang ingin direkap dan dikelola.</i></p>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputGosokMold()" style="border-left-color: #f59e0b;"><i class="fas fa-hammer"></i> 1. Input Gosok Mold (AI)</div>
-                <div class="menu-card" onclick="window.bukaRiwayatGosokMold()" style="border-left-color: #eab308;"><i class="fas fa-history"></i> 2. Riwayat & Export Gosok Mold</div>
-                <div class="menu-card" onclick="window.bukaSubInfo('DATA OLAHAN PKM')" style="border-left-color: #10b981;"><i class="fas fa-cogs"></i> 3. Data Olahan PKM</div>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <!-- GOSOK MOLD AI -->
-    <div id="gosok-mold-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Data Olahan Gosok Mold</h2></div>
-            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px;">
-                <div class="form-group">
-                    <label>Paste Laporan Mentah Lapangan</label>
-                    <textarea id="gosok-raw-input" rows="6" placeholder="Contoh:&#10;1. HTF 470 W9&#10;BW x Sambung 1i&#10;16:15-16:17"></textarea>
-                    <button type="button" onclick="window.aiProsesGosokMold()" style="width:100%; padding:12px; margin-top:8px; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-robot"></i> AI Rekap & Sortir Laporan</button>
-                </div>
-            </div>
-            <div id="gosok-result-container" style="display: none; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <h3 style="margin-top:0; color: var(--primary); font-size: 16px; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px;">Hasil Olahan Otomatis (Bisa Diedit Manual)</h3>
-                <div style="overflow-x: auto;">
-                    <table class="report-table" style="min-width: 550px;">
-                        <thead><tr><th style="width: 25%;">Nama Mesin</th><th style="width: 30%;">Nama Mold</th><th style="width: 15%;">Start</th><th style="width: 15%;">Finish</th><th style="width: 15%; text-align:center;">Durasi</th></tr></thead>
-                        <tbody id="gosok-table-body"></tbody>
-                    </table>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanOlahanGosokMold()" style="margin-top: 15px;"><i class="fas fa-save"></i> SIMPAN REKAPAN KE DATABASE</button>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <!-- RIWAYAT GOSOK MOLD -->
-    <div id="gosok-riwayat-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Riwayat Gosok Mold</h2></div>
-            <div class="export-row"><button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelLengkap()" style="width: 100%;"><i class="fas fa-file-excel"></i> Download Rekap Semua Data (Excel)</button></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail dan cetak PDF/JPG.</i></p>
-            <div id="list-gosok-riwayat"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="gosok-detail-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Detail Laporan Gosok</h2></div>
-            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadGosokJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak PDF</button></div>
-            <div class="report-sheet" id="report-gosok-content"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.bukaRiwayatGosokMold()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
-        </div>
-    </div>
-
-    <!-- PUSAT ANALISA PERFORMA AI -->
-    <div id="analisa-performa-screen" class="screen bg-cyberpunk">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-chart-pie"></i> PUSAT ANALISA PERFORMA</h2></div>
-            <div class="neon-panel">
-                <h3 class="neon-title"><i class="fas fa-robot"></i> AI MULTI-DIVISION INTELLIGENCE <i class="fas fa-robot"></i></h3>
-                <div class="neon-tabs">
-                    <button class="neon-tab-btn active" type="button" id="ntab-store" onclick="window.switchTabAnalisa('DIVISI MOLD STORE')">Mold Store</button>
-                    <button class="neon-tab-btn" type="button" id="ntab-repair" onclick="window.switchTabAnalisa('DIVISI MOLD REPAIR')">Mold Repair</button>
-                    <button class="neon-tab-btn" type="button" id="ntab-trouble" onclick="window.switchTabAnalisa('DIVISI MOLD TROUBLE')">Mold Trouble</button>
-                    <button class="neon-tab-btn" type="button" id="ntab-workshop" onclick="window.switchTabAnalisa('DIVISI MOLD WORKSHOP')">Mold Workshop</button>
-                    <button class="neon-tab-btn" type="button" id="ntab-adm" onclick="window.switchTabAnalisa('ADM UNIFIED')">Performa ADM</button>
-                    <button class="neon-tab-btn" type="button" id="ntab-all" onclick="window.switchTabAnalisa('ALL')">Global All</button>
-                </div>
-                <div class="neon-grid">
-                    <div class="neon-card"><h4>Total Proyek</h4><div class="neon-num" id="neon-val-target" style="color: #38bdf8;">0</div></div>
-                    <div class="neon-card"><h4>Selesai</h4><div class="neon-num" id="neon-val-selesai">0</div></div>
-                    <div class="neon-card"><h4>Success Rate</h4><div class="neon-num" id="neon-val-persen" style="color: #f59e0b;">0%</div></div>
-                </div>
-                <div class="neon-chart-container"><canvas id="performaChart"></canvas></div>
-                <p id="neon-chart-desc" style="text-align:center; font-size:10px; color:#cbd5e1; margin-top:10px; margin-bottom:0;">*Analisa Terstruktur Multi-Divisi & ADM Real-Time</p>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
-        </div>
-    </div>
-
-    <!-- ADM HARIAN -->
-    <div id="adm-harian-menu-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Laporan Kerja Harian</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputTargetAdm()" style="border-left-color: #f97316;"><i class="fas fa-bullseye"></i> 1. Target Harian Kerja</div>
-                <div class="menu-card" onclick="window.bukaAdmHarianActual()" style="border-left-color: #14b8a6;"><i class="fas fa-check-double"></i> 2. Update Actual Terealisasi</div>
-                <div class="menu-card" onclick="window.bukaAdmHarianProgress()" style="border-left-color: #ec4899;"><i class="fas fa-chart-line"></i> 3. Control Progres Kinerja</div>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="adm-harian-target-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Input Target Harian</h2></div>
-            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Nama Admin Pembuat</label><input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);"></div>
-                <div class="form-group"><label>Tanggal Pelaksanaan</label><input type="date" id="adm-target-tgl" readonly style="background:#f1f5f9; color:var(--primary); font-weight:bold;"></div>
-                <div class="form-group" style="display: flex; gap: 10px;">
-                    <div style="flex: 1;"><label>Waktu Dimulai</label><input type="time" id="adm-target-mulai" value="08:00"></div>
-                    <div style="flex: 1;"><label>Target Waktu Selesai</label><input type="time" id="adm-target-selesai" value="16:00"></div>
-                </div>
-                <div class="form-group">
-                    <label>Rencana Kerja</label>
-                    <div style="display: flex; gap: 5px; margin-bottom: 10px;"><input type="text" id="adm-input-rencana" placeholder="Ketik rencana kerja..."><button type="button" onclick="window.tambahRencanaKerja()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button></div>
-                    <ul id="list-rencana-kerja" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;"></ul>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanAdmTarget()">SIMPAN TARGET HARIAN</button>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="adm-harian-actual-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Update Actual Terealisasi</h2></div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-adm-belum" onclick="window.switchTabAdm('belum')">Belum Terealisasi</button>
-                <button class="tab-btn" type="button" id="tab-adm-sudah" onclick="window.switchTabAdm('sudah')">Sudah Terealisasi</button>
-                <button class="tab-btn" type="button" id="tab-adm-gagal" onclick="window.switchTabAdm('gagal')">Gagal Terealisasi</button>
-            </div>
-            <div id="list-adm-belum"></div>
-            <div id="list-adm-sudah" style="display: none;"></div>
-            <div id="list-adm-gagal" style="display: none;"></div>
-
-            <div id="form-adm-actual" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
-                <h3 style="margin-top:0; color: var(--primary);">Update Actual: <br><span id="adm-actual-tampil" style="color: var(--secondary); font-size: 16px;"></span></h3>
-                <input type="hidden" id="adm-actual-id"><input type="hidden" id="adm-actual-tgl-ori"> 
-                <div id="adm-actual-time-warning" style="display:none; background:#fee2e2; border-left:4px solid #ef4444; padding:10px; font-size:12px; font-weight:bold; color:#b91c1c; margin-bottom:15px; border-radius:4px;"><i class="fas fa-lock"></i> Waktu menunjukkan lewat pukul 16:00. Anda WAJIB mengisi 'Catatan' di bawah!</div>
-                <input type="hidden" id="adm-actual-tgl">
-                <div class="form-group" id="adm-actual-list-group">
-                    <label>Daftar Rencana Kerja:</label>
-                    <ul id="adm-actual-ceklis" class="eval-list" style="margin-bottom:10px;"></ul>
-                    <div id="adm-actual-add-group" style="display: flex; gap: 5px;"><input type="text" id="adm-actual-input-baru" placeholder="Tugas baru di luar rencana..."><button type="button" onclick="window.tambahTugasBaruActual()" style="padding: 10px 15px; background: var(--proses); color: white; border: none; border-radius: 5px;"><i class="fas fa-plus"></i></button></div>
-                </div>
-                <div class="form-group"><label>Catatan Actual</label><textarea id="adm-actual-ket" rows="3" placeholder="Isi kendala atau alasan..."></textarea></div>
-                <div class="form-group">
-                    <label>Bukti Foto Actual (Opsional)</label><label for="adm-actual-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label>
-                    <input type="file" id="adm-actual-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-adm-foto')"><span id="status-adm-foto" class="file-status"></span>
-                </div>
-                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalAdmActual()">BATAL</button><button class="btn-submit" type="button" id="btn-simpan-actual" onclick="window.simpanAdmActual()">UPDATE & SIMPAN</button></div>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="adm-harian-progress-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Control Progres Kinerja Admin</h2></div>
-            <p style="font-size: 13px; text-align: center; color: gray; margin-bottom: 5px;"><i>*Klik pada list untuk melihat detail.</i></p>
-            <div id="list-adm-progress"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="adm-harian-detail-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Detail Laporan Harian Admin</h2></div>
-            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadAdmJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
-            <div class="report-sheet" id="report-adm-content"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.bukaAdmHarianProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
-        </div>
-    </div>
-
-    <!-- PERMINTAAN TRIAL -->
-    <div id="permintaan-trial-menu-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Sistem Permintaan Trial</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputPermintaanTrial()"><i class="fas fa-plus-circle"></i> 1. Input Permintaan Trial Baru</div>
-                <div class="menu-card" onclick="window.bukaPtAdmin()"><i class="fas fa-user-shield"></i> 2. Verifikasi & Update Admin</div>
-                <div class="menu-card" onclick="window.bukaPtProgress()"><i class="fas fa-chart-bar"></i> 3. Control Progres Trial</div>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="pt-input-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Input Permintaan Trial</h2></div>
-            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-                <div class="form-group"><label>Nama Peminta / User</label><input type="text" id="pt-input-user" placeholder="Nama pekerja..."></div>
-                <div class="form-group"><label>Hari, Tanggal Pengajuan</label><input type="text" id="pt-input-waktu" readonly style="background:#f1f5f9; font-weight:bold; color:var(--primary);"></div>
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-input-nama" placeholder="Masukkan nama mold..."></div>
-                <div class="form-group">
-                    <label>Target Trial / Permintaan</label>
-                    <div style="display: flex; gap: 5px; margin-bottom: 10px;"><input type="text" id="pt-input-target-item" placeholder="Ketik target trial..."><button type="button" onclick="window.tambahTargetTrial()" style="padding: 10px 15px; background: var(--secondary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;"><i class="fas fa-plus"></i></button></div>
-                    <ul id="list-target-trial" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 50px; border-radius: 8px;"></ul>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanPtInput()">SEND TO ADMIN</button>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="pt-admin-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Verifikasi Admin Mold</h2></div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-pt-belum" onclick="window.switchTabPt('belum')">Permintaan Masuk</button>
-                <button class="tab-btn" type="button" id="tab-pt-proses" onclick="window.switchTabPt('proses')">Sedang Proses</button>
-            </div>
-            <div id="list-pt-belum"></div><div id="list-pt-proses" style="display: none;"></div>
-            <div id="form-pt-verifikasi" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                <h3 style="margin-top:0; color: var(--primary);">Verifikasi Trial Mold</h3><input type="hidden" id="pt-verif-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-verif-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-verif-target" readonly></div>
-                <div class="form-group"><label>No Trial</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
-                <div class="form-group"><label>Tanggal Permintaan</label><input type="date" id="pt-verif-tgl"></div>
-                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalPtAdmin('verif')">Batal</button><button class="btn-submit" type="button" onclick="window.simpanPtVerifikasi()">VERIFIKASI & PROSES</button></div>
-            </div>
-            <div id="form-pt-hasil" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
-                <h3 style="margin-top:0; color: var(--primary);">Update Hasil Trial</h3><input type="hidden" id="pt-hasil-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-hasil-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-hasil-target" readonly></div>
-                <div class="form-group"><label>Hasil Trial</label><select id="pt-hasil-status"><option value="Selesai">✅ Selesai (Sukses)</option><option value="Gagal">❌ Gagal (Bermasalah)</option></select></div>
-                <div class="form-group"><label>Keterangan Masalah</label><textarea id="pt-hasil-ket" rows="3"></textarea></div>
-                <div class="form-group"><label>Upload Gambar</label><label for="pt-hasil-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-pt-foto')"><span id="status-pt-foto" class="file-status"></span></div>
-                <div style="display: flex; gap: 10px;"><button class="btn-submit" type="button" style="background: gray;" onclick="window.batalPtAdmin('hasil')">Batal</button><button class="btn-submit" type="button" onclick="window.simpanPtHasil()">SIMPAN HASIL</button></div>
-            </div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="pt-progress-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Control Progres Trial</h2></div>
-            <div id="list-pt-progress"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
-        </div>
-    </div>
-
-    <div id="pt-detail-screen" class="screen screen-bg">
-        <div class="content-wrapper">
-            <div class="header"><h2>Detail Laporan Trial</h2></div>
-            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadPtJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
-            <div class="report-sheet" id="report-pt-content"></div>
-            <button class="btn-bottom-back" type="button" onclick="window.bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MOLD TROUBLE                                              -->
-    <!-- ========================================================= -->
+    <!-- MOLD TROUBLE -->
     <div id="trouble-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header" style="background: #1e293b;">
@@ -1105,6 +898,11 @@
         let divisiAktif = "";
         let kategoriInfoAktif = "";
 
+        // CHART.JS INSTANCES
+        let chartUni = null;
+        let chartBi = null;
+        let chartMulti = null;
+
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -1227,23 +1025,21 @@
         }
 
         // =======================================================
-        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (ANTI-BLOKIR & DUAL VIEW)
+        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP (DUAL VIEW & DASHBOARD)
         // =======================================================
         window.tugasWorkshopArray = [];
         window.pilihanProsesMesin = ["BUBUT", "EDM", "BOR RADIAL", "ROUTER", "MILLING", "CNC", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
         
         window.inisialisasiFormWS = function() {
-            const namaEl = document.getElementById('ws-np-nama');
-            if(namaEl) namaEl.value = "";
+            const namaEl = document.getElementById('ws-np-nama'); if(namaEl) namaEl.value = "";
+            const startEl = document.getElementById('ws-np-start-date'); if(startEl) startEl.value = window.dapatkanTanggalLokal();
+            const finishEl = document.getElementById('ws-np-finish-date'); if(finishEl) finishEl.value = "";
             window.tugasWorkshopArray = [];
             window.tambahTugasUtamaWS(); 
         }
 
         window.tambahTugasUtamaWS = function() {
-            window.tugasWorkshopArray.push({
-                namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0,
-                punyaSub: false, subTugas: []
-            });
+            window.tugasWorkshopArray.push({ namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, punyaSub: false, subTugas: [], riwayatHarian: [] });
             window.renderRencanaKerjaWS();
         }
 
@@ -1251,22 +1047,15 @@
             window.tugasWorkshopArray[indexUtama].punyaSub = true;
             window.tugasWorkshopArray[indexUtama].proses = "Multi-Proses"; 
             window.tugasWorkshopArray[indexUtama].estimasiJam = 0; 
-            window.tugasWorkshopArray[indexUtama].subTugas.push({
-                namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0
-            });
+            window.tugasWorkshopArray[indexUtama].subTugas.push({ namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, riwayatHarian: [] });
             window.renderRencanaKerjaWS();
         }
 
         window.hapusTugasWS = function(indexUtama, indexSub = null) {
             if(indexSub !== null) {
                 window.tugasWorkshopArray[indexUtama].subTugas.splice(indexSub, 1);
-                if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) {
-                    window.tugasWorkshopArray[indexUtama].punyaSub = false;
-                    window.tugasWorkshopArray[indexUtama].proses = "";
-                }
-            } else {
-                window.tugasWorkshopArray.splice(indexUtama, 1);
-            }
+                if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) { window.tugasWorkshopArray[indexUtama].punyaSub = false; window.tugasWorkshopArray[indexUtama].proses = ""; }
+            } else { window.tugasWorkshopArray.splice(indexUtama, 1); }
             window.renderRencanaKerjaWS();
         }
 
@@ -1285,14 +1074,8 @@
         window.kalkulasiTotalWaktuWS = function() {
             let totalJam = 0;
             window.tugasWorkshopArray.forEach(tugas => {
-                if(tugas.punyaSub) {
-                    let sumSub = 0;
-                    tugas.subTugas.forEach(sub => sumSub += sub.estimasiJam);
-                    tugas.estimasiJam = sumSub; 
-                    totalJam += sumSub;
-                } else {
-                    totalJam += tugas.estimasiJam;
-                }
+                if(tugas.punyaSub) { let sumSub = 0; tugas.subTugas.forEach(sub => sumSub += sub.estimasiJam); tugas.estimasiJam = sumSub; totalJam += sumSub;
+                } else { totalJam += tugas.estimasiJam; }
             });
             let totalHari = (totalJam / 24).toFixed(1); 
             const jEl = document.getElementById('ws-np-jam'); if(jEl) jEl.value = totalJam + " Jam";
@@ -1300,83 +1083,43 @@
         }
 
         window.renderRencanaKerjaWS = function() {
-            const container = document.getElementById('ws-rencana-kerja-container');
-            if(!container) return;
-            container.innerHTML = "";
-            
-            let opsiMesinHtml = `<option value="" disabled selected>Pilih Proses</option>`;
-            window.pilihanProsesMesin.forEach(m => opsiMesinHtml += `<option value="${m}">${m}</option>`);
+            const container = document.getElementById('ws-rencana-kerja-container'); if(!container) return; container.innerHTML = "";
+            let opsiMesinHtml = `<option value="" disabled selected>Pilih Proses</option>`; window.pilihanProsesMesin.forEach(m => opsiMesinHtml += `<option value="${m}">${m}</option>`);
 
             window.tugasWorkshopArray.forEach((tugas, idx) => {
-                let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;">
-                    <div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;">
-                        <span>Tugas #${idx + 1}</span>
-                        <button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button>
-                    </div>
-                    <div style="padding: 15px;">
-                        <div class="form-group"><label>Nama Tugas</label><input type="text" value="${tugas.namaTugas}" oninput="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
-                
+                let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;"><div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;"><span>Tugas #${idx + 1}</span><button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button></div><div style="padding: 15px;"><div class="form-group"><label>Nama Tugas</label><input type="text" value="${tugas.namaTugas}" oninput="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
                 if(!tugas.punyaSub) {
-                    html += `<div style="display:flex; gap:10px;">
-                        <div style="flex:2;" class="form-group"><label>Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div>
-                        <div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div>
-                    </div>`;
+                    html += `<div style="display:flex; gap:10px;"><div style="flex:2;" class="form-group"><label>Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div><div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div></div>`;
                 }
-
                 if(tugas.punyaSub) {
                     html += `<div style="margin-top:10px; border-left: 3px solid var(--secondary); padding-left: 10px; margin-bottom:10px;">`;
                     tugas.subTugas.forEach((sub, subIdx) => {
-                        html += `<div style="background: white; padding: 10px; border-radius: 6px; border: 1px dashed #94a3b8; margin-bottom: 10px; position:relative;">
-                            <button type="button" onclick="window.hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button>
-                            <div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${sub.namaTugas}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div>
-                            <div style="display:flex; gap:10px;">
-                                <div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div>
-                                <div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div>
-                            </div>
-                        </div>`;
+                        html += `<div style="background: white; padding: 10px; border-radius: 6px; border: 1px dashed #94a3b8; margin-bottom: 10px; position:relative;"><button type="button" onclick="window.hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button><div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${sub.namaTugas}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div><div style="display:flex; gap:10px;"><div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div><div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div></div></div>`;
                     });
-                    html += `</div>`;
-                    html += `<div style="font-size:12px; color:var(--secondary); font-weight:bold; margin-bottom:10px;">Total Estimasi Sub: ${tugas.estimasiJam} Jam</div>`;
+                    html += `</div><div style="font-size:12px; color:var(--secondary); font-weight:bold; margin-bottom:10px;">Total Estimasi Sub: ${tugas.estimasiJam} Jam</div>`;
                 }
-
-                html += `<button type="button" onclick="window.tambahSubTugasWS(${idx})" style="background:#e2e8f0; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button>
-                    </div></div>`;
+                html += `<button type="button" onclick="window.tambahSubTugasWS(${idx})" style="background:#e2e8f0; color:#334155; border:1px solid #cbd5e1; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button></div></div>`;
                 container.innerHTML += html;
             });
             window.kalkulasiTotalWaktuWS();
         }
 
         window.simpanNewProjectWS = async function() {
-            const NotifLayar = (msg, isError = false) => {
-                window.toggleLoader(true, isError ? `❌ ${msg}` : `✅ ${msg}`);
-                setTimeout(() => window.toggleLoader(false), 2500);
-            };
-
+            const NotifLayar = (msg, isError = false) => { window.toggleLoader(true, isError ? `❌ ${msg}` : `✅ ${msg}`); setTimeout(() => window.toggleLoader(false), 2500); };
             try {
-                const inputNamaMold = document.getElementById('ws-np-nama');
-                if(!inputNamaMold) return alert("System Error: Kotak Nama Proyek tidak ditemukan.");
-                
-                const namaMold = inputNamaMold.value.trim();
+                const namaMold = document.getElementById('ws-np-nama').value.trim();
+                const startDate = document.getElementById('ws-np-start-date').value;
+                const finishDate = document.getElementById('ws-np-finish-date').value;
                 const estHari = document.getElementById('ws-np-hari').value || "0 Hari";
                 const estJam = document.getElementById('ws-np-jam').value || "0 Jam";
 
-                if(namaMold === "") {
-                    inputNamaMold.focus();
-                    window.scrollTo(0, 0);
-                    return NotifLayar("PERHATIAN: Nama Proyek / MOLD wajib diisi!", true);
-                }
+                if(namaMold === "" || !startDate || !finishDate) { window.scrollTo(0, 0); return NotifLayar("PERHATIAN: Nama Proyek, Tanggal Mulai, dan Tanggal Selesai wajib diisi!", true); }
+                if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) return NotifLayar("PERHATIAN: Minimal harus ada 1 Tugas Utama!", true);
 
-                if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) {
-                    return NotifLayar("PERHATIAN: Minimal harus ada 1 Tugas Utama!", true);
-                }
-
-                // Validasi Ketat
                 for (let i = 0; i < window.tugasWorkshopArray.length; i++) {
                     let tugas = window.tugasWorkshopArray[i];
                     if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return NotifLayar(`Nama Tugas Utama #${i + 1} belum diisi!`, true);
-                    
-                    if (!tugas.punyaSub) {
-                        if (!tugas.proses || tugas.proses === "") return NotifLayar(`Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`, true);
+                    if (!tugas.punyaSub) { if (!tugas.proses || tugas.proses === "") return NotifLayar(`Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`, true);
                     } else {
                         if (!tugas.subTugas || tugas.subTugas.length === 0) return NotifLayar(`Tugas Utama #${i + 1} memiliki Sub Tugas, tapi isinya kosong!`, true);
                         for (let j = 0; j < tugas.subTugas.length; j++) {
@@ -1389,106 +1132,45 @@
 
                 let dataSiapTembak = [];
                 window.tugasWorkshopArray.forEach(tugas => {
-                    let tugasBersih = {
-                        namaTugas: tugas.namaTugas,
-                        proses: tugas.proses || "Multi-Proses",
-                        estimasiJam: Number(tugas.estimasiJam) || 0,
-                        status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0,
-                        punyaSub: tugas.punyaSub,
-                        subTugas: []
-                    };
+                    let tugasBersih = { namaTugas: tugas.namaTugas, proses: tugas.proses || "Multi-Proses", estimasiJam: Number(tugas.estimasiJam) || 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, punyaSub: tugas.punyaSub, subTugas: [], riwayatHarian: [] };
                     if (tugas.punyaSub) {
-                        tugas.subTugas.forEach(sub => {
-                            tugasBersih.subTugas.push({
-                                namaTugas: sub.namaTugas,
-                                proses: sub.proses,
-                                estimasiJam: Number(sub.estimasiJam) || 0,
-                                status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0
-                            });
-                        });
+                        tugas.subTugas.forEach(sub => { tugasBersih.subTugas.push({ namaTugas: sub.namaTugas, proses: sub.proses, estimasiJam: Number(sub.estimasiJam) || 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, riwayatHarian: [] }); });
                     }
                     dataSiapTembak.push(tugasBersih);
                 });
 
                 window.toggleLoader(true, "Menyimpan ke Database Firebase...");
-
-                await addDoc(collection(db, "projects"), { 
-                    divisi: "DIVISI MOLD WORKSHOP", 
-                    namaProject: namaMold,
-                    totalEstimasiHari: estHari, 
-                    totalEstimasiJam: estJam,
-                    rencanaKerja: dataSiapTembak, 
-                    statusProject: "Proses",
-                    waktuDibuat: window.dapatkanWaktuRill(), 
-                    timestamp: Date.now() 
-                });
-
+                await addDoc(collection(db, "projects"), { divisi: "DIVISI MOLD WORKSHOP", namaProject: namaMold, tanggalMulai: startDate, targetSelesai: finishDate, totalEstimasiHari: estHari, totalEstimasiJam: estJam, rencanaKerja: dataSiapTembak, statusProject: "Proses", waktuDibuat: window.dapatkanWaktuRill(), timestamp: Date.now() });
                 window.toggleLoader(true, "✅ BERHASIL! Proyek Tersimpan.");
-                
-                setTimeout(async () => {
-                    window.toggleLoader(false);
-                    window.inisialisasiFormWS();
-                    window.navigasi('divisi-screen');
-                    await window.ambilDataServerWS();
-                }, 2000); 
-
-            } catch (error) {
-                window.toggleLoader(false);
-                alert("Terjadi Kendala Saat Menyimpan! Error: " + error.message);
-            }
+                setTimeout(async () => { window.toggleLoader(false); window.inisialisasiFormWS(); window.navigasi('divisi-screen'); await window.ambilDataServerWS(); }, 2000); 
+            } catch (error) { window.toggleLoader(false); alert("Terjadi Kendala Saat Menyimpan! Error: " + error.message); }
         }
 
         window.ambilDataServerWS = async function() {
-            window.toggleLoader(true, "Sinkronisasi Workshop...");
-            currentDatabase = [];
+            window.toggleLoader(true, "Sinkronisasi Workshop..."); currentDatabase = [];
             try {
                 const q = query(collection(db, "projects"), where("divisi", "==", "DIVISI MOLD WORKSHOP"));
                 const snap = await getDocs(q);
-                snap.forEach(doc => {
-                    let dataProj = doc.data();
-                    if (dataProj.rencanaKerja && dataProj.waktuDibuat) {
-                        currentDatabase.push({ id: doc.id, ...dataProj });
-                    }
-                });
+                snap.forEach(doc => { let dataProj = doc.data(); if (dataProj.rencanaKerja && dataProj.waktuDibuat) { currentDatabase.push({ id: doc.id, ...dataProj }); } });
                 currentDatabase.sort((a, b) => b.timestamp - a.timestamp);
-                if (document.getElementById('list-ws-proses')) {
-                    window.renderUpdateListWS();
-                    window.renderProgressListWS();
-                }
-            } catch(e){}
-            window.toggleLoader(false);
+                if (document.getElementById('list-ws-proses')) { window.renderUpdateListWS(); window.renderProgressListWS(); }
+            } catch(e){} window.toggleLoader(false);
         }
 
         window.switchTabWS = function(tab) {
-            document.getElementById('tab-ws-proses').classList.remove('tab-active');
-            document.getElementById('tab-ws-selesai').classList.remove('tab-active');
-            document.getElementById('list-ws-proses').style.display = 'none';
-            document.getElementById('list-ws-selesai').style.display = 'none';
-            document.getElementById('ws-task-list-area').style.display = 'none';
-            document.getElementById('ws-form-update-task').style.display = 'none';
-
-            document.getElementById('tab-ws-' + tab).classList.add('tab-active');
-            document.getElementById('list-ws-' + tab).style.display = 'block';
+            document.getElementById('tab-ws-proses').classList.remove('tab-active'); document.getElementById('tab-ws-selesai').classList.remove('tab-active');
+            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('list-ws-selesai').style.display = 'none';
+            document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('ws-form-update-task').style.display = 'none';
+            document.getElementById('tab-ws-' + tab).classList.add('tab-active'); document.getElementById('list-ws-' + tab).style.display = 'block';
         }
 
         window.renderUpdateListWS = async function() {
             if(currentDatabase.length === 0) await window.ambilDataServerWS();
-            const lstProses = document.getElementById('list-ws-proses');
-            const lstSelesai = document.getElementById('list-ws-selesai');
-            if(!lstProses || !lstSelesai) return;
-            lstProses.innerHTML = ""; lstSelesai.innerHTML = "";
-
+            const lstProses = document.getElementById('list-ws-proses'); const lstSelesai = document.getElementById('list-ws-selesai');
+            if(!lstProses || !lstSelesai) return; lstProses.innerHTML = ""; lstSelesai.innerHTML = "";
             currentDatabase.forEach(data => {
-                let htmlCard = `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Proses' ? 'var(--proses)' : 'var(--cepat)'}; margin-bottom:12px;">
-                    <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4>
-                    <p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> Est: ${data.totalEstimasiHari} (${data.totalEstimasiJam})</p>
-                    ${data.statusProject === 'Proses' ? 
-                        `<button type="button" onclick="window.bukaDaftarTugasWS('${data.id}')" style="width:100%; margin-top:10px; padding:10px; background:var(--secondary); color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-cogs"></i> KERJAKAN PROJECT</button>` : 
-                        `<span class="status-badge bg-cepat" style="display:block; text-align:center; margin-top:10px;"><i class="fas fa-check-double"></i> PROJECT SELESAI</span>`
-                    }
-                </div>`;
-                if(data.statusProject === 'Proses') lstProses.innerHTML += htmlCard;
-                else lstSelesai.innerHTML += htmlCard;
+                let htmlCard = `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Proses' ? 'var(--proses)' : 'var(--cepat)'}; margin-bottom:12px;"><h4 style="margin:0 0 5px 0;">${data.namaProject}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> Est: ${data.totalEstimasiHari} (${data.totalEstimasiJam})</p>${data.statusProject === 'Proses' ? `<button type="button" onclick="window.bukaDaftarTugasWS('${data.id}')" style="width:100%; margin-top:10px; padding:10px; background:var(--secondary); color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-cogs"></i> KERJAKAN PROJECT</button>` : `<span class="status-badge bg-cepat" style="display:block; text-align:center; margin-top:10px;"><i class="fas fa-check-double"></i> PROJECT SELESAI</span>`}</div>`;
+                if(data.statusProject === 'Proses') lstProses.innerHTML += htmlCard; else lstSelesai.innerHTML += htmlCard;
             });
             if(lstProses.innerHTML === "") lstProses.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project dikerjakan.</p>`;
             if(lstSelesai.innerHTML === "") lstSelesai.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project selesai.</p>`;
@@ -1496,174 +1178,128 @@
 
         window.bukaDaftarTugasWS = function(idProject) {
             const data = currentDatabase.find(d => d.id === idProject);
-            document.getElementById('ws-update-id-project').value = idProject;
-            document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProject;
-            
-            const cont = document.getElementById('ws-tasks-container');
-            cont.innerHTML = "";
-
+            document.getElementById('ws-update-id-project').value = idProject; document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProject;
+            const cont = document.getElementById('ws-tasks-container'); cont.innerHTML = "";
             data.rencanaKerja.forEach((tugas, idxUtama) => {
                 if(tugas.punyaSub) {
                     let subHtml = "";
                     tugas.subTugas.forEach((sub, idxSub) => {
-                        let isSelesai = sub.status === "Selesai";
-                        let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
+                        let isSelesai = sub.status === "Selesai"; let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
                         let tombolKerjakan = isSelesai ? `` : `<button type="button" onclick="window.bukaFormUpdateTaskWS(${idxUtama}, ${idxSub})" style="background:#3b82f6; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">KERJAKAN</button>`;
-                        
-                        subHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px 12px; border-radius:6px; margin-bottom:6px; border:1px solid #e2e8f0;">
-                            <div style="display:flex; align-items:center; gap:8px;">${ikon} <div><div style="font-weight:bold; font-size:12px;">${sub.namaTugas}</div><div style="font-size:10px; color:gray;">Proses: ${sub.proses} | Est: ${sub.estimasiJam} Jam</div></div></div>
-                            ${tombolKerjakan}
-                        </div>`;
+                        subHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:white; padding:8px 12px; border-radius:6px; margin-bottom:6px; border:1px solid #e2e8f0;"><div style="display:flex; align-items:center; gap:8px;">${ikon} <div><div style="font-weight:bold; font-size:12px;">${sub.namaTugas}</div><div style="font-size:10px; color:gray;">Proses: ${sub.proses} | Est: ${sub.estimasiJam} Jam</div></div></div>${tombolKerjakan}</div>`;
                     });
-                    
-                    cont.innerHTML += `<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:12px;">
-                        <h4 style="margin:0 0 10px 0; color:var(--primary); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">${tugas.namaTugas}</h4>
-                        ${subHtml}
-                    </div>`;
+                    cont.innerHTML += `<div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:10px; margin-bottom:12px;"><h4 style="margin:0 0 10px 0; color:var(--primary); border-bottom:1px solid #cbd5e1; padding-bottom:5px;">${tugas.namaTugas}</h4>${subHtml}</div>`;
                 } else {
-                    let isSelesai = tugas.status === "Selesai";
-                    let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
+                    let isSelesai = tugas.status === "Selesai"; let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
                     let tombolKerjakan = isSelesai ? `` : `<button type="button" onclick="window.bukaFormUpdateTaskWS(${idxUtama}, null)" style="background:#3b82f6; color:white; border:none; padding:8px 15px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">KERJAKAN</button>`;
-                    
-                    cont.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;">
-                        <div style="display:flex; align-items:center; gap:10px;">${ikon} <div><div style="font-weight:bold; font-size:14px; color:var(--primary);">${tugas.namaTugas}</div><div style="font-size:11px; color:gray;">Proses: ${tugas.proses} | Est: ${tugas.estimasiJam} Jam</div></div></div>
-                        ${tombolKerjakan}
-                    </div>`;
+                    cont.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:12px; margin-bottom:12px;"><div style="display:flex; align-items:center; gap:10px;">${ikon} <div><div style="font-weight:bold; font-size:14px; color:var(--primary);">${tugas.namaTugas}</div><div style="font-size:11px; color:gray;">Proses: ${tugas.proses} | Est: ${tugas.estimasiJam} Jam</div></div></div>${tombolKerjakan}</div>`;
                 }
             });
-
-            document.getElementById('list-ws-proses').style.display = 'none';
-            document.getElementById('ws-task-list-area').style.display = 'block';
-            window.scrollTo(0, document.getElementById('ws-task-list-area').offsetTop);
+            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; window.scrollTo(0, document.getElementById('ws-task-list-area').offsetTop);
         }
 
-        window.tutupWsTaskList = function() {
-            document.getElementById('ws-task-list-area').style.display = 'none';
-            document.getElementById('list-ws-proses').style.display = 'block';
-        }
+        window.tutupWsTaskList = function() { document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('list-ws-proses').style.display = 'block'; }
 
         window.bukaFormUpdateTaskWS = function(idxUtama, idxSub) {
-            const idProject = document.getElementById('ws-update-id-project').value;
-            const data = currentDatabase.find(d => d.id === idProject);
+            const idProject = document.getElementById('ws-update-id-project').value; const data = currentDatabase.find(d => d.id === idProject);
             let targetTugas = idxSub !== null ? data.rencanaKerja[idxUtama].subTugas[idxSub] : data.rencanaKerja[idxUtama];
-            
-            document.getElementById('ws-update-task-index').value = idxUtama;
-            document.getElementById('ws-update-subtask-index').value = idxSub !== null ? idxSub : "";
+            document.getElementById('ws-update-task-index').value = idxUtama; document.getElementById('ws-update-subtask-index').value = idxSub !== null ? idxSub : "";
             document.getElementById('ws-nama-tugas-tampil').innerText = targetTugas.namaTugas;
-            
-            document.getElementById('ws-up-pic').value = "";
-            document.getElementById('ws-up-start').value = "";
-            document.getElementById('ws-up-finish').value = "";
-            document.getElementById('ws-up-durasi').value = "";
-
-            document.getElementById('ws-task-list-area').style.display = 'none';
-            document.getElementById('ws-form-update-task').style.display = 'block';
+            document.getElementById('ws-up-pic').value = ""; document.getElementById('ws-up-start').value = ""; document.getElementById('ws-up-finish').value = ""; document.getElementById('ws-up-durasi').value = "";
+            document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('ws-form-update-task').style.display = 'block';
         }
 
         window.hitungDurasiUpdateWS = function() {
-            const startVal = document.getElementById('ws-up-start').value;
-            const finishVal = document.getElementById('ws-up-finish').value;
+            const startVal = document.getElementById('ws-up-start').value; const finishVal = document.getElementById('ws-up-finish').value;
             if(startVal && finishVal) {
-                let start = new Date(startVal);
-                let finish = new Date(finishVal);
-                let diffMs = finish - start;
+                let start = new Date(startVal); let finish = new Date(finishVal); let diffMs = finish - start;
                 if(diffMs < 0) { document.getElementById('ws-up-durasi').value = "Error: Waktu Mundur"; return; }
-                let diffHrs = (diffMs / (1000 * 60 * 60)).toFixed(2);
-                document.getElementById('ws-up-durasi').value = diffHrs + " Jam";
+                let diffHrs = (diffMs / (1000 * 60 * 60)).toFixed(2); document.getElementById('ws-up-durasi').value = diffHrs + " Jam";
             }
         }
 
-        window.batalUpdateTaskWS = function() {
-            document.getElementById('ws-form-update-task').style.display = 'none';
-            document.getElementById('ws-task-list-area').style.display = 'block';
-        }
+        window.batalUpdateTaskWS = function() { document.getElementById('ws-form-update-task').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; }
 
         window.simpanUpdateTaskWS = async function() {
-            const pic = document.getElementById('ws-up-pic').value;
-            const shift = document.getElementById('ws-up-shift').value;
-            const start = document.getElementById('ws-up-start').value;
-            const finish = document.getElementById('ws-up-finish').value;
-            const durasi = document.getElementById('ws-up-durasi').value;
-            
+            const pic = document.getElementById('ws-up-pic').value; const shift = document.getElementById('ws-up-shift').value;
+            const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const durasi = document.getElementById('ws-up-durasi').value;
             if(!pic || !start || !finish || durasi.includes("Error")) return alert("Data PIC, Start, dan Finish wajib diisi dengan benar!");
 
-            const idProject = document.getElementById('ws-update-id-project').value;
-            const idxUtama = parseInt(document.getElementById('ws-update-task-index').value);
-            const idxSubRaw = document.getElementById('ws-update-subtask-index').value;
+            const idProject = document.getElementById('ws-update-id-project').value; const idxUtama = parseInt(document.getElementById('ws-update-task-index').value); const idxSubRaw = document.getElementById('ws-update-subtask-index').value;
+            let projIndex = currentDatabase.findIndex(d => d.id === idProject); let projData = currentDatabase[projIndex];
             
-            let projIndex = currentDatabase.findIndex(d => d.id === idProject);
-            let projData = currentDatabase[projIndex];
+            // LOGIKA RIWAYAT HARIAN (AGAR BISA GANTT CHART)
+            let tanggalHariIni = start.split('T')[0];
+            let objRiwayat = { tanggal: tanggalHariIni, durasi: parseFloat(durasi), pic: pic };
 
+            let tTarget;
             if(idxSubRaw !== "") {
-                let sIdx = parseInt(idxSubRaw);
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].status = "Selesai";
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].pic = pic;
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].shift = shift;
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].start = start;
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].finish = finish;
-                projData.rencanaKerja[idxUtama].subTugas[sIdx].durasiAktual = parseFloat(durasi);
-            } else {
-                projData.rencanaKerja[idxUtama].status = "Selesai";
-                projData.rencanaKerja[idxUtama].pic = pic;
-                projData.rencanaKerja[idxUtama].shift = shift;
-                projData.rencanaKerja[idxUtama].start = start;
-                projData.rencanaKerja[idxUtama].finish = finish;
-                projData.rencanaKerja[idxUtama].durasiAktual = parseFloat(durasi);
-            }
+                let sIdx = parseInt(idxSubRaw); tTarget = projData.rencanaKerja[idxUtama].subTugas[sIdx];
+            } else { tTarget = projData.rencanaKerja[idxUtama]; }
+
+            tTarget.status = "Selesai"; tTarget.pic = pic; tTarget.shift = shift; tTarget.start = start; tTarget.finish = finish;
+            tTarget.durasiAktual = (tTarget.durasiAktual || 0) + parseFloat(durasi);
+            if(!tTarget.riwayatHarian) tTarget.riwayatHarian = [];
+            tTarget.riwayatHarian.push(objRiwayat);
 
             let isAllDone = true;
             projData.rencanaKerja.forEach(t => {
-                if(t.punyaSub) {
-                    t.subTugas.forEach(s => { if(s.status !== "Selesai") isAllDone = false; });
-                } else {
-                    if(t.status !== "Selesai") isAllDone = false;
-                }
+                if(t.punyaSub) { t.subTugas.forEach(s => { if(s.status !== "Selesai") isAllDone = false; }); } else { if(t.status !== "Selesai") isAllDone = false; }
             });
-
             if(isAllDone) projData.statusProject = "Selesai";
 
             window.toggleLoader(true, "Menyimpan Progress...");
             try {
-                await updateDoc(doc(db, "projects", idProject), { 
-                    rencanaKerja: projData.rencanaKerja,
-                    statusProject: projData.statusProject,
-                    tanggalSelesaiProject: isAllDone ? window.dapatkanWaktuRill() : null
-                });
-                alert("Progress Berhasil Disimpan!");
-                document.getElementById('ws-form-update-task').style.display = 'none';
-                
-                if(isAllDone) {
-                    alert("YAY! Seluruh tugas pada Mold ini telah Selesai.");
-                    await window.ambilDataServerWS();
-                    window.renderUpdateListWS();
-                    window.switchTabWS('selesai');
-                } else {
-                    window.bukaDaftarTugasWS(idProject);
-                }
-            } catch(e) { alert("Error: "+e.message); }
-            window.toggleLoader(false);
+                await updateDoc(doc(db, "projects", idProject), { rencanaKerja: projData.rencanaKerja, statusProject: projData.statusProject, tanggalSelesaiProject: isAllDone ? window.dapatkanWaktuRill() : null });
+                alert("Progress Berhasil Disimpan!"); document.getElementById('ws-form-update-task').style.display = 'none';
+                if(isAllDone) { alert("YAY! Seluruh tugas pada Mold ini telah Selesai."); await window.ambilDataServerWS(); window.renderUpdateListWS(); window.switchTabWS('selesai'); } else { window.bukaDaftarTugasWS(idProject); }
+            } catch(e) { alert("Error: "+e.message); } window.toggleLoader(false);
+        }
+
+        // --- SISTEM SWITCH TAB CONTROL PROGRES (VIEW DATA vs REPORT DATA) ---
+        window.switchTabProgressWS = function(tipe) {
+            document.getElementById('tab-prog-view').classList.remove('tab-active');
+            document.getElementById('tab-prog-report').classList.remove('tab-active');
+            document.getElementById('ws-prog-view-data').style.display = 'none';
+            document.getElementById('ws-prog-report-data').style.display = 'none';
+
+            document.getElementById('tab-prog-' + (tipe==='data'?'view':'report')).classList.add('tab-active');
+            document.getElementById('ws-prog-' + (tipe==='data'?'view-data':'report-data')).style.display = 'block';
+
+            if(tipe === 'report') window.renderReportCheckboxList();
         }
 
         window.wsKataKunciFilter = "";
+        window.wsTanggalFilter = "";
         window.terapkanFilterWS = function() {
             window.wsKataKunciFilter = document.getElementById('ws-filter-nama').value;
+            window.wsTanggalFilter = document.getElementById('ws-filter-tanggal').value;
             window.renderProgressListWS();
         }
         window.resetFilterWS = function() {
-            document.getElementById('ws-filter-nama').value = "";
-            window.wsKataKunciFilter = "";
+            document.getElementById('ws-filter-nama').value = ""; window.wsKataKunciFilter = "";
+            document.getElementById('ws-filter-tanggal').value = ""; window.wsTanggalFilter = "";
             window.renderProgressListWS();
         }
 
         window.renderProgressListWS = async function() {
             if(currentDatabase.length === 0) await window.ambilDataServerWS();
-            const container = document.getElementById('list-ws-progress');
-            if(!container) return;
-            container.innerHTML = "";
+            const container = document.getElementById('list-ws-progress'); if(!container) return; container.innerHTML = "";
 
             let dataTampil = currentDatabase;
-            if(window.wsKataKunciFilter) {
-                dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter));
+            if(window.wsKataKunciFilter) dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter));
+            
+            // Logic Filter Tanggal Baru (Mencari di riwayatHarian atau waktuDibuat)
+            if(window.wsTanggalFilter) {
+                dataTampil = dataTampil.filter(d => {
+                    let match = false;
+                    if(d.waktuDibuat && d.waktuDibuat.includes(window.wsTanggalFilter)) match = true;
+                    d.rencanaKerja.forEach(t => {
+                        if(t.punyaSub) { t.subTugas.forEach(s => { if(s.riwayatHarian) s.riwayatHarian.forEach(r => { if(r.tanggal === window.wsTanggalFilter) match = true; }); }); }
+                        else { if(t.riwayatHarian) t.riwayatHarian.forEach(r => { if(r.tanggal === window.wsTanggalFilter) match = true; }); }
+                    });
+                    return match;
+                });
             }
 
             if(dataTampil.length === 0) return container.innerHTML = `<p style="text-align:center;">Data tidak ditemukan.</p>`;
@@ -1672,248 +1308,312 @@
                 let badge = data.statusProject === "Selesai" ? `<span class="status-badge bg-cepat"><i class="fas fa-check-double"></i> Selesai</span>` : `<span class="status-badge bg-proses"><i class="fas fa-cog fa-spin"></i> Proses</span>`;
                 container.innerHTML += `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Selesai' ? 'var(--cepat)' : 'var(--proses)'}; cursor:pointer;" onclick="window.bukaDetailProjectWS('${data.id}')">
                     <h4 style="margin:0 0 5px 0;">${data.namaProject}</h4>
-                    <p style="margin:0; font-size:12px; color:gray;">Mulai: ${data.waktuDibuat}</p>
+                    <p style="margin:0; font-size:12px; color:gray;">Tgl Update Terakhir: ${data.waktuDibuat}</p>
+                    <p style="margin:5px 0 0 0; font-size:12px; font-weight:bold; color:var(--secondary);">Mulai: ${data.tanggalMulai || '-'} | Target: ${data.targetSelesai || '-'}</p>
                     ${badge}
                 </div>`;
             });
         }
 
+        window.renderReportCheckboxList = function() {
+            const container = document.getElementById('list-ws-report-checkbox'); if(!container) return; container.innerHTML = "";
+            if(currentDatabase.length === 0) return container.innerHTML = `<p style="text-align:center; font-size:12px; color:gray;">Belum ada proyek.</p>`;
+            currentDatabase.forEach(data => {
+                container.innerHTML += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:white; border-bottom:1px solid #e2e8f0; margin-bottom:5px; border-radius:4px;"><input type="checkbox" class="chk-report-ai" value="${data.id}" id="chk-rep-${data.id}" style="width:18px; height:18px; cursor:pointer;"><label for="chk-rep-${data.id}" style="font-size:14px; font-weight:bold; cursor:pointer; margin:0; flex:1;">${data.namaProject} <span style="font-size:10px; color:gray; font-weight:normal;">(${data.statusProject})</span></label></div>`;
+            });
+        }
+
         // --- SISTEM SWITCH DUAL VIEW DETAIL WORKSHOP ---
         window.switchViewWS = function(viewType) {
-            document.getElementById('tab-view-harian').classList.remove('tab-active');
-            document.getElementById('tab-view-global').classList.remove('tab-active');
-            document.getElementById('ws-view-harian').style.display = 'none';
-            document.getElementById('ws-view-global').style.display = 'none';
-
-            document.getElementById('tab-view-' + viewType).classList.add('tab-active');
-            document.getElementById('ws-view-' + viewType).style.display = 'block';
+            document.getElementById('tab-view-harian').classList.remove('tab-active'); document.getElementById('tab-view-global').classList.remove('tab-active');
+            document.getElementById('ws-view-harian').style.display = 'none'; document.getElementById('ws-view-global').style.display = 'none';
+            document.getElementById('tab-view-' + viewType).classList.add('tab-active'); document.getElementById('ws-view-' + viewType).style.display = 'block';
         }
 
         // --- PEMBANGUNAN MASTER VIEW (HARIAN & GANTT CHART) ---
         window.bukaDetailProjectWS = function(id) {
-            const data = currentDatabase.find(d => d.id === id);
-            if(!data) return;
+            const data = currentDatabase.find(d => d.id === id); if(!data) return;
             
-            // --- 1. BUILD VIEW HARIAN (STANDARD) ---
-            let htmlTasks = "";
-            let akumulasiAktualJam = 0;
-            let totalEstJamMaster = 0;
+            let htmlTasks = ""; let akumulasiAktualJam = 0; let totalEstJamMaster = 0;
+            let dateSet = new Set(); // Koleksi seluruh tanggal unik
 
-            let dateSet = new Set();
-
+            // 1. BUILD VIEW HARIAN (STANDARD + PERSENTASE)
             data.rencanaKerja.forEach((t, i) => {
                 if(t.punyaSub) {
                     let subHtml = "";
                     t.subTugas.forEach(s => {
-                        let eJam = Number(s.estimasiJam) || 0;
-                        let aJam = Number(s.durasiAktual) || 0;
-                        akumulasiAktualJam += aJam;
-                        totalEstJamMaster += eJam;
-                        
-                        if(s.start) dateSet.add(s.start.split('T')[0]);
-                        if(s.finish) dateSet.add(s.finish.split('T')[0]);
-
+                        let eJam = Number(s.estimasiJam) || 0; let aJam = Number(s.durasiAktual) || 0;
+                        akumulasiAktualJam += aJam; totalEstJamMaster += eJam;
+                        if(s.riwayatHarian) s.riwayatHarian.forEach(r => dateSet.add(r.tanggal));
+                        let pct = eJam > 0 ? Math.min(100, Math.round((aJam/eJam)*100)) : 0;
                         let icn = s.status === 'Selesai' ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-clock" style="color:var(--proses);"></i>`;
-                        subHtml += `<tr><td style="padding-left:20px;">${icn} ${s.namaTugas}</td><td>${s.proses}</td><td style="text-align:center;">${eJam}</td><td style="text-align:center;">${aJam}</td><td>${s.pic || '-'}</td></tr>`;
+                        subHtml += `<tr><td style="padding-left:20px;">${icn} ${s.namaTugas}</td><td style="width:15%;">${s.proses}</td><td style="text-align:center; width:10%;">${eJam}</td><td style="text-align:center; width:10%;">${aJam}</td><td style="text-align:center; font-weight:bold; color:var(--secondary);">${pct}%</td><td>${s.pic || '-'}</td></tr>`;
                     });
-                    htmlTasks += `<tr style="background:#f1f5f9;"><td colspan="5" style="font-weight:bold; color:var(--primary);"><i class="fas fa-folder-open"></i> ${t.namaTugas}</td></tr>${subHtml}`;
+                    htmlTasks += `<tr style="background:#f1f5f9;"><td colspan="6" style="font-weight:bold; color:var(--primary);"><i class="fas fa-folder-open"></i> ${t.namaTugas}</td></tr>${subHtml}`;
                 } else {
-                    let eJam = Number(t.estimasiJam) || 0;
-                    let aJam = Number(t.durasiAktual) || 0;
-                    akumulasiAktualJam += aJam;
-                    totalEstJamMaster += eJam;
-
-                    if(t.start) dateSet.add(t.start.split('T')[0]);
-                    if(t.finish) dateSet.add(t.finish.split('T')[0]);
-
+                    let eJam = Number(t.estimasiJam) || 0; let aJam = Number(t.durasiAktual) || 0;
+                    akumulasiAktualJam += aJam; totalEstJamMaster += eJam;
+                    if(t.riwayatHarian) t.riwayatHarian.forEach(r => dateSet.add(r.tanggal));
+                    let pct = eJam > 0 ? Math.min(100, Math.round((aJam/eJam)*100)) : 0;
                     let icn = t.status === 'Selesai' ? `<i class="fas fa-check-circle" style="color:var(--cepat);"></i>` : `<i class="fas fa-clock" style="color:var(--proses);"></i>`;
-                    htmlTasks += `<tr><td>${icn} <strong>${t.namaTugas}</strong></td><td>${t.proses}</td><td style="text-align:center;">${eJam}</td><td style="text-align:center;">${aJam}</td><td>${t.pic || '-'}</td></tr>`;
+                    htmlTasks += `<tr><td>${icn} <strong>${t.namaTugas}</strong></td><td style="width:15%;">${t.proses}</td><td style="text-align:center; width:10%;">${eJam}</td><td style="text-align:center; width:10%;">${aJam}</td><td style="text-align:center; font-weight:bold; color:var(--secondary);">${pct}%</td><td>${t.pic || '-'}</td></tr>`;
                 }
             });
 
             let statusProjUI = data.statusProject === "Selesai" ? `<span style="color:var(--cepat); font-weight:bold;">SELESAI (${data.tanggalSelesaiProject})</span>` : `<span style="color:var(--proses); font-weight:bold;">SEDANG PROSES</span>`;
+            let globalPctHarian = totalEstJamMaster > 0 ? Math.min(100, Math.round((akumulasiAktualJam/totalEstJamMaster)*100)) : 0;
 
             let harianHtml = `
             <div id="ws-view-harian" style="display:block;">
-                <div class="report-header">
-                    <h2>TRACKING MOLD WORKSHOP</h2>
-                    <p>PT. CITRA BUANA INTITAMA</p>
-                </div>
+                <div class="report-header"><h2>TRACKING MOLD WORKSHOP</h2><p>PT. CITRA BUANA INTITAMA</p></div>
                 <table class="report-table">
                     <tr><th>Project / MOLD</th><td style="font-size:16px; font-weight:900; color:var(--primary);">${data.namaProject}</td></tr>
                     <tr><th>Status Project</th><td>${statusProjUI}</td></tr>
-                    <tr><th>Waktu Input</th><td>${data.waktuDibuat}</td></tr>
+                    <tr><th>Tgl Update Terakhir</th><td>${data.waktuDibuat}</td></tr>
+                    <tr><th>Waktu Mulai Project</th><td>${data.tanggalMulai || '-'}</td></tr>
                 </table>
                 <div style="display:flex; gap:10px; margin-top:15px; margin-bottom:15px;">
-                    <div style="flex:1; background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; text-align:center;">
-                        <span style="font-size:11px; color:gray; font-weight:bold;">Estimasi Jam Global</span><br>
-                        <span style="font-size:20px; font-weight:900; color:var(--secondary);">${totalEstJamMaster} Jam</span>
-                    </div>
-                    <div style="flex:1; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:8px; text-align:center;">
-                        <span style="font-size:11px; color:#064e3b; font-weight:bold;">Aktual Pengerjaan</span><br>
-                        <span style="font-size:20px; font-weight:900; color:#059669;">${akumulasiAktualJam.toFixed(2)} Jam</span>
-                    </div>
+                    <div style="flex:1; background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:gray; font-weight:bold;">Estimasi Jam Global</span><br><span style="font-size:20px; font-weight:900; color:var(--secondary);">${totalEstJamMaster} Jam</span></div>
+                    <div style="flex:1; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#064e3b; font-weight:bold;">Aktual Pengerjaan</span><br><span style="font-size:20px; font-weight:900; color:#059669;">${akumulasiAktualJam.toFixed(2)} Jam</span></div>
+                    <div style="flex:1; background:#fef3c7; border:1px solid #f59e0b; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#b45309; font-weight:bold;">Persentase Global</span><br><span style="font-size:20px; font-weight:900; color:#d97706;">${globalPctHarian}%</span></div>
                 </div>
                 <h3 style="font-size:14px; color:var(--primary); border-bottom:2px solid #cbd5e1; padding-bottom:5px;">Rincian Pengerjaan Tugas</h3>
                 <table class="report-table" style="font-size:11px; margin-top:10px;">
-                    <tr style="background:#e2e8f0; color:#334155;">
-                        <th style="width:35%;">Nama Tugas</th><th>Proses</th><th style="text-align:center;">Est (Jam)</th><th style="text-align:center;">Act (Jam)</th><th>PIC</th>
-                    </tr>
+                    <tr style="background:#e2e8f0; color:#334155;"><th style="width:35%;">Nama Tugas</th><th style="width:15%;">Proses</th><th style="text-align:center; width:10%;">Est (Jam)</th><th style="text-align:center; width:10%;">Act (Jam)</th><th style="text-align:center;">Persentase</th><th>PIC</th></tr>
                     ${htmlTasks}
                 </table>
             </div>`;
 
-            // --- 2. BUILD VIEW GLOBAL (GANTT CHART EXCEL STYLE) ---
+            // 2. BUILD VIEW GLOBAL (GANTT CHART EXCEL STYLE ENGINEERING)
             let dateArr = Array.from(dateSet).sort();
-            if(dateArr.length === 0) {
-                // Default 5 days if no tasks started yet
-                let d = new Date();
-                for(let i=0; i<5; i++) {
-                    dateArr.push(d.toISOString().split('T')[0]);
-                    d.setDate(d.getDate()+1);
-                }
-            }
+            if(dateArr.length === 0) { let d = new Date(); for(let i=0; i<5; i++) { dateArr.push(d.toISOString().split('T')[0]); d.setDate(d.getDate()+1); } }
 
-            let ganttHeaders1 = "";
-            let ganttHeaders2 = "";
+            let ganttHeaders1 = ""; let ganttHeaders2 = "";
             const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
             dateArr.forEach(dt => {
-                let dObj = new Date(dt);
-                let formatTanggal = `${dObj.getDate()} ${monthsShort[dObj.getMonth()]}`;
+                let dObj = new Date(dt); let formatTanggal = `${dObj.getDate()} ${monthsShort[dObj.getMonth()]}`;
                 ganttHeaders1 += `<th colspan="2" style="background:#e2e8f0; border: 1px solid #64748b;">${formatTanggal}</th>`;
-                ganttHeaders2 += `<th style="background:#f1f5f9; border: 1px solid #64748b;">A</th><th style="background:#f1f5f9; border: 1px solid #64748b;">%</th>`;
+                ganttHeaders2 += `<th style="background:#f1f5f9; border: 1px solid #64748b; width:20px;">A</th><th style="background:#f1f5f9; border: 1px solid #64748b; width:30px;">%</th>`;
             });
 
-            let ganttRows = "";
-            let noUtama = 1;
-            let totalEstSeluruhnya = 0;
-            let totalActSeluruhnya = 0;
+            let ganttRows = ""; let noUtama = 1;
+            let totalEstSeluruhnya = 0; let totalActSeluruhnya = 0;
+            let arrayGlobalKumulatifAktual = new Array(dateArr.length).fill(0); // Untuk simpan total actual harian keseluruhan
 
             data.rencanaKerja.forEach((tugas, idx) => {
                 if(tugas.punyaSub) {
                     let totalEstGroup = 0; let totalActGroup = 0;
-                    
-                    // Pre-calc total for group
-                    tugas.subTugas.forEach(sub => {
-                        totalEstGroup += (Number(sub.estimasiJam) || 0);
-                        totalActGroup += (Number(sub.durasiAktual) || 0);
-                    });
+                    tugas.subTugas.forEach(sub => { totalEstGroup += (Number(sub.estimasiJam) || 0); totalActGroup += (Number(sub.durasiAktual) || 0); });
+                    totalEstSeluruhnya += totalEstGroup; totalActSeluruhnya += totalActGroup;
 
-                    totalEstSeluruhnya += totalEstGroup;
-                    totalActSeluruhnya += totalActGroup;
+                    ganttRows += `<tr><td class="gantt-group">${noUtama}</td><td colspan="5" class="gantt-group" style="text-align:center;">${tugas.namaTugas}</td>${'<td colspan="2" style="background:#e2e8f0;"></td>'.repeat(dateArr.length)}</tr>`;
 
-                    ganttRows += `<tr>
-                        <td class="gantt-group">${noUtama}</td>
-                        <td colspan="5" class="gantt-group" style="text-align:center;">${tugas.namaTugas}</td>
-                        ${'<td colspan="2" style="background:#e2e8f0;"></td>'.repeat(dateArr.length)}
-                    </tr>`;
+                    let arrayGroupKumulatifAktual = new Array(dateArr.length).fill(0);
 
                     tugas.subTugas.forEach(sub => {
-                        let eJam = Number(sub.estimasiJam) || 0;
-                        let aJam = Number(sub.durasiAktual) || 0;
-                        let pct = eJam > 0 ? Math.min(100, Math.round((aJam/eJam)*100)) : 0;
+                        let eJam = Number(sub.estimasiJam) || 0; let aJamTotalTask = Number(sub.durasiAktual) || 0;
+                        let pctFinal = eJam > 0 ? Math.min(100, Math.round((aJamTotalTask/eJam)*100)) : 0;
                         
                         let dateColsHtml = "";
-                        dateArr.forEach(dt => {
-                            let isInDate = false;
-                            if(sub.start && sub.start.startsWith(dt)) isInDate = true;
-                            if(sub.finish && sub.finish.startsWith(dt)) isInDate = true;
+                        let taskKumulatifAktual = 0;
+                        
+                        dateArr.forEach((dt, dateIdx) => {
+                            let actHariIni = 0;
+                            if(sub.riwayatHarian) { sub.riwayatHarian.forEach(r => { if(r.tanggal === dt) actHariIni += r.durasi; }); }
                             
-                            if(isInDate) {
-                                dateColsHtml += `<td style="background:#d1fae5; color:#059669; font-weight:bold;">${aJam}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${pct}%</td>`;
-                            } else {
-                                dateColsHtml += `<td></td><td></td>`;
-                            }
+                            taskKumulatifAktual += actHariIni;
+                            arrayGroupKumulatifAktual[dateIdx] += actHariIni;
+                            arrayGlobalKumulatifAktual[dateIdx] += actHariIni;
+
+                            let taskKumulatifPct = eJam > 0 ? Math.min(100, Math.round((taskKumulatifAktual/eJam)*100)) : 0;
+
+                            if(actHariIni > 0 || taskKumulatifAktual > 0) {
+                                let bgA = actHariIni > 0 ? '#10b981' : 'transparent';
+                                let textA = actHariIni > 0 ? 'white' : '#1e293b';
+                                dateColsHtml += `<td style="background:${bgA}; color:${textA}; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
+                            } else { dateColsHtml += `<td></td><td></td>`; }
                         });
 
-                        ganttRows += `<tr>
-                            <td></td>
-                            <td class="gantt-task-left">- ${sub.namaTugas}</td>
-                            <td>${sub.proses}</td>
-                            <td>${eJam}</td>
-                            <td>${aJam}</td>
-                            <td>${pct}%</td>
-                            ${dateColsHtml}
-                        </tr>`;
+                        ganttRows += `<tr><td></td><td class="gantt-task-left">- ${sub.namaTugas}</td><td>${sub.proses}</td><td>${eJam}</td><td>${aJamTotalTask}</td><td>${pctFinal}%</td>${dateColsHtml}</tr>`;
                     });
 
-                    let groupPct = totalEstGroup > 0 ? Math.min(100, Math.round((totalActGroup/totalEstGroup)*100)) : 0;
-                    ganttRows += `<tr>
-                        <td colspan="3" style="background:#fef3c7; font-weight:bold; text-align:right; padding-right:10px; color:#b45309;">PERSENTASE ${tugas.namaTugas}</td>
-                        <td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalEstGroup}</td>
-                        <td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalActGroup}</td>
-                        <td style="background:#fef3c7; font-weight:bold; color:#b45309;">${groupPct}%</td>
-                        ${'<td colspan="2" style="background:#fef3c7; text-align:center; font-weight:bold; color:#b45309;">-</td>'.repeat(dateArr.length)}
-                    </tr>`;
+                    let groupPctTotal = totalEstGroup > 0 ? Math.min(100, Math.round((totalActGroup/totalEstGroup)*100)) : 0;
+                    
+                    let groupDateHtml = "";
+                    let kumulatifGroupHinggaHariIni = 0;
+                    dateArr.forEach((dt, dateIdx) => {
+                        kumulatifGroupHinggaHariIni += arrayGroupKumulatifAktual[dateIdx]; // Menghitung dari indeks, arrayGroupKumulatifAktual sebenarnya cuma menyimpan actual per hari, di sini jadi kumulatif. WAIT, arrayGroupKumulatifAktual is storing actual per hari. So sum them up.
+                        // Koreksi: arrayGroupKumulatifAktual is actually actHariIni summed up for the group. 
+                    });
+
+                    // Recalculate correctly for Group Row
+                    let kumulatifActGroupRunning = 0;
+                    dateArr.forEach((dt, dateIdx) => {
+                        let actGroupHariIni = arrayGroupKumulatifAktual[dateIdx];
+                        kumulatifActGroupRunning += actGroupHariIni;
+                        let pctGroupHariIni = totalEstGroup > 0 ? Math.min(100, Math.round((kumulatifActGroupRunning/totalEstGroup)*100)) : 0;
+                        if(kumulatifActGroupRunning > 0) { groupDateHtml += `<td style="background:#fef3c7; color:#b45309; font-weight:bold;">-</td><td style="background:#fef3c7; color:#b45309; font-weight:bold;">${pctGroupHariIni}%</td>`; }
+                        else { groupDateHtml += `<td style="background:#fef3c7;">-</td><td style="background:#fef3c7;">-</td>`; }
+                    });
+
+                    ganttRows += `<tr><td colspan="3" style="background:#fef3c7; font-weight:bold; text-align:right; padding-right:10px; color:#b45309;">PERSENTASE ${tugas.namaTugas}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalEstGroup}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalActGroup}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${groupPctTotal}%</td>${groupDateHtml}</tr>`;
                     noUtama++;
                 } else {
-                    let eJam = Number(tugas.estimasiJam) || 0;
-                    let aJam = Number(tugas.durasiAktual) || 0;
-                    let pct = eJam > 0 ? Math.min(100, Math.round((aJam/eJam)*100)) : 0;
+                    let eJam = Number(tugas.estimasiJam) || 0; let aJamTotalTask = Number(tugas.durasiAktual) || 0;
+                    let pctFinal = eJam > 0 ? Math.min(100, Math.round((aJamTotalTask/eJam)*100)) : 0;
+                    totalEstSeluruhnya += eJam; totalActSeluruhnya += aJamTotalTask;
 
-                    totalEstSeluruhnya += eJam;
-                    totalActSeluruhnya += aJam;
+                    let dateColsHtml = ""; let taskKumulatifAktual = 0;
+                    dateArr.forEach((dt, dateIdx) => {
+                        let actHariIni = 0;
+                        if(tugas.riwayatHarian) { tugas.riwayatHarian.forEach(r => { if(r.tanggal === dt) actHariIni += r.durasi; }); }
+                        taskKumulatifAktual += actHariIni;
+                        arrayGlobalKumulatifAktual[dateIdx] += actHariIni; // tambahkan ke master
+                        let taskKumulatifPct = eJam > 0 ? Math.min(100, Math.round((taskKumulatifAktual/eJam)*100)) : 0;
 
-                    let dateColsHtml = "";
-                    dateArr.forEach(dt => {
-                        let isInDate = false;
-                        if(tugas.start && tugas.start.startsWith(dt)) isInDate = true;
-                        if(tugas.finish && tugas.finish.startsWith(dt)) isInDate = true;
-                        
-                        if(isInDate) {
-                            dateColsHtml += `<td style="background:#d1fae5; color:#059669; font-weight:bold;">${aJam}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${pct}%</td>`;
-                        } else {
-                            dateColsHtml += `<td></td><td></td>`;
-                        }
+                        if(actHariIni > 0 || taskKumulatifAktual > 0) {
+                            let bgA = actHariIni > 0 ? '#10b981' : 'transparent'; let textA = actHariIni > 0 ? 'white' : '#1e293b';
+                            dateColsHtml += `<td style="background:${bgA}; color:${textA}; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
+                        } else { dateColsHtml += `<td></td><td></td>`; }
                     });
 
-                    ganttRows += `<tr>
-                        <td class="gantt-group">${noUtama}</td>
-                        <td class="gantt-task-left">- ${tugas.namaTugas}</td>
-                        <td>${tugas.proses}</td>
-                        <td>${eJam}</td>
-                        <td>${aJam}</td>
-                        <td>${pct}%</td>
-                        ${dateColsHtml}
-                    </tr>`;
+                    ganttRows += `<tr><td class="gantt-group">${noUtama}</td><td class="gantt-task-left">- ${tugas.namaTugas}</td><td>${tugas.proses}</td><td>${eJam}</td><td>${aJamTotalTask}</td><td>${pctFinal}%</td>${dateColsHtml}</tr>`;
                     noUtama++;
                 }
             });
 
+            // HEADER SUMMARY MASTER (Gambar ke-3)
+            let headerDatesHtml = ""; let headerActHtml = ""; let headerAchHtml = "";
+            let runningGlobalAct = 0;
+            dateArr.forEach((dt, idx) => {
+                let dObj = new Date(dt); let formatTanggal = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${String(dObj.getFullYear()).substring(2)}`;
+                headerDatesHtml += `<th style="border:1px solid #ccc; background:#f1f5f9;">${formatTanggal}</th>`;
+                let actualDay = arrayGlobalKumulatifAktual[idx];
+                headerActHtml += `<td style="border:1px solid #ccc; text-align:center;">${actualDay > 0 ? actualDay : ''}</td>`;
+                runningGlobalAct += actualDay;
+                let dayACH = totalEstSeluruhnya > 0 ? ((runningGlobalAct/totalEstSeluruhnya)*100).toFixed(2) : 0;
+                headerAchHtml += `<td style="border:1px solid #ccc; text-align:center; font-weight:bold; background:#fef08a; color:#b45309;">${actualDay > 0 || runningGlobalAct > 0 ? dayACH + '%' : ''}</td>`;
+            });
+
+            let topSummaryHtml = `
+            <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12px; font-family:sans-serif;">
+                <tr><td colspan="2" style="background:gray; color:white; font-size:18px; font-weight:900; padding:5px 10px;">${data.namaProject}</td><td colspan="${dateArr.length}" style="text-align:right; font-size:16px; font-weight:bold; padding-right:10px;">RENCANA KERJA PEMBUATAN MOLD</td></tr>
+                <tr><td colspan="2" style="font-size:20px; font-weight:900; padding:5px 10px;">${(totalEstSeluruhnya > 0 ? (totalActSeluruhnya/totalEstSeluruhnya)*100 : 0).toFixed(2)}%</td><td colspan="${dateArr.length}"></td></tr>
+                <tr><td colspan="2" style="font-size:14px; font-weight:bold; padding:5px 10px;">${data.totalEstimasiHari || '- Hari'} KERJA</td><td colspan="${dateArr.length}"></td></tr>
+                <tr><th colspan="2" style="border:1px solid #ccc; background:#e2e8f0; text-align:center; width:250px;">Kategori</th>${headerDatesHtml}</tr>
+                <tr><td colspan="2" style="border:1px solid #ccc; text-align:center;">Target Jam</td>${'<td style="border:1px solid #ccc; text-align:center; font-weight:bold;"></td>'.repeat(dateArr.length - 1)}<td style="border:1px solid #ccc; text-align:center; font-weight:bold;">${totalEstSeluruhnya}</td></tr>
+                <tr><td colspan="2" style="border:1px solid #ccc; text-align:center;">Actual</td>${headerActHtml}</tr>
+                <tr><th colspan="2" style="border:1px solid #ccc; background:#fde047; text-align:center;">ACH RATE</th>${headerAchHtml}</tr>
+            </table>`;
+
+            // ROW KUNING GLOBAL PALING BAWAH
             let globalPct = totalEstSeluruhnya > 0 ? Math.min(100, Math.round((totalActSeluruhnya/totalEstSeluruhnya)*100)) : 0;
+            let globalDateHtml = ""; let kumulatifActGlobalRunning = 0;
+            dateArr.forEach((dt, dateIdx) => {
+                let actGlobalHariIni = arrayGlobalKumulatifAktual[dateIdx];
+                kumulatifActGlobalRunning += actGlobalHariIni;
+                let pctGlobalHariIni = totalEstSeluruhnya > 0 ? Math.min(100, Math.round((kumulatifActGlobalRunning/totalEstSeluruhnya)*100)) : 0;
+                if(kumulatifActGlobalRunning > 0) { globalDateHtml += `<td style="background:#fde047; color:#854d0e; font-weight:bold;">-</td><td style="background:#fde047; color:#854d0e; font-weight:bold;">${pctGlobalHariIni}%</td>`; }
+                else { globalDateHtml += `<td style="background:#fde047;">-</td><td style="background:#fde047;">-</td>`; }
+            });
 
             let globalHtml = `
             <div id="ws-view-global" style="display:none; overflow-x:auto;">
-                <h3 style="text-align:center; color:var(--primary); margin-top:0;">MASTER SCHEDULE MOLD: ${data.namaProject}</h3>
+                ${topSummaryHtml}
                 <table class="gantt-table">
                     <thead>
-                        <tr>
-                            <th rowspan="2" class="gantt-th-bg">NO</th>
-                            <th rowspan="2" class="gantt-th-bg">URAIAN PEKERJAAN</th>
-                            <th rowspan="2" class="gantt-th-bg">PROSES</th>
-                            <th rowspan="2" class="gantt-th-bg">ESTIMASI<br>WAKTU<br>(JAM)</th>
-                            <th rowspan="2" class="gantt-th-bg">ACTUAL<br>WAKTU</th>
-                            <th rowspan="2" class="gantt-th-bg">PROGRES<br>/ HARI<br>%</th>
-                            ${ganttHeaders1}
-                        </tr>
+                        <tr><th rowspan="2" class="gantt-th-bg">NO</th><th rowspan="2" class="gantt-th-bg">URAIAN PEKERJAAN</th><th rowspan="2" class="gantt-th-bg">PROSES</th><th rowspan="2" class="gantt-th-bg">ESTIMASI<br>WAKTU<br>(JAM)</th><th rowspan="2" class="gantt-th-bg">ACTUAL<br>WAKTU</th><th rowspan="2" class="gantt-th-bg">PROGRES<br>/ HARI<br>%</th>${ganttHeaders1}</tr>
                         <tr>${ganttHeaders2}</tr>
                     </thead>
                     <tbody>
                         ${ganttRows}
-                        <tr>
-                            <td colspan="3" class="gantt-total" style="text-align:right; padding-right:15px; font-size:14px;">TOTAL JAM / PROGRES GLOBAL</td>
-                            <td class="gantt-total" style="font-size:14px;">${totalEstSeluruhnya}</td>
-                            <td class="gantt-total" style="font-size:14px;">${totalActSeluruhnya}</td>
-                            <td class="gantt-total" style="font-size:14px; color:#b45309;">${globalPct}%</td>
-                            ${`<td colspan="2" class="gantt-total"></td>`.repeat(dateArr.length)}
-                        </tr>
+                        <tr><td colspan="3" class="gantt-total" style="text-align:right; padding-right:15px; font-size:14px;">TOTAL JAM / PROGRES GLOBAL</td><td class="gantt-total" style="font-size:14px;">${totalEstSeluruhnya}</td><td class="gantt-total" style="font-size:14px;">${totalActSeluruhnya}</td><td class="gantt-total" style="font-size:14px; color:#b45309;">${globalPct}%</td>${globalDateHtml}</tr>
                     </tbody>
                 </table>
             </div>`;
 
             document.getElementById('report-ws-content').innerHTML = harianHtml + globalHtml;
             window.navigasi('detail-project-screen');
+        }
+
+        // ==========================================
+        // FITUR AI EXECUTIVE DASHBOARD
+        // ==========================================
+        window.generateAIReport = function() {
+            let checkedBoxes = document.querySelectorAll('.chk-report-ai:checked');
+            if(checkedBoxes.length === 0) return alert("Pilih minimal 1 proyek untuk dianalisa AI!");
+            
+            let selectedIds = Array.from(checkedBoxes).map(cb => cb.value);
+            let targetProjects = currentDatabase.filter(d => selectedIds.includes(d.id));
+
+            window.toggleLoader(true, "AI Sedang Melakukan Analisis Multivariate...");
+            
+            setTimeout(() => {
+                let totalEstAll = 0; let totalActAll = 0;
+                let processCounts = {}; // Univariate
+                let projectNames = []; let projectEsts = []; let projectActs = []; // Bivariate
+                let projectACH = []; // Multivariate
+                let tableHtml = "";
+
+                targetProjects.forEach(proj => {
+                    let pEst = Number(proj.totalEstimasiJam) || 0;
+                    let pAct = 0;
+
+                    proj.rencanaKerja.forEach(t => {
+                        if(t.punyaSub) {
+                            t.subTugas.forEach(s => {
+                                pAct += (Number(s.durasiAktual) || 0);
+                                let proses = s.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
+                            });
+                        } else {
+                            pAct += (Number(t.durasiAktual) || 0);
+                            let proses = t.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
+                        }
+                    });
+
+                    totalEstAll += pEst; totalActAll += pAct;
+                    projectNames.push(proj.namaProject); projectEsts.push(pEst); projectActs.push(pAct);
+                    
+                    let pAchRate = pEst > 0 ? Math.min(100, Math.round((pAct/pEst)*100)) : 0;
+                    projectACH.push(pAchRate);
+
+                    let statusWarna = proj.statusProject === 'Selesai' ? 'color:#10b981;' : 'color:#f59e0b;';
+                    tableHtml += `<tr><td><strong>${proj.namaProject}</strong></td><td style="text-align:center;">${pEst}</td><td style="text-align:center;">${pAct}</td><td style="text-align:center; font-weight:bold;">${pAchRate}%</td><td style="${statusWarna} font-weight:bold;">${proj.statusProject}</td></tr>`;
+                });
+
+                let globalAchRate = totalEstAll > 0 ? Math.min(100, Math.round((totalActAll/totalEstAll)*100)) : 0;
+                
+                document.getElementById('dash-kpi-proyek').innerText = targetProjects.length;
+                document.getElementById('dash-kpi-est').innerText = totalEstAll + " Jam";
+                document.getElementById('dash-kpi-act').innerText = totalActAll + " Jam";
+                document.getElementById('dash-kpi-ach').innerText = globalAchRate + "%";
+                document.getElementById('dash-table-body').innerHTML = tableHtml;
+
+                if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
+
+                let uniLabels = Object.keys(processCounts); let uniData = Object.values(processCounts);
+                let ctxUni = document.getElementById('chartUnivariate').getContext('2d');
+                chartUni = new Chart(ctxUni, {
+                    type: 'doughnut', data: { labels: uniLabels, datasets: [{ data: uniData, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#f97316', '#6366f1'], borderWidth: 2, borderColor: '#fff' }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: {size: 10} } } } }
+                });
+
+                let ctxBi = document.getElementById('chartBivariate').getContext('2d');
+                chartBi = new Chart(ctxBi, {
+                    type: 'bar', data: { labels: projectNames, datasets: [{ label: 'Estimasi (Jam)', data: projectEsts, backgroundColor: '#94a3b8', borderRadius: 4 }, { label: 'Actual (Jam)', data: projectActs, backgroundColor: '#10b981', borderRadius: 4 }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4] } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'top' } } }
+                });
+
+                let ctxMulti = document.getElementById('chartMultivariate').getContext('2d');
+                chartMulti = new Chart(ctxMulti, {
+                    type: 'line', data: { labels: projectNames, datasets: [{ type: 'line', label: 'ACH Rate (%)', data: projectACH, borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.2)', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', fill: true, tension: 0.4 }, { type: 'bar', label: 'Estimasi Jam (Skala)', data: projectEsts, backgroundColor: 'rgba(59,130,246,0.2)', borderRadius: 4, yAxisID: 'y1' }] },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, position: 'left', title: {display: true, text: 'ACH Rate %'} }, y1: { beginAtZero: true, position: 'right', grid: {drawOnChartArea: false}, title: {display: true, text: 'Jam'} }, x: { grid: {display: false} } } }
+                });
+
+                window.toggleLoader(false);
+                window.navigasi('ai-dashboard-screen');
+            }, 1500);
         }
 
         // =======================================================
