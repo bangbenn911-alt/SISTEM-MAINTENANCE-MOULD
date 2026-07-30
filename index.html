@@ -487,6 +487,392 @@
             <button class="btn-bottom-back" type="button" onclick="window.navigasi('progress-screen')"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
         </div>
     </div>
+
+    <!-- ========================================================= -->
+    <!-- MENU MOLD REPAIR -->
+    <!-- ========================================================= -->
+    <div id="menu-mold-repair-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header" style="background: #0f172a;"><h2 style="color: white; margin: 0;">DIVISI MOLD REPAIR</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('mr-rencana-kerja-screen')" style="border-left-color: #3b82f6;"><i class="fas fa-clipboard-list"></i> 1. Rencana Kerja</div>
+                <div class="menu-card" onclick="window.navigasi('mr-update-proyek-screen')" style="border-left-color: #f59e0b;"><i class="fas fa-tools"></i> 2. Update Proyek</div>
+                <div class="menu-card" onclick="window.navigasi('mr-control-report-screen')" style="border-left-color: #10b981;"><i class="fas fa-chart-pie"></i> 3. Control & Report Progres</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- INPUT RENCANA MOLD REPAIR -->
+    <div id="mr-rencana-kerja-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Rencana Kerja</h2></div>
+            <div id="rencanaKerjaContainer" style="background: white; border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <div class="form-group"><label style="color: var(--primary);">Nama Foreman</label><input type="text" id="mr-nama-foreman" value="Bapak Tarmuji" readonly disabled style="background:#f1f5f9; color:var(--primary); font-weight:bold;"></div>
+                <div id="mr-jobListContainer">
+                    <div class="job-card" style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; overflow: hidden;">
+                        <div style="background: var(--primary); color: white; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center;"><span style="font-weight: bold;" class="job-number">Job #1</span><button type="button" class="btn-hapus-job" style="display: none; background: #ef4444; color: white; border: none; border-radius: 4px; padding: 2px 8px; cursor: pointer; font-weight: bold;">X</button></div>
+                        <div style="padding: 15px;">
+                            <div class="form-group"><label>Nama Mold</label><input type="text" class="input-mold" placeholder="Contoh: SW MCAB4A" required></div>
+                            <div class="form-group"><label>Masalah</label><input type="text" class="input-masalah" placeholder="Kendala/Masalah..." required></div>
+                            <div class="form-group"><label>Penyebab</label><input type="text" class="input-penyebab" placeholder="Akar Penyebab..." required></div>
+                            <div class="form-group"><label>Tindakan</label><textarea class="input-tindakan" rows="2" placeholder="Tindakan perbaikan..." required></textarea></div>
+                            <hr style="border-top: 1px dashed #cbd5e1; margin: 15px 0;">
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;"><div style="flex: 1;"><label style="font-size: 11px;">Mulai Tgl</label><input type="date" class="input-tgl-mulai" required></div><div style="flex: 1;"><label style="font-size: 11px;">Selesai Tgl</label><input type="date" class="input-tgl-selesai" required></div></div>
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;"><div style="flex: 1;"><label style="font-size: 11px;">Estimasi Total Waktu</label><div style="display: flex; gap:5px;"><input type="number" class="est-jam" placeholder="Jam" min="0" required><input type="number" class="est-menit" placeholder="Mnt" min="0" max="59" required></div></div><div style="flex: 1;"><label style="font-size: 11px;">Target Harian</label><div style="display: flex; gap:5px;"><input type="number" class="target-jam" placeholder="Jam" min="0" required><input type="number" class="target-menit" placeholder="Mnt" min="0" max="59" required></div></div></div>
+                            <div class="form-group mt-3"><label style="color: var(--secondary);">PIC (Penanggung Jawab)</label><select class="input-pic" required><option value="" selected disabled>-- Pilih PIC --</option><option value="Enoh">Enoh</option><option value="Bayu">Bayu</option><option value="Sunaryo">Sunaryo</option><option value="Rofi">Rofi</option><option value="Wawan">Wawan</option><option value="Aris">Aris</option><option value="Tim">Tim (Gabungan)</option></select></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;"><button type="button" onclick="window.tambahJobMR()" style="background: white; color: var(--secondary); border: 2px dashed var(--secondary); padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;">+ Tambah Job</button><button type="button" onclick="window.simpanRencanaKerjaMR()" class="btn-submit">SIMPAN RENCANA KERJA</button></div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+    <!-- UPDATE MOLD REPAIR -->
+    <div id="mr-update-proyek-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Update Proyek Repair</h2></div>
+            <div class="tab-container" style="background: white; border: 1px solid #cbd5e1; padding: 4px;">
+                <button class="tab-btn tab-active" type="button" id="tab-mr-proses" onclick="window.switchTabMR('proses')" style="border-radius: 6px;">List Proses</button>
+                <button class="tab-btn" type="button" id="tab-mr-harian" onclick="window.switchTabMR('harian')" style="border-radius: 6px;">Target Harian</button>
+                <button class="tab-btn" type="button" id="tab-mr-hasil" onclick="window.switchTabMR('hasil')" style="border-radius: 6px;">Hasil Proyek</button>
+            </div>
+            <div id="list-mr-proses"></div><div id="list-mr-harian" style="display: none;"></div><div id="list-mr-hasil" style="display: none;"></div>
+            <div id="form-mr-update-harian" style="display: none; background: white; padding: 20px; border-radius: 10px; margin-top: 20px; border-left: 5px solid var(--secondary);">
+                <h3 style="margin-top:0; color: var(--primary);">Update: <br><span id="mr-update-nama" style="color: var(--secondary); font-size: 16px;"></span></h3><input type="hidden" id="mr-update-id">
+                <div class="form-group"><label>Waktu Pengerjaan Aktual Hari Ini</label><div style="display: flex; gap: 10px;"><input type="number" id="mr-aktual-jam" placeholder="Jam" min="0" required><input type="number" id="mr-aktual-menit" placeholder="Menit" min="0" max="59" required></div></div>
+                <div class="form-group"><label>Catatan PIC</label><textarea id="mr-aktual-catatan" rows="3" placeholder="Progress yang dilakukan hari ini..."></textarea></div>
+                <div class="form-group"><label>Foto Progress</label><label for="mr-aktual-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="mr-aktual-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-mr-foto')"><span id="status-mr-foto" class="file-status"></span></div>
+                <div style="display: flex; gap: 10px; margin-top: 15px;"><button class="btn-submit" type="button" style="flex:1; background: gray;" onclick="window.batalUpdateMR()">BATAL</button><button class="btn-submit" type="button" style="flex:1; background: var(--secondary);" onclick="window.simpanLogHarianMR()">UPDATE HARIAN</button></div>
+                <button class="btn-submit" type="button" style="width:100%; margin-top:10px; background: var(--cepat);" onclick="window.selesaikanProyekMR()">TUTUP TIKET (SELESAI)</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- MODAL DETAIL MOLD REPAIR -->
+    <div id="modal-detail-mr" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:white; width:100%; max-width:500px; border-radius:12px; padding:20px; max-height:90vh; overflow-y:auto; position:relative;">
+            <h3 style="color:var(--primary); margin-top:0; border-bottom:2px solid #cbd5e1; padding-bottom:10px;"><i class="fas fa-info-circle"></i> Detail Info Proyek</h3>
+            <div id="mr-detail-content" style="font-size:14px; line-height:1.6;"></div>
+            <button type="button" onclick="document.getElementById('modal-detail-mr').style.display='none'" style="width:100%; margin-top:15px; padding:12px; background:var(--primary); border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;">TUTUP DETAIL</button>
+        </div>
+    </div>
+
+    <!-- MR CONTROL REPORT SCREEN -->
+    <div id="mr-control-report-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Control & Report Progres</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="alert('Report Harian sedang dikonstruksi Tuan!')" style="border-left-color: #3b82f6;"><i class="fas fa-file-alt"></i> 1. Report Harian</div>
+                <div class="menu-card" onclick="alert('Report Mingguan sedang dikonstruksi Tuan!')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-week"></i> 2. Report Mingguan</div>
+                <div class="menu-card" onclick="alert('Report Bulanan sedang dikonstruksi Tuan!')" style="border-left-color: #10b981;"><i class="fas fa-chart-bar"></i> 3. Report Bulanan</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 4. MENU UTAMA INFORMASI MOLD (YANG SEBELUMNYA HILANG)     -->
+    <!-- ========================================================= -->
+    <div id="informasi-mold-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Informasi & Laporan Mold</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('notulen-menu-screen')" style="border-left-color: #14b8a6;"><i class="fas fa-handshake"></i> 1. NOTULEN MEETING</div>
+                <div class="menu-card" onclick="window.bukaMenuPermintaanTrial()" style="border-left-color: #f97316;"><i class="fas fa-flask"></i> 2. PERMINTAAN TRIAL</div>
+                <div class="menu-card" onclick="window.navigasi('jadwal-besar-menu-screen')" style="border-left-color: #2563eb;"><i class="fas fa-calendar-alt"></i> 3. JADWAL BESAR</div>
+                <div class="menu-card" onclick="window.bukaSubInfo('SCHEDULE BULANAN MOLD')" style="border-left-color: #10b981;"><i class="fas fa-calendar-check"></i> 4. SCHEDULE BULANAN MOLD</div>
+                <div class="menu-card" onclick="window.bukaSubInfo('DATA MASTER MOLD')" style="border-left-color: #8b5cf6;"><i class="fas fa-database"></i> 5. DATA MASTER MOLD</div>
+                <div class="menu-card" onclick="window.bukaSubInfo('ROTASI MOLD')" style="border-left-color: #ec4899;"><i class="fas fa-sync-alt"></i> 6. ROTASI MOLD</div>
+                <div class="menu-card" onclick="window.bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')" style="border-left-color: #ef4444;"><i class="fas fa-shield-alt"></i> 7. DATA PREVENTIF TAHUNAN MOLD</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- NOTULEN MEETING -->
+    <div id="notulen-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Menu Notulen Meeting</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('notulen-input-screen')"><i class="fas fa-edit"></i> 1. Input Notulen Baru</div>
+                <div class="menu-card" onclick="window.bukaHasilNotulen()"><i class="fas fa-folder-open"></i> 2. Lihat Hasil Notulen</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="notulen-input-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Notulen Baru</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                <div class="form-group"><label>Jenis Meeting</label><select id="notul-jenis"><option value="MEETING PAGI">MEETING PAGI</option><option value="MEETING URGENT">MEETING URGENT</option><option value="BRIEFING TIM LAPANGAN">BRIEFING TIM LAPANGAN</option></select></div>
+                <div class="form-group"><label>Waktu Pencatatan</label><input type="text" id="notul-waktu-display" disabled style="background:#f1f5f9; font-weight:bold; color:var(--primary);"></div>
+                <div class="form-group"><label>Deskripsi (Catatan Mentah)</label><textarea id="notul-deskripsi" rows="4" placeholder="Ketikkan pembahasan..."></textarea><button type="button" onclick="window.aiRapihkanNotulen()" style="width:100%; padding:12px; margin-top:8px; background:#10b981; color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-magic"></i> AI Rapihkan Format</button></div>
+                <div class="form-group">
+                    <label>Kehadiran Tim</label>
+                    <div class="chk-grid">
+                        <label><input type="checkbox" value="DeptHead. Bpk Edi" class="chk-hadir"> DeptHead. Bpk Edi</label>
+                        <label><input type="checkbox" value="SecHead. Bpk Heru" class="chk-hadir"> SecHead. Bpk Heru</label>
+                        <label><input type="checkbox" value="Foreman Bpk Deni" class="chk-hadir"> Foreman Bpk Deni</label>
+                        <label><input type="checkbox" value="Foreman Bpk Indra" class="chk-hadir"> Foreman Bpk Indra</label>
+                        <label><input type="checkbox" value="Foreman Bpk Kiki" class="chk-hadir"> Foreman Bpk Kiki</label>
+                        <label><input type="checkbox" value="Tim Lapangan" class="chk-hadir"> Tim Lapangan</label>
+                        <label><input type="checkbox" value="Foreman Bpk Tarmuji" class="chk-hadir"> Foreman Bpk Tarmuji</label>
+                        <label><input type="checkbox" value="SO Bpk Eko" class="chk-hadir"> SO Bpk Eko</label>
+                        <label><input type="checkbox" value="ADM Benny" class="chk-hadir"> ADM Benny</label>
+                    </div>
+                </div>
+                <div class="form-group"><label>Foto Dokumentasi</label><label for="notul-foto" class="btn-camera"><i class="fas fa-camera"></i> Buka Kamera</label><input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-notul-foto')"><span id="status-notul-foto" class="file-status"></span></div>
+                <button class="btn-submit" type="button" onclick="window.simpanNotulen()">SIMPAN NOTULEN</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="notulen-hasil-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Hasil Laporan Notulen</h2></div>
+            <div id="list-notulen"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="detail-notulen-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Detail & Evaluasi Notulen</h2></div>
+            <div class="export-row"><button class="btn-export btn-jpg" type="button" onclick="window.downloadNotulenJPG()"><i class="fas fa-image"></i> Download JPG</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Download PDF</button></div>
+            <div class="report-sheet" id="report-notulen-content"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.bukaHasilNotulen()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
+        </div>
+    </div>
+
+    <!-- JADWAL BESAR -->
+    <div id="jadwal-besar-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Menu Jadwal Besar</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputJadwal()"><i class="fas fa-upload"></i> 1. Manajemen (Input / Update)</div>
+                <div class="menu-card" onclick="window.bukaViewJadwal()"><i class="fas fa-search"></i> 2. View Jadwal Besar</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="jadwal-besar-input-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Manajemen Jadwal Besar</h2></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+                <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px;">
+                    <h3 style="margin-top:0; color: var(--primary);">Input / Update Jadwal Baru</h3>
+                    <div class="form-group" style="margin-top: 15px;"><label>Pilih File</label><label for="jb-foto" class="btn-camera" style="background:#2563eb;"><i class="fas fa-folder-open"></i> Cari Dokumen / File</label><input type="file" id="jb-foto" class="input-file-hidden" accept="image/*, application/pdf" onchange="window.cekFotoFile(this, 'status-jb-foto')"><span id="status-jb-foto" class="file-status"></span></div>
+                    <button class="btn-submit" type="button" onclick="window.simpanJadwalBesar()"><i class="fas fa-upload"></i> SIMPAN JADWAL</button>
+                </div>
+                <div style="flex: 1; min-width: 280px; background: white; padding: 15px; border-radius: 10px;">
+                    <h3 style="margin-top:0; color: var(--secondary);">Preview Jadwal Aktif</h3>
+                    <div id="jb-output-container" style="text-align: center; border: 1px dashed #cbd5e1; padding: 10px; border-radius: 8px; min-height: 150px; display:flex; flex-direction:column; justify-content:center; align-items:center;"><span style="color: gray;">Memuat data...</span></div>
+                </div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="jadwal-besar-view-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>View Jadwal Besar</h2></div>
+            <div style="background: white; padding: 15px; border-radius: 10px;"><div id="jb-view-container" style="text-align:center; margin-top:15px;"></div></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- SUB INFORMASI -->
+    <div id="sub-info-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2 id="judul-sub-info">Sub Informasi</h2></div>
+            <div class="export-row"><button class="btn-export btn-excel" type="button" onclick="window.exportInfoExcel()"><i class="fas fa-file-excel"></i> Rekap Excel</button><button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()"><i class="fas fa-file-pdf"></i> Cetak PDF</button></div>
+            <div style="background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <h3 style="margin-top:0; color: var(--primary);">Input Data Baru</h3>
+                <div class="form-group"><label>Nama Pembuat</label><input type="text" id="info-user" placeholder="Nama..."></div>
+                <div class="form-group"><label>Judul Kegiatan</label><input type="text" id="info-nama" placeholder="Judul..."></div>
+                <div class="form-group"><label>Keterangan Detail</label><textarea id="info-ket" rows="3"></textarea></div>
+                <div class="form-group"><label>Tanggal</label><input type="date" id="info-tgl"></div>
+                <button class="btn-submit" type="button" onclick="window.simpanInfoData()">SIMPAN KE DATABASE</button>
+            </div>
+            <div id="list-sub-info"></div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- MOLD STORE (NAIK/TURUN & PRODUKSI) -->
+    <div id="mold-store-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>DIVISI MOLD STORE</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;"><i class="fas fa-calendar-check"></i> 1. Rencana Naik Mold</div>
+                <div class="menu-card" onclick="window.navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;"><i class="fas fa-dolly"></i> 2. Laporan Persiapan Naik/Turun Mold</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI KE BERANDA</button>
+        </div>
+    </div>
+
+    <div id="ms-persiapan-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Persiapan Naik & Turun Mold</h2></div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputNaikMold()" style="border-left-color: #8b5cf6;"><i class="fas fa-arrow-up"></i> 1. Input Naik Mold</div>
+                <div class="menu-card" onclick="window.bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;"><i class="fas fa-sync-alt"></i> 2. Update Mold Produksi</div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="ms-input-naik-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2>Input Naik Mold</h2></div>
+            <div style="background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <div class="form-group"><label>Tanggal Penaikan Mold</label><input type="date" id="ms-naik-tgl"></div>
+                <div class="form-group"><label>Penanggung Jawab</label><input type="text" id="ms-naik-pj" value="Bapak Kiki Foreman" readonly></div>
+                <div class="form-group" style="margin-top: 25px;">
+                    <label style="color: var(--secondary);">List Nama Mold</label>
+                    <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual..." style="flex:1; text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+                        <button type="button" onclick="window.tambahMoldManual()" style="padding: 10px 15px; background: #64748b; color: white; border: none; border-radius: 4px; cursor: pointer;"><i class="fas fa-plus"></i></button>
+                        <button type="button" id="btn-suara" onclick="window.toggleSuara()" style="padding: 10px 15px; background: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;"><i class="fas fa-microphone-alt"></i></button>
+                    </div>
+                    <ul id="list-naik-mold" class="eval-list" style="margin-bottom: 15px; border: 1px dashed #cbd5e1; padding: 10px; min-height: 80px; border-radius: 8px;"></ul>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanNaikMold()"><i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD</button>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <div id="ms-update-mold-screen" class="screen screen-bg">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
+            <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #0f172a; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h2 style="color: white; margin: 0; font-size: 16px;">Update Mold Produksi</h2>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            </div>
+            <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1;">
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('proses')" id="btn-tab-proses" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #3b82f6; color: white;">Proses Produksi</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Selesai Baik</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Gagal / Gangguan</button>
+            </div>
+            <div id="tab-proses" class="tab-content" style="display: block;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #f59e0b;"><h3 style="font-size: 16px; color: #d97706; text-align: center;"><i class="fas fa-cogs"></i> Proses Produksi</h3><ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: #fef3c7; border-radius: 5px; padding: 10px;"></ul></div>
+            </div>
+            <div id="tab-selesai" class="tab-content" style="display: none;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #10b981;"><h3 style="font-size: 16px; color: #059669; text-align: center;"><i class="fas fa-check-circle"></i> Mold Selesai Baik</h3><ul id="kolom-selesai-baik" style="list-style: none; padding: 0; min-height: 400px; background: #d1fae5; border-radius: 5px; padding: 10px;"></ul></div>
+            </div>
+            <div id="tab-gagal" class="tab-content" style="display: none;">
+                <div style="background: white; padding: 15px; border-radius: 8px; border-top: 5px solid #ef4444;"><h3 style="font-size: 16px; color: #dc2626; text-align: center;"><i class="fas fa-exclamation-triangle"></i> Gangguan / Gagal Naik</h3><ul id="kolom-gagal-naik" style="list-style: none; padding: 0; min-height: 400px; background: #fee2e2; border-radius: 5px; padding: 10px;"></ul></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOLD TROUBLE -->
+    <div id="trouble-menu-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header" style="background: #1e293b;">
+                <h2 style="color: white; margin: 0;">Divisi Mold Trouble</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative;">
+                    <i class="fas fa-exclamation-circle"></i> 1. Masalah/gagal persiapan mold
+                    <span class="badge-trouble-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #ef4444; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none;">0</span>
+                </div>
+                <div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
+                    <i class="fas fa-file-import"></i> 2. New Data PKM Eltre Mold
+                    <span id="badge-pkm-notif" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: #f59e0b; color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: none;">0</span>
+                </div>
+                <div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
+                    <i class="fas fa-chart-line"></i> 3. Control Progres
+                </div>
+            </div>
+            <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- MOLD TROUBLE SCREEN (TABEL LIST) -->
+    <div id="ms-trouble-screen" class="screen screen-bg">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
+            <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #dc2626; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-tools"></i> Daftar Mold Trouble</h2>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            </div>
+            <div style="display: flex; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; border: 2px solid #cbd5e1;">
+                <button class="tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('belum')" id="btn-tab-trouble-belum" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: #dc2626; color: white;">Belum di Update</button>
+                <button class="tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai" style="flex: 1; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 12px; cursor: pointer; background: transparent; color: #475569;">Sudah Selesai</button>
+            </div>
+            <div id="tab-trouble-belum" class="tab-content-trouble" style="display: block;"><ul id="list-trouble-belum" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+            <div id="tab-trouble-selesai" class="tab-content-trouble" style="display: none;"><ul id="list-trouble-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+        </div>
+    </div>
+
+    <!-- MODAL FORM UPDATE PROJECT TROUBLE -->
+    <div id="modal-form-trouble" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:white; width:100%; max-width:500px; border-radius:12px; padding:20px; max-height:90vh; overflow-y:auto; position:relative;">
+            <h3 style="color:#dc2626; margin-top:0; border-bottom:2px solid #fee2e2; padding-bottom:10px;"><i class="fas fa-clipboard-list"></i> Update Project Trouble</h3>
+            <input type="hidden" id="trouble-id-tiket"><input type="hidden" id="trouble-id-produksi"><input type="hidden" id="trouble-index-produksi">
+            <div style="margin-bottom:10px;"><label style="font-size:12px; font-weight:bold; color:gray;">Nama Mold</label><input type="text" id="trouble-nama-mold" readonly style="width:100%; padding:10px; background:#f1f5f9; border-radius:6px; font-weight:bold;"></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                <div><label style="font-size:12px; font-weight:bold; color:gray;">1. Type Mold</label><input type="text" id="tr-type" placeholder="Contoh: Injection" style="width:100%; padding:8px; border-radius:6px;"></div>
+                <div><label style="font-size:12px; font-weight:bold; color:gray;">7. Nama Eksekutor</label><input type="text" id="tr-eksekutor" placeholder="Nama Teknisi" style="width:100%; padding:8px; border-radius:6px;"></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                <div><label style="font-size:12px; font-weight:bold; color:gray;">2. Start Penanganan</label><input type="datetime-local" id="tr-start" style="width:100%; padding:8px; border-radius:6px;"></div>
+                <div><label style="font-size:12px; font-weight:bold; color:gray;">3. Estimasi Waktu</label><input type="text" id="tr-estimasi" placeholder="Misal: 2 Jam" style="width:100%; padding:8px; border-radius:6px;"></div>
+            </div>
+            <div style="margin-bottom:10px;"><label style="font-size:12px; font-weight:bold; color:gray;">4. Finish Pengerjaan</label><input type="datetime-local" id="tr-finish" style="width:100%; padding:8px; border-radius:6px;"></div>
+            <div style="margin-bottom:10px; padding:10px; background:#fff7ed; border-radius:6px;">
+                <label style="font-size:12px; font-weight:bold; color:#ea580c;">5. Masalah & Penyebab</label>
+                <input type="text" id="tr-masalah" placeholder="Masalah..." style="width:100%; padding:8px; margin-bottom:5px; border-radius:6px;">
+                <input type="text" id="tr-penyebab" placeholder="Penyebab..." style="width:100%; padding:8px; border-radius:6px;">
+            </div>
+            <div style="margin-bottom:15px;"><label style="font-size:12px; font-weight:bold; color:gray;">6. Tindakan</label><textarea id="tr-tindakan" rows="3" placeholder="Langkah perbaikan..." style="width:100%; padding:8px; border-radius:6px;"></textarea></div>
+            <div style="display:flex; gap:10px;">
+                <button type="button" onclick="document.getElementById('modal-form-trouble').style.display='none'" style="flex:1; padding:12px; background:#e2e8f0; border:none; border-radius:6px; font-weight:bold; color:#475569; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanLaporanTrouble()" style="flex:2; padding:12px; background:#10b981; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-save"></i> SIMPAN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PKM ELTRE APPSHEET -->
+    <div id="ms-pkm-eltre-screen" class="screen screen-bg">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto; padding-top: 15px;">
+            <div class="header" style="display:flex; justify-content:space-between; align-items:center; background: #2563eb; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <h2 style="color: white; margin: 0; font-size: 16px;"><i class="fas fa-file-import"></i> Data PKM Eltre</h2>
+                <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()" style="margin:0; padding:5px 10px; background: transparent; border: 1px solid white; color: white; font-size: 12px;"><i class="fas fa-arrow-left"></i> KEMBALI</button>
+            </div>
+            <div style="display: flex; gap:5px; background: #e2e8f0; border-radius: 8px; padding: 4px; margin-bottom: 20px; overflow-x: auto;">
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="flex: 1; min-width: 110px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: #2563eb; color: white;">Verifikasi ELTRE</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dikerjakan</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="flex: 1; min-width: 100px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Dipisahkan</button>
+                <button class="tab-btn-pkm" type="button" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="flex: 1; min-width: 80px; padding: 10px 5px; border: none; border-radius: 6px; font-weight: bold; font-size: 10px; cursor: pointer; background: transparent; color: #475569;">Selesai</button>
+            </div>
+            <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;"><ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+            <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+            <div id="tab-pkm-pisah" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-pisah" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+            <div id="tab-pkm-selesai" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
+        </div>
+    </div>
+
+    <!-- MODAL AKSI VERIFIKASI -->
+    <div id="modal-aksi-pkm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:white; width:100%; max-width:400px; border-radius:12px; padding:25px; text-align:center; position:relative;">
+            <h3 style="color:#2563eb; margin-top:0;"><i class="fas fa-search"></i> Verifikasi Data PKM</h3>
+            <p style="font-size:13px; color:gray; margin-bottom:20px;">Apakah kendala pada mold <b id="pkm-nama-mold-text"></b> ini benar-benar disebabkan oleh masalah Mold?</p>
+            <input type="hidden" id="pkm-id-tiket-verifikasi">
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:12px; background:#10b981; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-tools"></i> YA, KERJAKAN (KENDALA MOLD)</button>
+                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:12px; background:#ef4444; border:none; border-radius:6px; font-weight:bold; color:white; cursor:pointer;"><i class="fas fa-ban"></i> BUKAN, PISAHKAN DATA INI</button>
+                <button type="button" onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:12px; background:#e2e8f0; border:none; border-radius:6px; font-weight:bold; color:#475569; cursor:pointer; margin-top:10px;">BATAL</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ========================================== -->
     <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & PUSAT OLAH DATA -->
     <!-- ========================================== -->
@@ -1671,7 +2057,7 @@
         window.hapusMoldList = function(index) { window.arrayNaikMold.splice(index, 1); window.renderListNaikMoldUI(); }
         window.toggleCeklis = function(indexMold, indexCek) { window.arrayNaikMold[indexMold].ceklis[indexCek] = !window.arrayNaikMold[indexMold].ceklis[indexCek]; window.renderListNaikMoldUI(); }
         window.kalkulasiStatusMold = function(ceklisArr) { let total = ceklisArr.length; let diCeklis = ceklisArr.filter(c => c === true).length; let tidakDiCeklis = total - diCeklis; if (diCeklis === total) { return { teks: "SIAP PRODUKSI", warna: "#10b981", bg: "#d1fae5" }; } else if (diCeklis === 0 || tidakDiCeklis > diCeklis) { return { teks: "GAGAL NAIK", warna: "#ef4444", bg: "#fee2e2" }; } else { return { teks: "MOLD SIAP NAIK (PERLU DIPERHATIKAN)", warna: "#f59e0b", bg: "#fef3c7" }; } }
-        window.renderListNaikMoldUI = function() { const ul = document.getElementById('list-naik-mold'); if(!ul) return; ul.innerHTML = ""; if(window.arrayNaikMold.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold didata.</li>`; } else { window.arrayNaikMold.forEach((item, idxMold) => { let status = window.kalkulasiStatusMold(item.ceklis); let listCeklisHTML = ""; window.standarCekMold.forEach((namaCek, idxCek) => { let isChecked = item.ceklis[idxCek] ? "checked" : ""; listCeklisHTML += `<div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;"><input type="checkbox" id="chk-${idxMold}-${idxCek}" ${isChecked} onchange="window.toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;"><label for="chk-${idxMold}-${idxCek}">${namaCek}</label></div>`; }); ul.innerHTML += `<li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;"><span style="font-size:15px; font-weight:bold; color:var(--primary);">${idxMold + 1}. ${item.name}</span><button type="button" onclick="window.hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button></div><div style="padding: 15px;">${listCeklisHTML}</div><div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;"><span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span></div></li>`; }); } }
+        window.renderListNaikMoldUI = function() { const ul = document.getElementById('list-naik-mold'); if(!ul) return; ul.innerHTML = ""; if(window.arrayNaikMold.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold didata.</li>`; } else { window.arrayNaikMold.forEach((item, idxMold) => { let status = window.kalkulasiStatusMold(item.ceklis); let listCeklisHTML = ""; window.standarCekMold.forEach((namaCek, idxCek) => { let isChecked = item.ceklis[idxCek] ? "checked" : ""; listCeklisHTML += `<div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;"><input type="checkbox" id="chk-${idxMold}-${idxCek}" ${isChecked} onchange="window.toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;"><label for="chk-${idxMold}-${idxCek}">${namaCek}</label></div>`; }); ul.innerHTML += `<li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;"><span style="font-size:15px; font-weight:bold; color:var(--primary);">${idxMold + 1}. ${item.nama}</span><button type="button" onclick="window.hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button></div><div style="padding: 15px;">${listCeklisHTML}</div><div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;"><span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span></div></li>`; }); } }
 
         window.isRecording = false; window.recognition = null;
         window.toggleSuara = function() { const btnSuara = document.getElementById('btn-suara'); if (!window.recognition) { if (!('webkitSpeechRecognition' in window)) { alert("Browser tidak mendukung AI Suara."); return; } window.recognition = new webkitSpeechRecognition(); window.recognition.lang = 'id-ID'; window.recognition.interimResults = false; window.recognition.onresult = function(event) { let hasilSuara = event.results[0][0].transcript.toUpperCase(); const manual = document.getElementById('ms-naik-input-manual'); if(manual) manual.value = hasilSuara; }; window.recognition.onend = function() { window.resetTombolSuara(); }; } if (window.isRecording) { window.recognition.stop(); window.resetTombolSuara(); } else { window.recognition.start(); window.isRecording = true; if(btnSuara) { btnSuara.style.background = "#10b981"; btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; } } }
@@ -1934,6 +2320,9 @@
             window.navigasi('adm-harian-detail-screen'); 
         }
 
+        // =======================================================
+        // Permintaan Trial, Notulen, Jadwal, Info & Gosok
+        // =======================================================
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
         window.bukaInputPermintaanTrial = function() { window.targetTrialArray = []; window.renderTargetTrialUI(); const iptW = document.getElementById('pt-input-waktu'); if(iptW) iptW.value = window.dapatkanWaktuRill(); const iptN = document.getElementById('pt-input-nama'); if(iptN) iptN.value = ""; const iptU = document.getElementById('pt-input-user'); if(iptU) iptU.value = ""; window.navigasi('pt-input-screen'); }
         window.tambahTargetTrial = function() { const input = document.getElementById('pt-input-target-item'); const val = input.value.trim(); if(val) { window.targetTrialArray.push(val); window.renderTargetTrialUI(); input.value = ""; input.focus(); } }
@@ -1945,6 +2334,7 @@
         window.bukaPtAdmin = async function() { window.navigasi('pt-admin-screen'); await window.ambilDataPt(); window.switchTabPt('belum'); }
         window.switchTabPt = function(tab) { const tb = document.getElementById('tab-pt-belum'); const tp = document.getElementById('tab-pt-proses'); const lb = document.getElementById('list-pt-belum'); const lp = document.getElementById('list-pt-proses'); const fv = document.getElementById('form-pt-verifikasi'); const fh = document.getElementById('form-pt-hasil'); if(tb) tb.classList.remove('tab-active'); if(tp) tp.classList.remove('tab-active'); if(lb) lb.style.display = 'none'; if(lp) lp.style.display = 'none'; if(fv) fv.style.display = 'none'; if(fh) fh.style.display = 'none'; if(tab === 'belum') { if(tb) tb.classList.add('tab-active'); if(lb) lb.style.display = 'block'; window.renderListAdminPt('Menunggu Verifikasi', 'list-pt-belum'); } else { if(tp) tp.classList.add('tab-active'); if(lp) lp.style.display = 'block'; window.renderListAdminPt('Proses', 'list-pt-proses'); } }
         
+        // BUGFIX BLANK PT ADMIN
         window.renderListAdminPt = function(filterStatus, containerId) { 
             const container = document.getElementById(containerId); 
             if(!container) return; container.innerHTML = ""; 
@@ -1967,6 +2357,7 @@
         window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = (data.targetTrialList && Array.isArray(data.targetTrialList)) ? data.targetTrialList.join(', ') : (data.targetTrial || "-"); const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'block'; const lp = document.getElementById('list-pt-proses'); if(lp) lp.style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
         window.simpanPtHasil = async function() { const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); window.toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; const spf = document.getElementById('status-pt-foto'); if(spf) spf.innerHTML = ""; const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'none'; await window.ambilDataPt(); window.switchTabPt('proses'); } catch(e) {} window.toggleLoader(false); }
         
+        // --- PUSAT PERBAIKAN PROGRESS TRIAL (BUGFIX BLANK) ---
         window.bukaPtProgress = async function() { 
             window.navigasi('pt-progress-screen'); 
             await window.ambilDataPt(); 
@@ -2039,6 +2430,7 @@
         window.ambilDataGosokMold = async function() { window.toggleLoader(true, "Mengunduh..."); gosokDatabase = []; try { const q = query(collection(db, "laporan_gosok_mold")); const snapshot = await getDocs(q); snapshot.forEach(doc => gosokDatabase.push({id: doc.id, ...doc.data()})); gosokDatabase.sort((a,b) => b.timestamp - a.timestamp); const container = document.getElementById('list-gosok-riwayat'); if(!container) return; container.innerHTML = ""; if (gosokDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } gosokDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; }); } catch(e) {} window.toggleLoader(false); }
         window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; border: 1px solid #cbd5e1;">${idx + 1}</td><td style="border: 1px solid #cbd5e1;"><strong>${item.mesin}</strong></td><td style="border: 1px solid #cbd5e1;">${item.mold}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.start}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.finish}</td><td style="text-align:center; font-weight:bold; border: 1px solid #cbd5e1;">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong>${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td>${data.waktuRecord}</td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th>No</th><th>Mesin</th><th>Nama Mold</th><th>Start</th><th>Finish</th><th>Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
 
+        // EKSPOR & CETAK
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(() => window.toggleLoader(false)); }, 200); }
         window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
