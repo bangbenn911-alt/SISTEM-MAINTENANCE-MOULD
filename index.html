@@ -1418,7 +1418,6 @@
                 const estHari = document.getElementById('ws-np-hari').value || "0 Hari";
                 const estJam = document.getElementById('ws-np-jam').value || "0 Jam";
 
-                // Memakai Alert native agar tidak tersendat kalau error
                 if(namaMold === "") return alert("❌ PERHATIAN: Nama Proyek/MOLD wajib diisi!");
                 if(!startDate) return alert("❌ PERHATIAN: Tanggal Mulai Pekerjaan wajib diisi!");
                 if(!finishDate) return alert("❌ PERHATIAN: Tanggal Target Selesai wajib diisi!");
@@ -1514,7 +1513,6 @@
                     let subHtml = "";
                     tugas.subTugas.forEach((sub, idxSub) => {
                         let isSelesai = sub.status === "Selesai"; 
-                        // FITUR MULTI-SHIFT: Jika belum "Selesai" tapi durasiAktual > 0, berarti dilanjut
                         let textBtn = (sub.durasiAktual > 0) ? "UPDATE" : "KERJAKAN";
                         let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
                         let tombolKerjakan = isSelesai ? `` : `<button type="button" onclick="window.bukaFormUpdateTaskWS(${idxUtama}, ${idxSub})" style="background:#3b82f6; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">${textBtn}</button>`;
@@ -2346,6 +2344,9 @@
             window.navigasi('adm-harian-detail-screen'); 
         }
 
+        // =======================================================
+        // Permintaan Trial, Notulen, Jadwal, Info & Gosok
+        // =======================================================
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
         window.bukaInputPermintaanTrial = function() { window.targetTrialArray = []; window.renderTargetTrialUI(); const iptW = document.getElementById('pt-input-waktu'); if(iptW) iptW.value = window.dapatkanWaktuRill(); const iptN = document.getElementById('pt-input-nama'); if(iptN) iptN.value = ""; const iptU = document.getElementById('pt-input-user'); if(iptU) iptU.value = ""; window.navigasi('pt-input-screen'); }
         window.tambahTargetTrial = function() { const input = document.getElementById('pt-input-target-item'); const val = input.value.trim(); if(val) { window.targetTrialArray.push(val); window.renderTargetTrialUI(); input.value = ""; input.focus(); } }
@@ -2449,8 +2450,32 @@
         window.aiProsesGosokMold = function() { const raw = document.getElementById('gosok-raw-input').value; if(!raw.trim()) { alert("Silakan paste laporan mentah terlebih dahulu!"); return; } window.toggleLoader(true, "AI Mensortir Data..."); setTimeout(() => { let parsedGosokData = []; const lines = raw.split('\n'); let items = []; let currentItem = []; for(let line of lines) { line = line.trim(); if(!line || line.toLowerCase().includes('gosok mold') || line.toLowerCase().includes('shift')) continue; if (/^\d+\s*\./.test(line)) { if (currentItem.length > 0) items.push(currentItem.join(' | ')); currentItem = [line]; } else if (currentItem.length > 0) { currentItem.push(line); } } if (currentItem.length > 0) items.push(currentItem.join(' | ')); items.forEach(text => { let timeRegex = /([01]?[0-9]|2[0-3])[:.]([0-5][0-9])\s*-\s*([01]?[0-9]|2[0-3])[:.]([0-5][0-9])/; let timeMatch = text.match(timeRegex); let start = "-", finish = "-"; if (timeMatch) { start = `${timeMatch[1].padStart(2, '0')}:${timeMatch[2]}`; finish = `${timeMatch[3].padStart(2, '0')}:${timeMatch[4]}`; text = text.replace(timeMatch[0], ''); } text = text.replace(/^\d+\s*\.\s*/, ''); let parts = text.split('|').map(p => p.replace(/^[-•\s]+/, '').trim()).filter(p => p.length > 0); let mesin = "-"; let mold = "-"; if (parts.length >= 2) { mesin = parts[0]; mold = parts.slice(1).join(' '); } else if (parts.length === 1) { mesin = parts[0]; } mesin = mesin.replace(/[()]/g, '').trim().toUpperCase(); mold = mold.replace(/[()]/g, '').trim().toUpperCase(); let durasi = window.hitungDurasiJamMenit(start, finish); parsedGosokData.push({ mesin, mold, start, finish, durasi }); }); const tbody = document.getElementById('gosok-table-body'); if(tbody) { tbody.innerHTML = ""; if(parsedGosokData.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal mendeteksi format.</td></tr>`; } else { parsedGosokData.forEach(d => { tbody.innerHTML += `<tr><td><input type="text" value="${d.mesin}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-mesin"></td><td><input type="text" value="${d.mold}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-mold"></td><td><input type="time" value="${d.start}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-start" onchange="window.updateDurasiTabel(this)"></td><td><input type="time" value="${d.finish}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-finish" onchange="window.updateDurasiTabel(this)"></td><td class="td-durasi" style="font-weight:bold; color:var(--proses); text-align:center;">${d.durasi}</td></tr>`; }); } } const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "block"; window.toggleLoader(false); }, 1200); }
         window.updateDurasiTabel = function(element) { let tr = element.closest('tr'); let start = tr.querySelector('.edit-start').value; let finish = tr.querySelector('.edit-finish').value; tr.querySelector('.td-durasi').innerText = window.hitungDurasiJamMenit(start, finish); }
         window.simpanOlahanGosokMold = async function() { let finalData = []; let rows = document.querySelectorAll('#gosok-table-body tr'); rows.forEach(tr => { let mesinInput = tr.querySelector('.edit-mesin'); if(mesinInput) { finalData.push({ mesin: mesinInput.value, mold: tr.querySelector('.edit-mold').value, start: tr.querySelector('.edit-start').value, finish: tr.querySelector('.edit-finish').value, durasi: tr.querySelector('.td-durasi').innerText }); } }); if(finalData.length === 0) return alert("Tidak ada data valid."); window.toggleLoader(true, "Menyimpan ke Database..."); try { await addDoc(collection(db, "laporan_gosok_mold"), { tanggalLokal: window.dapatkanTanggalLokal(), waktuRecord: window.dapatkanWaktuRill(), dataGosok: finalData, timestamp: Date.now() }); alert("Data Tersimpan!"); document.getElementById('gosok-raw-input').value = ""; const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "none"; window.navigasi('data-olahan-menu-screen'); } catch (e) {} window.toggleLoader(false); }
+        
+        // --- BUGFIX: LOADING RIWAYAT GOSOK MOLD ---
         window.bukaRiwayatGosokMold = async function() { window.navigasi('gosok-riwayat-screen'); await window.ambilDataGosokMold(); }
-        window.ambilDataGosokMold = async function() { window.toggleLoader(true, "Mengunduh..."); gosokDatabase = []; try { const q = query(collection(db, "laporan_gosok_mold")); const snapshot = await getDocs(q); snapshot.forEach(doc => gosokDatabase.push({id: doc.id, ...doc.data()})); gosokDatabase.sort((a,b) => b.timestamp - a.timestamp); const container = document.getElementById('list-gosok-riwayat'); if(!container) return; container.innerHTML = ""; if (gosokDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } gosokDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; }); } catch(e) {} window.toggleLoader(false); }
+        window.ambilDataGosokMold = async function() { 
+            window.toggleLoader(true, "Mengunduh..."); 
+            gosokDatabase = []; 
+            try { 
+                const q = query(collection(db, "laporan_gosok_mold")); 
+                const snapshot = await getDocs(q); 
+                snapshot.forEach(doc => gosokDatabase.push({id: doc.id, ...doc.data()})); 
+                gosokDatabase.sort((a,b) => b.timestamp - a.timestamp); 
+                const container = document.getElementById('list-gosok-riwayat'); 
+                if(container) { 
+                    container.innerHTML = ""; 
+                    if (gosokDatabase.length === 0) { 
+                        container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; 
+                    } else { 
+                        gosokDatabase.forEach(data => { 
+                            container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; 
+                        }); 
+                    } 
+                } 
+            } catch(e) { console.error(e); } 
+            window.toggleLoader(false); // MEMASTIKAN LOADING BERHENTI WALAUPUN KOSONG
+        }
+
         window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; border: 1px solid #cbd5e1;">${idx + 1}</td><td style="border: 1px solid #cbd5e1;"><strong>${item.mesin}</strong></td><td style="border: 1px solid #cbd5e1;">${item.mold}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.start}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.finish}</td><td style="text-align:center; font-weight:bold; border: 1px solid #cbd5e1;">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CITRA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong>${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td>${data.waktuRecord}</td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th>No</th><th>Mesin</th><th>Nama Mold</th><th>Start</th><th>Finish</th><th>Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
 
         // EKSPOR & CETAK
