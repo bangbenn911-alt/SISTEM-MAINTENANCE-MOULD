@@ -336,7 +336,7 @@
     <div id="landing-page">
         <div class="landing-top">
             <h1 class="landing-title">DEPARTEMENT MAINTENANCE MOULD</h1>
-            <!-- PERUBAHAN NAMA PT MENJADI CAHAYA -->
+            <!-- PERUBAHAN NAMA PT MENJADI CAHAYA SESUAI KOREKSI -->
             <h2 class="landing-subtitle">PT. CAHAYA BUANA INTITAMA</h2>
         </div>
         <div class="landing-middle">
@@ -363,7 +363,7 @@
             
             <div style="display:flex; gap:12px; margin-top:25px;">
                 <button onclick="window.navigasi('analisa-performa-screen')" style="flex:1; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); color:white; padding:12px; border-radius:14px; font-weight:800; font-size:13px; display:flex; justify-content:center; align-items:center; gap:8px; cursor:pointer;"><i class="fas fa-chart-line"></i> Analytics</button>
-                <button onclick="window.bukaSubInfo('SCHEDULE BULANAN MOLD')" style="flex:1; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); color:white; padding:12px; border-radius:14px; font-weight:800; font-size:13px; display:flex; justify-content:center; align-items:center; gap:8px; cursor:pointer;"><i class="fas fa-calendar-alt"></i> Jadwal</button>
+                <button onclick="window.navigasi('jadwal-besar-menu-screen')" style="flex:1; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.2); color:white; padding:12px; border-radius:14px; font-weight:800; font-size:13px; display:flex; justify-content:center; align-items:center; gap:8px; cursor:pointer;"><i class="fas fa-calendar-alt"></i> Jadwal</button>
             </div>
         </div>
 
@@ -428,24 +428,28 @@
 
             </div>
             
-            <h3 style="color:white; margin:30px 0 15px 5px; font-size:15px; font-weight:800;">Akses Cepat Buat Kamu</h3>
+            <!-- UPDATE: AKSES CEPAT MENJADI SHORTCUT CONTROL PROGRES DIVISI -->
+            <h3 style="color:white; margin:30px 0 15px 5px; font-size:15px; font-weight:800;">Akses Cepat (Control Progres)</h3>
             <div class="gopay-grid" style="grid-template-columns: repeat(4, 1fr);">
-                <!-- User Khusus -->
-                <div class="gopay-icon-btn" onclick="alert('Profil Benny Terpilih')">
-                    <div class="gopay-icon-box" style="border-radius:50%; background:#1e293b; font-size:18px; color:white; font-weight:900;">B</div>
-                    <span class="gopay-icon-text">Benny</span>
+                <!-- Progres Store -->
+                <div class="gopay-icon-btn" onclick="alert('Fitur Analisa/Progres Mold Store sedang disiapkan')">
+                    <div class="gopay-icon-box" style="border-radius:14px; background:#1e293b; font-size:20px; color:#60a5fa;"><i class="fas fa-warehouse"></i></div>
+                    <span class="gopay-icon-text">Progres<br>Store</span>
                 </div>
-                <div class="gopay-icon-btn" onclick="alert('Profil Leo Terpilih')">
-                    <div class="gopay-icon-box" style="border-radius:50%; background:#1e293b; font-size:18px; color:white; font-weight:900;">L</div>
-                    <span class="gopay-icon-text">Leo</span>
+                <!-- Progres Repair -->
+                <div class="gopay-icon-btn" onclick="window.navigasi('mr-control-report-screen')">
+                    <div class="gopay-icon-box" style="border-radius:14px; background:#1e293b; font-size:20px; color:#fbbf24;"><i class="fas fa-tools"></i></div>
+                    <span class="gopay-icon-text">Progres<br>Repair</span>
                 </div>
-                <div class="gopay-icon-btn" onclick="alert('Profil Nabila Terpilih')">
-                    <div class="gopay-icon-box" style="border-radius:50%; background:#1e293b; font-size:18px; color:white; font-weight:900;">N</div>
-                    <span class="gopay-icon-text">Nabila</span>
+                <!-- Progres Trouble -->
+                <div class="gopay-icon-btn" onclick="alert('Fitur Analisa/Progres Mold Trouble sedang disiapkan')">
+                    <div class="gopay-icon-box" style="border-radius:14px; background:#1e293b; font-size:20px; color:#f87171;"><i class="fas fa-exclamation-triangle"></i></div>
+                    <span class="gopay-icon-text">Progres<br>Trouble</span>
                 </div>
-                <div class="gopay-icon-btn" onclick="alert('Lihat Semua Akses Cepat')">
-                    <div class="gopay-icon-box" style="border-radius:50%; background:#1e293b; font-size:18px; color:#94a3b8;"><i class="fas fa-ellipsis-h"></i></div>
-                    <span class="gopay-icon-text">Lainnya</span>
+                <!-- Progres Workshop -->
+                <div class="gopay-icon-btn" onclick="window.navigasi('progress-screen'); window.switchTabProgressWS('data'); window.renderProgressListWS();">
+                    <div class="gopay-icon-box" style="border-radius:14px; background:#1e293b; font-size:20px; color:#34d399;"><i class="fas fa-cogs"></i></div>
+                    <span class="gopay-icon-text">Progres<br>Workshop</span>
                 </div>
             </div>
         </div>
@@ -455,24 +459,125 @@
             <div class="nav-item active" onclick="window.navigasi('home-screen')">
                 <i class="fas fa-home"></i><span>Beranda</span>
             </div>
-            <div class="nav-item" onclick="alert('Riwayat Kinerja sedang disiapkan!')">
-                <i class="fas fa-file-invoice-dollar"></i><span>Riwayat</span>
+            <div class="nav-item" onclick="window.navigasi('analisa-performa-screen')">
+                <i class="fas fa-chart-pie"></i><span>Analisa</span>
             </div>
             <!-- TOMBOL TENGAH (IDE CENTER) -->
             <div class="nav-center-wrap">
-                <div class="nav-center-btn" onclick="alert('💡 IDE CENTER: Ajukan Ide Perbaikan di sini!')">
+                <div class="nav-center-btn" onclick="window.navigasi('ide-center-screen')">
                     <i class="fas fa-lightbulb"></i>
                 </div>
             </div>
-            <div class="nav-item" onclick="alert('Kotak Masuk (Inbox) sedang disiapkan!')">
+            <div class="nav-item" onclick="window.navigasi('inbox-screen')">
                 <i class="fas fa-inbox"></i><span>Inbox</span>
             </div>
-            <div class="nav-item" onclick="alert('Menu Profil User sedang disiapkan!')">
+            <div class="nav-item" onclick="window.navigasi('profil-screen')">
                 <i class="fas fa-user"></i><span>Profil</span>
             </div>
         </div>
     </div>
+    <!-- ========================================================= -->
+    <!-- MENU BARU DARI BOTTOM NAV (IDE CENTER, INBOX, PROFIL)     -->
+    <!-- ========================================================= -->
+
+    <!-- IDE CENTER SCREEN -->
+    <div id="ide-center-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #f59e0b, #b45309); border-bottom:4px solid #fcd34d; box-shadow:0 15px 35px rgba(245, 158, 11, 0.2);">
+                <h2 style="color: white; margin: 0;"><i class="fas fa-lightbulb" style="color:#fef3c7; margin-right:10px;"></i> IDE CENTER</h2>
+                <p style="margin:5px 0 0 0; font-size:12px; color:#fef3c7; font-weight:600;">Salurkan ide perbaikan & masukanmu di sini</p>
+            </div>
+            
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" id="tab-ide-input" onclick="window.switchTabIde('input')"><i class="fas fa-pen"></i> Input Saran</button>
+                <button class="tab-btn" type="button" id="tab-ide-masuk" onclick="window.switchTabIde('masuk')"><i class="fas fa-inbox"></i> Kotak Masuk</button>
+            </div>
+
+            <!-- Area Input Saran -->
+            <div id="ide-input-area" style="display:block; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border:1px solid #f1f5f9;">
+                <div class="form-group">
+                    <label>Tanggal & Waktu</label>
+                    <input type="text" id="ide-waktu" readonly style="font-weight:800; color:var(--primary); background:#f8fafc; border:1px solid #cbd5e1;">
+                </div>
+                <div class="form-group">
+                    <label>Nama Pengirim</label>
+                    <input type="text" id="ide-nama" placeholder="Masukkan nama Anda...">
+                </div>
+                <div class="form-group">
+                    <label>Uraian Masukan / Ide / Saran</label>
+                    <textarea id="ide-uraian" rows="5" placeholder="Ketikkan ide brilian, saran, atau masukan perbaikan di sini..."></textarea>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanIde()" style="background:linear-gradient(135deg, #f59e0b, #d97706); box-shadow:0 8px 20px rgba(245, 158, 11, 0.3); margin-top:15px;">
+                    <i class="fas fa-paper-plane"></i> KIRIM SARAN (SELESAI)
+                </button>
+            </div>
+
+            <!-- Area Kotak Masuk Saran -->
+            <div id="ide-masuk-area" style="display:none;">
+                <ul id="list-ide-masuk" style="list-style:none; padding:0; margin:0;">
+                    <!-- Diisi lewat Javascript -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- INBOX (PENGUMUMAN) SCREEN -->
+    <div id="inbox-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header"><h2><i class="fas fa-inbox" style="color:var(--secondary); margin-right:10px;"></i> KOTAK MASUK</h2><p style="margin:5px 0 0 0; font-size:12px; color:#cbd5e1; font-weight:600;">Pemberitahuan & Pengumuman Internal</p></div>
+            
+            <!-- Dummy Data Inbox Sesuai Request -->
+            <div style="background:white; border-radius:18px; padding:22px; box-shadow:0 10px 25px rgba(0,0,0,0.03); margin-bottom:15px; border-left:6px solid #ef4444;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span style="font-size:12px; font-weight:900; color:#ef4444; letter-spacing:0.5px;"><i class="fas fa-bullhorn"></i> DEPT. HEAD</span>
+                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">Hari ini, 08:00</span>
+                </div>
+                <p style="margin:0; font-size:14px; font-weight:700; color:var(--primary); line-height:1.5;">Penting: Seluruh form kinerja harian wajib diisi sebelum shift berakhir. Jangan lupa jalankan 5R di area kerja masing-masing!</p>
+            </div>
+
+            <div style="background:white; border-radius:18px; padding:22px; box-shadow:0 10px 25px rgba(0,0,0,0.03); margin-bottom:15px; border-left:6px solid #f59e0b;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span style="font-size:12px; font-weight:900; color:#f59e0b; letter-spacing:0.5px;"><i class="fas fa-user-tie"></i> SUPERVISOR</span>
+                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">Kemarin, 15:30</span>
+                </div>
+                <p style="margin:0; font-size:14px; font-weight:700; color:var(--primary); line-height:1.5;">Persiapan trial mold besok pagi. Mohon tim lapangan standby di mesin. Utamakan safety first!</p>
+            </div>
+
+            <div style="background:white; border-radius:18px; padding:22px; box-shadow:0 10px 25px rgba(0,0,0,0.03); margin-bottom:15px; border-left:6px solid #3b82f6;">
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
+                    <span style="font-size:12px; font-weight:900; color:#3b82f6; letter-spacing:0.5px;"><i class="fas fa-desktop"></i> ADMIN MOLD</span>
+                    <span style="font-size:11px; color:#94a3b8; font-weight:700;">2 Ags 2026, 10:00</span>
+                </div>
+                <p style="margin:0; font-size:14px; font-weight:700; color:var(--primary); line-height:1.5;">Rekap data mingguan sudah diupdate. Silakan cek di menu Laporan Kerja Mingguan pada sistem ADM.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFIL SCREEN -->
+    <div id="profil-screen" class="screen screen-bg">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #1e293b, #0f172a); text-align:center; padding-top:40px; padding-bottom:50px; border-radius: 20px 20px 0 0;">
+                <div style="width:90px; height:90px; background:linear-gradient(135deg, #38bdf8, #2563eb); border-radius:50%; margin:0 auto 15px auto; display:flex; align-items:center; justify-content:center; font-size:40px; color:white; border:5px solid #1e293b; box-shadow:0 0 0 2px #38bdf8, 0 15px 30px rgba(0,0,0,0.5);">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h2 style="margin:0; font-size:24px; font-weight:900;">Profil Pengguna</h2>
+                <p style="margin:5px 0 0 0; color:#94a3b8; font-size:13px; font-weight:600;">Tim Maintenance Mould CBI</p>
+            </div>
+            
+            <div class="grid-menu" style="margin-top:-30px; position:relative; z-index:10; padding: 0 10px;">
+                <div class="menu-card" onclick="alert('Membuka Struktur Organisasi...')" style="border-left-color: #3b82f6;"><i class="fas fa-sitemap" style="color:#3b82f6; background:#dbeafe;"></i> Struktur Organisasi</div>
+                <div class="menu-card" onclick="alert('Membuka Jadwal Kerja...')" style="border-left-color: #10b981;"><i class="fas fa-calendar-alt" style="color:#10b981; background:#d1fae5;"></i> Jadwal Kerja</div>
+                <div class="menu-card" onclick="alert('Membuka Dokumentasi...')" style="border-left-color: #f59e0b;"><i class="fas fa-camera" style="color:#f59e0b; background:#fef3c7;"></i> Dokumentasi</div>
+                <div class="menu-card" onclick="alert('Membuka Arsip...')" style="border-left-color: #8b5cf6;"><i class="fas fa-archive" style="color:#8b5cf6; background:#f3e8ff;"></i> Arsip</div>
+                <div class="menu-card" onclick="alert('Membuka Info Lainnya...')" style="border-left-color: #64748b;"><i class="fas fa-ellipsis-h" style="color:#64748b; background:#f1f5f9;"></i> Lainnya</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================================= -->
     <!-- 3. BERANDA DIVISI WORKSHOP -->
+    <!-- ========================================================= -->
     <div id="divisi-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2><i class="fas fa-cogs" style="color:var(--secondary); margin-right:10px;"></i> <span id="judul-divisi">Nama Divisi</span></h2></div>
@@ -533,7 +638,6 @@
                 <div id="ws-tasks-container" style="margin-bottom: 20px;"></div>
                 <button class="btn-submit" type="button" style="background: #64748b; box-shadow:none;" onclick="window.tutupWsTaskList()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST PROJECT</button>
             </div>
-
             <!-- FORM INPUT REALISASI (MULTI-SHIFT) -->
             <div id="ws-form-update-task" style="display: none; background: white; padding: 25px; border-radius: 18px; margin-top: 20px; border-left: 6px solid var(--secondary); box-shadow: 0 15px 35px rgba(0,0,0,0.08);">
                 <h4 style="margin-top:0; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 12px; font-size:16px;">Target: <span id="ws-nama-tugas-tampil" style="color: var(--secondary);"></span></h4>
@@ -545,7 +649,7 @@
                     <div style="flex: 1;"><label>Waktu Start</label><input type="datetime-local" id="ws-up-start" onchange="window.hitungDurasiUpdateWS()"></div>
                     <div style="flex: 1;"><label>Waktu Finish</label><input type="datetime-local" id="ws-up-finish" onchange="window.hitungDurasiUpdateWS()"></div>
                 </div>
-                <div class="form-group"><label>Durasi (Otomatis)</label><input type="text" id="ws-up-durasi" readonly style="color:var(--proses); text-align:center; font-size:16px;"></div>
+                <div class="form-group"><label>Durasi (Otomatis)</label><input type="text" id="ws-up-durasi" readonly style="color:var(--proses); text-align:center; font-size:16px; background:#f1f5f9;"></div>
                 
                 <!-- OPSI STATUS MULTI-SHIFT -->
                 <div class="form-group" style="margin-top: 15px;">
@@ -577,7 +681,7 @@
 
             <!-- BAGIAN VIEW DATA -->
             <div id="ws-prog-view-data" style="display:block;">
-                <div class="filter-box" style="background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); border:1px solid #f1f5f9;">
+                <div class="filter-box" style="background: white; padding: 20px; border-radius: 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border:1px solid #f1f5f9;">
                     <label style="color: var(--primary); font-size: 13px;"><i class="fas fa-search"></i> Pencarian & Filter Tanggal</label>
                     <div style="display: flex; gap:12px; align-items:center; margin-top:10px;">
                         <input type="text" id="ws-filter-nama" placeholder="NAMA PROYEK..." style="flex:2; text-transform: uppercase;">
@@ -585,7 +689,7 @@
                     </div>
                     <div style="display: flex; gap:12px; margin-top:15px;">
                         <button class="btn-submit" type="button" style="flex:2; padding:12px;" onclick="window.terapkanFilterWS()"><i class="fas fa-filter"></i> Filter Data</button>
-                        <button class="btn-submit" type="button" style="flex:1; background:#ef4444; padding:12px; box-shadow:0 4px 15px rgba(239, 68, 68, 0.3);" onclick="window.resetFilterWS()"><i class="fas fa-undo"></i> Reset</button>
+                        <button class="btn-submit" type="button" style="flex:1; background:#ef4444; padding:12px; box-shadow:0 8px 20px rgba(239, 68, 68, 0.3);" onclick="window.resetFilterWS()"><i class="fas fa-undo"></i> Reset</button>
                     </div>
                 </div>
                 <div id="list-ws-progress"></div>
@@ -595,7 +699,7 @@
             <div id="ws-prog-report-data" style="display:none;">
                 <div style="background: white; padding: 25px; border-radius: 18px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
                     <p style="margin:0 0 15px 0; font-size:13px; color:#64748b; font-weight:600;"><i class="fas fa-info-circle"></i> Centang proyek yang ingin dianalisa oleh AI, lalu tekan tombol di bawah.</p>
-                    <div id="list-ws-report-checkbox" style="max-height: 400px; overflow-y:auto; border:2px solid #f1f5f9; padding:15px; border-radius:12px; background:#f8fafc;">
+                    <div id="list-ws-report-checkbox" style="max-height: 400px; overflow-y:auto; border:2px dashed #e2e8f0; padding:15px; border-radius:12px; background:#f8fafc;">
                         <!-- Diisi oleh Javascript -->
                     </div>
                     <button type="button" onclick="window.generateAIReport()" style="width:100%; padding:18px; margin-top:20px; background:linear-gradient(135deg, #8b5cf6, #6d28d9); color:white; border:none; border-radius:14px; font-weight:800; font-size:15px; cursor:pointer; box-shadow:0 8px 25px rgba(139,92,246,0.3); transition:0.2s; display:flex; justify-content:center; align-items:center; gap:10px;"><i class="fas fa-brain fa-lg"></i> AI BUAT REPORT EXECUTIVE</button>
@@ -621,7 +725,7 @@
                 <button class="tab-btn" type="button" id="tab-view-global" onclick="window.switchViewWS('global')"><i class="fas fa-globe"></i> View Global Master</button>
             </div>
 
-            <div class="report-sheet" id="report-ws-content" style="overflow-x: auto; padding: 15px;"></div>
+            <div class="report-sheet" id="report-ws-content" style="overflow-x: auto; padding: 25px;"></div>
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
@@ -631,7 +735,7 @@
         <div class="content-wrapper-wide">
             <div class="header" style="background:linear-gradient(135deg, #0f172a, #1e1b4b); border-bottom:4px solid #f43f5e; box-shadow:0 15px 35px rgba(225, 29, 72, 0.15);">
                 <h2 style="color:#fda4af; margin:0;"><i class="fas fa-chart-line"></i> EXECUTIVE AI DASHBOARD</h2>
-                <p style="margin:8px 0 0 0; font-size:13px; color:#cbd5e1;">Multivariate Analytics Report</p>
+                <p style="margin:8px 0 0 0; font-size:13px; color:#cbd5e1; font-weight:600;">Multivariate Analytics Report</p>
             </div>
             
             <div class="export-row" style="max-width:700px; margin:0 auto 25px auto;">
@@ -698,6 +802,7 @@
             <button class="btn-bottom-back" type="button" onclick="window.navigasi('progress-screen')"><i class="fas fa-arrow-left"></i> KEMBALI KE MENU</button>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- MENU MOLD REPAIR -->
     <!-- ========================================================= -->
@@ -712,7 +817,6 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
-
     <!-- INPUT RENCANA MOLD REPAIR -->
     <div id="mr-rencana-kerja-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -786,7 +890,7 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- 4. MENU UTAMA INFORMASI MOLD (MODERN)                     -->
+    <!-- MENU UTAMA INFORMASI MOLD                                 -->
     <!-- ========================================================= -->
     <div id="informasi-mold-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -844,7 +948,7 @@
         </div>
     </div>
 
-    <!-- UPDATE: HASIL NOTULEN 3 SUB-TAB (PERMINTAAN USER) -->
+    <!-- UPDATE: HASIL NOTULEN 3 SUB-TAB -->
     <div id="notulen-hasil-screen" class="screen screen-bg">
         <div class="content-wrapper">
             <div class="header"><h2><i class="fas fa-folder-open" style="color:var(--secondary); margin-right:10px;"></i> Hasil Laporan Notulen</h2></div>
@@ -927,6 +1031,7 @@
             <button class="btn-bottom-back" type="button" onclick="window.kembaliKeSebelumnya()"><i class="fas fa-arrow-left"></i> KEMBALI</button>
         </div>
     </div>
+
     <!-- MOLD STORE (NAIK/TURUN & PRODUKSI) -->
     <div id="mold-store-menu-screen" class="screen screen-bg">
         <div class="content-wrapper">
@@ -1095,7 +1200,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================== -->
     <!-- EKOSISTEM: ADM MOLD BOLA 3D NEON & PUSAT OLAH DATA -->
     <!-- ========================================== -->
@@ -1390,8 +1494,9 @@
             <button class="btn-bottom-back" type="button" onclick="window.bukaPtProgress()"><i class="fas fa-arrow-left"></i> KEMBALI KE LIST</button>
         </div>
     </div>
+
     <!-- ========================================== -->
-    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI (OTAK SISTEM) -->
+    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI (OTAK)   -->
     <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
@@ -1412,7 +1517,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // PENYIMPANAN DATA LOKAL (STATE)
         let currentDatabase = [];
         let infoDatabase = [];
         let notulenDatabase = []; 
@@ -1426,7 +1530,6 @@
         let divisiAktif = "";
         let kategoriInfoAktif = "";
 
-        // CHART.JS INSTANCES
         let chartUni = null;
         let chartBi = null;
         let chartMulti = null;
@@ -1437,9 +1540,6 @@
         let riwayatNavigasi = ['landing-page'];
         history.pushState({page: 'landing-page'}, "", "");
 
-        // ==========================================
-        // SISTEM NAVIGASI & UTILS UTAMA
-        // ==========================================
         window.navigasi = function(idTujuan) {
             try {
                 const halamanAktif = riwayatNavigasi[riwayatNavigasi.length - 1];
@@ -1455,6 +1555,7 @@
                 if(idTujuan === 'mr-update-proyek-screen') { window.muatDataMR(); window.switchTabMR('proses'); }
                 if(idTujuan === 'ms-trouble-screen') { window.bukaTabTrouble('belum'); window.muatDataTrouble(); }
                 if(idTujuan === 'ms-update-mold-screen') { window.bukaTabMold('proses'); window.muatDataMoldProduksi(); }
+                if(idTujuan === 'ai-dashboard-screen') { window.inisialisasiDataAnalisaGlobal(); }
             } catch (error) { console.error("Error Navigasi:", error); }
         }
 
@@ -1532,6 +1633,7 @@
         setInterval(() => { 
             const el = document.getElementById('notul-waktu-display'); if (el) el.value = window.dapatkanWaktuRill(); 
             const ptEl = document.getElementById('pt-input-waktu'); if (ptEl && ptEl.offsetParent !== null) ptEl.value = window.dapatkanWaktuRill();
+            const ideEl = document.getElementById('ide-waktu'); if (ideEl && ideEl.offsetParent !== null) ideEl.value = window.dapatkanWaktuRill();
         }, 1000);
 
         window.formatJamMenit = function(totalMenit) {
@@ -1552,8 +1654,178 @@
             }
         }
 
+        // --- IDE CENTER LOGIC ---
+        window.switchTabIde = function(tab) {
+            const btnInput = document.getElementById('tab-ide-input');
+            const btnMasuk = document.getElementById('tab-ide-masuk');
+            const areaInput = document.getElementById('ide-input-area');
+            const areaMasuk = document.getElementById('ide-masuk-area');
+            
+            if(tab === 'input') {
+                btnInput.classList.add('tab-active');
+                btnMasuk.classList.remove('tab-active');
+                areaInput.style.display = 'block';
+                areaMasuk.style.display = 'none';
+            } else {
+                btnMasuk.classList.add('tab-active');
+                btnInput.classList.remove('tab-active');
+                areaInput.style.display = 'none';
+                areaMasuk.style.display = 'block';
+                window.muatDataIde();
+            }
+        }
+
+        window.simpanIde = async function() {
+            const nama = document.getElementById('ide-nama').value.trim();
+            const waktu = document.getElementById('ide-waktu').value;
+            const uraian = document.getElementById('ide-uraian').value.trim();
+            
+            if(!nama || !uraian) return alert("Nama dan Uraian saran wajib diisi!");
+            
+            window.toggleLoader(true, "Mengirim Saran...");
+            try {
+                await addDoc(collection(db, "ide_saran_box"), {
+                    nama: nama.toUpperCase(),
+                    waktu: waktu,
+                    uraian: uraian,
+                    timestamp: Date.now()
+                });
+                alert("✅ Terima kasih! Ide dan saran Anda berhasil masuk ke Kotak Masuk.");
+                document.getElementById('ide-nama').value = "";
+                document.getElementById('ide-uraian').value = "";
+                window.switchTabIde('masuk');
+            } catch(e) {
+                alert("Gagal mengirim saran: " + e.message);
+            }
+            window.toggleLoader(false);
+        }
+
+        window.muatDataIde = async function() {
+            window.toggleLoader(true, "Memuat Kotak Masuk...");
+            const container = document.getElementById('list-ide-masuk');
+            if(!container) return; container.innerHTML = "";
+            try {
+                const q = query(collection(db, "ide_saran_box"));
+                const snap = await getDocs(q);
+                let listIde = [];
+                snap.forEach(doc => listIde.push({id: doc.id, ...doc.data()}));
+                listIde.sort((a,b) => b.timestamp - a.timestamp);
+                
+                if(listIde.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada saran masuk.</p>`;
+                } else {
+                    listIde.forEach(item => {
+                        container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; margin-bottom:15px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <strong style="color:var(--primary); font-size:15px;"><i class="fas fa-user-circle"></i> ${item.nama}</strong>
+                                <span style="font-size:11px; color:#64748b; font-weight:700;">${item.waktu}</span>
+                            </div>
+                            <p style="margin:0; font-size:14px; color:#334155; line-height:1.5; background:#f8fafc; padding:12px; border-radius:10px; border:1px solid #e2e8f0;">${item.uraian}</p>
+                        </div>`;
+                    });
+                }
+            } catch(e) {
+                console.error(e);
+            }
+            window.toggleLoader(false);
+        }
+
+        // --- INISIALISASI ANALISA GLOBAL DARI TOMBOL ANALISA BAWAH ---
+        window.inisialisasiDataAnalisaGlobal = async function() {
+            await window.ambilDataServerWS();
+            window.generateAIReportDirect();
+        }
+
+        window.generateAIReportDirect = function() {
+            window.toggleLoader(true, "Mengkalkulasi Analisa Multi-Divisi...");
+            setTimeout(() => {
+                let targetProjects = currentDatabase;
+                let totalEstAll = 0; let totalActAll = 0;
+                let processCounts = {}; 
+                let projectNames = []; let projectEsts = []; let projectActs = []; 
+                let projectACH = []; 
+                let tableHtml = "";
+
+                targetProjects.forEach(proj => {
+                    let stringEstimasi = String(proj.totalEstimasiJam || "0");
+                    let pEst = parseFloat(stringEstimasi.replace(/[^\d.]/g, '')) || 0;
+                    let pAct = 0;
+
+                    if(proj.rencanaKerja && Array.isArray(proj.rencanaKerja)) {
+                        proj.rencanaKerja.forEach(t => {
+                            if(t.punyaSub && t.subTugas) {
+                                t.subTugas.forEach(s => {
+                                    pAct += (Number(s.durasiAktual) || 0);
+                                    let proses = s.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
+                                });
+                            } else {
+                                pAct += (Number(t.durasiAktual) || 0);
+                                let proses = t.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
+                            }
+                        });
+                    }
+
+                    totalEstAll += pEst; totalActAll += pAct;
+                    projectNames.push(proj.namaProject || 'Project'); projectEsts.push(pEst); projectActs.push(pAct);
+                    
+                    let pAchRate = pEst > 0 ? Math.min(100, Math.round((pAct/pEst)*100)) : 0;
+                    projectACH.push(pAchRate);
+
+                    let statusWarna = proj.statusProject === 'Selesai' ? 'color:#10b981;' : 'color:#f59e0b;';
+                    tableHtml += `<tr><td><strong>${proj.namaProject}</strong></td><td style="text-align:center;">${pEst}</td><td style="text-align:center;">${pAct}</td><td style="text-align:center; font-weight:bold;">${pAchRate}%</td><td style="${statusWarna} font-weight:bold;">${proj.statusProject}</td></tr>`;
+                });
+
+                if(targetProjects.length === 0) {
+                    tableHtml = `<tr><td colspan="5" style="text-align:center; color:gray;">Belum ada data rekap proyek.</td></tr>`;
+                }
+
+                let globalAchRate = totalEstAll > 0 ? Math.min(100, Math.round((totalActAll/totalEstAll)*100)) : 0;
+                
+                const kpiProyek = document.getElementById('dash-kpi-proyek'); if(kpiProyek) kpiProyek.innerText = targetProjects.length;
+                const kpiEst = document.getElementById('dash-kpi-est'); if(kpiEst) kpiEst.innerText = totalEstAll + " Jam";
+                const kpiAct = document.getElementById('dash-kpi-act'); if(kpiAct) kpiAct.innerText = totalActAll + " Jam";
+                const kpiAch = document.getElementById('dash-kpi-ach'); if(kpiAch) kpiAch.innerText = globalAchRate + "%";
+                const dashTable = document.getElementById('dash-table-body'); if(dashTable) dashTable.innerHTML = tableHtml;
+
+                if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
+
+                let uniLabels = Object.keys(processCounts).length > 0 ? Object.keys(processCounts).map(k => `${k} (${processCounts[k]})`) : ['Belum Ada Data']; 
+                let uniData = Object.values(processCounts).length > 0 ? Object.values(processCounts) : [1];
+                let ctxUni = document.getElementById('chartUnivariate');
+                if(ctxUni) {
+                    chartUni = new Chart(ctxUni.getContext('2d'), {
+                        type: 'doughnut', data: { labels: uniLabels, datasets: [{ data: uniData, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#f97316', '#6366f1'], borderWidth: 2, borderColor: '#fff' }] },
+                        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: {size: 10} } } } }
+                    });
+                }
+
+                let ctxBi = document.getElementById('chartBivariate');
+                if(ctxBi) {
+                    chartBi = new Chart(ctxBi.getContext('2d'), {
+                        type: 'bar', data: { labels: projectNames.length > 0 ? projectNames : ['-'], datasets: [{ label: 'Estimasi (Jam)', data: projectEsts.length > 0 ? projectEsts : [0], backgroundColor: '#94a3b8', borderRadius: 4 }, { label: 'Actual (Jam)', data: projectActs.length > 0 ? projectActs : [0], backgroundColor: '#10b981', borderRadius: 4 }] },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4] } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'top' } } }
+                    });
+                }
+
+                let ctxMulti = document.getElementById('chartMultivariate');
+                if(ctxMulti) {
+                    chartMulti = new Chart(ctxMulti.getContext('2d'), {
+                        type: 'line', data: { labels: projectNames.length > 0 ? projectNames : ['-'], datasets: [{ type: 'line', label: 'ACH Rate (%)', data: projectACH.length > 0 ? projectACH : [0], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.2)', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', fill: true, tension: 0.4 }, { type: 'bar', label: 'Estimasi Jam (Skala)', data: projectEsts.length > 0 ? projectEsts : [0], backgroundColor: 'rgba(59,130,246,0.2)', borderRadius: 4, yAxisID: 'y1' }] },
+                        options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, position: 'left', title: {display: true, text: 'ACH Rate %'} }, y1: { beginAtZero: true, position: 'right', grid: {drawOnChartArea: false}, title: {display: true, text: 'Jam'} }, x: { grid: {display: false} } } }
+                    });
+                }
+
+                window.toggleLoader(false);
+            }, 1000);
+        }
+
+        window.generateAIReport = function() {
+            window.generateAIReportDirect();
+            window.navigasi('ai-dashboard-screen');
+        }
+
         // =======================================================
-        // 1. MODUL LOGIKA: DIVISI MOLD WORKSHOP
+        // MOLD WORKSHOP LOGIC LANJUTAN
         // =======================================================
         window.tugasWorkshopArray = [];
         window.pilihanProsesMesin = ["BUBUT", "EDM", "BOR RADIAL", "ROUTER", "MILLING", "CNC", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
@@ -1617,7 +1889,7 @@
             window.tugasWorkshopArray.forEach((tugas, idx) => {
                 let namaTugasAman = tugas.namaTugas ? tugas.namaTugas.replace(/"/g, '&quot;') : "";
                 
-                let html = `<div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;"><div style="background: var(--primary); color: white; padding: 10px; display: flex; justify-content: space-between; font-weight: bold;"><span>Tugas #${idx + 1}</span><button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:4px; cursor:pointer; padding:2px 8px;">X</button></div><div style="padding: 15px;"><div class="form-group"><label>Nama Tugas</label><input type="text" value="${namaTugasAman}" oninput="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
+                let html = `<div style="border: 1px solid #cbd5e1; border-radius: 12px; margin-bottom: 15px; background: #f8fafc; overflow: hidden;"><div style="background: var(--primary); color: white; padding: 12px 15px; display: flex; justify-content: space-between; font-weight: bold;"><span>Tugas #${idx + 1}</span><button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:6px; cursor:pointer; padding:2px 8px;">X</button></div><div style="padding: 15px;"><div class="form-group"><label>Nama Tugas</label><input type="text" value="${namaTugasAman}" oninput="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
                 if(!tugas.punyaSub) {
                     html += `<div style="display:flex; gap:10px;"><div style="flex:2;" class="form-group"><label>Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div><div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div></div>`;
                 }
@@ -1648,21 +1920,6 @@
                 if(!finishDate) return alert("❌ PERHATIAN: Tanggal Target Selesai wajib diisi!");
                 if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) return alert("❌ PERHATIAN: Minimal harus ada 1 Tugas Utama!");
 
-                for (let i = 0; i < window.tugasWorkshopArray.length; i++) {
-                    let tugas = window.tugasWorkshopArray[i];
-                    if (!tugas.namaTugas || tugas.namaTugas.trim() === "") return alert(`❌ Nama Tugas Utama #${i + 1} belum diisi!`);
-                    if (!tugas.punyaSub) { 
-                        if (!tugas.proses || tugas.proses === "") return alert(`❌ Proses mesin pada Tugas Utama #${i + 1} belum dipilih!`);
-                    } else {
-                        if (!tugas.subTugas || tugas.subTugas.length === 0) return alert(`❌ Tugas Utama #${i + 1} memiliki Sub Tugas, tapi isinya kosong!`);
-                        for (let j = 0; j < tugas.subTugas.length; j++) {
-                            let sub = tugas.subTugas[j];
-                            if (!sub.namaTugas || sub.namaTugas.trim() === "") return alert(`❌ Nama Sub Tugas ke-${j + 1} (pada Tugas #${i + 1}) belum diisi!`);
-                            if (!sub.proses || sub.proses === "") return alert(`❌ Proses mesin pada Sub Tugas ke-${j + 1} (Tugas #${i + 1}) belum dipilih!`);
-                        }
-                    }
-                }
-
                 let dataSiapTembak = [];
                 window.tugasWorkshopArray.forEach(tugas => {
                     let tugasBersih = { namaTugas: tugas.namaTugas, proses: tugas.proses || "Multi-Proses", estimasiJam: Number(tugas.estimasiJam) || 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, punyaSub: tugas.punyaSub, subTugas: [], riwayatHarian: [] };
@@ -1673,7 +1930,6 @@
                 });
 
                 window.toggleLoader(true, "Menyimpan ke Database Firebase...");
-                
                 await addDoc(collection(db, "projects"), { 
                     divisi: "DIVISI MOLD WORKSHOP", 
                     namaProject: namaMold, 
@@ -1686,16 +1942,14 @@
                     waktuDibuat: window.dapatkanWaktuRill(), 
                     timestamp: Date.now() 
                 });
-                
                 window.toggleLoader(false);
-                alert("✅ BERHASIL! Proyek Baru Tersimpan dengan aman.");
-                
+                alert("✅ BERHASIL! Proyek Baru Tersimpan.");
                 window.inisialisasiFormWS(); 
                 window.navigasi('divisi-screen'); 
                 await window.ambilDataServerWS(); 
             } catch (error) { 
                 window.toggleLoader(false); 
-                alert("Terjadi Kendala Saat Menyimpan! Pastikan Koneksi Internet Aman. Error: " + error.message); 
+                alert("Error: " + error.message); 
             }
         }
 
@@ -1767,17 +2021,6 @@
             document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('ws-form-update-task').style.display = 'block';
         }
 
-        window.hitungDurasiUpdateWS = function() {
-            const startVal = document.getElementById('ws-up-start').value; const finishVal = document.getElementById('ws-up-finish').value;
-            if(startVal && finishVal) {
-                let start = new Date(startVal); let finish = new Date(finishVal); let diffMs = finish - start;
-                if(diffMs < 0) { document.getElementById('ws-up-durasi').value = "Error: Waktu Mundur"; return; }
-                let diffHrs = (diffMs / (1000 * 60 * 60)).toFixed(2); document.getElementById('ws-up-durasi').value = diffHrs + " Jam";
-            }
-        }
-
-        window.batalUpdateTaskWS = function() { document.getElementById('ws-form-update-task').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; }
-
         window.simpanUpdateTaskWS = async function() {
             const pic = document.getElementById('ws-up-pic').value; const shift = document.getElementById('ws-up-shift').value;
             const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const durasi = document.getElementById('ws-up-durasi').value;
@@ -1816,7 +2059,6 @@
             } catch(e) { alert("Error: "+e.message); } window.toggleLoader(false);
         }
 
-        // --- SISTEM SWITCH TAB CONTROL PROGRES (VIEW DATA vs REPORT DATA) ---
         window.switchTabProgressWS = function(tipe) {
             document.getElementById('tab-prog-view').classList.remove('tab-active');
             document.getElementById('tab-prog-report').classList.remove('tab-active');
@@ -1849,18 +2091,6 @@
             let dataTampil = currentDatabase;
             if(window.wsKataKunciFilter) dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter));
             
-            if(window.wsTanggalFilter) {
-                dataTampil = dataTampil.filter(d => {
-                    let match = false;
-                    if(d.waktuDibuat && d.waktuDibuat.includes(window.wsTanggalFilter)) match = true;
-                    d.rencanaKerja.forEach(t => {
-                        if(t.punyaSub) { t.subTugas.forEach(s => { if(s.riwayatHarian) s.riwayatHarian.forEach(r => { if(r.tanggal === window.wsTanggalFilter) match = true; }); }); }
-                        else { if(t.riwayatHarian) t.riwayatHarian.forEach(r => { if(r.tanggal === window.wsTanggalFilter) match = true; }); }
-                    });
-                    return match;
-                });
-            }
-
             if(dataTampil.length === 0) return container.innerHTML = `<p style="text-align:center;">Data tidak ditemukan.</p>`;
 
             dataTampil.forEach(data => {
@@ -1878,7 +2108,7 @@
             const container = document.getElementById('list-ws-report-checkbox'); if(!container) return; container.innerHTML = "";
             if(currentDatabase.length === 0) return container.innerHTML = `<p style="text-align:center; font-size:12px; color:gray;">Belum ada proyek.</p>`;
             currentDatabase.forEach(data => {
-                container.innerHTML += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:white; border-bottom:1px solid #e2e8f0; margin-bottom:5px; border-radius:4px;"><input type="checkbox" class="chk-report-ai" value="${data.id}" id="chk-rep-${data.id}" style="width:18px; height:18px; cursor:pointer;"><label for="chk-rep-${data.id}" style="font-size:14px; font-weight:bold; cursor:pointer; margin:0; flex:1;">${data.namaProject} <span style="font-size:10px; color:gray; font-weight:normal;">(${data.statusProject})</span></label></div>`;
+                container.innerHTML += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:white; border-bottom:1px solid #e2e8f0; margin-bottom:5px; border-radius:4px;"><input type="checkbox" class="chk-report-ai" value="${data.id}" id="chk-rep-${data.id}" style="width:18px; height:18px; cursor:pointer;" checked><label for="chk-rep-${data.id}" style="font-size:14px; font-weight:bold; cursor:pointer; margin:0; flex:1;">${data.namaProject} <span style="font-size:10px; color:gray; font-weight:normal;">(${data.statusProject})</span></label></div>`;
             });
         }
 
@@ -1926,16 +2156,14 @@
                     <tr><th>Project / MOLD</th><td style="font-size:16px; font-weight:900; color:var(--primary);">${data.namaProject}</td></tr>
                     <tr><th>Status Project</th><td>${statusProjUI}</td></tr>
                     <tr><th>Tgl Update Terakhir</th><td>${data.waktuDibuat}</td></tr>
-                    <tr><th>Waktu Mulai Project</th><td>${data.tanggalMulai || '-'}</td></tr>
                 </table>
                 <div style="display:flex; gap:10px; margin-top:15px; margin-bottom:15px;">
-                    <div style="flex:1; background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:gray; font-weight:bold;">Estimasi Jam Global</span><br><span style="font-size:20px; font-weight:900; color:var(--secondary);">${totalEstJamMaster} Jam</span></div>
-                    <div style="flex:1; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#064e3b; font-weight:bold;">Aktual Pengerjaan</span><br><span style="font-size:20px; font-weight:900; color:#059669;">${akumulasiAktualJam.toFixed(2)} Jam</span></div>
-                    <div style="flex:1; background:#fef3c7; border:1px solid #f59e0b; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#b45309; font-weight:bold;">Persentase Global</span><br><span style="font-size:20px; font-weight:900; color:#d97706;">${globalPctHarian}%</span></div>
+                    <div style="flex:1; background:#f8fafc; border:1px solid #cbd5e1; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:gray; font-weight:bold;">Estimasi Jam</span><br><span style="font-size:20px; font-weight:900; color:var(--secondary);">${totalEstJamMaster} Jam</span></div>
+                    <div style="flex:1; background:#ecfdf5; border:1px solid #10b981; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#064e3b; font-weight:bold;">Aktual</span><br><span style="font-size:20px; font-weight:900; color:#059669;">${akumulasiAktualJam.toFixed(2)} Jam</span></div>
+                    <div style="flex:1; background:#fef3c7; border:1px solid #f59e0b; padding:10px; border-radius:8px; text-align:center;"><span style="font-size:11px; color:#b45309; font-weight:bold;">Persentase</span><br><span style="font-size:20px; font-weight:900; color:#d97706;">${globalPctHarian}%</span></div>
                 </div>
-                <h3 style="font-size:14px; color:var(--primary); border-bottom:2px solid #cbd5e1; padding-bottom:5px;">Rincian Pengerjaan Tugas</h3>
                 <table class="report-table" style="font-size:11px; margin-top:10px;">
-                    <tr style="background:#e2e8f0; color:#334155;"><th style="width:35%;">Nama Tugas</th><th style="width:15%;">Proses</th><th style="text-align:center; width:10%;">Est (Jam)</th><th style="text-align:center; width:10%;">Act (Jam)</th><th style="text-align:center;">Persentase</th><th>PIC</th></tr>
+                    <tr style="background:#e2e8f0;"><th style="width:35%;">Nama Tugas</th><th style="width:15%;">Proses</th><th style="text-align:center; width:10%;">Est</th><th style="text-align:center; width:10%;">Act</th><th style="text-align:center;">Prog</th><th>PIC</th></tr>
                     ${htmlTasks}
                 </table>
             </div>`;
@@ -1945,7 +2173,6 @@
 
             let ganttHeaders1 = ""; let ganttHeaders2 = "";
             const monthsShort = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
             dateArr.forEach(dt => {
                 let dObj = new Date(dt); let formatTanggal = `${dObj.getDate()} ${monthsShort[dObj.getMonth()]}`;
                 ganttHeaders1 += `<th colspan="2" style="background:#e2e8f0; border: 1px solid #64748b;">${formatTanggal}</th>`;
@@ -1963,53 +2190,31 @@
                     totalEstSeluruhnya += totalEstGroup; totalActSeluruhnya += totalActGroup;
 
                     ganttRows += `<tr><td class="gantt-group">${noUtama}</td><td colspan="5" class="gantt-group" style="text-align:center;">${tugas.namaTugas}</td>${'<td colspan="2" style="background:#e2e8f0;"></td>'.repeat(dateArr.length)}</tr>`;
-
                     let arrayGroupKumulatifAktual = new Array(dateArr.length).fill(0);
 
                     tugas.subTugas.forEach(sub => {
                         let eJam = Number(sub.estimasiJam) || 0; let aJamTotalTask = Number(sub.durasiAktual) || 0;
                         let pctFinal = eJam > 0 ? Math.min(100, Math.round((aJamTotalTask/eJam)*100)) : 0;
-                        
                         let dateColsHtml = ""; let taskKumulatifAktual = 0;
                         
                         dateArr.forEach((dt, dateIdx) => {
                             let actHariIni = 0;
                             if(sub.riwayatHarian) { sub.riwayatHarian.forEach(r => { if(r.tanggal === dt) actHariIni += r.durasi; }); }
-                            
                             taskKumulatifAktual += actHariIni;
                             arrayGroupKumulatifAktual[dateIdx] += actHariIni;
                             arrayGlobalKumulatifAktual[dateIdx] += actHariIni;
-
                             let taskKumulatifPct = eJam > 0 ? Math.min(100, Math.round((taskKumulatifAktual/eJam)*100)) : 0;
-
                             if(actHariIni > 0 || taskKumulatifAktual > 0) {
-                                let bgA = actHariIni > 0 ? '#10b981' : 'transparent';
-                                let textA = actHariIni > 0 ? 'white' : '#1e293b';
-                                dateColsHtml += `<td style="background:${bgA}; color:${textA}; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
+                                dateColsHtml += `<td style="background:#10b981; color:white; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
                             } else { dateColsHtml += `<td></td><td></td>`; }
                         });
-
                         ganttRows += `<tr><td></td><td class="gantt-task-left">- ${sub.namaTugas}</td><td>${sub.proses}</td><td>${eJam}</td><td>${aJamTotalTask}</td><td>${pctFinal}%</td>${dateColsHtml}</tr>`;
                     });
-
-                    let groupPctTotal = totalEstGroup > 0 ? Math.min(100, Math.round((totalActGroup/totalEstGroup)*100)) : 0;
-                    
-                    let groupDateHtml = ""; let kumulatifActGroupRunning = 0;
-                    dateArr.forEach((dt, dateIdx) => {
-                        let actGroupHariIni = arrayGroupKumulatifAktual[dateIdx];
-                        kumulatifActGroupRunning += actGroupHariIni;
-                        let pctGroupHariIni = totalEstGroup > 0 ? Math.min(100, Math.round((kumulatifActGroupRunning/totalEstGroup)*100)) : 0;
-                        if(kumulatifActGroupRunning > 0) { groupDateHtml += `<td style="background:#fef3c7; color:#b45309; font-weight:bold;">-</td><td style="background:#fef3c7; color:#b45309; font-weight:bold;">${pctGroupHariIni}%</td>`; }
-                        else { groupDateHtml += `<td style="background:#fef3c7;">-</td><td style="background:#fef3c7;">-</td>`; }
-                    });
-
-                    ganttRows += `<tr><td colspan="3" style="background:#fef3c7; font-weight:bold; text-align:right; padding-right:10px; color:#b45309;">PERSENTASE ${tugas.namaTugas}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalEstGroup}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${totalActGroup}</td><td style="background:#fef3c7; font-weight:bold; color:#b45309;">${groupPctTotal}%</td>${groupDateHtml}</tr>`;
                     noUtama++;
                 } else {
                     let eJam = Number(tugas.estimasiJam) || 0; let aJamTotalTask = Number(tugas.durasiAktual) || 0;
                     let pctFinal = eJam > 0 ? Math.min(100, Math.round((aJamTotalTask/eJam)*100)) : 0;
                     totalEstSeluruhnya += eJam; totalActSeluruhnya += aJamTotalTask;
-
                     let dateColsHtml = ""; let taskKumulatifAktual = 0;
                     dateArr.forEach((dt, dateIdx) => {
                         let actHariIni = 0;
@@ -2017,718 +2222,72 @@
                         taskKumulatifAktual += actHariIni;
                         arrayGlobalKumulatifAktual[dateIdx] += actHariIni;
                         let taskKumulatifPct = eJam > 0 ? Math.min(100, Math.round((taskKumulatifAktual/eJam)*100)) : 0;
-
                         if(actHariIni > 0 || taskKumulatifAktual > 0) {
-                            let bgA = actHariIni > 0 ? '#10b981' : 'transparent'; let textA = actHariIni > 0 ? 'white' : '#1e293b';
-                            dateColsHtml += `<td style="background:${bgA}; color:${textA}; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
+                            dateColsHtml += `<td style="background:#10b981; color:white; font-weight:bold;">${actHariIni > 0 ? actHariIni : ''}</td><td style="background:#d1fae5; color:#059669; font-weight:bold;">${taskKumulatifPct}%</td>`;
                         } else { dateColsHtml += `<td></td><td></td>`; }
                     });
-
                     ganttRows += `<tr><td class="gantt-group">${noUtama}</td><td class="gantt-task-left">- ${tugas.namaTugas}</td><td>${tugas.proses}</td><td>${eJam}</td><td>${aJamTotalTask}</td><td>${pctFinal}%</td>${dateColsHtml}</tr>`;
                     noUtama++;
                 }
             });
 
-            let headerDatesHtml = ""; let headerActHtml = ""; let headerAchHtml = "";
-            let runningGlobalAct = 0;
-            dateArr.forEach((dt, idx) => {
-                let dObj = new Date(dt); let formatTanggal = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${String(dObj.getFullYear()).substring(2)}`;
-                headerDatesHtml += `<th style="border:1px solid #ccc; background:#f1f5f9;">${formatTanggal}</th>`;
-                let actualDay = arrayGlobalKumulatifAktual[idx];
-                headerActHtml += `<td style="border:1px solid #ccc; text-align:center;">${actualDay > 0 ? actualDay : ''}</td>`;
-                runningGlobalAct += actualDay;
-                let dayACH = totalEstSeluruhnya > 0 ? ((runningGlobalAct/totalEstSeluruhnya)*100).toFixed(2) : 0;
-                headerAchHtml += `<td style="border:1px solid #ccc; text-align:center; font-weight:bold; background:#fef08a; color:#b45309;">${actualDay > 0 || runningGlobalAct > 0 ? dayACH + '%' : ''}</td>`;
-            });
-
-            let topSummaryHtml = `
-            <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:12px; font-family:sans-serif;">
-                <tr><td colspan="2" style="background:gray; color:white; font-size:18px; font-weight:900; padding:5px 10px;">${data.namaProject}</td><td colspan="${dateArr.length}" style="text-align:right; font-size:16px; font-weight:bold; padding-right:10px;">RENCANA KERJA PEMBUATAN MOLD</td></tr>
-                <tr><td colspan="2" style="font-size:20px; font-weight:900; padding:5px 10px;">${(totalEstSeluruhnya > 0 ? (totalActSeluruhnya/totalEstSeluruhnya)*100 : 0).toFixed(2)}%</td><td colspan="${dateArr.length}"></td></tr>
-                <tr><td colspan="2" style="font-size:14px; font-weight:bold; padding:5px 10px;">${data.totalEstimasiHari || '- Hari'} KERJA</td><td colspan="${dateArr.length}"></td></tr>
-                <tr><th colspan="2" style="border:1px solid #ccc; background:#e2e8f0; text-align:center; width:250px;">Kategori</th>${headerDatesHtml}</tr>
-                <tr><td colspan="2" style="border:1px solid #ccc; text-align:center;">Target Jam</td>${'<td style="border:1px solid #ccc; text-align:center; font-weight:bold;"></td>'.repeat(dateArr.length - 1)}<td style="border:1px solid #ccc; text-align:center; font-weight:bold;">${totalEstSeluruhnya}</td></tr>
-                <tr><td colspan="2" style="border:1px solid #ccc; text-align:center;">Actual</td>${headerActHtml}</tr>
-                <tr><th colspan="2" style="border:1px solid #ccc; background:#fde047; text-align:center;">ACH RATE</th>${headerAchHtml}</tr>
-            </table>`;
-
-            let globalPct = totalEstSeluruhnya > 0 ? Math.min(100, Math.round((totalActSeluruhnya/totalEstSeluruhnya)*100)) : 0;
-            let globalDateHtml = ""; let kumulatifActGlobalRunning = 0;
-            dateArr.forEach((dt, dateIdx) => {
-                let actGlobalHariIni = arrayGlobalKumulatifAktual[dateIdx];
-                kumulatifActGlobalRunning += actGlobalHariIni;
-                let pctGlobalHariIni = totalEstSeluruhnya > 0 ? Math.min(100, Math.round((kumulatifActGlobalRunning/totalEstSeluruhnya)*100)) : 0;
-                if(kumulatifActGlobalRunning > 0) { globalDateHtml += `<td style="background:#fde047; color:#854d0e; font-weight:bold;">-</td><td style="background:#fde047; color:#854d0e; font-weight:bold;">${pctGlobalHariIni}%</td>`; }
-                else { globalDateHtml += `<td style="background:#fde047;">-</td><td style="background:#fde047;">-</td>`; }
-            });
-
-            let globalHtml = `
-            <div id="ws-view-global" style="display:none; overflow-x:auto;">
-                ${topSummaryHtml}
-                <table class="gantt-table">
-                    <thead>
-                        <tr><th rowspan="2" class="gantt-th-bg">NO</th><th rowspan="2" class="gantt-th-bg">URAIAN PEKERJAAN</th><th rowspan="2" class="gantt-th-bg">PROSES</th><th rowspan="2" class="gantt-th-bg">ESTIMASI<br>WAKTU<br>(JAM)</th><th rowspan="2" class="gantt-th-bg">ACTUAL<br>WAKTU</th><th rowspan="2" class="gantt-th-bg">PROGRES<br>/ HARI<br>%</th>${ganttHeaders1}</tr>
-                        <tr>${ganttHeaders2}</tr>
-                    </thead>
-                    <tbody>
-                        ${ganttRows}
-                        <tr><td colspan="3" class="gantt-total" style="text-align:right; padding-right:15px; font-size:14px;">TOTAL JAM / PROGRES GLOBAL</td><td class="gantt-total" style="font-size:14px;">${totalEstSeluruhnya}</td><td class="gantt-total" style="font-size:14px;">${totalActSeluruhnya}</td><td class="gantt-total" style="font-size:14px; color:#b45309;">${globalPct}%</td>${globalDateHtml}</tr>
-                    </tbody>
-                </table>
-            </div>`;
+            let globalHtml = `<div id="ws-view-global" style="display:none; overflow-x:auto;"><table class="gantt-table"><thead><tr><th rowspan="2">NO</th><th rowspan="2">URAIAN PEKERJAAN</th><th rowspan="2">PROSES</th><th rowspan="2">EST</th><th rowspan="2">ACT</th><th rowspan="2">PROG%</th>${ganttHeaders1}</tr><tr>${ganttHeaders2}</tr></thead><tbody>${ganttRows}</tbody></table></div>`;
 
             document.getElementById('report-ws-content').innerHTML = harianHtml + globalHtml;
             window.navigasi('detail-project-screen');
         }
 
-        // ==========================================
-        // FITUR AI EXECUTIVE DASHBOARD
-        // ==========================================
-        window.generateAIReport = function() {
-            let checkedBoxes = document.querySelectorAll('.chk-report-ai:checked');
-            if(checkedBoxes.length === 0) return alert("Pilih minimal 1 proyek untuk dianalisa AI!");
-            
-            let selectedIds = Array.from(checkedBoxes).map(cb => cb.value);
-            let targetProjects = currentDatabase.filter(d => selectedIds.includes(d.id));
-
-            window.toggleLoader(true, "AI Sedang Melakukan Analisis Multivariate...");
-            
-            setTimeout(() => {
-                let totalEstAll = 0; let totalActAll = 0;
-                let processCounts = {}; 
-                let projectNames = []; let projectEsts = []; let projectActs = []; 
-                let projectACH = []; 
-                let tableHtml = "";
-
-                targetProjects.forEach(proj => {
-                    let stringEstimasi = String(proj.totalEstimasiJam || "0");
-                    let pEst = parseFloat(stringEstimasi.replace(/[^\d.]/g, '')) || 0;
-                    let pAct = 0;
-
-                    proj.rencanaKerja.forEach(t => {
-                        if(t.punyaSub) {
-                            t.subTugas.forEach(s => {
-                                pAct += (Number(s.durasiAktual) || 0);
-                                let proses = s.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
-                            });
-                        } else {
-                            pAct += (Number(t.durasiAktual) || 0);
-                            let proses = t.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1;
-                        }
-                    });
-
-                    totalEstAll += pEst; totalActAll += pAct;
-                    projectNames.push(proj.namaProject); projectEsts.push(pEst); projectActs.push(pAct);
-                    
-                    let pAchRate = pEst > 0 ? Math.min(100, Math.round((pAct/pEst)*100)) : 0;
-                    projectACH.push(pAchRate);
-
-                    let statusWarna = proj.statusProject === 'Selesai' ? 'color:#10b981;' : 'color:#f59e0b;';
-                    tableHtml += `<tr><td><strong>${proj.namaProject}</strong></td><td style="text-align:center;">${pEst}</td><td style="text-align:center;">${pAct}</td><td style="text-align:center; font-weight:bold;">${pAchRate}%</td><td style="${statusWarna} font-weight:bold;">${proj.statusProject}</td></tr>`;
-                });
-
-                let globalAchRate = totalEstAll > 0 ? Math.min(100, Math.round((totalActAll/totalEstAll)*100)) : 0;
-                
-                document.getElementById('dash-kpi-proyek').innerText = targetProjects.length;
-                document.getElementById('dash-kpi-est').innerText = totalEstAll + " Jam";
-                document.getElementById('dash-kpi-act').innerText = totalActAll + " Jam";
-                document.getElementById('dash-kpi-ach').innerText = globalAchRate + "%";
-                document.getElementById('dash-table-body').innerHTML = tableHtml;
-
-                if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
-
-                let uniLabels = Object.keys(processCounts).map(k => `${k} (${processCounts[k]} Tugas)`); 
-                let uniData = Object.values(processCounts);
-                let ctxUni = document.getElementById('chartUnivariate').getContext('2d');
-                chartUni = new Chart(ctxUni, {
-                    type: 'doughnut', data: { labels: uniLabels, datasets: [{ data: uniData, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#f97316', '#6366f1'], borderWidth: 2, borderColor: '#fff' }] },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: {size: 10} } } } }
-                });
-
-                let ctxBi = document.getElementById('chartBivariate').getContext('2d');
-                chartBi = new Chart(ctxBi, {
-                    type: 'bar', data: { labels: projectNames, datasets: [{ label: 'Estimasi (Jam)', data: projectEsts, backgroundColor: '#94a3b8', borderRadius: 4 }, { label: 'Actual (Jam)', data: projectActs, backgroundColor: '#10b981', borderRadius: 4 }] },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, grid: { borderDash: [2, 4] } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'top' } } }
-                });
-
-                let ctxMulti = document.getElementById('chartMultivariate').getContext('2d');
-                chartMulti = new Chart(ctxMulti, {
-                    type: 'line', data: { labels: projectNames, datasets: [{ type: 'line', label: 'ACH Rate (%)', data: projectACH, borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.2)', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', fill: true, tension: 0.4 }, { type: 'bar', label: 'Estimasi Jam (Skala)', data: projectEsts, backgroundColor: 'rgba(59,130,246,0.2)', borderRadius: 4, yAxisID: 'y1' }] },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, max: 100, position: 'left', title: {display: true, text: 'ACH Rate %'} }, y1: { beginAtZero: true, position: 'right', grid: {drawOnChartArea: false}, title: {display: true, text: 'Jam'} }, x: { grid: {display: false} } } }
-                });
-
-                window.toggleLoader(false);
-                window.navigasi('ai-dashboard-screen');
-            }, 1500);
-        }
-
-        // =======================================================
-        // 2. MOLD REPAIR
-        // =======================================================
-        window.tambahJobMR = function() {
-            const container = document.getElementById("mr-jobListContainer"); if(!container) return;
-            const cards = container.querySelectorAll(".job-card"); const nextNumber = cards.length + 1;
-            const newCard = cards[0].cloneNode(true);
-            newCard.querySelectorAll("input, textarea, select").forEach(inp => inp.value = "");
-            newCard.querySelector(".job-number").innerText = "Job #" + nextNumber;
-            const btnHapus = newCard.querySelector(".btn-hapus-job");
-            if(btnHapus) {
-                btnHapus.style.display = "block";
-                btnHapus.addEventListener("click", function() { newCard.remove(); container.querySelectorAll(".job-card").forEach((c, idx) => { c.querySelector(".job-number").innerText = "Job #" + (idx + 1); }); });
-            }
-            container.appendChild(newCard);
-        };
-
-        window.simpanRencanaKerjaMR = async function() {
-            const foreman = document.getElementById("mr-nama-foreman").value;
-            const allCards = document.querySelectorAll("#mr-jobListContainer .job-card");
-            let dataValid = true; let batchData = [];
-            allCards.forEach(card => {
-                const namaMold = card.querySelector(".input-mold").value; const masalah = card.querySelector(".input-masalah").value;
-                const penyebab = card.querySelector(".input-penyebab").value; const tindakan = card.querySelector(".input-tindakan").value;
-                const tglMulai = card.querySelector(".input-tgl-mulai").value; const tglSelesai = card.querySelector(".input-tgl-selesai").value;
-                const estJam = parseInt(card.querySelector(".est-jam").value) || 0; const estMenit = parseInt(card.querySelector(".est-menit").value) || 0;
-                const targetJam = parseInt(card.querySelector(".target-jam").value) || 0; const targetMenit = parseInt(card.querySelector(".target-menit").value) || 0;
-                const pic = card.querySelector(".input-pic").value;
-                const totalEstimasiMenit = (estJam * 60) + estMenit; const totalTargetHarianMenit = (targetJam * 60) + targetMenit;
-                if (!namaMold || !pic || !tglMulai || !tglSelesai || totalEstimasiMenit === 0) dataValid = false;
-                batchData.push({ namaForeman: foreman, namaMold, masalah, penyebab, tindakan, tglMulai, tglSelesai, estimasiMenit: totalEstimasiMenit, targetHarianMenit: totalTargetHarianMenit, pic, statusProyek: "Berjalan", timestamp: Date.now(), waktuAktualTotalMenit: 0 });
-            });
-            if (!dataValid) return alert("Gagal Simpan: Harap lengkapi semua kolom di semua Job!");
-            window.toggleLoader(true, "Menyimpan Rencana...");
-            try {
-                for(let job of batchData) { await addDoc(collection(db, "mold_repair_jobs"), job); }
-                alert("Rencana Kerja Berhasil Disimpan!");
-                allCards.forEach((c, idx) => { if(idx > 0) c.remove(); else c.querySelectorAll("input, textarea, select").forEach(inp => inp.value = ""); });
-                window.navigasi('mr-update-proyek-screen'); await window.muatDataMR(); window.switchTabMR('proses');
-            } catch (error) { alert("Gagal: " + error.message); } window.toggleLoader(false);
-        };
-
-        window.switchTabMR = function(tab) {
-            ['proses', 'harian', 'hasil'].forEach(t => {
-                const btn = document.getElementById('tab-mr-' + t); const lst = document.getElementById('list-mr-' + t);
-                if(btn) btn.classList.remove('tab-active'); if(lst) lst.style.display = 'none';
-            });
-            const fmh = document.getElementById('form-mr-update-harian'); if(fmh) fmh.style.display = 'none';
-            const activeBtn = document.getElementById('tab-mr-' + tab); const activeLst = document.getElementById('list-mr-' + tab);
-            if(activeBtn) activeBtn.classList.add('tab-active'); if(activeLst) activeLst.style.display = 'block';
-        }
-
-        window.muatDataMR = async function() {
-            window.toggleLoader(true, "Sinkronisasi Mold Repair..."); mrJobsDatabase = []; logHarianMRDatabase = [];
-            try {
-                const q = query(collection(db, "mold_repair_jobs")); const snap = await getDocs(q);
-                snap.forEach(doc => mrJobsDatabase.push({id: doc.id, ...doc.data()})); mrJobsDatabase.sort((a,b) => b.timestamp - a.timestamp);
-                const snapLogs = await getDocs(query(collection(db, "mold_repair_logs")));
-                snapLogs.forEach(doc => logHarianMRDatabase.push({id: doc.id, ...doc.data()}));
-                window.renderMRProses(); window.renderMRHasil(); await window.renderMRHarian(); 
-            } catch(e) { console.error(e); } window.toggleLoader(false);
-        }
-
-        window.renderMRProses = function() {
-            const container = document.getElementById('list-mr-proses'); if(!container) return; container.innerHTML = "";
-            let dataProses = mrJobsDatabase.filter(d => d.statusProyek === "Berjalan");
-            if(dataProses.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada proyek berjalan.</p>`; return; }
-            dataProses.forEach(data => {
-                container.innerHTML += `<div class="progress-card" style="border-left-color: var(--proses); margin-bottom: 15px;"><div onclick="window.bukaDetailMR('${data.id}')" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center;"><div><h4 style="margin:0 0 5px 0;">${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-user-cog"></i> PIC: ${data.pic} | Target: ${data.tglSelesai}</p><span class="status-badge bg-proses">Sedang Proses</span></div><div style="font-size:24px; color:gray;"><i class="fas fa-chevron-right"></i></div></div><hr style="border-top:1px dashed #cbd5e1; margin:10px 0;"><button type="button" onclick="window.bukaFormUpdateMR('${data.id}')" style="width:100%; padding:10px; border-radius:6px; background:var(--secondary); color:white; border:none; font-weight:bold; cursor:pointer;"><i class="fas fa-edit"></i> UPDATE HARIAN</button></div>`;
-            });
-        }
-
-        window.bukaDetailMR = function(id) {
-            const data = mrJobsDatabase.find(d => d.id === id); if(!data) return;
-            let sisaWaktuTotal = data.estimasiMenit - data.waktuAktualTotalMenit;
-            let labelSisa = sisaWaktuTotal >= 0 ? `<span style="color:var(--cepat)">Tersisa ${window.formatJamMenit(sisaWaktuTotal)}</span>` : `<span style="color:var(--lambat)">Over Limit ${window.formatJamMenit(Math.abs(sisaWaktuTotal))}</span>`;
-            let listLog = logHarianMRDatabase.filter(l => l.jobId === id); let htmlLog = "";
-            if(listLog.length > 0) { listLog.forEach(l => { htmlLog += `<div style="background:#f1f5f9; padding:8px; border-radius:6px; margin-top:5px; border-left:3px solid ${l.warnaTarget}; font-size:12px;"><b>${l.waktuInput}</b> - ${window.formatJamMenit(l.waktuAktualMenit)}<br><i>"${l.catatan}"</i></div>`; }); } else { htmlLog = `<div style="font-size:12px; color:gray; font-style:italic;">Belum ada progres yang dikerjakan.</div>`; }
-            let html = `<table class="report-table" style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:13px;"><tr><th style="width:35%; text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Nama Mold</th><td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:var(--primary);">${data.namaMold}</td></tr><tr><th style="text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Masalah</th><td style="padding:8px; border:1px solid #cbd5e1; color:#ea580c; font-weight:bold;">${data.masalah}</td></tr><tr><th style="text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Penyebab</th><td style="padding:8px; border:1px solid #cbd5e1;">${data.penyebab}</td></tr><tr><th style="text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Tindakan</th><td style="padding:8px; border:1px solid #cbd5e1;">${data.tindakan}</td></tr><tr><th style="text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Estimasi Total</th><td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold;">${window.formatJamMenit(data.estimasiMenit)}</td></tr><tr><th style="text-align:left; padding:8px; background:#f1f5f9; border:1px solid #cbd5e1;">Target Harian</th><td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold;">${window.formatJamMenit(data.targetHarianMenit)}</td></tr><tr><th style="text-align:left; padding:8px; background:#fef3c7; border:1px solid #cbd5e1;">Waktu Terpakai</th><td style="padding:8px; border:1px solid #cbd5e1; font-weight:bold; color:#d97706;">${window.formatJamMenit(data.waktuAktualTotalMenit)}<br>${labelSisa}</td></tr></table><h4 style="margin:0 0 5px 0; color:var(--primary); font-size:14px;"><i class="fas fa-history"></i> Riwayat Pengerjaan</h4>${htmlLog}`;
-            const mdc = document.getElementById('mr-detail-content'); if(mdc) mdc.innerHTML = html;
-            const mdm = document.getElementById('modal-detail-mr'); if(mdm) mdm.style.display = 'flex';
-        }
-
-        window.bukaFormUpdateMR = function(id) {
-            const data = mrJobsDatabase.find(d => d.id === id); if(!data) return;
-            document.getElementById('mr-update-id').value = id; document.getElementById('mr-update-nama').innerText = data.namaMold;
-            document.getElementById('mr-aktual-jam').value = ""; document.getElementById('mr-aktual-menit').value = ""; document.getElementById('mr-aktual-catatan').value = ""; const smf = document.getElementById('status-mr-foto'); if(smf) smf.innerHTML = ""; document.getElementById('mr-aktual-foto').value = "";
-            const fmh = document.getElementById('form-mr-update-harian'); if(fmh) fmh.style.display = 'block'; const lmp = document.getElementById('list-mr-proses'); if(lmp) lmp.style.display = 'none'; window.scrollTo(0, document.getElementById('form-mr-update-harian').offsetTop);
-        }
-
-        window.batalUpdateMR = function() { const fmh = document.getElementById('form-mr-update-harian'); if(fmh) fmh.style.display = 'none'; const lmp = document.getElementById('list-mr-proses'); if(lmp) lmp.style.display = 'block'; }
-
-        window.simpanLogHarianMR = async function() {
-            const id = document.getElementById('mr-update-id').value; const jam = parseInt(document.getElementById('mr-aktual-jam').value) || 0; const menit = parseInt(document.getElementById('mr-aktual-menit').value) || 0; const catatan = document.getElementById('mr-aktual-catatan').value; const fotoInput = document.getElementById('mr-aktual-foto');
-            const menitKerja = (jam * 60) + menit;
-            if(menitKerja === 0 || !catatan) return alert("Waktu Pengerjaan Aktual dan Catatan Wajib Diisi!");
-            window.toggleLoader(true, "Menyimpan Progress...");
-            const jobData = mrJobsDatabase.find(d => d.id === id); let fotoBase64 = ""; if (fotoInput.files.length > 0) fotoBase64 = await window.compressImage(fotoInput.files[0], 600, 600, 0.6); 
-            let selisihMenit = jobData.targetHarianMenit - menitKerja; let statusLog = ""; let colorLog = "";
-            if(selisihMenit > 0) { statusLog = `Selesai lebih cepat ${Math.floor(selisihMenit/60)}j ${selisihMenit%60}m`; colorLog = "var(--cepat)"; } 
-            else if (selisihMenit < 0) { statusLog = `Terlambat ${Math.floor(Math.abs(selisihMenit)/60)}j ${Math.abs(selisihMenit)%60}m`; colorLog = "var(--lambat)"; } 
-            else { statusLog = "Selesai Tepat Sesuai Target"; colorLog = "var(--secondary)"; }
-            try { await addDoc(collection(db, "mold_repair_logs"), { jobId: id, namaMold: jobData.namaMold, pic: jobData.pic, waktuAktualMenit: menitKerja, catatan: catatan, statusTarget: statusLog, warnaTarget: colorLog, fotoHasil: fotoBase64, waktuInput: window.dapatkanWaktuRill(), timestamp: Date.now() }); let newTotalMenit = (jobData.waktuAktualTotalMenit || 0) + menitKerja; await updateDoc(doc(db, "mold_repair_jobs", id), { waktuAktualTotalMenit: newTotalMenit }); alert("Log Berhasil Disimpan!"); document.getElementById('form-mr-update-harian').style.display = 'none'; await window.muatDataMR(); window.switchTabMR('harian'); } catch(e) {} window.toggleLoader(false);
-        }
-
-        window.selesaikanProyekMR = async function() {
-            if(!confirm("Anda yakin tiket proyek ini sudah selesai total?")) return;
-            const id = document.getElementById('mr-update-id').value; const jam = parseInt(document.getElementById('mr-aktual-jam').value) || 0; const menit = parseInt(document.getElementById('mr-aktual-menit').value) || 0;
-            if(jam > 0 || menit > 0) { await window.simpanLogHarianMR(); }
-            window.toggleLoader(true, "Menutup Tiket...");
-            try { await updateDoc(doc(db, "mold_repair_jobs", id), { statusProyek: "Selesai", tglSelesaiAktual: window.dapatkanTanggalLokal() }); alert("Proyek Diselesaikan!"); document.getElementById('form-mr-update-harian').style.display = 'none'; await window.muatDataMR(); window.switchTabMR('hasil'); } catch (e) {} window.toggleLoader(false);
-        }
-
-        window.renderMRHarian = async function() {
-            const container = document.getElementById('list-mr-harian'); if(!container) return; container.innerHTML = "";
-            if(logHarianMRDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Belum ada log pengerjaan.</p>`; return; }
-            logHarianMRDatabase.sort((a,b) => b.timestamp - a.timestamp);
-            logHarianMRDatabase.forEach(log => {
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${log.warnaTarget}; cursor:pointer;" onclick="window.bukaDetailMR('${log.jobId}')"><div style="display:flex; justify-content:space-between;"><h4 style="margin:0 0 5px 0;">${log.namaMold}</h4><span style="font-size:10px; color:gray;">${log.waktuInput}</span></div><p style="margin:0; font-size:12px;">PIC: ${log.pic}</p><p style="margin:5px 0 0 0; font-size:12px; font-style:italic;">Catatan: "${log.catatan}"</p><p style="margin:5px 0 0 0; font-size:12px; font-weight:bold;">Kerja Aktual: ${window.formatJamMenit(log.waktuAktualMenit)}</p><span class="status-badge" style="background:${log.warnaTarget}; margin-top:8px;">${log.statusTarget}</span><p style="margin-top:10px; font-size:11px; color:var(--secondary); font-weight:bold;"><i class="fas fa-info-circle"></i> Klik untuk melihat rincian masalah</p></div>`;
-            });
-        }
-
-        window.renderMRHasil = function() {
-            const container = document.getElementById('list-mr-hasil'); if(!container) return; container.innerHTML = "";
-            let dataSelesai = mrJobsDatabase.filter(d => d.statusProyek === "Selesai");
-            if(dataSelesai.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Belum ada proyek yang selesai.</p>`; return; }
-            dataSelesai.forEach(data => {
-                let selisihTotal = data.estimasiMenit - data.waktuAktualTotalMenit; let bgBadge = ""; let teksBadge = "";
-                if(selisihTotal > 0) { bgBadge = "var(--cepat)"; teksBadge = `Selesai lebih cepat ${window.formatJamMenit(selisihTotal)}`; } 
-                else if(selisihTotal < 0) { bgBadge = "var(--lambat)"; teksBadge = `Terlambat ${window.formatJamMenit(Math.abs(selisihTotal))}`; } 
-                else { bgBadge = "var(--secondary)"; teksBadge = `Selesai Tepat Estimasi`; }
-                container.innerHTML += `<div class="progress-card" style="border-left-color: #10b981; cursor:pointer;" onclick="window.bukaDetailMR('${data.id}')"><h4 style="margin:0 0 5px 0; color:var(--primary);"><i class="fas fa-check-circle"></i> ${data.namaMold}</h4><p style="margin:0; font-size:12px; color:gray;">Masalah: ${data.masalah}</p><hr style="margin:8px 0; border-top:1px dashed #cbd5e1;"><p style="margin:0; font-size:11px;">Estimasi Awal: <b>${window.formatJamMenit(data.estimasiMenit)}</b></p><p style="margin:0; font-size:11px;">Aktual Dihabiskan: <b>${window.formatJamMenit(data.waktuAktualTotalMenit)}</b></p><span class="status-badge" style="background:${bgBadge}; display:block; text-align:center; margin-top:8px;">${teksBadge}</span></div>`;
-            });
-        }
-
-        // =======================================================
-        // 3. MOLD STORE (Naik & Produksi)
-        // =======================================================
-        window.bukaInputNaikMold = function() { window.arrayNaikMold = []; window.renderListNaikMoldUI(); const tgl = document.getElementById('ms-naik-tgl'); if(tgl) tgl.value = window.dapatkanTanggalLokal(); const man = document.getElementById('ms-naik-input-manual'); if(man) man.value = ""; window.navigasi('ms-input-naik-screen'); }
-        window.standarCekMold = [ "1. Kesesuaian Nama Mold & Insert", "2. Permukaan Core & Cavity Tidak Kusam", "3. Pergerakan Slider Lancar & Bersih", "4. Kondisi Radius Sprue Bushing", "5. Heater Mold Berfungsi Baik", "6. Limit Switch Lengkap & Normal", "7. Hydrolik Terpasang Lengkap", "8. Locating Ring Terpasang Baik", "9. [Preventif] Ejector Pin Lancar", "10. [Preventif] Sirkulasi Air Lancar", "11. [Preventif] Baut Clamping Kencang" ];
-        window.tambahMoldManual = function() { const inputElement = document.getElementById('ms-naik-input-manual'); if(!inputElement) return; let nilai = inputElement.value.toUpperCase().trim(); if (nilai !== "") { window.arrayNaikMold.push({ nama: nilai, ceklis: Array(11).fill(false) }); inputElement.value = ""; window.renderListNaikMoldUI(); } else { alert("Nama mold kosong!"); } }
-        window.hapusMoldList = function(index) { window.arrayNaikMold.splice(index, 1); window.renderListNaikMoldUI(); }
-        window.toggleCeklis = function(indexMold, indexCek) { window.arrayNaikMold[indexMold].ceklis[indexCek] = !window.arrayNaikMold[indexMold].ceklis[indexCek]; window.renderListNaikMoldUI(); }
-        window.kalkulasiStatusMold = function(ceklisArr) { let total = ceklisArr.length; let diCeklis = ceklisArr.filter(c => c === true).length; let tidakDiCeklis = total - diCeklis; if (diCeklis === total) { return { teks: "SIAP PRODUKSI", warna: "#10b981", bg: "#d1fae5" }; } else if (diCeklis === 0 || tidakDiCeklis > diCeklis) { return { teks: "GAGAL NAIK", warna: "#ef4444", bg: "#fee2e2" }; } else { return { teks: "MOLD SIAP NAIK (PERLU DIPERHATIKAN)", warna: "#f59e0b", bg: "#fef3c7" }; } }
-        window.renderListNaikMoldUI = function() { const ul = document.getElementById('list-naik-mold'); if(!ul) return; ul.innerHTML = ""; if(window.arrayNaikMold.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada mold didata.</li>`; } else { window.arrayNaikMold.forEach((item, idxMold) => { let status = window.kalkulasiStatusMold(item.ceklis); let listCeklisHTML = ""; window.standarCekMold.forEach((namaCek, idxCek) => { let isChecked = item.ceklis[idxCek] ? "checked" : ""; listCeklisHTML += `<div style="display:flex; align-items:center; gap:8px; font-size:12px; margin-bottom:5px; color:#475569;"><input type="checkbox" id="chk-${idxMold}-${idxCek}" ${isChecked} onchange="window.toggleCeklis(${idxMold}, ${idxCek})" style="width:16px; height:16px; cursor:pointer;"><label for="chk-${idxMold}-${idxCek}">${namaCek}</label></div>`; }); ul.innerHTML += `<li style="display:flex; flex-direction:column; border: 1px solid #cbd5e1; background: white; margin-bottom: 15px; border-radius: 8px; overflow:hidden;"><div style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; padding:10px 15px; border-bottom:1px solid #cbd5e1;"><span style="font-size:15px; font-weight:bold; color:var(--primary);">${idxMold + 1}. ${item.nama}</span><button type="button" onclick="window.hapusMoldList(${idxMold})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;"><i class="fas fa-trash"></i></button></div><div style="padding: 15px;">${listCeklisHTML}</div><div style="padding: 10px 15px; background: ${status.bg}; border-top: 1px solid #cbd5e1; text-align:center;"><span style="font-weight:bold; font-size:13px; color: ${status.warna};">${status.teks}</span></div></li>`; }); } }
-
-        window.isRecording = false; window.recognition = null;
-        window.toggleSuara = function() { const btnSuara = document.getElementById('btn-suara'); if (!window.recognition) { if (!('webkitSpeechRecognition' in window)) { alert("Browser tidak mendukung AI Suara."); return; } window.recognition = new webkitSpeechRecognition(); window.recognition.lang = 'id-ID'; window.recognition.interimResults = false; window.recognition.onresult = function(event) { let hasilSuara = event.results[0][0].transcript.toUpperCase(); const manual = document.getElementById('ms-naik-input-manual'); if(manual) manual.value = hasilSuara; }; window.recognition.onend = function() { window.resetTombolSuara(); }; } if (window.isRecording) { window.recognition.stop(); window.resetTombolSuara(); } else { window.recognition.start(); window.isRecording = true; if(btnSuara) { btnSuara.style.background = "#10b981"; btnSuara.innerHTML = '<i class="fas fa-spinner fa-spin"></i>'; } } }
-        window.resetTombolSuara = function() { window.isRecording = false; const btnSuara = document.getElementById('btn-suara'); if(btnSuara) { btnSuara.style.background = "#ef4444"; btnSuara.innerHTML = '<i class="fas fa-microphone-alt"></i>'; } }
-        
-        window.simpanNaikMold = async function() { 
-            const tgl = document.getElementById('ms-naik-tgl').value; const pj = document.getElementById('ms-naik-pj').value; 
-            if(!tgl) return alert("Tanggal wajib diisi!"); if(window.arrayNaikMold.length === 0) return alert("List kosong!"); 
-            const moldDenganStatus = window.arrayNaikMold.map(m => ({ nama: m.nama, ceklis: m.ceklis, status: "Proses" })); 
-            window.toggleLoader(true, "Menyimpan..."); 
-            try { await addDoc(collection(db, "laporan_naik_mold"), { tanggal: tgl, penanggungJawab: pj, listMold: moldDenganStatus, waktuInput: new Date().toLocaleString(), timestamp: Date.now() }); alert("Tersimpan!"); window.arrayNaikMold = []; window.navigasi('ms-persiapan-menu-screen'); } catch (e) {} finally { window.toggleLoader(false); } 
-        }
-
-        window.bukaUpdateMoldProduksi = function() { window.navigasi('ms-update-mold-screen'); window.bukaTabMold('proses'); window.muatDataMoldProduksi(); }
-        
-        window.bukaTabMold = function(namaTab) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
-            document.querySelectorAll('.tab-btn').forEach(btn => { btn.classList.remove('tab-active'); });
-            const targetTab = document.getElementById('tab-' + namaTab); if(targetTab) targetTab.style.display = 'block';
-            const btnAktif = document.getElementById('btn-tab-' + namaTab);
-            if(btnAktif) { btnAktif.classList.add('tab-active'); }
-        }
-
-        window.muatDataMoldProduksi = async function() { 
-            const listProses = document.getElementById('kolom-proses-produksi'); const listSelesai = document.getElementById('kolom-selesai-baik'); const listGagal = document.getElementById('kolom-gagal-naik'); 
-            if(!listProses || !listSelesai || !listGagal) return; 
-            listProses.innerHTML = ''; listSelesai.innerHTML = ''; listGagal.innerHTML = ''; 
-            window.toggleLoader(true, "Menarik Data Produksi..."); 
-            try { 
-                const q = query(collection(db, "laporan_naik_mold")); const querySnapshot = await getDocs(q); 
-                let adaProses = false, adaSelesai = false, adaGagal = false; 
-                querySnapshot.forEach((docSnap) => { 
-                    const data = docSnap.data(); const idDoc = docSnap.id; 
-                    if(data.listMold && Array.isArray(data.listMold)) { 
-                        data.listMold.forEach((mold, index) => { 
-                            const li = document.createElement('li'); li.style.background = 'white'; li.style.padding = '15px'; li.style.marginBottom = '12px'; li.style.borderRadius = '12px'; li.style.borderLeft = '6px solid gray'; li.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)'; 
-                            let warnaBorder = 'gray'; let tombolAksi = ''; 
-                            if(mold.status === 'Proses') { 
-                                warnaBorder = '#f59e0b'; adaProses = true; 
-                                tombolAksi = `<div style="margin-top: 15px; display: flex; gap: 8px;"><button type="button" onclick="window.updateStatusMold('${idDoc}', ${index}, 'Selesai')" style="flex:1; background:#10b981; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-check"></i> Selesai Baik</button><button type="button" onclick="window.updateStatusMold('${idDoc}', ${index}, 'Gagal')" style="flex:1; background:#ef4444; color:white; border:none; padding:10px; border-radius:8px; font-weight:bold; cursor:pointer;"><i class="fas fa-times"></i> Kendala/Gagal</button></div>`; 
-                            } else if(mold.status === 'Selesai') { warnaBorder = '#10b981'; adaSelesai = true; } 
-                            else if(mold.status === 'Gagal') { warnaBorder = '#ef4444'; adaGagal = true; } 
-                            li.style.borderLeftColor = warnaBorder; li.innerHTML = `<div style="font-weight: 800; font-size: 16px; color: #1e293b;">${mold.nama}</div><div style="font-size: 12px; color: #64748b; margin-top: 5px;"><i class="far fa-calendar-alt"></i> ${data.tanggal} | <i class="far fa-user"></i> ${data.penanggungJawab}</div>${tombolAksi}`; 
-                            if(mold.status === 'Proses') listProses.appendChild(li); 
-                            else if(mold.status === 'Selesai') listSelesai.appendChild(li); 
-                            else if(mold.status === 'Gagal') listGagal.appendChild(li); 
-                        }); 
-                    } 
-                }); 
-                if(!adaProses) listProses.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>'; 
-                if(!adaSelesai) listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>'; 
-                if(!adaGagal) listGagal.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>'; 
-            } catch (error) { console.error(error); } window.toggleLoader(false); 
-        }
-
-        window.updateStatusMold = async function(idDoc, indexArray, statusBaru) { 
-            if(statusBaru === 'Gagal') { if(!confirm(`Mold bermasalah? Data akan dikirim otomatis ke Divisi Mold Trouble!`)) return; } 
-            else { if(!confirm(`Pindahkan mold ini ke daftar "Selesai Baik"?`)) return; } 
-            window.toggleLoader(true, "Memperbarui status..."); 
-            try { 
-                const docRef = doc(db, "laporan_naik_mold", idDoc); const docSnap = await getDoc(docRef); 
-                if (docSnap.exists()) { 
-                    let data = docSnap.data(); const moldTerpilih = data.listMold[indexArray]; moldTerpilih.status = statusBaru; await updateDoc(docRef, { listMold: data.listMold }); 
-                    if(statusBaru === 'Gagal') { await addDoc(collection(db, "mold_trouble_tickets"), { idAsalProduksi: idDoc, indexAsalArray: indexArray, namaMold: moldTerpilih.nama, waktuMasukTrouble: new Date().toLocaleString(), statusTrouble: "Belum Update", timestamp: Date.now() }); } 
-                    window.muatDataMoldProduksi(); window.muatDataTrouble(); 
-                } 
-            } catch (e) {} window.toggleLoader(false); 
-        }
-
-        // =======================================================
-        // 4. DIVISI MOLD TROUBLE
-        // =======================================================
-        window.bukaDivisiTrouble = function() { window.navigasi('ms-trouble-screen'); window.bukaTabTrouble('belum'); window.muatDataTrouble(); }
-        
-        window.bukaTabTrouble = function(tab) { 
-            document.querySelectorAll('.tab-content-trouble').forEach(el => el.style.display = 'none'); 
-            document.querySelectorAll('.tab-btn-trouble').forEach(btn => { btn.classList.remove('tab-active'); }); 
-            const target = document.getElementById('tab-trouble-' + tab); if(target) target.style.display = 'block'; 
-            const btnAktif = document.getElementById('btn-tab-trouble-' + tab); if(btnAktif) { btnAktif.classList.add('tab-active'); }
-        }
-
-        window.terimaLaporanTrouble = async function(idTiket) { 
-            if(!confirm("Terima tiket ini? Notifikasi akan dimatikan.")) return; 
-            window.toggleLoader(true, "Menerima laporan..."); 
-            try { await updateDoc(doc(db, "mold_trouble_tickets", idTiket), { statusTrouble: "Sedang Dikerjakan" }); window.muatDataTrouble(); } catch (e) {} window.toggleLoader(false); 
-        }
-
-        window.muatDataTrouble = async function() { 
-            const listBelum = document.getElementById('list-trouble-belum'); const listSelesai = document.getElementById('list-trouble-selesai'); 
-            if(!listBelum || !listSelesai) return; 
-            listBelum.innerHTML = ''; listSelesai.innerHTML = ''; window.toggleLoader(true, "Memuat Data Trouble..."); 
-            try { 
-                const q = query(collection(db, "mold_trouble_tickets")); const querySnapshot = await getDocs(q); let countLonceng = 0; 
-                querySnapshot.forEach((docSnap) => { 
-                    const data = docSnap.data(); const idDoc = docSnap.id; 
-                    const li = document.createElement('li'); li.style.background = 'white'; li.style.padding = '18px'; li.style.marginBottom = '15px'; li.style.borderRadius = '14px'; li.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)'; 
-                    if(data.statusTrouble === "Belum Update" || data.statusTrouble === "Sedang Dikerjakan") { 
-                        const isBaru = data.statusTrouble === "Belum Update"; if(isBaru) countLonceng++; li.style.borderLeft = isBaru ? '6px solid #dc2626' : '6px solid #f59e0b'; 
-                        const tombolAksi = isBaru ? `<button type="button" onclick="window.terimaLaporanTrouble('${idDoc}')" style="width:100%; background:linear-gradient(135deg, #ef4444, #dc2626); color:white; border:none; padding:12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(239,68,68,0.3);"><i class="fas fa-hand-pointer"></i> KLIK UNTUK TERIMA TUGAS</button>` : `<div style="font-size:12px; color:#ea580c; margin-bottom:10px; font-weight:700;"><i class="fas fa-cog fa-spin"></i> Laporan Diterima & Sedang Disiapkan</div><button type="button" onclick="window.bukaFormTrouble('${idDoc}', '${data.namaMold}', '${data.idAsalProduksi || ""}', ${data.indexAsalArray || 0})" style="width:100%; background:linear-gradient(135deg, #3b82f6, #2563eb); color:white; border:none; padding:12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(59,130,246,0.3);"><i class="fas fa-edit"></i> UPDATE 7 PARAMETER</button>`; 
-                        li.innerHTML = `<div style="font-weight: 800; font-size: 16px;">${data.namaMold}</div><div style="font-size: 12px; color: gray; margin-bottom: 15px; margin-top:5px;"><i class="fas fa-clock"></i> Lapor: ${data.waktuMasukTrouble}</div>${tombolAksi}`; 
-                        listBelum.appendChild(li); 
-                    } else if (data.statusTrouble === "Sudah Selesai") { 
-                        li.style.borderLeft = '6px solid #10b981'; 
-                        li.innerHTML = `<div style="font-weight: 800; font-size: 16px;">${data.namaMold}</div><div style="font-size: 13px; margin-top:8px; line-height:1.4;"><b>Tindakan:</b> ${data.tindakanDilakukan}</div><div style="font-size: 11px; color: gray; margin-top: 10px;"><i class="fas fa-user-cog"></i> Teknisi: ${data.eksekutor} | Finish: ${data.finishPengerjaan}</div>`; 
-                        listSelesai.appendChild(li); 
-                    } 
-                }); 
-                if(listBelum.innerHTML === '') listBelum.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>'; 
-                if(listSelesai.innerHTML === '') listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>'; 
-                const badges = document.querySelectorAll('.badge-trouble-notif'); badges.forEach(badge => { badge.style.display = countLonceng > 0 ? 'inline-block' : 'none'; badge.innerText = countLonceng; }); 
-            } catch (e) { console.error(e); } window.toggleLoader(false); 
-        }
-
-        window.bukaFormTrouble = function(idTiket, namaMold, idProduksi, indexProduksi) { 
-            const trTiket = document.getElementById('trouble-id-tiket'); if(trTiket) trTiket.value = idTiket; 
-            const trProd = document.getElementById('trouble-id-produksi'); if(trProd) trProd.value = idProduksi; 
-            const trIndex = document.getElementById('trouble-index-produksi'); if(trIndex) trIndex.value = indexProduksi; 
-            const trMold = document.getElementById('trouble-nama-mold'); if(trMold) trMold.value = namaMold; 
-            ['tr-type', 'tr-start', 'tr-estimasi', 'tr-finish', 'tr-masalah', 'tr-penyebab', 'tr-tindakan', 'tr-eksekutor'].forEach(id => { const el = document.getElementById(id); if(el) el.value = ""; }); 
-            const mft = document.getElementById('modal-form-trouble'); if(mft) mft.style.display = 'flex'; 
-        }
-
-        window.simpanLaporanTrouble = async function() { 
-            const idTiket = document.getElementById('trouble-id-tiket').value; const idProduksi = document.getElementById('trouble-id-produksi').value; const indexProduksi = parseInt(document.getElementById('trouble-index-produksi').value); const d_type = document.getElementById('tr-type').value; const d_start = document.getElementById('tr-start').value; const d_esti = document.getElementById('tr-estimasi').value; const d_finish = document.getElementById('tr-finish').value; const d_masalah = document.getElementById('tr-masalah').value; const d_penyebab = document.getElementById('tr-penyebab').value; const d_tindakan = document.getElementById('tr-tindakan').value; const d_eksekutor = document.getElementById('tr-eksekutor').value; 
-            if(!d_masalah || !d_tindakan || !d_eksekutor) return alert("Poin 5, 6, dan 7 wajib diisi!"); 
-            window.toggleLoader(true, "Menyimpan & Mensinkronisasi..."); 
-            try { 
-                const gabunganMasalah = d_masalah + " (Penyebab: " + d_penyebab + ")"; 
-                await updateDoc(doc(db, "mold_trouble_tickets", idTiket), { typeMold: d_type, startPenanganan: d_start, estimasiWaktu: d_esti, finishPengerjaan: d_finish, masalahDanPenyebab: gabunganMasalah, tindakanDilakukan: d_tindakan, eksekutor: d_eksekutor, statusTrouble: "Sudah Selesai", waktuSelesaiPerbaikan: new Date().toLocaleString() }); 
-                if(idProduksi && idProduksi !== "") { const docProdRef = doc(db, "laporan_naik_mold", idProduksi); const docProdSnap = await getDoc(docProdRef); if (docProdSnap.exists()) { let dataProd = docProdSnap.data(); dataProd.listMold[indexProduksi].status = "Selesai"; await updateDoc(docProdRef, { listMold: dataProd.listMold }); } }
-                alert("Update Project Berhasil!"); const mft = document.getElementById('modal-form-trouble'); if(mft) mft.style.display = 'none'; window.muatDataTrouble(); 
-            } catch (e) {} finally { window.toggleLoader(false); } 
-        }
-
-        // ==========================================
-        // 5. PKM ELTRE APPSHEET
-        // ==========================================
-        window.bukaTabPKM = function(tab) { 
-            document.querySelectorAll('.tab-content-pkm').forEach(el => el.style.display = 'none'); document.querySelectorAll('.tab-btn-pkm').forEach(btn => { btn.classList.remove('tab-active'); }); const target = document.getElementById('tab-pkm-' + tab); if(target) target.style.display = 'block'; const btnAktif = document.getElementById('btn-tab-pkm-' + tab); if(btnAktif) { btnAktif.classList.add('tab-active'); }
-        }
-        window.bukaAksiVerifikasi = function(idTiket, namaMold) { document.getElementById('pkm-id-tiket-verifikasi').value = idTiket; document.getElementById('pkm-nama-mold-text').innerText = namaMold; const map = document.getElementById('modal-aksi-pkm'); if(map) map.style.display = 'flex'; }
-        window.bukaPKMEltre = function() { window.navigasi('ms-pkm-eltre-screen'); window.bukaTabPKM('verifikasi'); window.muatDataPKMEltre(); }
-
-        window.prosesVerifikasiPKM = async function(keputusan) { 
-            const idTiket = document.getElementById('pkm-id-tiket-verifikasi').value; 
-            window.toggleLoader(true, "Memproses verifikasi..."); 
-            try { 
-                const pkmRef = doc(db, "pkm_eltre_masuk", idTiket); let namaMoldText = document.getElementById('pkm-nama-mold-text').innerText;
-                if(keputusan === 'kerjakan') { await updateDoc(pkmRef, { statusTrouble: "Sedang Dikerjakan" }); await addDoc(collection(db, "mold_trouble_tickets"), { namaMold: namaMoldText, waktuMasukTrouble: new Date().toLocaleString(), statusTrouble: "Belum Update", timestamp: Date.now() }); alert("Data dimasukkan ke daftar 'Sedang Dikerjakan' dan masuk tiket Trouble!"); } 
-                else if (keputusan === 'pisah') { await updateDoc(pkmRef, { statusTrouble: "Dipisahkan (Bukan Mold)" }); alert("Data dipisahkan karena bukan masalah mold."); } 
-                const map = document.getElementById('modal-aksi-pkm'); if(map) map.style.display = 'none'; await window.muatDataPKMEltre(); if (keputusan === 'kerjakan') window.bukaTabPKM('kerjakan'); else window.bukaTabPKM('pisah');
-            } catch (error) { alert("Error: " + error.message); } window.toggleLoader(false); 
-        }
-
-        window.muatDataPKMEltre = async function() {
-            const listVerif = document.getElementById('list-pkm-verifikasi'); const listKerjakan = document.getElementById('list-pkm-kerjakan'); const listPisah = document.getElementById('list-pkm-pisah'); const listSelesai = document.getElementById('list-pkm-selesai');
-            if(!listVerif) return; listVerif.innerHTML = ''; listKerjakan.innerHTML = ''; listPisah.innerHTML = ''; listSelesai.innerHTML = ''; window.toggleLoader(true, "Menarik Data PKM AppSheet...");
-            try {
-                const q = query(collection(db, "pkm_eltre_masuk")); const snap = await getDocs(q); let countBadge = 0;
-                snap.forEach(docSnap => {
-                    const data = docSnap.data(); const idDoc = docSnap.id;
-                    let htmlCard = `<li style="background:white; padding:20px; margin-bottom:15px; border-radius:14px; border-left:6px solid #2563eb; box-shadow:0 6px 15px rgba(0,0,0,0.05);"><div style="font-weight:900; font-size:16px; color:#1e293b;">${data.namaMold}</div><div style="font-size:12px; color:gray; margin-bottom:8px; margin-top:5px;">Mesin: ${data.typeMold || '-'}</div><div style="font-size:13px; color:#ea580c; margin-bottom:8px; font-weight:bold;">${data.masalahDanPenyebab || '-'}</div><div style="font-size:11px; color:gray; margin-bottom:15px;"><i class="fas fa-clock"></i> ${data.waktuMasukTrouble || '-'}</div>${data.statusTrouble === "Menunggu Verifikasi" ? `<button type="button" onclick="window.bukaAksiVerifikasi('${idDoc}', '${data.namaMold}')" style="width:100%; background:linear-gradient(135deg, #2563eb, #1d4ed8); color:white; border:none; padding:12px; border-radius:10px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(37,99,235,0.3);"><i class="fas fa-search"></i> VERIFIKASI SEKARANG</button>` : `<span class="status-badge" style="background:#2563eb; width:100%; display:block; box-sizing:border-box; text-align:center;">Status: ${data.statusTrouble}</span>`}</li>`;
-                    if(data.statusTrouble === "Menunggu Verifikasi") { countBadge++; listVerif.innerHTML += htmlCard; } 
-                    else if (data.statusTrouble === "Sedang Dikerjakan" || data.statusTrouble === "Diterima (Masuk Mold Trouble)") { listKerjakan.innerHTML += htmlCard.replace('border-left:6px solid #2563eb', 'border-left:6px solid #f59e0b').replace('background:linear-gradient(135deg, #2563eb, #1d4ed8)', 'background:#f59e0b'); } 
-                    else if (data.statusTrouble === "Dipisahkan (Bukan Mold)") { listPisah.innerHTML += htmlCard.replace('border-left:6px solid #2563eb', 'border-left:6px solid #ef4444').replace('background:linear-gradient(135deg, #2563eb, #1d4ed8)', 'background:#ef4444'); } 
-                    else if (data.statusTrouble === "Selesai") { listSelesai.innerHTML += htmlCard.replace('border-left:6px solid #2563eb', 'border-left:6px solid #10b981').replace('background:linear-gradient(135deg, #2563eb, #1d4ed8)', 'background:#10b981'); }
-                });
-                if(listVerif.innerHTML === '') listVerif.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>';
-                if(listKerjakan.innerHTML === '') listKerjakan.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>';
-                if(listPisah.innerHTML === '') listPisah.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>';
-                if(listSelesai.innerHTML === '') listSelesai.innerHTML = '<li style="text-align:center; color:gray; font-size:12px; margin-top:20px;">Kosong.</li>';
-                const badgePKM = document.getElementById('badge-pkm-notif'); if(badgePKM) { badgePKM.style.display = countBadge > 0 ? 'inline-block' : 'none'; badgePKM.innerText = countBadge; }
-            } catch(e) { console.error(e); } finally { window.toggleLoader(false); }
-        }
-
-        // =======================================================
-        // 6. ADM MOLD & PUSAT ANALISA PERFORMA
-        // =======================================================
-        window.bukaInputTargetAdm = async function() { window.toggleLoader(true, "Menyiapkan Form..."); window.rencanaKerjaArray = []; document.getElementById('adm-target-tgl').value = window.dapatkanTanggalLokal(); document.getElementById('adm-target-mulai').value = "08:00"; document.getElementById('adm-target-selesai').value = "16:00"; try { const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q); let tempList = []; snapshot.forEach(doc => tempList.push({id: doc.id, ...doc.data()})); if(tempList.length > 0) { tempList.sort((a,b) => b.timestamp - a.timestamp); let entriTerakhir = tempList[0]; if (entriTerakhir.daftarActual && Array.isArray(entriTerakhir.daftarActual)) { entriTerakhir.daftarActual.forEach(item => { if (!item.done) { let alasan = entriTerakhir.keteranganActual && entriTerakhir.keteranganActual !== "-" ? entriTerakhir.keteranganActual : "Tanpa Keterangan"; let taskBaru = item.teks; if (!taskBaru.includes("(Terlambat karna:")) { taskBaru = `${taskBaru} (Terlambat karna: ${alasan})`; } window.rencanaKerjaArray.push(taskBaru); } }); } } } catch(e) {} window.renderRencanaKerjaUI(); window.toggleLoader(false); window.navigasi('adm-harian-target-screen'); }
-        window.tambahRencanaKerja = function() { const input = document.getElementById('adm-input-rencana'); const val = input.value.trim(); if(val) { window.rencanaKerjaArray.push(val); window.renderRencanaKerjaUI(); input.value = ""; input.focus(); } }
-        window.hapusRencanaKerja = function(index) { window.rencanaKerjaArray.splice(index, 1); window.renderRencanaKerjaUI(); }
-        window.renderRencanaKerjaUI = function() { const ul = document.getElementById('list-rencana-kerja'); if(!ul) return; ul.innerHTML = ""; if(window.rencanaKerjaArray.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada rencana ditambahkan.</li>`; } else { window.rencanaKerjaArray.forEach((item, idx) => { ul.innerHTML += `<li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary);"><span style="font-size:13px; font-weight:bold;">${idx + 1}. ${item}</span><button type="button" onclick="window.hapusRencanaKerja(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:8px; cursor:pointer;"><i class="fas fa-trash"></i></button></li>`; }); } }
-        window.simpanAdmTarget = async function() { const tgl = document.getElementById('adm-target-tgl').value; const jamMulai = document.getElementById('adm-target-mulai').value; const jamSelesai = document.getElementById('adm-target-selesai').value; const admin = document.getElementById('adm-target-user').value; if(window.rencanaKerjaArray.length === 0) return alert("Tambahkan minimal 1 Rencana Kerja!"); window.toggleLoader(true, "Menyimpan Target..."); try { await addDoc(collection(db, "adm_harian"), { tglTarget: tgl, jamMulai: jamMulai, jamSelesai: jamSelesai, namaKegiatan: "Target Harian - " + tgl, daftarRencana: window.rencanaKerjaArray, adminName: admin, status: "Belum", tglActual: "-", hasilActual: "-", keteranganActual: "-", fotoActual: "", timestamp: Date.now() }); alert("Target Harian Tersimpan!"); window.navigasi('adm-harian-menu-screen'); } catch(e) {} window.toggleLoader(false); }
-
-        window.ambilDataAdmHarian = async function() { window.toggleLoader(true, "Mengunduh Data Laporan..."); admHarianDatabase = []; try { const q = query(collection(db, "adm_harian")); const snapshot = await getDocs(q); snapshot.forEach(doc => admHarianDatabase.push({id: doc.id, ...doc.data()})); admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp); } catch(e) {} window.toggleLoader(false); }
-        window.bukaAdmHarianActual = async function() { window.navigasi('adm-harian-actual-screen'); await window.ambilDataAdmHarian(); window.switchTabAdm('belum'); }
-        window.switchTabAdm = function(tab) { ['belum', 'sudah', 'gagal'].forEach(t => { const tb = document.getElementById(`tab-adm-${t}`); const lb = document.getElementById(`list-adm-${t}`); if(tb) tb.classList.remove('tab-active'); if(lb) lb.style.display = 'none'; }); const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; const tabBtn = document.getElementById(`tab-adm-${tab}`); const tabLst = document.getElementById(`list-adm-${tab}`); if(tabBtn) tabBtn.classList.add('tab-active'); if(tabLst) tabLst.style.display = 'block'; if(tab === 'belum') { window.renderAdmActualList('Belum', 'list-adm-belum'); } else if (tab === 'sudah') { window.renderAdmActualList('Sudah', 'list-adm-sudah'); } else { window.renderAdmActualList('Gagal', 'list-adm-gagal'); } }
-        window.getAdmStatusUI = function(data) { let color = "var(--primary)"; let badgeText = data.status; if (data.status === "Belum") { const now = new Date(); const targetDateObj = new Date(data.tglTarget); targetDateObj.setHours(16, 0, 0, 0); if (now > targetDateObj) { color = "var(--lambat)"; badgeText = "Melewati Batas Waktu"; } else { color = "#eab308"; badgeText = "Proses"; } } else if (data.status === "Selesai Melebihi Target") { color = "#ec4899"; } else if (data.status === "Selesai Tepat Waktu" || data.status.startsWith("Selesai Lebih Cepat")) { color = "var(--cepat)"; } else if (data.status === "Belum Selesai Sempurna") { color = "#f97316"; } else if (data.status === "Gagal Terealisasi") { color = "var(--lambat)"; } return { color, badgeText }; }
-        window.renderAdmActualList = function(statusGroup, containerId) { const container = document.getElementById(containerId); if(!container) return; container.innerHTML = ""; let filtered = []; if (statusGroup === 'Belum') { filtered = admHarianDatabase.filter(d => d.status === 'Belum'); } else if (statusGroup === 'Sudah') { filtered = admHarianDatabase.filter(d => d.status === 'Selesai Melebihi Target' || d.status === 'Selesai Tepat Waktu' || d.status.startsWith('Selesai Lebih Cepat') || d.status === 'Belum Selesai Sempurna'); } else if (statusGroup === 'Gagal') { filtered = admHarianDatabase.filter(d => d.status === 'Gagal Terealisasi'); } if(filtered.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; font-weight:bold; margin-top:20px;">Belum Ada Data.</p>`; return; } filtered.forEach(data => { let ui = window.getAdmStatusUI(data); let clickAction = statusGroup === 'Belum' ? `window.bukaFormAdmActual('${data.id}')` : ''; container.innerHTML += `<div class="progress-card" style="border-left-color: ${ui.color}; cursor:${statusGroup === 'Belum'?'pointer':'default'};" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color};">${ui.badgeText}</span>${statusGroup === 'Belum' ? `<p style="margin-top:10px; font-size:12px; color:var(--secondary); font-weight:bold;"><i class="fas fa-hand-pointer"></i> Klik untuk Update Actual</p>` : ''}</div>`; }); }
-        
-        window.bukaFormAdmActual = function(id) { const data = admHarianDatabase.find(d => d.id === id); document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tgl-ori').value = data.tglTarget; document.getElementById('adm-actual-tampil').innerText = data.namaKegiatan; document.getElementById('adm-actual-tgl').value = window.dapatkanTanggalLokal(); if (data.daftarActual && data.daftarActual.length > 0) { window.actualEditList = JSON.parse(JSON.stringify(data.daftarActual)); } else { window.actualEditList = data.daftarRencana.map(teks => ({ teks: teks, done: false, type: 'rencana', waktuSelesai: null })); } const now = new Date(); window.isLateActual = (now.getHours() > 16) || (now.getHours() === 16 && now.getMinutes() >= 1); const tw = document.getElementById('adm-actual-time-warning'); const aag = document.getElementById('adm-actual-add-group'); const bsa = document.getElementById('btn-simpan-actual'); if (window.isLateActual) { if(tw) tw.style.display = 'block'; if(aag) aag.style.display = 'none'; if(bsa) { bsa.innerHTML = "<i class='fas fa-check-circle'></i> FINALISASI / TUTUP BUKU"; bsa.style.background = "linear-gradient(135deg, #e11d48, #be123c)"; } } else { if(tw) tw.style.display = 'none'; if(aag) aag.style.display = 'flex'; if(bsa) { bsa.innerText = "UPDATE & SIMPAN PROGRESS"; bsa.style.background = "linear-gradient(135deg, var(--secondary), #1d4ed8)"; } } window.renderActualCeklisUI(); const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'block'; const lab = document.getElementById('list-adm-belum'); if(lab) lab.style.display = 'none'; window.scrollTo(0, document.getElementById('form-adm-actual').offsetTop); }
-        window.renderActualCeklisUI = function() { const ul = document.getElementById('adm-actual-ceklis'); if(!ul) return; ul.innerHTML = ""; window.actualEditList.forEach((item, idx) => { const isChecked = item.done ? "checked" : ""; const classDone = item.done ? "done" : ""; const badgeTag = item.type === 'tambahan' ? `<span style="font-size:11px; background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:10px; margin-left:8px; font-weight:800;">(Penambahan diluar rencana)</span>` : ''; const disableProp = window.isLateActual ? "disabled" : ""; const timeTag = item.done && item.waktuSelesai ? `<span style="display:block; font-size:11px; color:#10b981; font-weight:800; margin-top:5px;"><i class="fas fa-clock"></i> Selesai pada: ${item.waktuSelesai}</span>` : ''; ul.innerHTML += `<li class="${classDone}"><input type="checkbox" id="chk-act-${idx}" ${isChecked} ${disableProp} onchange="window.toggleActualCeklis(${idx}, this.checked)"><label for="chk-act-${idx}" style="font-weight:600; width:100%; font-size:13px;">${item.teks} ${badgeTag} ${timeTag}</label></li>`; }); }
-        window.toggleActualCeklis = function(idx, checked) { window.actualEditList[idx].done = checked; window.renderActualCeklisUI(); }
-        window.tambahTugasBaruActual = function() { const input = document.getElementById('adm-actual-input-baru'); const val = input.value.trim(); if(val) { window.actualEditList.push({ teks: val, done: false, type: 'tambahan', waktuSelesai: null }); window.renderActualCeklisUI(); input.value = ""; } }
-        window.batalAdmActual = function() { const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; const lab = document.getElementById('list-adm-belum'); if(lab) lab.style.display = 'block'; }
-        window.simpanAdmActual = async function() { const id = document.getElementById('adm-actual-id').value; const tgl = document.getElementById('adm-actual-tgl').value; const ket = document.getElementById('adm-actual-ket').value; const targetTglOri = document.getElementById('adm-actual-tgl-ori').value; const fotoInput = document.getElementById('adm-actual-foto'); const total = window.actualEditList.length; const selesai = window.actualEditList.filter(d => d.done).length; const belum = total - selesai; const now = new Date(); const timeNowMins = now.getHours() * 60 + now.getMinutes(); const targetTimeMins = 16 * 60; const actualDateObj = new Date(tgl); actualDateObj.setHours(0,0,0,0); const targetDateObj = new Date(targetTglOri); targetDateObj.setHours(0,0,0,0); const isDayPastTarget = actualDateObj > targetDateObj; const isPast16 = timeNowMins > targetTimeMins || isDayPastTarget; if (isPast16 && belum > 0 && !ket.trim()) { return alert("Terdapat tugas yang belum terealisasi! Waktu sudah melewati batas target. Anda WAJIB mengisi 'Catatan' untuk alasan penundaan agar tugas dapat ditarik besok."); } window.toggleLoader(true, "Menyimpan Realisasi..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } const timeStringStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ' WIB'; window.actualEditList.forEach(item => { if (item.done && !item.waktuSelesai) { item.waktuSelesai = timeStringStr; } else if (!item.done) { item.waktuSelesai = null; } }); let statusBaru = "Belum"; if (!isPast16) { if (belum === 0) { const diffMins = targetTimeMins - timeNowMins; statusBaru = diffMins > 5 ? `Selesai Lebih Cepat (${diffMins} Menit)` : "Selesai Tepat Waktu"; } else { statusBaru = "Belum"; } } else { if (belum === 0) { statusBaru = (isDayPastTarget || timeNowMins > targetTimeMins) ? "Selesai Melebihi Target" : "Selesai Tepat Waktu"; } else if (selesai >= belum && selesai > 0) { statusBaru = "Belum Selesai Sempurna"; } else { statusBaru = "Gagal Terealisasi"; } } const exactTimestampString = `${tgl} Pukul ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`; try { await updateDoc(doc(db, "adm_harian", id), { status: statusBaru, tglActual: exactTimestampString, daftarActual: window.actualEditList, hasilActual: statusBaru, keteranganActual: ket || "-", fotoActual: fotoBase64 }); if (statusBaru === "Belum") { alert("Progress Berhasil Disimpan!"); } else if(belum > 0) { alert("Finalisasi Tersimpan!"); } else { alert("Pekerjaan Selesai Sepenuhnya!"); } document.getElementById('adm-actual-ket').value = ""; document.getElementById('adm-actual-foto').value = ""; const saf = document.getElementById('status-adm-foto'); if(saf) saf.innerHTML = ""; const faa = document.getElementById('form-adm-actual'); if(faa) faa.style.display = 'none'; await window.ambilDataAdmHarian(); if (statusBaru === "Belum") { window.switchTabAdm('belum'); } else if (statusBaru === 'Gagal Terealisasi') { window.switchTabAdm('gagal'); } else { window.switchTabAdm('sudah'); } } catch(e) {} window.toggleLoader(false); }
-        window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await window.ambilDataAdmHarian(); const container = document.getElementById('list-adm-progress'); if(!container) return; container.innerHTML = ""; if(admHarianDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } admHarianDatabase.forEach(data => { let ui = window.getAdmStatusUI(data); container.innerHTML += `<div class="progress-card" style="border-left-color:${ui.color}; cursor:pointer;" onclick="window.bukaDetailAdmHarian('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaKegiatan}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Target: ${data.tglTarget}</p><span class="status-badge" style="background:${ui.color}">${ui.badgeText}</span></div>`; }); }
-        
-        window.bukaDetailAdmHarian = function(id) { 
-            const data = admHarianDatabase.find(d => d.id === id); 
-            if(!data) return; 
-            
-            let ui = window.getAdmStatusUI(data); 
-            let tasksSukses = []; let tasksPending = []; let tasksGagal = [];   
-            let globalKeterangan = data.keteranganActual && data.keteranganActual !== "-" ? data.keteranganActual : "Belum ada keterangan / Tanpa alasan";
-
-            const now = new Date(); const targetDateObj = new Date(data.tglTarget); targetDateObj.setHours(16, 0, 0, 0); 
-            const isPastDeadline = now > targetDateObj || data.status.includes("Gagal") || data.status.includes("Belum Selesai Sempurna");
-
-            let rawList = [];
-            if (data.daftarActual && data.daftarActual.length > 0) { rawList = data.daftarActual; } 
-            else if (data.daftarRencana && data.daftarRencana.length > 0) { rawList = data.daftarRencana.map(item => ({ teks: item, done: false, type: 'rencana', waktuSelesai: null })); }
-
-            rawList.forEach(item => {
-                if (item.done) { tasksSukses.push(item); } 
-                else { if (isPastDeadline) { tasksGagal.push(item); } else { tasksPending.push(item); } }
-            });
-
-            let totalTasks = tasksSukses.length + tasksPending.length + tasksGagal.length;
-            let ach = totalTasks === 0 ? 0 : Math.round((tasksSukses.length / totalTasks) * 100);
-            let failRate = totalTasks === 0 ? 0 : Math.round((tasksGagal.length / totalTasks) * 100);
-            let pendingRate = totalTasks === 0 ? 0 : Math.round((tasksPending.length / totalTasks) * 100);
-
-            let htmlSukses = `<ul style="padding:0; margin:0; list-style:none;">`;
-            if(tasksSukses.length === 0) { htmlSukses += `<li style="text-align:center; color:gray; font-size:12px; padding:15px; background:#f8fafc; border-radius:12px; border:2px dashed #cbd5e1;">Belum ada tugas yang terealisasi.</li>`; } 
-            else {
-                tasksSukses.forEach((item) => {
-                    let timeBadge = item.waktuSelesai ? `<span style="display:inline-block; font-size:10px; background:white; color:#059669; padding:4px 8px; border-radius:6px; border:1px solid #10b981; margin-right:10px; font-weight:800;"><i class="fas fa-clock"></i> ${item.waktuSelesai}</span>` : '';
-                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:4px 8px; border-radius:6px; font-weight:800; margin-left:8px;">*(Tambahan)*</span>` : "";
-                    htmlSukses += `<li style="display:flex; align-items:flex-start; margin-bottom:12px; background:#ecfdf5; padding:15px; border-radius:14px; border-left:5px solid #10b981; box-shadow:0 4px 10px rgba(0,0,0,0.03);"><div style="margin-right:12px; font-size:20px; margin-top:2px;"><i class="fas fa-check-circle" style="color:#10b981;"></i></div><div style="flex:1; font-size:14px; color:#064e3b;"><div style="margin-bottom:8px;">${timeBadge}</div><span style="font-weight:700;">${item.teks}</span> ${typeNote}</div></li>`;
-                });
-            }
-            htmlSukses += `</ul>`;
-
-            let htmlPending = "";
-            if (tasksPending.length > 0) {
-                htmlPending += `<h3 style="font-size:15px; color:#d97706; border-bottom:2px dashed #fcd34d; padding-bottom:10px; margin-top:25px; display:flex; align-items:center; gap:10px; font-weight:800;"><i class="fas fa-spinner fa-spin" style="font-size:20px;"></i> DAFTAR TUGAS DALAM PROSES</h3><div style="margin-bottom:25px; margin-top:15px;"><ul style="padding:0; margin:0; list-style:none;">`;
-                tasksPending.forEach((item) => {
-                    let typeNote = item.type === 'tambahan' ? ` <span style="font-size:10px; color:#d97706; background:#fef3c7; padding:4px 8px; border-radius:6px; font-weight:800; margin-left:8px;">*(Tambahan)*</span>` : "";
-                    htmlPending += `<li style="display:flex; align-items:flex-start; margin-bottom:12px; background:#fffbeb; padding:15px; border-radius:14px; border-left:5px solid #f59e0b; box-shadow:0 4px 10px rgba(0,0,0,0.03);"><div style="margin-right:12px; font-size:20px; margin-top:2px;"><i class="fas fa-clock" style="color:#f59e0b;"></i></div><div style="flex:1; font-size:14px; color:#92400e;"><span style="font-weight:700;">${item.teks}</span> ${typeNote}<div style="font-size:12px; margin-top:8px; color:#b45309; font-weight:600;"><i class="fas fa-info-circle"></i> Sedang dikerjakan (Batas waktu 16:00)</div></div></li>`;
-                });
-                htmlPending += `</ul></div>`;
-            }
-
-            let htmlGagal = "";
-            if (isPastDeadline && tasksGagal.length > 0) {
-                htmlGagal += `<h3 style="font-size:15px; color:#dc2626; border-bottom:2px dashed #fca5a5; padding-bottom:10px; margin-top:25px; display:flex; align-items:center; gap:10px; font-weight:800;"><i class="fas fa-times-circle" style="font-size:20px;"></i> DAFTAR TUGAS GAGAL / TERTUNDA</h3><div style="margin-bottom:25px; margin-top:15px;"><ul style="padding:0; margin:0; list-style:none;">`;
-                tasksGagal.forEach((item) => {
-                    let textBersih = item.teks; let alasanSpesifik = globalKeterangan;
-                    if(textBersih.includes("(Terlambat karna:")) { let parts = textBersih.split("(Terlambat karna:"); textBersih = parts[0].trim(); alasanSpesifik = parts[1].replace(")", "").trim(); }
-                    htmlGagal += `<li style="display:flex; align-items:flex-start; margin-bottom:12px; background:#fef2f2; padding:15px; border-radius:14px; border-left:5px solid #ef4444; box-shadow:0 4px 10px rgba(0,0,0,0.03);"><div style="margin-right:12px; font-size:20px; margin-top:2px;"><i class="fas fa-times-circle" style="color:#ef4444;"></i></div><div style="flex:1; font-size:14px; color:#7f1d1d;"><div style="font-weight:800; margin-bottom:10px;">${textBersih}</div><div style="font-size:12px; color:#b91c1c; background:#fee2e2; padding:8px 12px; border-radius:8px; display:inline-block; border:1px solid #fca5a5; font-weight:600;"><i class="fas fa-exclamation-triangle"></i> <b>Keterangan Gagal:</b> ${alasanSpesifik}</div></div></li>`;
-                });
-                htmlGagal += `</ul></div>`;
-            }
-
-            let html = `<div class="report-header"><h2>LAPORAN KERJA HARIAN ADMIN</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table" style="box-shadow:0 10px 25px rgba(0,0,0,0.03); margin-bottom:30px;"><tr><th style="width:35%;">Nama Admin</th><td><strong style="font-size:15px;">${data.adminName}</strong></td></tr><tr><th>Waktu Target</th><td>Tgl: <strong style="color:var(--secondary);">${data.tglTarget}</strong><br>Jam: ${data.jamMulai || '08:00'} s/d ${data.jamSelesai || '16:00'}</td></tr><tr><th>Status Harian</th><td><span style="background:${ui.color}; color:white; padding:6px 12px; border-radius:8px; font-weight:800; font-size:12px; display:inline-block;">${ui.badgeText}</span></td></tr></table><h3 style="font-size:15px; color:#059669; border-bottom:2px dashed #6ee7b7; padding-bottom:10px; margin-top:25px; display:flex; align-items:center; gap:10px; font-weight:800;"><i class="fas fa-check-circle" style="font-size:20px;"></i> DAFTAR TUGAS TEREALISASI</h3><div style="margin-bottom:25px; margin-top:15px;">${htmlSukses}</div>${htmlPending}${htmlGagal}${data.fotoActual ? `<div class="report-img-box" style="margin-top:30px; border-color:#cbd5e1; background:#f8fafc; padding:20px;"><strong>BUKTI FOTO AKTUAL LAPANGAN</strong><br><img src="${data.fotoActual}" style="border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.1); margin-top:15px;"></div>` : ''}<div style="display:flex; gap:15px; margin-top:40px; text-align:center;"><div style="flex:1; background:linear-gradient(135deg, #f8fafc, #e2e8f0); padding:20px 10px; border-radius:16px; border:1px solid #cbd5e1; box-shadow:0 8px 20px rgba(0,0,0,0.05);"><h4 style="margin:0 0 8px 0; font-size:12px; color:#475569; text-transform:uppercase; letter-spacing:1px; font-weight:800;">ACH Rate</h4><span style="font-size:32px; font-weight:900; color:var(--secondary); line-height:1;">${ach}%</span></div><div style="flex:1; background:linear-gradient(135deg, #f0fdf4, #d1fae5); padding:20px 10px; border-radius:16px; border:1px solid #10b981; box-shadow:0 8px 20px rgba(16,185,129,0.15);"><h4 style="margin:0 0 8px 0; font-size:12px; color:#064e3b; text-transform:uppercase; letter-spacing:1px; font-weight:800;">Berhasil</h4><span style="font-size:32px; font-weight:900; color:#059669; line-height:1;">${ach}%</span></div><div style="flex:1; background:linear-gradient(135deg, #fef2f2, #fee2e2); padding:20px 10px; border-radius:16px; border:1px solid #ef4444; box-shadow:0 8px 20px rgba(239,68,68,0.15);"><h4 style="margin:0 0 8px 0; font-size:12px; color:#7f1d1d; text-transform:uppercase; letter-spacing:1px; font-weight:800;">${isPastDeadline ? 'Gagal' : 'Proses'}</h4><span style="font-size:32px; font-weight:900; color:${isPastDeadline ? '#dc2626' : '#d97706'}; line-height:1;">${isPastDeadline ? failRate : pendingRate}%</span></div></div><p style="text-align:center; font-size:11px; color:#94a3b8; margin-top:20px; font-weight:600;">*Performa dihitung otomatis oleh AI berdasarkan perbandingan total tugas dan realisasi.</p>`;
-
-            const rac = document.getElementById('report-adm-content'); 
-            if(rac) rac.innerHTML = html; 
-            window.navigasi('adm-harian-detail-screen'); 
-        }
-
-        window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
-        window.bukaInputPermintaanTrial = function() { window.targetTrialArray = []; window.renderTargetTrialUI(); const iptW = document.getElementById('pt-input-waktu'); if(iptW) iptW.value = window.dapatkanWaktuRill(); const iptN = document.getElementById('pt-input-nama'); if(iptN) iptN.value = ""; const iptU = document.getElementById('pt-input-user'); if(iptU) iptU.value = ""; window.navigasi('pt-input-screen'); }
-        window.tambahTargetTrial = function() { const input = document.getElementById('pt-input-target-item'); const val = input.value.trim(); if(val) { window.targetTrialArray.push(val); window.renderTargetTrialUI(); input.value = ""; input.focus(); } }
-        window.hapusTargetTrial = function(index) { window.targetTrialArray.splice(index, 1); window.renderTargetTrialUI(); }
-        window.renderTargetTrialUI = function() { const ul = document.getElementById('list-target-trial'); if(!ul) return; ul.innerHTML = ""; if(window.targetTrialArray.length === 0) { ul.innerHTML = `<li style="background:transparent; border:none; justify-content:center; color:gray; font-size:12px;">Belum ada target trial ditambahkan.</li>`; } else { window.targetTrialArray.forEach((item, idx) => { ul.innerHTML += `<li style="display:flex; justify-content:space-between; align-items:center; border-left: 4px solid var(--secondary);"><span style="font-size:13px; font-weight:bold;">${idx + 1}. ${item}</span><button type="button" onclick="window.hapusTargetTrial(${idx})" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:8px; cursor:pointer;"><i class="fas fa-trash"></i></button></li>`; }); } }
-        window.simpanPtInput = async function() { const namaMold = document.getElementById('pt-input-nama').value; const user = document.getElementById('pt-input-user').value; if(!namaMold || window.targetTrialArray.length === 0 || !user) { alert("Semua kolom wajib diisi!"); return; } window.toggleLoader(true, "Mengirim Permintaan..."); const dataPt = { namaMold: namaMold, targetTrialList: window.targetTrialArray, waktuPengajuan: window.dapatkanWaktuRill(), namaUser: user, status: "Menunggu Verifikasi", noTrial: "-", tglPermintaan: "-", hasil: "-", keteranganHasil: "-", fotoHasil: "", timestamp: Date.now() }; try { await addDoc(collection(db, "permintaan_trial"), dataPt); alert("Permintaan dikirim ke Admin!"); window.navigasi('permintaan-trial-menu-screen'); } catch (e) {} window.toggleLoader(false); }
-        
-        window.ambilDataPt = async function() { window.toggleLoader(true, "Sinkronisasi Data..."); ptDatabase = []; try { const q = query(collection(db, "permintaan_trial")); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { ptDatabase.push({ id: doc.id, ...doc.data() }); }); ptDatabase.sort((a, b) => b.timestamp - a.timestamp); } catch (e) {} window.toggleLoader(false); }
-        window.bukaPtAdmin = async function() { window.navigasi('pt-admin-screen'); await window.ambilDataPt(); window.switchTabPt('belum'); }
-        window.switchTabPt = function(tab) { const tb = document.getElementById('tab-pt-belum'); const tp = document.getElementById('tab-pt-proses'); const lb = document.getElementById('list-pt-belum'); const lp = document.getElementById('list-pt-proses'); const fv = document.getElementById('form-pt-verifikasi'); const fh = document.getElementById('form-pt-hasil'); if(tb) tb.classList.remove('tab-active'); if(tp) tp.classList.remove('tab-active'); if(lb) lb.style.display = 'none'; if(lp) lp.style.display = 'none'; if(fv) fv.style.display = 'none'; if(fh) fh.style.display = 'none'; if(tab === 'belum') { if(tb) tb.classList.add('tab-active'); if(lb) lb.style.display = 'block'; window.renderListAdminPt('Menunggu Verifikasi', 'list-pt-belum'); } else { if(tp) tp.classList.add('tab-active'); if(lp) lp.style.display = 'block'; window.renderListAdminPt('Proses', 'list-pt-proses'); } }
-        
-        window.renderListAdminPt = function(filterStatus, containerId) { 
-            const container = document.getElementById(containerId); 
-            if(!container) return; container.innerHTML = ""; 
-            let filteredData = ptDatabase.filter(d => d && d.status === filterStatus); 
-            if(filteredData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } 
-            filteredData.forEach(data => { 
-                if(!data) return;
-                let badge = filterStatus === 'Menunggu Verifikasi' ? `<span class="status-badge bg-lambat">Menunggu Verifikasi</span>` : `<span class="status-badge bg-proses">Proses Trial</span>`; 
-                let clickAction = filterStatus === 'Menunggu Verifikasi' ? `window.bukaFormPtVerifikasi('${data.id}')` : `window.bukaFormPtHasil('${data.id}')`; 
-                let targetText = (data.targetTrialList && Array.isArray(data.targetTrialList) && data.targetTrialList.length > 0) ? data.targetTrialList.length + " Target" : (data.targetTrial || "-"); 
-                let nUser = data.namaUser || "Tanpa Nama";
-                let nMold = data.namaMold || "Tanpa Mold";
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${filterStatus === 'Proses' ? 'var(--proses)' : 'var(--lambat)'}; cursor:pointer;" onclick="${clickAction}"><h4 style="margin:0 0 5px 0;">${nMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${nUser} | Target: ${targetText}</p>${badge}</div>`; 
-            }); 
-        }
-
-        window.batalPtAdmin = function(tipe) { if(tipe === 'verif') { const fv = document.getElementById('form-pt-verifikasi'); if(fv) fv.style.display = 'none'; const lb = document.getElementById('list-pt-belum'); if(lb) lb.style.display = 'block'; } else { const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'none'; const lp = document.getElementById('list-pt-proses'); if(lp) lp.style.display = 'block'; } }
-        window.bukaFormPtVerifikasi = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = (data.targetTrialList && Array.isArray(data.targetTrialList)) ? data.targetTrialList.join(', ') : (data.targetTrial || "-"); const fv = document.getElementById('form-pt-verifikasi'); if(fv) fv.style.display = 'block'; const lb = document.getElementById('list-pt-belum'); if(lb) lb.style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-verifikasi').offsetTop); }
-        window.simpanPtVerifikasi = async function() { const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value; const tglPermintaan = document.getElementById('pt-verif-tgl').value; if(!noTrial || !tglPermintaan) { alert("Isi No Trial & Tanggal!"); return; } window.toggleLoader(true, "Memproses..."); try { await updateDoc(doc(db, "permintaan_trial", id), { status: "Proses", noTrial: noTrial, tglPermintaan: tglPermintaan }); alert("Terverifikasi!"); document.getElementById('pt-verif-notrial').value = ""; document.getElementById('pt-verif-tgl').value = ""; const fv = document.getElementById('form-pt-verifikasi'); if(fv) fv.style.display = 'none'; await window.ambilDataPt(); window.switchTabPt('proses'); } catch(e) {} window.toggleLoader(false); }
-        window.bukaFormPtHasil = function(id) { const data = ptDatabase.find(d => d.id === id); document.getElementById('pt-hasil-id').value = id; document.getElementById('pt-hasil-nomold').value = data.namaMold; document.getElementById('pt-hasil-target').value = (data.targetTrialList && Array.isArray(data.targetTrialList)) ? data.targetTrialList.join(', ') : (data.targetTrial || "-"); const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'block'; const lp = document.getElementById('list-pt-proses'); if(lp) lp.style.display = 'none'; window.scrollTo(0, document.getElementById('form-pt-hasil').offsetTop); }
-        window.simpanPtHasil = async function() { const id = document.getElementById('pt-hasil-id').value; const statusHasil = document.getElementById('pt-hasil-status').value; const ket = document.getElementById('pt-hasil-ket').value; const fotoInput = document.getElementById('pt-hasil-foto'); window.toggleLoader(true, "Menyimpan Hasil..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.7); } try { await updateDoc(doc(db, "permintaan_trial", id), { status: statusHasil, hasil: statusHasil, keteranganHasil: ket || "-", fotoHasil: fotoBase64 }); alert("Tersimpan!"); document.getElementById('pt-hasil-ket').value = ""; document.getElementById('pt-hasil-foto').value = ""; const spf = document.getElementById('status-pt-foto'); if(spf) spf.innerHTML = ""; const fh = document.getElementById('form-pt-hasil'); if(fh) fh.style.display = 'none'; await window.ambilDataPt(); window.switchTabPt('proses'); } catch(e) {} window.toggleLoader(false); }
-        
-        // --- PUSAT PERBAIKAN PROGRESS TRIAL ---
-        window.bukaPtProgress = async function() { 
-            window.navigasi('pt-progress-screen'); 
-            await window.ambilDataPt(); 
-            window.renderPtProgress(); 
-        }
-        
-        window.renderPtProgress = function() { 
-            const container = document.getElementById('list-pt-progress'); 
-            if(!container) return; 
-            container.innerHTML = ""; 
-            if(!ptDatabase || ptDatabase.length === 0) { 
-                container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; 
-                return; 
-            } 
-            ptDatabase.forEach(data => { 
-                if(!data) return;
-                let badge = ""; let color = ""; 
-                if(data.status === "Menunggu Verifikasi") { badge = `<span class="status-badge bg-lambat">Menunggu Verifikasi</span>`; color = "var(--lambat)"; } 
-                else if(data.status === "Proses") { badge = `<span class="status-badge bg-proses">Proses Trial</span>`; color = "var(--proses)"; } 
-                else if(data.status === "Selesai") { badge = `<span class="status-badge bg-cepat">Selesai (Sukses)</span>`; color = "var(--cepat)"; } 
-                else if(data.status === "Gagal") { badge = `<span class="status-badge" style="background:#1e293b;">Selesai (Gagal)</span>`; color = "#1e293b"; } 
-                
-                let nMold = data.namaMold || "Tanpa Mold";
-                let nUser = data.namaUser || "Tanpa Nama";
-
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${color}; cursor:pointer;" onclick="window.bukaPtDetail('${data.id}')"><h4 style="margin:0 0 5px 0;">Mold: ${nMold}</h4><p style="margin:0; font-size:12px; color:gray;">Pemohon: ${nUser}</p>${badge}</div>`; 
-            }); 
-        }
-
-        window.bukaPtDetail = function(id) { 
-            const data = ptDatabase.find(d => d.id === id); if(!data) return; 
-            let colorStatus = data.status === "Selesai" ? "var(--cepat)" : (data.status === "Proses" ? "var(--proses)" : "var(--lambat)"); 
-            let listTargetHTML = `<ul style="padding-left:15px; margin:0;">`; 
-            if (data.targetTrialList && Array.isArray(data.targetTrialList) && data.targetTrialList.length > 0) { 
-                data.targetTrialList.forEach(item => { listTargetHTML += `<li>${item}</li>`; }); 
-            } else { listTargetHTML += `<li>${data.targetTrial || "-"}</li>`; } 
-            listTargetHTML += `</ul>`; 
-            let html = `<div class="report-header"><h2>LAPORAN TRIAL MOLD</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Nama Pemohon</th><td><strong style="color:var(--secondary); font-size:15px;">${data.namaUser || '-'}</strong></td></tr><tr><th>Nama Mold</th><td><strong>${data.namaMold || '-'}</strong></td></tr><tr><th>Status Saat Ini</th><td><span style="background:${colorStatus}; color:white; padding:6px 12px; border-radius:8px; font-weight:800; font-size:12px; display:inline-block;">${data.status || '-'}</span></td></tr><tr><th>Target Pelaksanaan</th><td>${listTargetHTML}</td></tr><tr><th>Waktu Pengajuan</th><td>${data.waktuPengajuan || "-"}</td></tr></table>`; 
-            if(data.status !== "Menunggu Verifikasi") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#f8fafc;"><i class="fas fa-user-shield"></i> DATA VERIFIKASI ADMIN</th></tr><tr><th>Nomor Trial</th><td><strong style="color:var(--secondary);">${data.noTrial || '-'}</strong></td></tr><tr><th>Tanggal Permintaan</th><td><strong>${data.tglPermintaan || '-'}</strong></td></tr></table>`; } 
-            if(data.status === "Selesai" || data.status === "Gagal") { html += `<table class="report-table"><tr><th colspan="2" style="text-align:center; background:#f8fafc;"><i class="fas fa-flag-checkered"></i> HASIL TRIAL MOLD</th></tr><tr><th>Hasil Akhir</th><td><strong>${data.hasil || '-'}</strong></td></tr><tr><th>Keterangan / Kendala</th><td>${data.keteranganHasil || '-'}</td></tr></table>`; if(data.fotoHasil) { html += `<div class="report-img-box" style="margin-top:25px; background:#f8fafc; padding:20px; border-radius:12px;"><strong>FOTO HASIL TRIAL</strong><br><img src="${data.fotoHasil}" style="border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.1);"></div>`; } else { html += `<div class="report-img-box" style="margin-top:25px; background:#f8fafc; padding:20px; border-radius:12px;"><strong>FOTO HASIL TRIAL</strong><br><br><i class="fas fa-image" style="font-size:35px; color:#cbd5e1;"></i><br><span style="color:#64748b; font-weight:600; margin-top:10px; display:block;">Tidak ada foto dilampirkan</span></div>`; } } 
-            const rpc = document.getElementById('report-pt-content'); if(rpc) rpc.innerHTML = html; window.navigasi('pt-detail-screen'); 
-        }
-
-        // =======================================================
-        // NOTULEN MEETING DENGAN 3 SUB TAB (PAGI, URGENT, LAPANGAN)
-        // =======================================================
+        // --- NOTULEN & LAINNYA ---
         window.switchTabNotulen = function(jenis) {
             document.querySelectorAll('.notul-list-content').forEach(el => el.style.display = 'none');
             document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(btn => btn.classList.remove('tab-active'));
-            
-            if (jenis === 'MEETING PAGI') {
-                document.getElementById('list-notulen-pagi').style.display = 'block';
-                document.getElementById('tab-notul-pagi').classList.add('tab-active');
-            } else if (jenis === 'MEETING URGENT') {
-                document.getElementById('list-notulen-urgent').style.display = 'block';
-                document.getElementById('tab-notul-urgent').classList.add('tab-active');
-            } else {
-                document.getElementById('list-notulen-lapangan').style.display = 'block';
-                document.getElementById('tab-notul-lapangan').classList.add('tab-active');
-            }
+            if (jenis === 'MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display = 'block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); }
+            else if (jenis === 'MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display = 'block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); }
+            else { document.getElementById('list-notulen-lapangan').style.display = 'block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); }
         }
 
-        window.bukaHasilNotulen = async function() { 
-            window.navigasi('notulen-hasil-screen'); 
-            window.switchTabNotulen('MEETING PAGI'); // Tab Default
-            await window.ambilDataNotulen(); 
-        }
-
+        window.bukaHasilNotulen = async function() { window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); await window.ambilDataNotulen(); }
         window.aiRapihkanNotulen = function() { let text = document.getElementById('notul-deskripsi').value; if(!text.trim()) return alert("Tuliskan deskripsi!"); window.toggleLoader(true, "Merapihkan Format..."); setTimeout(() => { let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2); let formattedText = points.map(p => "• " + p.trim().replace(/^[\•\-\*]\s*/, "")).join("\n\n"); document.getElementById('notul-deskripsi').value = formattedText; window.toggleLoader(false); alert("Berhasil!"); }, 1200); }
-        
         window.simpanNotulen = async function() { const jenis = document.getElementById('notul-jenis').value; const waktuRill = document.getElementById('notul-waktu-display').value; const deskripsi = document.getElementById('notul-deskripsi').value; const fotoInput = document.getElementById('notul-foto'); if(!deskripsi.trim()) { alert("Deskripsi kosong!"); return; } let kehadiran = []; document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value)); if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta"); let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => ({ id: index, teks: teks.replace(/^•\s*/, ''), done: false })); window.toggleLoader(true, "Menyimpan..."); let fotoBase64 = ""; if (fotoInput.files.length > 0) { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.6); } try { await addDoc(collection(db, "notulen_meeting"), { jenisMeeting: jenis, waktuRecord: waktuRill, deskripsiData: arrDeskripsi, peserta: kehadiran, foto: fotoBase64, timestamp: Date.now() }); alert("Tersimpan!"); document.getElementById('notul-deskripsi').value = ""; document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false); document.getElementById('notul-foto').value = ""; window.navigasi('notulen-menu-screen'); } catch (e) {} window.toggleLoader(false); }
-        
         window.ambilDataNotulen = async function() { window.toggleLoader(true, "Mengunduh..."); notulenDatabase = []; try { const q = query(collection(db, "notulen_meeting")); const snapshot = await getDocs(q); snapshot.forEach(doc => notulenDatabase.push({ id: doc.id, ...doc.data() })); notulenDatabase.sort((a, b) => b.timestamp - a.timestamp); window.renderNotulenList(); } catch (error) {} window.toggleLoader(false); }
         
         window.renderNotulenList = function() { 
-            const cPagi = document.getElementById('list-notulen-pagi');
-            const cUrgent = document.getElementById('list-notulen-urgent');
-            const cLapangan = document.getElementById('list-notulen-lapangan');
-            
-            if(cPagi) cPagi.innerHTML = "";
-            if(cUrgent) cUrgent.innerHTML = "";
-            if(cLapangan) cLapangan.innerHTML = "";
-
-            if (notulenDatabase.length === 0) { 
-                if(cPagi) cPagi.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; 
-                if(cUrgent) cUrgent.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; 
-                if(cLapangan) cLapangan.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; 
-                return; 
-            } 
-
+            const cPagi = document.getElementById('list-notulen-pagi'); const cUrgent = document.getElementById('list-notulen-urgent'); const cLapangan = document.getElementById('list-notulen-lapangan');
+            if(cPagi) cPagi.innerHTML = ""; if(cUrgent) cUrgent.innerHTML = ""; if(cLapangan) cLapangan.innerHTML = "";
+            if (notulenDatabase.length === 0) { if(cPagi) cPagi.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; if(cUrgent) cUrgent.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; if(cLapangan) cLapangan.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; return; } 
             notulenDatabase.forEach(data => { 
-                let totalPoin = data.deskripsiData.length; let selesaiPoin = data.deskripsiData.filter(d => d.done).length; let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:800;"><i class="fas fa-check-circle"></i> Tuntas Semua Poin</span>` : `<span style="color:var(--proses); font-weight:800;"><i class="fas fa-spinner fa-spin"></i> ${selesaiPoin}/${totalPoin} Poin Selesai</span>`; 
-                let htmlCard = `<div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="window.bukaDetailNotulen('${data.id}')"><h4 style="margin:0 0 8px 0; color:var(--primary); font-size:16px;">${data.jenisMeeting}</h4><p style="margin:0; font-size:12px; color:#64748b; font-weight:600;"><i class="fas fa-clock"></i> ${data.waktuRecord}</p><p style="margin:12px 0 0 0; font-size:13px; border-top:1px dashed #e2e8f0; padding-top:12px;">Status: ${statusEval}</p></div>`; 
-                
+                let totalPoin = data.deskripsiData.length; let selesaiPoin = data.deskripsiData.filter(d => d.done).length; let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:800;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:800;">${selesaiPoin}/${totalPoin} Selesai</span>`; 
+                let htmlCard = `<div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="window.bukaDetailNotulen('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.jenisMeeting}</h4><p style="margin:0; font-size:12px; color:gray;">${data.waktuRecord}</p><p style="margin:8px 0 0 0; font-size:13px; border-top:1px dashed #ccc; padding-top:8px;">Status: ${statusEval}</p></div>`; 
                 if (data.jenisMeeting === 'MEETING PAGI' && cPagi) cPagi.innerHTML += htmlCard;
                 else if (data.jenisMeeting === 'MEETING URGENT' && cUrgent) cUrgent.innerHTML += htmlCard;
                 else if (cLapangan) cLapangan.innerHTML += htmlCard;
             }); 
-
             if(cPagi && cPagi.innerHTML === "") cPagi.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`;
             if(cUrgent && cUrgent.innerHTML === "") cUrgent.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`;
             if(cLapangan && cLapangan.innerHTML === "") cLapangan.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`;
         }
 
-        window.bukaDetailNotulen = function(id) { const data = notulenDatabase.find(d => d.id === id); if(!data) return; let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>'); let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`; data.deskripsiData.forEach(item => { let checked = item.done ? "checked" : ""; let classDone = item.done ? "done" : ""; htmlDeskripsi += `<li class="${classDone}"><input type="checkbox" id="chk-${item.id}" ${checked} onchange="window.updateCeklisNotulen('${id}', ${item.id}, this.checked)"><label for="chk-${item.id}" style="font-weight:600; line-height:1.4;">${item.teks}</label></li>`; }); htmlDeskripsi += `</ul>`; let html = `<div class="report-header"><h2>NOTULEN & EVALUASI MEETING</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Jenis Meeting</th><td><strong style="color:var(--secondary); font-size:15px;">${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td><strong style="color:#475569;">${data.waktuRecord}</strong></td></tr><tr><th>Daftar Kehadiran</th><td style="font-size:13px; font-weight:600; color:#1e293b;">${htmlListPeserta}</td></tr></table><h3 style="font-size:15px; color:var(--primary); margin-bottom:15px; border-bottom:2px dashed #e2e8f0; padding-bottom:10px; font-weight:800;"><i class="fas fa-tasks"></i> Poin Evaluasi / Pembahasan:</h3>${htmlDeskripsi}`; if(data.foto) html += `<div class="report-img-box" style="margin-top:25px; padding:20px; background:#f8fafc; border-radius:12px;"><strong>FOTO DOKUMENTASI</strong><br><img src="${data.foto}" style="border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.1); margin-top:15px;"></div>`; const rnc = document.getElementById('report-notulen-content'); if(rnc) rnc.innerHTML = html; window.navigasi('detail-notulen-screen'); }
+        window.bukaDetailNotulen = function(id) { const data = notulenDatabase.find(d => d.id === id); if(!data) return; let htmlListPeserta = data.peserta.map(p => `• ${p}`).join('<br>'); let htmlDeskripsi = `<ul class="eval-list" id="eval-list-ui">`; data.deskripsiData.forEach(item => { let checked = item.done ? "checked" : ""; let classDone = item.done ? "done" : ""; htmlDeskripsi += `<li class="${classDone}"><input type="checkbox" id="chk-${item.id}" ${checked} onchange="window.updateCeklisNotulen('${id}', ${item.id}, this.checked)"><label for="chk-${item.id}" style="font-weight:normal; line-height:1.4;">${item.teks}</label></li>`; }); htmlDeskripsi += `</ul>`; let html = `<div class="report-header"><h2>NOTULEN & EVALUASI MEETING</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Jenis Meeting</th><td><strong>${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr><tr><th>Kehadiran</th><td style="font-size:12px;">${htmlListPeserta}</td></tr></table><h3 style="font-size:15px; color:var(--primary); margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;">Poin Evaluasi:</h3>${htmlDeskripsi}`; if(data.foto) html += `<div class="report-img-box" style="margin-top:20px;"><strong>FOTO DOKUMENTASI</strong><br><img src="${data.foto}"></div>`; const rnc = document.getElementById('report-notulen-content'); if(rnc) rnc.innerHTML = html; window.navigasi('detail-notulen-screen'); }
         window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { const indexDoc = notulenDatabase.findIndex(n => n.id === docId); if(indexDoc > -1) { notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) {} } }
 
         window.bukaInputJadwal = async function() { window.navigasi('jadwal-besar-input-screen'); await window.muatJadwalBesar(); }
         window.bukaViewJadwal = async function() { window.navigasi('jadwal-besar-view-screen'); await window.muatJadwalBesar(); }
         window.currentZoomJadwal = 100;
         window.zoomJadwal = function(step) { const img = document.getElementById('img-zoom-jadwal'); if(!img) return; if(step === 0) { window.currentZoomJadwal = 100; } else { window.currentZoomJadwal += step; } if(window.currentZoomJadwal < 50) window.currentZoomJadwal = 50; if(window.currentZoomJadwal > 350) window.currentZoomJadwal = 350; img.style.width = window.currentZoomJadwal + "%"; }
-        window.muatJadwalBesar = async function() { try { const docRef = doc(db, "jadwal_besar_db", "master_jadwal"); const docSnap = await getDoc(docRef); const outContainer = document.getElementById('jb-output-container'); const viewContainer = document.getElementById('jb-view-container'); if (docSnap.exists() && docSnap.data().foto) { const imgHtmlOut = `<img src="${docSnap.data().foto}" style="max-width:100%; max-height:200px; border-radius:5px; box-shadow:0 4px 15px rgba(0,0,0,0.1); object-fit:contain;"><p style="font-size:12px; color:#475569; margin-top:15px; font-weight:800;">Update Terakhir: ${docSnap.data().waktuUpdate}</p>`; if(outContainer) outContainer.innerHTML = imgHtmlOut; window.currentZoomJadwal = 100; const imgHtmlView = `<div style="margin-bottom: 20px; display:flex; justify-content:center; gap:12px;"><button type="button" onclick="window.zoomJadwal(30)" class="btn-submit" style="width:auto; padding:12px 20px; font-size:18px; box-shadow:none;"><i class="fas fa-search-plus"></i></button><button type="button" onclick="window.zoomJadwal(-30)" class="btn-submit" style="width:auto; padding:12px 20px; font-size:18px; box-shadow:none;"><i class="fas fa-search-minus"></i></button><button type="button" onclick="window.zoomJadwal(0)" class="btn-submit" style="width:auto; padding:12px 20px; background:#94a3b8; box-shadow:none;"><i class="fas fa-sync"></i> Reset Ukuran</button></div><div style="overflow:auto; max-height: 65vh; border: 2px dashed #cbd5e1; border-radius:12px; padding:15px; background:#f8fafc; position:relative;"><img id="img-zoom-jadwal" src="${docSnap.data().foto}" style="width:100%; transition: width 0.2s ease; display:block; margin:auto;"></div><p style="font-size:13px; color:#475569; margin-top:15px; font-weight:800; text-align:center;">Diupdate pada: ${docSnap.data().waktuUpdate}</p>`; if(viewContainer) viewContainer.innerHTML = imgHtmlView; } else { if(outContainer) outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; if(viewContainer) viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; } } catch (error) {} }
+        window.muatJadwalBesar = async function() { try { const docRef = doc(db, "jadwal_besar_db", "master_jadwal"); const docSnap = await getDoc(docRef); const outContainer = document.getElementById('jb-output-container'); const viewContainer = document.getElementById('jb-view-container'); if (docSnap.exists() && docSnap.data().foto) { const imgHtmlOut = `<img src="${docSnap.data().foto}" style="max-width:100%; max-height:200px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.2); object-fit:contain;"><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Update: ${docSnap.data().waktuUpdate}</p>`; if(outContainer) outContainer.innerHTML = imgHtmlOut; window.currentZoomJadwal = 100; const imgHtmlView = `<div style="margin-bottom: 15px; display:flex; justify-content:center; gap:10px;"><button type="button" onclick="window.zoomJadwal(30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-plus"></i></button><button type="button" onclick="window.zoomJadwal(-30)" class="btn-submit" style="width:auto; padding:10px 20px; font-size:18px;"><i class="fas fa-search-minus"></i></button><button type="button" onclick="window.zoomJadwal(0)" class="btn-submit" style="width:auto; padding:10px 20px; background:#94a3b8;"><i class="fas fa-sync"></i> Reset</button></div><div style="overflow:auto; max-height: 65vh; border: 2px dashed #cbd5e1; border-radius:8px; padding:10px; background:#f1f5f9; position:relative;"><img id="img-zoom-jadwal" src="${docSnap.data().foto}" style="width:100%; transition: width 0.2s ease; display:block; margin:auto;"></div><p style="font-size:12px; color:gray; margin-top:10px; font-weight:bold;">Terakhir diupdate: ${docSnap.data().waktuUpdate}</p>`; if(viewContainer) viewContainer.innerHTML = imgHtmlView; } else { if(outContainer) outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; if(viewContainer) viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; } } catch (error) {} }
         window.simpanJadwalBesar = async function() { const fotoInput = document.getElementById('jb-foto'); if (!fotoInput || fotoInput.files.length === 0) { alert("Pilih File!"); return; } window.toggleLoader(true, "Memproses File..."); let fotoBase64 = ""; let file = fotoInput.files[0]; try { if (file.type === "application/pdf") { const arrayBuffer = await file.arrayBuffer(); const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise; const page = await pdf.getPage(1); const viewport = page.getViewport({ scale: 1.5 }); const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); canvas.height = viewport.height; canvas.width = viewport.width; await page.render({ canvasContext: ctx, viewport: viewport }).promise; fotoBase64 = canvas.toDataURL('image/jpeg', 0.6); } else if (file.type.startsWith("image/")) { fotoBase64 = await window.compressImage(file, 1200, 1200, 0.6); } else { alert("Format tidak didukung!"); window.toggleLoader(false); return; } await setDoc(doc(db, "jadwal_besar_db", "master_jadwal"), { foto: fotoBase64, waktuUpdate: window.dapatkanWaktuRill(), timestamp: Date.now() }); alert("Jadwal Besar berhasil diupdate!"); fotoInput.value = ""; const sjf = document.getElementById('status-jb-foto'); if(sjf) sjf.innerHTML = ""; window.navigasi('jadwal-besar-menu-screen'); } catch (e) { alert("Gagal memproses: " + e.message); } window.toggleLoader(false); }
 
         window.bukaSubInfo = async function(kategori) { kategoriInfoAktif = kategori; const jsi = document.getElementById('judul-sub-info'); if(jsi) jsi.innerText = kategori; window.navigasi('sub-info-screen'); await window.ambilDataInfoServer(); }
         window.ambilDataInfoServer = async function() { window.toggleLoader(true, "Mengunduh..."); infoDatabase = []; try { const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriInfoAktif)); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { infoDatabase.push({ id: doc.id, ...doc.data() }); }); } catch (error) {} window.toggleLoader(false); window.renderInfoList(); }
         window.simpanInfoData = async function() { const nama = document.getElementById('info-nama').value; const ket = document.getElementById('info-ket').value; const tgl = document.getElementById('info-tgl').value; const user = document.getElementById('info-user').value; if(!nama || !tgl) { alert("Isi data!"); return; } window.toggleLoader(true, "Menyimpan..."); try { await addDoc(collection(db, "informasi_mold"), { kategori: kategoriInfoAktif, namaKegiatan: nama, keterangan: ket, tanggal: tgl, pembuat: user || "Admin", timestamp: Date.now() }); alert("Tersimpan!"); document.getElementById('info-nama').value = ""; document.getElementById('info-ket').value = ""; document.getElementById('info-tgl').value = ""; document.getElementById('info-user').value = ""; await window.ambilDataInfoServer(); } catch (error) {} window.toggleLoader(false); }
-        window.renderInfoList = function() { const container = document.getElementById('list-sub-info'); if(!container) return; container.innerHTML = ""; if (infoDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } infoDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: var(--secondary);"><h3 style="margin:0 0 8px 0; color:var(--primary); font-size:16px;">${data.namaKegiatan}</h3><p style="font-size:13px; color:#475569; line-height:1.5;"><i>"${data.keterangan || '-'}"</i></p><p style="font-size:12px; color:#64748b; margin-top:10px; font-weight:700;">Tanggal: ${data.tanggal}<br>Pembuat: ${data.pembuat}</p></div>`; }); }
+        window.renderInfoList = function() { const container = document.getElementById('list-sub-info'); if(!container) return; container.innerHTML = ""; if (infoDatabase.length === 0) { container.innerHTML = `<p style="text-align:center;">Kosong.</p>`; return; } infoDatabase.forEach(data => { container.innerHTML += `<div class="progress-card" style="border-left-color: var(--secondary);"><h3 style="margin:0;">${data.namaKegiatan}</h3><p style="font-size:13px;"><i>"${data.keterangan || '-'}"</i></p><p style="font-size:14px; color:gray;">Tanggal: ${data.tanggal}<br>Pembuat: ${data.pembuat}</p></div>`; }); }
 
         window.bukaInputGosokMold = function() { const gri = document.getElementById('gosok-raw-input'); if(gri) gri.value = ""; const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "none"; const gtb = document.getElementById('gosok-table-body'); if(gtb) gtb.innerHTML = ""; window.navigasi('gosok-mold-screen'); }
         window.hitungDurasiJamMenit = function(start, finish) { if(!start || !finish || start === "-" || finish === "-") return "-"; try { let t1 = start.split(':'); let t2 = finish.split(':'); let d1 = new Date(); d1.setHours(t1[0], t1[1], 0); let d2 = new Date(); d2.setHours(t2[0], t2[1], 0); if (d2 < d1) d2.setDate(d2.getDate() + 1); let diffMs = d2 - d1; let diffHrs = Math.floor((diffMs % 86400000) / 3600000); let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); let hasil = []; if(diffHrs > 0) hasil.push(`${diffHrs} Jam`); if(diffMins > 0) hasil.push(`${diffMins} Menit`); return hasil.join(' ') || "0 Menit"; } catch(e) { return "-"; } }
-        window.aiProsesGosokMold = function() { const raw = document.getElementById('gosok-raw-input').value; if(!raw.trim()) { alert("Silakan paste laporan mentah terlebih dahulu!"); return; } window.toggleLoader(true, "AI Mensortir Data..."); setTimeout(() => { let parsedGosokData = []; const lines = raw.split('\n'); let items = []; let currentItem = []; for(let line of lines) { line = line.trim(); if(!line || line.toLowerCase().includes('gosok mold') || line.toLowerCase().includes('shift')) continue; if (/^\d+\s*\./.test(line)) { if (currentItem.length > 0) items.push(currentItem.join(' | ')); currentItem = [line]; } else if (currentItem.length > 0) { currentItem.push(line); } } if (currentItem.length > 0) items.push(currentItem.join(' | ')); items.forEach(text => { let timeRegex = /([01]?[0-9]|2[0-3])[:.]([0-5][0-9])\s*-\s*([01]?[0-9]|2[0-3])[:.]([0-5][0-9])/; let timeMatch = text.match(timeRegex); let start = "-", finish = "-"; if (timeMatch) { start = `${timeMatch[1].padStart(2, '0')}:${timeMatch[2]}`; finish = `${timeMatch[3].padStart(2, '0')}:${timeMatch[4]}`; text = text.replace(timeMatch[0], ''); } text = text.replace(/^\d+\s*\.\s*/, ''); let parts = text.split('|').map(p => p.replace(/^[-•\s]+/, '').trim()).filter(p => p.length > 0); let mesin = "-"; let mold = "-"; if (parts.length >= 2) { mesin = parts[0]; mold = parts.slice(1).join(' '); } else if (parts.length === 1) { mesin = parts[0]; } mesin = mesin.replace(/[()]/g, '').trim().toUpperCase(); mold = mold.replace(/[()]/g, '').trim().toUpperCase(); let durasi = window.hitungDurasiJamMenit(start, finish); parsedGosokData.push({ mesin, mold, start, finish, durasi }); }); const tbody = document.getElementById('gosok-table-body'); if(tbody) { tbody.innerHTML = ""; if(parsedGosokData.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red; font-weight:700;">Gagal mendeteksi format laporan.</td></tr>`; } else { parsedGosokData.forEach(d => { tbody.innerHTML += `<tr><td><input type="text" value="${d.mesin}" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;" class="edit-mesin"></td><td><input type="text" value="${d.mold}" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;" class="edit-mold"></td><td><input type="time" value="${d.start}" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;" class="edit-start" onchange="window.updateDurasiTabel(this)"></td><td><input type="time" value="${d.finish}" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px;" class="edit-finish" onchange="window.updateDurasiTabel(this)"></td><td class="td-durasi" style="font-weight:900; color:var(--proses); text-align:center; font-size:13px;">${d.durasi}</td></tr>`; }); } } const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "block"; window.toggleLoader(false); }, 1200); }
+        window.aiProsesGosokMold = function() { const raw = document.getElementById('gosok-raw-input').value; if(!raw.trim()) { alert("Silakan paste laporan mentah terlebih dahulu!"); return; } window.toggleLoader(true, "AI Mensortir Data..."); setTimeout(() => { let parsedGosokData = []; const lines = raw.split('\n'); let items = []; let currentItem = []; for(let line of lines) { line = line.trim(); if(!line || line.toLowerCase().includes('gosok mold') || line.toLowerCase().includes('shift')) continue; if (/^\d+\s*\./.test(line)) { if (currentItem.length > 0) items.push(currentItem.join(' | ')); currentItem = [line]; } else if (currentItem.length > 0) { currentItem.push(line); } } if (currentItem.length > 0) items.push(currentItem.join(' | ')); items.forEach(text => { let timeRegex = /([01]?[0-9]|2[0-3])[:.]([0-5][0-9])\s*-\s*([01]?[0-9]|2[0-3])[:.]([0-5][0-9])/; let timeMatch = text.match(timeRegex); let start = "-", finish = "-"; if (timeMatch) { start = `${timeMatch[1].padStart(2, '0')}:${timeMatch[2]}`; finish = `${timeMatch[3].padStart(2, '0')}:${timeMatch[4]}`; text = text.replace(timeMatch[0], ''); } text = text.replace(/^\d+\s*\.\s*/, ''); let parts = text.split('|').map(p => p.replace(/^[-•\s]+/, '').trim()).filter(p => p.length > 0); let mesin = "-"; let mold = "-"; if (parts.length >= 2) { mesin = parts[0]; mold = parts.slice(1).join(' '); } else if (parts.length === 1) { mesin = parts[0]; } mesin = mesin.replace(/[()]/g, '').trim().toUpperCase(); mold = mold.replace(/[()]/g, '').trim().toUpperCase(); let durasi = window.hitungDurasiJamMenit(start, finish); parsedGosokData.push({ mesin, mold, start, finish, durasi }); }); const tbody = document.getElementById('gosok-table-body'); if(tbody) { tbody.innerHTML = ""; if(parsedGosokData.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal mendeteksi format.</td></tr>`; } else { parsedGosokData.forEach(d => { tbody.innerHTML += `<tr><td><input type="text" value="${d.mesin}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-mesin"></td><td><input type="text" value="${d.mold}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-mold"></td><td><input type="time" value="${d.start}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-start" onchange="window.updateDurasiTabel(this)"></td><td><input type="time" value="${d.finish}" style="width:100%; padding:8px; border:1px solid #cbd5e1; border-radius:4px;" class="edit-finish" onchange="window.updateDurasiTabel(this)"></td><td class="td-durasi" style="font-weight:bold; color:var(--proses); text-align:center;">${d.durasi}</td></tr>`; }); } } const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "block"; window.toggleLoader(false); }, 1200); }
         window.updateDurasiTabel = function(element) { let tr = element.closest('tr'); let start = tr.querySelector('.edit-start').value; let finish = tr.querySelector('.edit-finish').value; tr.querySelector('.td-durasi').innerText = window.hitungDurasiJamMenit(start, finish); }
         window.simpanOlahanGosokMold = async function() { let finalData = []; let rows = document.querySelectorAll('#gosok-table-body tr'); rows.forEach(tr => { let mesinInput = tr.querySelector('.edit-mesin'); if(mesinInput) { finalData.push({ mesin: mesinInput.value, mold: tr.querySelector('.edit-mold').value, start: tr.querySelector('.edit-start').value, finish: tr.querySelector('.edit-finish').value, durasi: tr.querySelector('.td-durasi').innerText }); } }); if(finalData.length === 0) return alert("Tidak ada data valid."); window.toggleLoader(true, "Menyimpan ke Database..."); try { await addDoc(collection(db, "laporan_gosok_mold"), { tanggalLokal: window.dapatkanTanggalLokal(), waktuRecord: window.dapatkanWaktuRill(), dataGosok: finalData, timestamp: Date.now() }); alert("Data Tersimpan!"); document.getElementById('gosok-raw-input').value = ""; const grc = document.getElementById('gosok-result-container'); if(grc) grc.style.display = "none"; window.navigasi('data-olahan-menu-screen'); } catch (e) {} window.toggleLoader(false); }
         
-        // --- BUGFIX: LOADING RIWAYAT GOSOK MOLD ---
         window.bukaRiwayatGosokMold = async function() { window.navigasi('gosok-riwayat-screen'); await window.ambilDataGosokMold(); }
         window.ambilDataGosokMold = async function() { 
             window.toggleLoader(true, "Mengunduh..."); 
@@ -2742,10 +2301,10 @@
                 if(container) { 
                     container.innerHTML = ""; 
                     if (gosokDatabase.length === 0) { 
-                        container.innerHTML = `<p style="text-align:center; color:gray; font-weight:600; margin-top:20px;">Kosong.</p>`; 
+                        container.innerHTML = `<p style="text-align:center; color:gray;">Kosong.</p>`; 
                     } else { 
                         gosokDatabase.forEach(data => { 
-                            container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 8px 0; color:var(--primary); font-size:15px;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:#64748b; font-weight:700;"><i class="fas fa-clock"></i> Waktu Input: ${data.waktuRecord}</p></div>`; 
+                            container.innerHTML += `<div class="progress-card" style="border-left-color: #f59e0b; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Laporan: ${data.tanggalLokal}</h4><p style="margin:0; font-size:12px; color:gray;">Waktu: ${data.waktuRecord}</p></div>`; 
                         }); 
                     } 
                 } 
@@ -2753,9 +2312,8 @@
             finally { window.toggleLoader(false); } 
         }
 
-        window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; font-weight:800;">${idx + 1}</td><td><strong style="color:var(--secondary);">${item.mesin}</strong></td><td><strong style="color:#475569;">${item.mold}</strong></td><td style="text-align:center;">${item.start}</td><td style="text-align:center;">${item.finish}</td><td style="text-align:center; font-weight:900; color:var(--proses);">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong style="color:var(--primary); font-size:15px;">${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td><strong style="color:#64748b;">${data.waktuRecord}</strong></td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th style="text-align:center;">No</th><th>Mesin</th><th>Nama Mold</th><th style="text-align:center;">Start</th><th style="text-align:center;">Finish</th><th style="text-align:center;">Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
+        window.bukaDetailGosok = function(id) { const data = gosokDatabase.find(d => d.id === id); if(!data) return; let tbodyHTML = ""; if (data.dataGosok) { data.dataGosok.forEach((item, idx) => { tbodyHTML += `<tr><td style="text-align:center; border: 1px solid #cbd5e1;">${idx + 1}</td><td style="border: 1px solid #cbd5e1;"><strong>${item.mesin}</strong></td><td style="border: 1px solid #cbd5e1;">${item.mold}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.start}</td><td style="text-align:center; border: 1px solid #cbd5e1;">${item.finish}</td><td style="text-align:center; font-weight:bold; border: 1px solid #cbd5e1;">${item.durasi}</td></tr>`; }); } let html = `<div class="report-header"><h2>LAPORAN HARIAN GOSOK MOLD</h2><p>PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table"><tr><th>Tanggal Laporan</th><td><strong>${data.tanggalLokal}</strong></td></tr><tr><th>Waktu Input</th><td>${data.waktuRecord}</td></tr></table><table class="report-table" style="width:100%; font-size:12px;"><tr style="background:#f1f5f9;"><th>No</th><th>Mesin</th><th>Nama Mold</th><th>Start</th><th>Finish</th><th>Durasi</th></tr>${tbodyHTML}</table>`; const rgc = document.getElementById('report-gosok-content'); if(rgc) rgc.innerHTML = html; window.navigasi('gosok-detail-screen'); }
 
-        // EKSPOR & CETAK
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(() => window.toggleLoader(false)); }, 200); }
         window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
