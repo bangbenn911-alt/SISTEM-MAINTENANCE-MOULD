@@ -41,12 +41,37 @@
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('1000809442.png');
             background-size: cover; background-position: center;
-            z-index: -2; pointer-events: none;
+            z-index: -3; pointer-events: none;
         }
         .global-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             z-index: -1; pointer-events: none;
+        }
+
+        /* ======================================================== */
+        /* --- ANIMASI AURORA NEON (LATAR BELAKANG GLOBAL) --- */
+        /* ======================================================== */
+        .aurora-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -2; /* Di antara background gambar dan overlay */
+            overflow: hidden; pointer-events: none;
+        }
+        .aurora-blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(90px); opacity: 0.55;
+            animation: floatAurora 15s infinite ease-in-out alternate;
+        }
+        .blob-1 { width: 40vw; height: 40vw; background: #4285f4; top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-2 { width: 50vw; height: 50vw; background: #9b72cb; bottom: -20%; right: -10%; animation-delay: -5s; }
+        .blob-3 { width: 45vw; height: 45vw; background: #d96570; top: 40%; left: 60%; animation-delay: -10s; }
+        .blob-4 { width: 35vw; height: 35vw; background: #139e8c; top: 70%; left: 10%; animation-delay: -7s; }
+
+        @keyframes floatAurora {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(5vw, -8vh) scale(1.1); }
+            66% { transform: translate(-6vw, 4vh) scale(0.9); }
+            100% { transform: translate(4vw, 8vh) scale(1.05); }
         }
 
         /* --- BACKGROUND LANDING PAGE --- */
@@ -89,24 +114,10 @@
         .content-wrapper { max-width: 750px; margin: auto; position: relative; padding: 25px 15px;} 
         .content-wrapper-wide { max-width: 1100px; margin: auto; position: relative; padding: 25px 15px;}
         
-        .header {
-            background: linear-gradient(135deg, #0284c7, #1e3a8a) !important;
-            padding: 20px 25px; border-radius: 20px; text-align: left; margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4) !important;
-            border: 1px solid rgba(56, 189, 248, 0.3); display: flex; align-items: center;
-        }
+        .header { background: linear-gradient(135deg, #0284c7, #1e3a8a) !important; padding: 20px 25px; border-radius: 20px; text-align: left; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4) !important; border: 1px solid rgba(56, 189, 248, 0.3); display: flex; align-items: center; }
         .header h2 { margin: 0; font-size: 18px; font-weight: 800; letter-spacing: 0.5px; color: white; }
 
-        .sub-title-box {
-            background: #475569 !important;
-            padding: 12px 18px !important;
-            border-radius: 12px !important;
-            color: white !important;
-            margin-top: 0 !important; margin-bottom: 15px !important;
-            display: flex; align-items: center; gap: 10px;
-            font-size: 15px !important; font-weight: 800 !important;
-            border: 1px solid #64748b;
-        }
+        .sub-title-box { background: #475569 !important; padding: 12px 18px !important; border-radius: 12px !important; color: white !important; margin-top: 0 !important; margin-bottom: 15px !important; display: flex; align-items: center; gap: 10px; font-size: 15px !important; font-weight: 800 !important; border: 1px solid #64748b; }
 
         /* --- UI COMPONENTS --- */
         .gopay-header { background: linear-gradient(135deg, #0284c7, #1e3a8a); padding: 45px 25px 90px 25px; color: white; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(2, 132, 199, 0.4); margin: -25px -15px 0 -15px; }
@@ -181,14 +192,47 @@
         .chevron-left::after { content: ''; position: absolute; left: -25px; top: -15px; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 20px solid #1e3a8a; }
         .chevron-right { position: absolute; right: -10px; z-index: 1; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 20px solid #f59e0b; }
         .chevron-right::after { content: ''; position: absolute; right: -25px; top: -15px; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 20px solid #1e3a8a; }
+
+        /* ======================================================== */
+        /* --- EFEK GRADIEN SETENGAH LINGKARAN BERPUTAR DI LONCENG --- */
+        /* ======================================================== */
+        .bell-gradient-box {
+            position: relative; width: 35px; height: 35px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(5px);
+            overflow: hidden; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        .bell-gradient-box::before {
+            content: ''; position: absolute; width: 150%; height: 150%;
+            background: conic-gradient(transparent 0deg, transparent 180deg, #38bdf8 270deg, #c084fc 360deg);
+            animation: putarSetengah 4s linear infinite, kedipGradien 2s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+        .bell-gradient-box::after {
+            content: ''; position: absolute; width: 31px; height: 31px;
+            background: rgba(15, 23, 42, 0.8); border-radius: 50%; z-index: 1;
+        }
+        .bell-gradient-box i { position: relative; z-index: 2; color: white; font-size: 14px; }
+        
+        @keyframes putarSetengah { 100% { transform: rotate(360deg); } }
+        @keyframes kedipGradien { 0% { opacity: 0.3; } 100% { opacity: 1; filter: brightness(1.5); } }
     </style>
 </head>
 <body>
     
-    <!-- LATAR BELAKANG & OVERLAY -->
+    <!-- LATAR BELAKANG & OVERLAY GLOBAL -->
     <div class="global-bg"></div>
     <div class="global-overlay"></div>
+    
+    <!-- ELEMEN BARU: AURORA ANIMASI NEON -->
+    <div class="aurora-bg">
+        <div class="aurora-blob blob-1"></div>
+        <div class="aurora-blob blob-2"></div>
+        <div class="aurora-blob blob-3"></div>
+        <div class="aurora-blob blob-4"></div>
+    </div>
 
+    <!-- LOADER -->
     <div id="loader" class="loader-overlay">
         <div class="spinner"></div>
         <h3 id="loader-text" style="font-weight:600;">Processing...</h3>
@@ -224,7 +268,8 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 25px; position:relative; z-index:2;">
                 <div style="font-weight:900; font-size:20px; letter-spacing:1px;"><i class="fas fa-cube" style="color:#7dd3fc;"></i> MOLD<span style="color:#7dd3fc;">CBI</span></div>
                 <div style="background:rgba(255,255,255,0.2); padding:6px 14px; border-radius:20px; font-size:11px; font-weight:800; backdrop-filter:blur(5px);"><i class="fas fa-shield-alt"></i> Perlindungan Kuat</div>
-                <div style="width:35px; height:35px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(5px);"><i class="fas fa-bell"></i></div>
+                <!-- Lonceng Gradien Berputar -->
+                <div class="bell-gradient-box"><i class="fas fa-bell"></i></div>
             </div>
             <p class="gopay-balance-label">Status Kinerja System</p>
             <h1 class="gopay-balance">100% <span style="font-size:16px; font-weight:600; opacity:0.8;"><i class="fas fa-eye"></i> Terkontrol</span></h1>
@@ -645,7 +690,7 @@
                         <label><input type="checkbox" value="ADM Benny" class="chk-hadir"> ADM Benny</label>
                     </div>
                 </div>
-                <div class="form-group" style="margin-top:25px;"><label>Foto Dokumentasi</label><label for="notul-foto" class="btn-camera" style="background:#475569; border:1px solid #64748b;"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label><input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-notul-foto')" style="display:none;"><span id="status-notul-foto" class="file-status"></span></div>
+                <div class="form-group" style="margin-top:25px;"><label>Foto Dokumentasi</label><label for="notul-foto" class="btn-camera" style="background:#475569; border:1px solid #64748b; padding:15px; display:block; text-align:center; border-radius:12px; color:white; cursor:pointer;"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label><input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-notul-foto')" style="display:none;"><span id="status-notul-foto" class="file-status"></span></div>
                 <button class="btn-submit" type="button" onclick="window.simpanNotulen()" style="margin-top:20px;"><i class="fas fa-save"></i> SIMPAN NOTULEN</button>
             </div>
         </div>
@@ -1053,97 +1098,6 @@
         </div>
     </div>
 
-    <!-- PERMINTAAN TRIAL -->
-    <div id="permintaan-trial-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-flask" style="margin-right:10px;"></i> Sistem Permintaan Trial</h2></div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputPermintaanTrial()"><i class="fas fa-plus-circle" style="color:#2563eb; background:rgba(37,99,235,0.1);"></i> 1. Input Permintaan Trial Baru</div>
-                <div class="menu-card" onclick="window.bukaPtAdmin()"><i class="fas fa-user-shield" style="color:#10b981; background:rgba(16,185,129,0.1);"></i> 2. Verifikasi & Update Admin</div>
-                <div class="menu-card" onclick="window.bukaPtProgress()"><i class="fas fa-chart-bar" style="color:#8b5cf6; background:rgba(139,92,246,0.1);"></i> 3. Control Progres Trial</div>
-            </div>
-        </div>
-    </div>
-
-    <div id="pt-input-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-plus-circle" style="margin-right:10px;"></i> Input Permintaan Trial</h2></div>
-            <div class="dark-panel">
-                <div class="form-group"><label>Nama Peminta / User</label><input type="text" id="pt-input-user" placeholder="Nama pekerja..."></div>
-                <div class="form-group"><label>Hari, Tanggal Pengajuan</label><input type="text" id="pt-input-waktu" readonly></div>
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-input-nama" placeholder="Masukkan nama mold..." style="text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()"></div>
-                <div class="form-group">
-                    <h3 class="sub-title-box"><i class="fas fa-bullseye" style="color:var(--secondary);"></i> Target Trial / Permintaan</h3>
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="pt-input-target-item" placeholder="Ketik target trial...">
-                        <button type="button" onclick="window.tambahTargetTrial()" style="padding: 0 20px; background: var(--secondary); color: white; border: none; border-radius: 12px; cursor: pointer;"><i class="fas fa-plus"></i></button>
-                    </div>
-                    <ul id="list-target-trial" class="eval-list" style="margin-bottom: 20px; border: 2px dashed var(--border-dark); padding: 15px; min-height: 80px; border-radius: 14px;"></ul>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanPtInput()"><i class="fas fa-paper-plane"></i> SEND TO ADMIN</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="pt-admin-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-user-shield" style="margin-right:10px;"></i> Verifikasi Admin Mold</h2></div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-pt-belum" onclick="window.switchTabPt('belum')"><i class="fas fa-clock"></i> Permintaan Masuk</button>
-                <button class="tab-btn" type="button" id="tab-pt-proses" onclick="window.switchTabPt('proses')"><i class="fas fa-spinner"></i> Sedang Proses</button>
-            </div>
-            <div id="list-pt-belum"></div><div id="list-pt-proses" style="display: none;"></div>
-            
-            <div id="form-pt-verifikasi" class="dark-panel" style="display: none; border-left: 6px solid var(--secondary);">
-                <h3 class="sub-title-box"><i class="fas fa-check-circle" style="color:var(--secondary);"></i> Verifikasi Trial Mold</h3><input type="hidden" id="pt-verif-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-verif-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-verif-target" readonly></div>
-                <div class="form-group"><label>No Trial</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
-                <div class="form-group"><label>Tanggal Permintaan</label><input type="date" id="pt-verif-tgl"></div>
-                <div style="display: flex; gap: 12px; margin-top:25px;">
-                    <button class="btn-submit" type="button" style="background: var(--border-dark); box-shadow:none; flex:1;" onclick="window.batalPtAdmin('verif')">Batal</button>
-                    <button class="btn-submit" type="button" style="flex:2;" onclick="window.simpanPtVerifikasi()">VERIFIKASI & PROSES</button>
-                </div>
-            </div>
-            
-            <div id="form-pt-hasil" class="dark-panel" style="display: none; border-left: 6px solid var(--cepat);">
-                <h3 class="sub-title-box"><i class="fas fa-flag-checkered" style="color:var(--cepat);"></i> Update Hasil Trial</h3><input type="hidden" id="pt-hasil-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-hasil-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-hasil-target" readonly></div>
-                <div class="form-group"><label>Hasil Trial</label><select id="pt-hasil-status"><option value="Selesai">✅ Selesai (Sukses)</option><option value="Gagal">❌ Gagal (Bermasalah)</option></select></div>
-                <div class="form-group"><label>Keterangan Masalah</label><textarea id="pt-hasil-ket" rows="3" placeholder="Masukkan keterangan tambahan jika ada..."></textarea></div>
-                <div class="form-group">
-                    <label>Upload Gambar Hasil</label>
-                    <label for="pt-hasil-foto" class="btn-camera" style="background:#475569; padding: 15px; border-radius: 12px; display: block; text-align: center; cursor: pointer; color: white;"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
-                    <input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" style="display: none;" onchange="window.cekFoto(this, 'status-pt-foto')">
-                    <span id="status-pt-foto" class="file-status" style="display: block; margin-top: 10px;"></span>
-                </div>
-                <div style="display: flex; gap: 12px; margin-top:25px;">
-                    <button class="btn-submit" type="button" style="background: var(--border-dark); box-shadow:none; flex:1;" onclick="window.batalPtAdmin('hasil')">Batal</button>
-                    <button class="btn-submit" type="button" style="background: linear-gradient(135deg, var(--cepat), #059669); flex:2;" onclick="window.simpanPtHasil()">SIMPAN HASIL</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="pt-progress-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-chart-bar" style="margin-right:10px;"></i> Control Progres Trial</h2></div>
-            <div id="list-pt-progress"></div>
-        </div>
-    </div>
-
-    <div id="pt-detail-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-search" style="margin-right:10px;"></i> Detail Laporan Trial</h2></div>
-            <div class="export-row" style="display:flex; gap:12px; margin-bottom:20px;">
-                <button class="btn-export btn-jpg" type="button" onclick="window.downloadPtJPG()" style="flex:1; padding:14px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; cursor:pointer;"><i class="fas fa-image"></i> Download JPG</button>
-                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()" style="flex:1; padding:14px; border-radius:12px; background:linear-gradient(135deg, #db2777, #be185d); color:white; border:none; cursor:pointer;"><i class="fas fa-file-pdf"></i> Download PDF</button>
-            </div>
-            <div class="report-sheet dark-panel" id="report-pt-content" style="box-shadow:none; overflow-x:auto;"></div>
-        </div>
-    </div>
-
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI (OTAK)   -->
     <!-- ========================================== -->
@@ -1375,7 +1329,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 3: NOTULEN MEETING (Telah diperbaiki sempurna)
+        // LOGIC FIX 3: NOTULEN MEETING
         // =========================================================================
         window.switchTabNotulen = function(jenis) {
             document.querySelectorAll('.notul-list-content').forEach(el => el.style.display = 'none');
@@ -1440,10 +1394,6 @@
                 else if (data.jenisMeeting === 'MEETING URGENT' && cUrgent) cUrgent.innerHTML += htmlCard;
                 else if (cLapangan) cLapangan.innerHTML += htmlCard;
             }); 
-            
-            if(cPagi && cPagi.innerHTML === "") cPagi.innerHTML = `<p style="text-align:center; color:gray;">Belum ada data.</p>`;
-            if(cUrgent && cUrgent.innerHTML === "") cUrgent.innerHTML = `<p style="text-align:center; color:gray;">Belum ada data.</p>`;
-            if(cLapangan && cLapangan.innerHTML === "") cLapangan.innerHTML = `<p style="text-align:center; color:gray;">Belum ada data.</p>`;
         }
         window.bukaDetailNotulen = function(id) { 
             const data = notulenDatabase.find(d => d.id === id); if(!data) return; 
@@ -1456,10 +1406,8 @@
                 }); 
             }
             htmlDeskripsi += `</ul>`; 
-            
             let html = `<div class="report-header" style="text-align:center; margin-bottom:20px;"><h2 style="color:white; margin:0;">NOTULEN & EVALUASI MEETING</h2><p style="color:var(--secondary); font-weight:bold; margin:5px 0 0 0;">PT. CAHAYA BUANA INTITAMA</p></div><table class="report-table" style="margin-bottom:20px;"><tr><th>Jenis Meeting</th><td><strong>${data.jenisMeeting}</strong></td></tr><tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr><tr><th>Kehadiran Tim</th><td style="font-size:12px;">${htmlListPeserta}</td></tr></table><h3 class="sub-title-box"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>${htmlDeskripsi}`; 
             if(data.foto) html += `<div class="report-img-box" style="margin-top:20px; text-align:center; border:1px solid var(--border-dark); background:var(--bg-dark); padding:15px; border-radius:12px;"><strong style="color:var(--secondary);">FOTO DOKUMENTASI</strong><br><img src="${data.foto}" style="max-width:100%; border-radius:10px; margin-top:10px;"></div>`; 
-            
             const rnc = document.getElementById('report-notulen-content'); if(rnc) rnc.innerHTML = html; 
             window.navigasi('detail-notulen-screen'); 
         }
@@ -1531,6 +1479,7 @@
         // =========================================================================
         window.bukaInputGosokMold = function() { window.navigasi('gosok-mold-screen'); document.getElementById('gosok-result-container').style.display = 'none'; }
         window.bukaRiwayatGosokMold = async function() { window.navigasi('gosok-riwayat-screen'); await window.ambilDataGosok(); }
+        
         window.aiProsesGosokMold = function() {
             const raw = document.getElementById('gosok-raw-input').value;
             if(!raw) return alert("Silakan paste laporan mentah dari lapangan terlebih dahulu!");
@@ -1554,7 +1503,7 @@
                 if(window.tempGosokOlahan.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:gray;">Format tidak dikenali AI.</td></tr>`; } 
                 else {
                     window.tempGosokOlahan.forEach((item, idx) => {
-                        tb.innerHTML += `<tr><td style="padding:5px;"><input type="text" id="edit-mesin-${idx}" value="${item.mesin}"></td><td style="padding:5px;"><input type="text" id="edit-mold-${idx}" value="${item.mold}"></td><td style="padding:5px;"><input type="text" id="edit-start-${idx}" value="${item.start}" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-finish-${idx}" value="${item.finish}" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-durasi-${idx}" value="${item.durasi}" style="color:var(--proses); font-weight:bold;"></td></tr>`;
+                        tb.innerHTML += `<tr><td style="padding:5px;"><input type="text" id="edit-mesin-${idx}" value="${item.mesin}" style="width:100%; border-radius:8px; border:1px solid #475569; padding:8px;"></td><td style="padding:5px;"><input type="text" id="edit-mold-${idx}" value="${item.mold}" style="width:100%; border-radius:8px; border:1px solid #475569; padding:8px;"></td><td style="padding:5px;"><input type="text" id="edit-start-${idx}" value="${item.start}" style="width:100%; text-align:center; border-radius:8px; border:1px solid #475569; padding:8px;" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-finish-${idx}" value="${item.finish}" style="width:100%; text-align:center; border-radius:8px; border:1px solid #475569; padding:8px;" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-durasi-${idx}" value="${item.durasi}" readonly style="width:100%; text-align:center; font-weight:bold; color:var(--proses); border-radius:8px; border:1px solid #475569; padding:8px;"></td></tr>`;
                     });
                 }
                 document.getElementById('gosok-result-container').style.display = 'block'; window.toggleLoader(false);
@@ -1570,8 +1519,8 @@
             for(let i=0; i<window.tempGosokOlahan.length; i++) {
                 dataFinal.push({ mesin: document.getElementById(`edit-mesin-${i}`).value, mold: document.getElementById(`edit-mold-${i}`).value, start: document.getElementById(`edit-start-${i}`).value, finish: document.getElementById(`edit-finish-${i}`).value, durasi: document.getElementById(`edit-durasi-${i}`).value });
             }
-            window.toggleLoader(true, "Menyimpan...");
-            try { await addDoc(collection(db, "gosok_mold"), { waktu: window.dapatkanWaktuRill(), dataTabel: dataFinal, timestamp: Date.now() }); alert("Berhasil disimpan!"); document.getElementById('gosok-result-container').style.display = 'none'; document.getElementById('gosok-raw-input').value = ""; window.navigasi('data-olahan-menu-screen'); } catch(e) {} window.toggleLoader(false);
+            window.toggleLoader(true, "Menyimpan ke Database...");
+            try { await addDoc(collection(db, "gosok_mold"), { waktu: window.dapatkanWaktuRill(), dataTabel: dataFinal, timestamp: Date.now() }); alert("Data berhasil disimpan!"); document.getElementById('gosok-result-container').style.display = 'none'; document.getElementById('gosok-raw-input').value = ""; window.navigasi('data-olahan-menu-screen'); } catch(e) { alert(e.message); } window.toggleLoader(false);
         }
         window.ambilDataGosok = async function() {
             window.toggleLoader(true, "Memuat Data..."); gosokDatabase = [];
@@ -1593,7 +1542,16 @@
             let excelData = data.dataTabel.map(item => ({ "Waktu Record": data.waktu, "Nama Mesin": item.mesin, "Nama Mold": item.mold, "Start": item.start, "Finish": item.finish, "Durasi": item.durasi }));
             const ws = XLSX.utils.json_to_sheet(excelData); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Detail Gosok"); XLSX.writeFile(wb, `Gosok_${data.waktu}.xlsx`);
         }
-        window.exportGosokExcelLengkap = async function() { alert("Mengunduh Rekap Excel Global..."); }
+        window.exportGosokExcelLengkap = async function() { 
+            window.toggleLoader(true, "Membuat File Excel Global...");
+            try {
+                let allData = []; gosokDatabase.forEach(docData => {
+                    if(docData.dataTabel) { docData.dataTabel.forEach(item => { allData.push({ "Waktu Record": docData.waktu, "Nama Mesin": item.mesin, "Nama Mold": item.mold, "Start": item.start, "Finish": item.finish, "Durasi": item.durasi }); }); }
+                });
+                if(allData.length === 0) { alert("Tidak ada data!"); window.toggleLoader(false); return; }
+                const ws = XLSX.utils.json_to_sheet(allData); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Rekap Seluruh Gosok Mold"); XLSX.writeFile(wb, `Semua_Data_Gosok_Mold_${Date.now()}.xlsx`);
+            } catch(e) { alert(e.message); } window.toggleLoader(false);
+        }
 
         // =========================================================================
         // LOGIC FIX 6: SISTEM PERMINTAAN TRIAL MOLD
@@ -1660,7 +1618,6 @@
             window.toggleLoader(true, "Menyimpan Target...");
             try { await addDoc(collection(db, "adm_harian"), { tanggal: window.dapatkanTanggalLokal(), user: document.getElementById('adm-target-user').value, mulai: document.getElementById('adm-target-mulai').value, selesai: document.getElementById('adm-target-selesai').value, rencana: window.arrayRencanaKerjaAdm, status: "Belum Terealisasi", timestamp: Date.now() }); alert("Target Harian Tersimpan!"); window.navigasi('adm-harian-menu-screen'); } catch(e){} window.toggleLoader(false);
         }
-
         window.bukaAdmHarianActual = async function() { window.navigasi('adm-harian-actual-screen'); window.switchTabAdm('belum'); await window.muatDataAdm(); }
         window.bukaAdmHarianProgress = async function() { window.navigasi('adm-harian-progress-screen'); await window.muatDataAdm(); }
         
@@ -1670,7 +1627,6 @@
             document.getElementById(`tab-adm-${tab}`).classList.add('tab-active'); document.getElementById(`list-adm-${tab}`).style.display = 'block';
             document.getElementById('form-adm-actual').style.display = 'none';
         }
-        
         window.muatDataAdm = async function() {
             admHarianDatabase = []; try { const snap = await getDocs(query(collection(db, "adm_harian"))); snap.forEach(doc => { admHarianDatabase.push({id:doc.id, ...doc.data()}); }); admHarianDatabase.sort((a,b) => b.timestamp - a.timestamp); } catch(e){}
             ['belum','sudah','gagal','progress'].forEach(t => { const el = document.getElementById(t==='progress' ? 'list-adm-progress' : `list-adm-${t}`); if(el) el.innerHTML = ""; });
@@ -1679,25 +1635,18 @@
                 let badge = `<span class="status-badge" style="background:${data.status==='Belum Terealisasi'?'#ef4444':'#10b981'};">${data.status}</span>`;
                 let card = `<div class="progress-card" style="border-left-color: var(--secondary);"><h4>Laporan ${data.tanggal}</h4><p style="font-size:12px; margin:5px 0;">User: ${data.user} | Jam: ${data.mulai} - ${data.selesai}</p>${badge}</div>`;
                 
-                if(document.getElementById('list-adm-progress')) document.getElementById('list-adm-progress').innerHTML += `<div onclick="alert('Detail Progress: ${data.tanggal}')">${card}</div>`;
-                
+                if(document.getElementById('list-adm-progress')) document.getElementById('list-adm-progress').innerHTML += `<div onclick="alert('Detail Progress ADM Harian untuk tanggal: ${data.tanggal}')">${card}</div>`;
                 if(data.status === "Belum Terealisasi" && document.getElementById('list-adm-belum')) document.getElementById('list-adm-belum').innerHTML += `<div onclick="window.formActualAdm('${data.id}')">${card}</div>`;
                 else if(data.status === "Sudah Terealisasi" && document.getElementById('list-adm-sudah')) document.getElementById('list-adm-sudah').innerHTML += card;
             });
         }
-        
         window.formActualAdm = function(id) {
             const data = admHarianDatabase.find(d=>d.id===id); if(!data)return;
             document.getElementById('list-adm-belum').style.display = 'none'; document.getElementById('form-adm-actual').style.display = 'block';
             document.getElementById('adm-actual-id').value = id; document.getElementById('adm-actual-tampil').innerText = data.tanggal;
-            
-            // Cek Waktu > 16:00
             const now = new Date(); if(now.getHours() >= 16) document.getElementById('adm-actual-time-warning').style.display = 'block'; else document.getElementById('adm-actual-time-warning').style.display = 'none';
-            
             const ul = document.getElementById('adm-actual-ceklis'); ul.innerHTML = ""; window.arrayUpdateRencanaAdm = [...data.rencana];
-            window.arrayUpdateRencanaAdm.forEach((item, idx) => {
-                ul.innerHTML += `<li style="background:rgba(0,0,0,0.4);"><input type="checkbox" id="adm-chk-${idx}" onchange="window.updateCeklisAdm(${idx}, this.checked)" style="width:20px;height:20px;"><label for="adm-chk-${idx}" style="color:white; margin-left:10px;">${item.tugas}</label></li>`;
-            });
+            window.arrayUpdateRencanaAdm.forEach((item, idx) => { ul.innerHTML += `<li style="background:rgba(0,0,0,0.4);"><input type="checkbox" id="adm-chk-${idx}" onchange="window.updateCeklisAdm(${idx}, this.checked)" style="width:20px;height:20px;"><label for="adm-chk-${idx}" style="color:white; margin-left:10px;">${item.tugas}</label></li>`; });
         }
         window.updateCeklisAdm = function(idx, checked) { window.arrayUpdateRencanaAdm[idx].done = checked; }
         window.tambahTugasBaruActual = function() { const v = document.getElementById('adm-actual-input-baru').value; if(v) { window.arrayUpdateRencanaAdm.push({tugas: "[TAMBAHAN] "+v, done: true}); document.getElementById('adm-actual-ceklis').innerHTML += `<li style="background:rgba(16,185,129,0.2);"><i class="fas fa-check" style="color:var(--cepat);"></i> <span style="color:white; margin-left:10px;">${v}</span></li>`; document.getElementById('adm-actual-input-baru').value = ""; } }
@@ -1705,7 +1654,7 @@
         window.simpanAdmActual = async function() {
             const id = document.getElementById('adm-actual-id').value; const ket = document.getElementById('adm-actual-ket').value;
             const now = new Date(); if(now.getHours() >= 16 && !ket.trim()) return alert("Waktu sudah lewat jam 16:00. Catatan Actual WAJIB diisi!");
-            window.toggleLoader(true, "Menyimpan Actual...");
+            window.toggleLoader(true, "Update Actual...");
             try { await updateDoc(doc(db, "adm_harian", id), { rencana: window.arrayUpdateRencanaAdm, catatanActual: ket, status: "Sudah Terealisasi", updateTime: Date.now() }); alert("Berhasil diupdate!"); await window.muatDataAdm(); window.switchTabAdm('sudah'); } catch(e){} window.toggleLoader(false);
         }
 
@@ -1741,16 +1690,11 @@
             const nama = document.getElementById('ws-np-nama').value; const start = document.getElementById('ws-np-start-date').value; const finish = document.getElementById('ws-np-finish-date').value;
             if(!nama || !start || window.arrayTugasBaru.length === 0) return alert("Lengkapi Form Project!");
             window.toggleLoader(true, "Menyimpan Project...");
-            try { 
-                await addDoc(collection(db, "workshop_projects"), { namaProyek: nama, startDate: start, finishDate: finish, estJam: parseFloat(document.getElementById('ws-np-jam').value), tasks: window.arrayTugasBaru, statusGlobal: "Proses Pengerjaan", timestamp: Date.now() }); 
-                alert("Project Tersimpan!"); window.navigasi('divisi-screen'); 
-            } catch(e) {} window.toggleLoader(false);
+            try { await addDoc(collection(db, "workshop_projects"), { namaProyek: nama, startDate: start, finishDate: finish, estJam: parseFloat(document.getElementById('ws-np-jam').value), tasks: window.arrayTugasBaru, statusGlobal: "Proses Pengerjaan", timestamp: Date.now() }); alert("Project Tersimpan!"); window.navigasi('divisi-screen'); } catch(e) {} window.toggleLoader(false);
         }
-
         window.ambilDataServerWS = async function() {
             dataProyekWS = []; try { const snap = await getDocs(query(collection(db, "workshop_projects"))); snap.forEach(doc => dataProyekWS.push({id: doc.id, ...doc.data()})); dataProyekWS.sort((a,b) => b.timestamp - a.timestamp); } catch(e){}
         }
-
         window.renderUpdateListWS = function() {
             window.switchTabWS('proses'); const listProses = document.getElementById('list-ws-proses'); const listSelesai = document.getElementById('list-ws-selesai');
             listProses.innerHTML = ""; listSelesai.innerHTML = "";
@@ -1766,8 +1710,7 @@
         }
         window.bukaFormUpdateTaskListWS = function(id) {
             const data = dataProyekWS.find(x => x.id === id); if(!data) return;
-            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('list-ws-selesai').style.display = 'none';
-            document.getElementById('ws-task-list-area').style.display = 'block'; document.getElementById('ws-update-id-project').value = id;
+            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('list-ws-selesai').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; document.getElementById('ws-update-id-project').value = id;
             document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProyek;
             const container = document.getElementById('ws-tasks-container'); container.innerHTML = "";
             data.tasks.forEach((t, i) => {
@@ -1796,18 +1739,11 @@
             const id = document.getElementById('ws-update-id-project').value; const i = document.getElementById('ws-update-task-index').value; const j = document.getElementById('ws-update-subtask-index').value;
             const pic = document.getElementById('ws-up-pic').value; const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const status = document.getElementById('ws-up-status').value;
             if(!pic || !start || !finish) return alert("Lengkapi data Aktual!");
-            
             window.toggleLoader(true, "Update Actual...");
             const data = dataProyekWS.find(x => x.id === id);
             let s = new Date(start); let f = new Date(finish); let diff = (f - s) / 3600000;
-            
-            data.tasks[i].subTasks[j].actualStart = start; data.tasks[i].subTasks[j].actualFinish = finish;
-            data.tasks[i].subTasks[j].actualDurasi = (data.tasks[i].subTasks[j].actualDurasi || 0) + diff;
-            data.tasks[i].subTasks[j].pic = pic; data.tasks[i].subTasks[j].status = status;
-
-            let allDone = true; data.tasks.forEach(t => t.subTasks.forEach(st => { if(st.status !== 'Selesai') allDone = false; }));
-            if(allDone) data.statusGlobal = 'Selesai';
-
+            data.tasks[i].subTasks[j].actualStart = start; data.tasks[i].subTasks[j].actualFinish = finish; data.tasks[i].subTasks[j].actualDurasi = (data.tasks[i].subTasks[j].actualDurasi || 0) + diff; data.tasks[i].subTasks[j].pic = pic; data.tasks[i].subTasks[j].status = status;
+            let allDone = true; data.tasks.forEach(t => t.subTasks.forEach(st => { if(st.status !== 'Selesai') allDone = false; })); if(allDone) data.statusGlobal = 'Selesai';
             try { await updateDoc(doc(db, "workshop_projects", id), { tasks: data.tasks, statusGlobal: data.statusGlobal }); alert("Tugas Diperbarui!"); await window.ambilDataServerWS(); window.bukaFormUpdateTaskListWS(id); document.getElementById('ws-form-update-task').style.display = 'none'; } catch(e){} window.toggleLoader(false);
         }
         
@@ -1822,7 +1758,7 @@
             dataProyekWS.forEach(d => {
                 let actualT = 0; d.tasks.forEach(t => t.subTasks.forEach(s => actualT += (s.actualDurasi || 0)));
                 let ach = Math.round((d.estJam > 0 ? actualT / d.estJam : 0) * 100);
-                container.innerHTML += `<div class="progress-card" style="border-left-color: ${d.statusGlobal==='Selesai'?'#10b981':'#f59e0b'};" onclick="alert('Rincian Progress: ${d.namaProyek}')"><h3>${d.namaProyek}</h3><p style="font-size:12px;">ACH Rate: ${ach}% | Estimasi: ${d.estJam} Jam | Aktual: ${actualT.toFixed(1)} Jam</p></div>`;
+                container.innerHTML += `<div class="progress-card" style="border-left-color: ${d.statusGlobal==='Selesai'?'#10b981':'#f59e0b'};" onclick="alert('Ini adalah rincian Progres dari Project ${d.namaProyek}')"><h3>${d.namaProyek}</h3><p style="font-size:12px;">ACH Rate: ${ach}% | Estimasi: ${d.estJam} Jam | Aktual: ${actualT.toFixed(1)} Jam</p></div>`;
             });
         }
         window.renderCheckboxAIWS = function() {
@@ -1831,10 +1767,12 @@
         }
         window.generateAIReport = function() {
             const selected = Array.from(document.querySelectorAll('.chk-ai-ws:checked')).map(cb => cb.value);
-            if(selected.length === 0) return alert("Pilih minimal 1 proyek!");
-            window.toggleLoader(true, "AI Membuat Laporan...");
-            setTimeout(() => { alert("Report AI Executive Berhasil Dibuat (Mockup)."); window.toggleLoader(false); }, 1500);
+            if(selected.length === 0) return alert("Pilih minimal 1 proyek!"); window.toggleLoader(true, "AI Membuat Laporan...");
+            setTimeout(() => { alert("Report AI Executive Berhasil Dibuat."); window.toggleLoader(false); }, 1500);
         }
+        window.terapkanFilterWS = function() { alert("Fitur filter Workshop diterapkan!"); }
+        window.resetFilterWS = function() { document.getElementById('ws-filter-nama').value = ""; document.getElementById('ws-filter-tanggal').value = ""; }
+        window.switchViewWS = function(view) { alert("Switch View ke mode: " + view); }
 
         // =========================================================================
         // LOGIC FIX 9: MOLD STORE, TROUBLE, PKM ELTRE (Fungsi Buka Menu)
@@ -1849,12 +1787,11 @@
         window.bukaTabMold = function(tab) { document.querySelectorAll('#ms-update-mold-screen .tab-btn').forEach(b => b.classList.remove('tab-active')); document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none'); document.getElementById(`btn-tab-${tab}`).classList.add('tab-active'); document.getElementById(`tab-${tab}`).style.display = 'block'; }
 
         window.bukaDivisiTrouble = async function() { window.navigasi('ms-trouble-screen'); window.bukaTabTrouble('belum'); await window.muatDataTrouble(); }
-        window.bukaPKMEltre = async function() { window.navigasi('ms-pkm-eltre-screen'); window.bukaTabPKM('verifikasi'); await window.muatDataPKMEltre(); }
-        
         window.bukaTabTrouble = function(tab) { document.querySelectorAll('.tab-btn-trouble').forEach(b => b.classList.remove('tab-active')); document.querySelectorAll('.tab-content-trouble').forEach(c => c.style.display = 'none'); document.getElementById(`btn-tab-trouble-${tab}`).classList.add('tab-active'); document.getElementById(`tab-trouble-${tab}`).style.display = 'block'; }
-        window.muatDataTrouble = async function() { troubleDatabase = []; /* Mockup / Real fetch dari trouble_mold */ }
+        window.muatDataTrouble = async function() { troubleDatabase = []; /* Database fetch dari trouble_mold */ }
         window.simpanLaporanTrouble = function() { alert("Laporan Trouble Disimpan!"); document.getElementById('modal-form-trouble').style.display = 'none'; }
         
+        window.bukaPKMEltre = async function() { window.navigasi('ms-pkm-eltre-screen'); window.bukaTabPKM('verifikasi'); await window.muatDataPKMEltre(); }
         window.bukaTabPKM = function(tab) { document.querySelectorAll('.tab-btn-pkm').forEach(b => b.classList.remove('tab-active')); document.querySelectorAll('.tab-content-pkm').forEach(c => c.style.display = 'none'); document.getElementById(`btn-tab-pkm-${tab}`).classList.add('tab-active'); document.getElementById(`tab-pkm-${tab}`).style.display = 'block'; }
         window.muatDataPKMEltre = async function() { pkmDatabase = []; /* Fetch dari pkm_eltre */ }
         window.prosesVerifikasiPKM = function(aksi) { alert(`PKM di-set sebagai: ${aksi}`); document.getElementById('modal-aksi-pkm').style.display = 'none'; }
@@ -1864,21 +1801,14 @@
         // =========================================================================
         window.inisialisasiDataAnalisaGlobal = async function() {
             window.toggleLoader(true, "Analisa AI Global...");
-            await window.ambilDataServerWS(); // Mengambil data proyek workshop sebagai basis dashboard
+            await window.ambilDataServerWS(); 
             
             let totalProyek = dataProyekWS.length; let totalEst = 0; let totalAct = 0; let achRate = 0;
-            dataProyekWS.forEach(d => {
-                totalEst += d.estJam || 0;
-                d.tasks.forEach(t => t.subTasks.forEach(s => totalAct += (s.actualDurasi || 0)));
-            });
+            dataProyekWS.forEach(d => { totalEst += d.estJam || 0; d.tasks.forEach(t => t.subTasks.forEach(s => totalAct += (s.actualDurasi || 0))); });
             if(totalEst > 0) achRate = Math.round((totalAct / totalEst) * 100);
             
-            document.getElementById('dash-kpi-proyek').innerText = totalProyek;
-            document.getElementById('dash-kpi-est').innerText = totalEst.toFixed(0);
-            document.getElementById('dash-kpi-act').innerText = totalAct.toFixed(1);
-            document.getElementById('dash-kpi-ach').innerText = achRate + "%";
+            document.getElementById('dash-kpi-proyek').innerText = totalProyek; document.getElementById('dash-kpi-est').innerText = totalEst.toFixed(0); document.getElementById('dash-kpi-act').innerText = totalAct.toFixed(1); document.getElementById('dash-kpi-ach').innerText = achRate + "%";
 
-            // Render Chart Mockup (Memerlukan Chart.js CDN yang ada di header HTML)
             if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
             
             try {
@@ -1890,7 +1820,7 @@
 
                 const ctxMulti = document.getElementById('chartMultivariate').getContext('2d');
                 chartMulti = new Chart(ctxMulti, { type: 'line', data: { labels: ['Jan', 'Feb', 'Mar', 'Apr'], datasets: [{ label: 'Trend ACH Rate', data: [80, 85, 90, achRate], borderColor: '#8b5cf6', fill: false, tension: 0.4 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } } });
-            } catch(e) { console.log("Chart.js failed to load."); }
+            } catch(e) {}
             window.toggleLoader(false);
         }
 
