@@ -1173,9 +1173,9 @@
                 </div>
             </div>
             <div id="gosok-result-container" class="dark-panel" style="display: none;">
-                <h3 class="sub-title-box" style="margin-top:0 !important;"><i class="fas fa-check-circle" style="color:var(--cepat);"></i> Hasil Olahan Otomatis</h3>
+                <h3 class="sub-title-box" style="margin-top:0 !important; font-size:13px !important;"><i class="fas fa-edit" style="color:var(--cepat);"></i> Cek & Edit Hasil Sebelum Disimpan</h3>
                 <div style="overflow-x: auto; border-radius:12px; margin-top:15px;">
-                    <table class="report-table" style="min-width: 550px; margin:0; border:none;">
+                    <table class="report-table" style="min-width: 650px; margin:0; border:none;">
                         <thead><tr><th style="width: 25%; border-top:none; border-left:none;">Nama Mesin</th><th style="width: 30%; border-top:none;">Nama Mold</th><th style="width: 15%; border-top:none;">Start</th><th style="width: 15%; border-top:none;">Finish</th><th style="width: 15%; text-align:center; border-top:none; border-right:none;">Durasi</th></tr></thead>
                         <tbody id="gosok-table-body"></tbody>
                     </table>
@@ -1190,6 +1190,7 @@
         <div class="content-wrapper">
             <div class="header"><h2><i class="fas fa-history" style="margin-right:10px;"></i> Riwayat Gosok Mold</h2></div>
             <div class="export-row" style="margin-bottom:20px;">
+                <!-- TOMBOL EXPORT EXCEL DI SINI -->
                 <button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelLengkap()" style="width: 100%; padding:14px; border-radius:12px; background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; cursor:pointer; font-weight:bold;"><i class="fas fa-file-excel"></i> Download Rekap Semua Data (Excel)</button>
             </div>
             <div id="list-gosok-riwayat"></div>
@@ -1528,7 +1529,7 @@
         }
 
         // ==========================================
-        // GOSOK MOLD AI LOGIC (FIXED - SMART DETECT)
+        // GOSOK MOLD AI LOGIC (PERBAIKAN INPUT EDITABLE & EXPORT EXCEL)
         // ==========================================
         window.bukaInputGosokMold = function() {
             window.navigasi('gosok-mold-screen');
@@ -1538,6 +1539,7 @@
             window.navigasi('gosok-riwayat-screen');
             await window.ambilDataGosok();
         }
+        
         window.aiProsesGosokMold = function() {
             const raw = document.getElementById('gosok-raw-input').value;
             if(!raw) return alert("Silakan paste laporan mentah dari lapangan terlebih dahulu!");
@@ -1561,23 +1563,20 @@
                         let moldName = "Unknown Mold";
 
                         if (pendingLines.length >= 2) {
-                            // Jika ada 2 baris teks sebelumnya: Baris 1 = Mesin, Baris Terakhir = Mold
-                            currentMesin = pendingLines[0].replace(/^\d+[\.\-\)]\s*/, '').trim(); // Hapus nomor urut "1.", "2 .", dll
+                            currentMesin = pendingLines[0].replace(/^\d+[\.\-\)]\s*/, '').trim(); 
                             moldName = pendingLines[pendingLines.length - 1].replace(/^\d+[\.\-\)]\s*/, '').trim();
                         } else if (pendingLines.length === 1) {
-                            // Jika cuma 1 baris teks: Dianggap Mold, Mesin pakai memori yang sebelumnya
                             moldName = pendingLines[0].replace(/^\d+[\.\-\)]\s*/, '').trim();
                         } else if (pendingLines.length === 0) {
                             moldName = "Sama dengan atas";
                         }
 
-                        // Hitung Durasi otomatis
                         let durasi = "-";
                         try {
                             let s = new Date(`1970-01-01T${start}:00Z`);
                             let f = new Date(`1970-01-01T${finish}:00Z`);
                             let diff = (f - s) / 60000;
-                            if(diff < 0) diff += 24 * 60; // Handle jika lewat tengah malam
+                            if(diff < 0) diff += 24 * 60; 
                             durasi = diff + " Mnt";
                         } catch(e){}
 
@@ -1589,9 +1588,8 @@
                             durasi: durasi
                         });
                         
-                        pendingLines = []; // Kosongkan antrean setelah waktu ditemukan
+                        pendingLines = []; 
                     } else {
-                        // Bukan waktu, berarti ini teks nama mesin atau mold
                         pendingLines.push(line);
                     }
                 }
@@ -1601,8 +1599,15 @@
                 if(window.tempGosokOlahan.length === 0) {
                     tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:gray;">Format tidak dikenali AI. Pastikan format mengandung rentang jam (misal 16:15-16:20)</td></tr>`;
                 } else {
-                    window.tempGosokOlahan.forEach(item => {
-                        tb.innerHTML += `<tr><td>${item.mesin}</td><td>${item.mold}</td><td>${item.start}</td><td>${item.finish}</td><td style="text-align:center; font-weight:bold; color:var(--proses);">${item.durasi}</td></tr>`;
+                    // PERBAIKAN: JADIKAN TABEL BISA DIEDIT (INPUT BOX)
+                    window.tempGosokOlahan.forEach((item, idx) => {
+                        tb.innerHTML += `<tr>
+                            <td style="padding:5px;"><input type="text" id="edit-mesin-${idx}" value="${item.mesin}" style="padding:8px; border-radius:8px; font-size:12px; border:1px solid #475569; width:100%; box-sizing:border-box;"></td>
+                            <td style="padding:5px;"><input type="text" id="edit-mold-${idx}" value="${item.mold}" style="padding:8px; border-radius:8px; font-size:12px; border:1px solid #475569; width:100%; box-sizing:border-box;"></td>
+                            <td style="padding:5px;"><input type="text" id="edit-start-${idx}" value="${item.start}" onchange="window.hitungUlangDurasiGosok(${idx})" style="padding:8px; border-radius:8px; font-size:12px; border:1px solid #475569; width:100%; box-sizing:border-box; text-align:center;"></td>
+                            <td style="padding:5px;"><input type="text" id="edit-finish-${idx}" value="${item.finish}" onchange="window.hitungUlangDurasiGosok(${idx})" style="padding:8px; border-radius:8px; font-size:12px; border:1px solid #475569; width:100%; box-sizing:border-box; text-align:center;"></td>
+                            <td style="padding:5px;"><input type="text" id="edit-durasi-${idx}" value="${item.durasi}" style="padding:8px; border-radius:8px; font-size:12px; font-weight:bold; color:var(--proses); text-align:center; border:1px solid #475569; width:100%; box-sizing:border-box;"></td>
+                        </tr>`;
                     });
                 }
 
@@ -1610,13 +1615,43 @@
                 window.toggleLoader(false);
             }, 800);
         }
+
+        // FUNGSI BARU: HITUNG ULANG DURASI KALAU JAM DIEDIT USER
+        window.hitungUlangDurasiGosok = function(idx) {
+            let start = document.getElementById(`edit-start-${idx}`).value;
+            let finish = document.getElementById(`edit-finish-${idx}`).value;
+            let durasiInput = document.getElementById(`edit-durasi-${idx}`);
+            try {
+                let s = new Date(`1970-01-01T${start}:00Z`);
+                let f = new Date(`1970-01-01T${finish}:00Z`);
+                let diff = (f - s) / 60000;
+                if(diff < 0) diff += 24 * 60;
+                if(!isNaN(diff)) durasiInput.value = diff + " Mnt";
+            } catch(e){}
+        }
+
+        // PERBAIKAN: SIMPAN DATA DARI INPUT YANG DIEDIT, BUKAN DARI ARRAY LAMA
         window.simpanOlahanGosokMold = async function() {
             if(!window.tempGosokOlahan || window.tempGosokOlahan.length === 0) return alert("Tidak ada data untuk disimpan!");
+            
+            let dataFinal = [];
+            for(let i=0; i<window.tempGosokOlahan.length; i++) {
+                let mesinVal = document.getElementById(`edit-mesin-${i}`).value;
+                let moldVal = document.getElementById(`edit-mold-${i}`).value;
+                let startVal = document.getElementById(`edit-start-${i}`).value;
+                let finishVal = document.getElementById(`edit-finish-${i}`).value;
+                let durasiVal = document.getElementById(`edit-durasi-${i}`).value;
+                
+                dataFinal.push({
+                    mesin: mesinVal, mold: moldVal, start: startVal, finish: finishVal, durasi: durasiVal
+                });
+            }
+
             window.toggleLoader(true, "Menyimpan ke Database...");
             try {
                 await addDoc(collection(db, "gosok_mold"), {
                     waktu: window.dapatkanWaktuRill(),
-                    dataTabel: window.tempGosokOlahan,
+                    dataTabel: dataFinal,
                     timestamp: Date.now()
                 });
                 alert("Data berhasil disimpan ke Database!");
@@ -1628,6 +1663,7 @@
             }
             window.toggleLoader(false);
         }
+
         window.ambilDataGosok = async function() {
             window.toggleLoader(true, "Memuat Data...");
             try {
@@ -1638,7 +1674,7 @@
                 let count = 0;
                 let tempData = [];
                 snap.forEach(doc => { tempData.push({id: doc.id, ...doc.data()}); });
-                tempData.sort((a,b) => b.timestamp - a.timestamp); // Urutkan terbaru
+                tempData.sort((a,b) => b.timestamp - a.timestamp); 
                 
                 tempData.forEach(data => {
                     count++;
@@ -1648,8 +1684,45 @@
             } catch(e) {}
             window.toggleLoader(false);
         }
-        window.exportGosokExcelLengkap = function() {
-            alert("Proses Export Excel sedang berjalan...");
+        
+        // PERBAIKAN: FUNGSI EXPORT EXCEL AKTIF (MENGGUNAKAN SHEETJS)
+        window.exportGosokExcelLengkap = async function() {
+            window.toggleLoader(true, "Membuat File Excel...");
+            try {
+                const q = query(collection(db, "gosok_mold"));
+                const snap = await getDocs(q);
+                let allData = [];
+                snap.forEach(doc => {
+                    let docData = doc.data();
+                    if(docData.dataTabel && Array.isArray(docData.dataTabel)) {
+                        docData.dataTabel.forEach(item => {
+                            allData.push({
+                                "Waktu Record": docData.waktu,
+                                "Nama Mesin": item.mesin,
+                                "Nama Mold": item.mold,
+                                "Start": item.start,
+                                "Finish": item.finish,
+                                "Durasi": item.durasi
+                            });
+                        });
+                    }
+                });
+
+                if(allData.length === 0) {
+                    alert("Tidak ada data untuk di-export!");
+                    window.toggleLoader(false);
+                    return;
+                }
+
+                const ws = XLSX.utils.json_to_sheet(allData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Rekap Gosok Mold");
+                XLSX.writeFile(wb, `Rekap_Gosok_Mold_${Date.now()}.xlsx`);
+
+            } catch(e) {
+                alert("Gagal export Excel: " + e.message);
+            }
+            window.toggleLoader(false);
         }
 
         // --- NOTULEN MEETING LOGIC (DI-FIX 100%) ---
@@ -1854,223 +1927,13 @@
         }
         window.generateAIReport = function() { window.generateAIReportDirect(); window.navigasi('ai-dashboard-screen'); }
         
-        // MOLD WORKSHOP (JS LOGIC)
-        window.tugasWorkshopArray = [];
-        window.pilihanProsesMesin = ["BUBUT", "EDM", "BOR RADIAL", "ROUTER", "MILLING", "CNC", "BONGKAR", "SPOTING", "RAKIT", "ASSY & TES AIR", "SOCK", "POLES"];
-        
-        window.inisialisasiFormWS = function() {
-            const namaEl = document.getElementById('ws-np-nama'); if(namaEl) namaEl.value = "";
-            const startEl = document.getElementById('ws-np-start-date'); if(startEl) startEl.value = window.dapatkanTanggalLokal();
-            const finishEl = document.getElementById('ws-np-finish-date'); if(finishEl) finishEl.value = "";
-            window.tugasWorkshopArray = [];
-            window.tambahTugasUtamaWS(); 
-        }
-
-        window.tambahTugasUtamaWS = function() { window.tugasWorkshopArray.push({ namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, punyaSub: false, subTugas: [], riwayatHarian: [] }); window.renderRencanaKerjaWS(); }
-        window.tambahSubTugasWS = function(indexUtama) { window.tugasWorkshopArray[indexUtama].punyaSub = true; window.tugasWorkshopArray[indexUtama].proses = "Multi-Proses"; window.tugasWorkshopArray[indexUtama].estimasiJam = 0; window.tugasWorkshopArray[indexUtama].subTugas.push({ namaTugas: "", proses: "", estimasiJam: 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, riwayatHarian: [] }); window.renderRencanaKerjaWS(); }
-        window.hapusTugasWS = function(indexUtama, indexSub = null) { if(indexSub !== null) { window.tugasWorkshopArray[indexUtama].subTugas.splice(indexSub, 1); if(window.tugasWorkshopArray[indexUtama].subTugas.length === 0) { window.tugasWorkshopArray[indexUtama].punyaSub = false; window.tugasWorkshopArray[indexUtama].proses = ""; } } else { window.tugasWorkshopArray.splice(indexUtama, 1); } window.renderRencanaKerjaWS(); }
-        
-        window.updateNilaiTugasWS = function(indexUtama, indexSub, field, nilai) {
-            if(field === "namaTugas") nilai = nilai.toUpperCase();
-            if(indexSub !== null) { if(field === "estimasiJam") nilai = parseFloat(nilai) || 0; window.tugasWorkshopArray[indexUtama].subTugas[indexSub][field] = nilai; } 
-            else { if(field === "estimasiJam") nilai = parseFloat(nilai) || 0; window.tugasWorkshopArray[indexUtama][field] = nilai; }
-            if(field === "estimasiJam") window.kalkulasiTotalWaktuWS();
-        }
-
-        window.kalkulasiTotalWaktuWS = function() {
-            let totalJam = 0;
-            window.tugasWorkshopArray.forEach(tugas => {
-                if(tugas.punyaSub) { let sumSub = 0; tugas.subTugas.forEach(sub => sumSub += sub.estimasiJam); tugas.estimasiJam = sumSub; totalJam += sumSub; } 
-                else { totalJam += tugas.estimasiJam; }
-            });
-            let totalHari = (totalJam / 24).toFixed(1); 
-            const jEl = document.getElementById('ws-np-jam'); if(jEl) jEl.value = totalJam + " Jam";
-            const hEl = document.getElementById('ws-np-hari'); if(hEl) hEl.value = totalHari + " Hari";
-        }
-
-        window.renderRencanaKerjaWS = function() {
-            const container = document.getElementById('ws-rencana-kerja-container'); if(!container) return; container.innerHTML = "";
-            let opsiMesinHtml = `<option value="" disabled selected>Pilih Proses</option>`; window.pilihanProsesMesin.forEach(m => opsiMesinHtml += `<option value="${m}">${m}</option>`);
-            window.tugasWorkshopArray.forEach((tugas, idx) => {
-                let namaTugasAman = tugas.namaTugas ? tugas.namaTugas.replace(/"/g, '&quot;') : "";
-                let html = `<div style="border: 1px solid var(--border-dark); border-radius: 12px; margin-bottom: 15px; background: var(--bg-dark); overflow: hidden;"><div style="background: var(--card-dark); color: white; padding: 12px 15px; display: flex; justify-content: space-between; font-weight: bold; border-bottom:1px solid var(--border-dark);"><span>Tugas #${idx + 1}</span><button type="button" onclick="window.hapusTugasWS(${idx})" style="background:#ef4444; color:white; border:none; border-radius:6px; cursor:pointer; padding:2px 8px;">X</button></div><div style="padding: 15px;"><div class="form-group"><label>Nama Tugas</label><input type="text" value="${namaTugasAman}" oninput="window.updateNilaiTugasWS(${idx}, null, 'namaTugas', this.value)" style="text-transform: uppercase;"></div>`;
-                if(!tugas.punyaSub) { html += `<div style="display:flex; gap:10px;"><div style="flex:2;" class="form-group"><label>Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, null, 'proses', this.value)">${opsiMesinHtml.replace(`value="${tugas.proses}"`, `value="${tugas.proses}" selected`)}</select></div><div style="flex:1;" class="form-group"><label>Est. Jam</label><input type="number" min="0" step="0.5" value="${tugas.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, null, 'estimasiJam', this.value)"></div></div>`; }
-                if(tugas.punyaSub) {
-                    html += `<div style="margin-top:10px; border-left: 3px solid var(--secondary); padding-left: 10px; margin-bottom:10px;">`;
-                    tugas.subTugas.forEach((sub, subIdx) => {
-                        let namaSubAman = sub.namaTugas ? sub.namaTugas.replace(/"/g, '&quot;') : "";
-                        html += `<div style="background: var(--card-dark); padding: 10px; border-radius: 6px; border: 1px dashed #475569; margin-bottom: 10px; position:relative;"><button type="button" onclick="window.hapusTugasWS(${idx}, ${subIdx})" style="position:absolute; top:-10px; right:-10px; background:#ef4444; color:white; border:none; border-radius:50%; width:25px; height:25px; cursor:pointer;">X</button><div class="form-group" style="margin-bottom:5px;"><label style="font-size:11px;">Sub Tugas</label><input type="text" value="${namaSubAman}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'namaTugas', this.value)" style="padding:6px; text-transform: uppercase;"></div><div style="display:flex; gap:10px;"><div style="flex:2;"><label style="font-size:11px;">Proses</label><select onchange="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'proses', this.value)" style="padding:6px;">${opsiMesinHtml.replace(`value="${sub.proses}"`, `value="${sub.proses}" selected`)}</select></div><div style="flex:1;"><label style="font-size:11px;">Est. Jam</label><input type="number" min="0" step="0.5" value="${sub.estimasiJam || ''}" oninput="window.updateNilaiTugasWS(${idx}, ${subIdx}, 'estimasiJam', this.value)" style="padding:6px;"></div></div></div>`;
-                    });
-                    html += `</div><div style="font-size:12px; color:var(--secondary); font-weight:bold; margin-bottom:10px;">Total Estimasi Sub: ${tugas.estimasiJam} Jam</div>`;
-                }
-                html += `<button type="button" onclick="window.tambahSubTugasWS(${idx})" style="background:var(--border-dark); color:white; border:1px solid #475569; padding:8px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;"><i class="fas fa-sitemap"></i> Tambah Sub Tugas</button></div></div>`;
-                container.innerHTML += html;
-            });
-            window.kalkulasiTotalWaktuWS();
-        }
-
-        window.simpanNewProjectWS = async function() {
-            try {
-                const namaMold = document.getElementById('ws-np-nama').value.trim();
-                const startDate = document.getElementById('ws-np-start-date').value;
-                const finishDate = document.getElementById('ws-np-finish-date').value;
-                const estHari = document.getElementById('ws-np-hari').value || "0 Hari";
-                const estJam = document.getElementById('ws-np-jam').value || "0 Jam";
-
-                if(namaMold === "") return alert("❌ PERHATIAN: Nama Proyek/MOLD wajib diisi!");
-                if(!startDate) return alert("❌ PERHATIAN: Tanggal Mulai Pekerjaan wajib diisi!");
-                if(!finishDate) return alert("❌ PERHATIAN: Tanggal Target Selesai wajib diisi!");
-                if(!window.tugasWorkshopArray || window.tugasWorkshopArray.length === 0) return alert("❌ PERHATIAN: Minimal harus ada 1 Tugas Utama!");
-
-                let dataSiapTembak = [];
-                window.tugasWorkshopArray.forEach(tugas => {
-                    let tugasBersih = { namaTugas: tugas.namaTugas, proses: tugas.proses || "Multi-Proses", estimasiJam: Number(tugas.estimasiJam) || 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, punyaSub: tugas.punyaSub, subTugas: [], riwayatHarian: [] };
-                    if (tugas.punyaSub) {
-                        tugas.subTugas.forEach(sub => { tugasBersih.subTugas.push({ namaTugas: sub.namaTugas, proses: sub.proses, estimasiJam: Number(sub.estimasiJam) || 0, status: "Belum", pic: "", shift: "", start: "", finish: "", durasiAktual: 0, riwayatHarian: [] }); });
-                    }
-                    dataSiapTembak.push(tugasBersih);
-                });
-
-                window.toggleLoader(true, "Menyimpan ke Database Firebase...");
-                await addDoc(collection(db, "projects"), { 
-                    divisi: "DIVISI MOLD WORKSHOP", 
-                    namaProject: namaMold, 
-                    tanggalMulai: startDate, 
-                    targetSelesai: finishDate, 
-                    totalEstimasiHari: estHari, 
-                    totalEstimasiJam: estJam, 
-                    rencanaKerja: dataSiapTembak, 
-                    statusProject: "Proses", 
-                    waktuDibuat: window.dapatkanWaktuRill(), 
-                    timestamp: Date.now() 
-                });
-                
-                alert("✅ BERHASIL! Proyek Baru Tersimpan di Database Firebase.");
-                window.inisialisasiFormWS(); 
-                window.navigasi('divisi-screen'); 
-                await window.ambilDataServerWS(); 
-            } catch (error) { 
-                alert("Gagal Menyimpan. Pastikan Internet Anda aktif.\nError detail: " + error.message); 
-            } finally {
-                window.toggleLoader(false); 
-            }
-        }
-
-        window.ambilDataServerWS = async function() {
-            window.toggleLoader(true, "Sinkronisasi Data..."); currentDatabase = [];
-            try {
-                const q = query(collection(db, "projects"), where("divisi", "==", "DIVISI MOLD WORKSHOP"));
-                const snap = await getDocs(q);
-                snap.forEach(doc => { let dataProj = doc.data(); if (dataProj.rencanaKerja && dataProj.waktuDibuat) { currentDatabase.push({ id: doc.id, ...dataProj }); } });
-                currentDatabase.sort((a, b) => b.timestamp - a.timestamp);
-                if (document.getElementById('list-ws-proses')) { window.renderUpdateListWS(); window.renderProgressListWS(); }
-            } catch(e){} window.toggleLoader(false);
-        }
-
-        window.switchTabWS = function(tab) {
-            document.getElementById('tab-ws-proses').classList.remove('tab-active'); document.getElementById('tab-ws-selesai').classList.remove('tab-active');
-            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('list-ws-selesai').style.display = 'none';
-            document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('ws-form-update-task').style.display = 'none';
-            document.getElementById('tab-ws-' + tab).classList.add('tab-active'); document.getElementById('list-ws-' + tab).style.display = 'block';
-        }
-
-        window.renderUpdateListWS = async function() {
-            if(currentDatabase.length === 0) await window.ambilDataServerWS();
-            const lstProses = document.getElementById('list-ws-proses'); const lstSelesai = document.getElementById('list-ws-selesai');
-            if(!lstProses || !lstSelesai) return; lstProses.innerHTML = ""; lstSelesai.innerHTML = "";
-            currentDatabase.forEach(data => {
-                let htmlCard = `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Proses' ? 'var(--proses)' : 'var(--cepat)'}; margin-bottom:12px;"><h4 style="margin:0 0 5px 0;">${data.namaProject}</h4><p style="margin:0; font-size:12px; color:gray;"><i class="fas fa-clock"></i> Est: ${data.totalEstimasiHari} (${data.totalEstimasiJam})</p>${data.statusProject === 'Proses' ? `<button type="button" onclick="window.bukaDaftarTugasWS('${data.id}')" style="width:100%; margin-top:10px; padding:10px; background:var(--secondary); color:white; border:none; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-cogs"></i> KERJAKAN PROJECT</button>` : `<span class="status-badge bg-cepat" style="display:block; text-align:center; margin-top:10px;"><i class="fas fa-check-double"></i> PROJECT SELESAI</span>`}</div>`;
-                if(data.statusProject === 'Proses') lstProses.innerHTML += htmlCard; else lstSelesai.innerHTML += htmlCard;
-            });
-            if(lstProses.innerHTML === "") lstProses.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project dikerjakan.</p>`;
-            if(lstSelesai.innerHTML === "") lstSelesai.innerHTML = `<p style="text-align:center; color:gray;">Belum ada project selesai.</p>`;
-        }
-
-        window.bukaDaftarTugasWS = function(idProject) {
-            const data = currentDatabase.find(d => d.id === idProject);
-            document.getElementById('ws-update-id-project').value = idProject; document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProject;
-            const cont = document.getElementById('ws-tasks-container'); cont.innerHTML = "";
-            data.rencanaKerja.forEach((tugas, idxUtama) => {
-                if(tugas.punyaSub) {
-                    let subHtml = "";
-                    tugas.subTugas.forEach((sub, idxSub) => {
-                        let isSelesai = sub.status === "Selesai"; 
-                        let textBtn = (sub.durasiAktual > 0) ? "UPDATE" : "KERJAKAN";
-                        let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
-                        let tombolKerjakan = isSelesai ? `` : `<button type="button" onclick="window.bukaFormUpdateTaskWS(${idxUtama}, ${idxSub})" style="background:#3b82f6; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:11px; font-weight:bold; cursor:pointer;">${textBtn}</button>`;
-                        subHtml += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-dark); padding:8px 12px; border-radius:6px; margin-bottom:6px; border:1px solid var(--border-dark);"><div style="display:flex; align-items:center; gap:8px;">${ikon} <div><div style="font-weight:bold; font-size:12px; color:white;">${sub.namaTugas}</div><div style="font-size:10px; color:gray;">Proses: ${sub.proses} | Est: ${sub.estimasiJam} Jam</div></div></div>${tombolKerjakan}</div>`;
-                    });
-                    cont.innerHTML += `<div style="background:var(--card-dark); border:1px solid var(--border-dark); border-radius:8px; padding:10px; margin-bottom:12px;"><h4 style="margin:0 0 10px 0; color:white; border-bottom:1px solid var(--border-dark); padding-bottom:5px;">${tugas.namaTugas}</h4>${subHtml}</div>`;
-                } else {
-                    let isSelesai = tugas.status === "Selesai"; 
-                    let textBtn = (tugas.durasiAktual > 0) ? "UPDATE" : "KERJAKAN";
-                    let ikon = isSelesai ? `<i class="fas fa-check-circle" style="color:var(--cepat); font-size:18px;"></i>` : `<i class="fas fa-cog fa-spin" style="color:var(--proses); font-size:18px;"></i>`;
-                    let tombolKerjakan = isSelesai ? `` : `<button type="button" onclick="window.bukaFormUpdateTaskWS(${idxUtama}, null)" style="background:#3b82f6; color:white; border:none; padding:8px 15px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;">${textBtn}</button>`;
-                    cont.innerHTML += `<div style="display:flex; justify-content:space-between; align-items:center; background:var(--card-dark); border:1px solid var(--border-dark); border-radius:8px; padding:12px; margin-bottom:12px;"><div style="display:flex; align-items:center; gap:10px;">${ikon} <div><div style="font-weight:bold; font-size:14px; color:white;">${tugas.namaTugas}</div><div style="font-size:11px; color:gray;">Proses: ${tugas.proses} | Est: ${tugas.estimasiJam} Jam</div></div></div>${tombolKerjakan}</div>`;
-                }
-            });
-            document.getElementById('list-ws-proses').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; window.scrollTo(0, document.getElementById('ws-task-list-area').offsetTop);
-        }
-
-        window.tutupWsTaskList = function() { document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('list-ws-proses').style.display = 'block'; }
-
-        window.bukaFormUpdateTaskWS = function(idxUtama, idxSub) {
-            const idProject = document.getElementById('ws-update-id-project').value; const data = currentDatabase.find(d => d.id === idProject);
-            let targetTugas = idxSub !== null ? data.rencanaKerja[idxUtama].subTugas[idxSub] : data.rencanaKerja[idxUtama];
-            document.getElementById('ws-update-task-index').value = idxUtama; document.getElementById('ws-update-subtask-index').value = idxSub !== null ? idxSub : "";
-            document.getElementById('ws-nama-tugas-tampil').innerText = targetTugas.namaTugas;
-            document.getElementById('ws-up-pic').value = ""; document.getElementById('ws-up-start').value = ""; document.getElementById('ws-up-finish').value = ""; document.getElementById('ws-up-durasi').value = "";
-            const statusEl = document.getElementById('ws-up-status'); if(statusEl) statusEl.value = "Belum Selesai";
-            document.getElementById('ws-task-list-area').style.display = 'none'; document.getElementById('ws-form-update-task').style.display = 'block';
-        }
-
-        window.simpanUpdateTaskWS = async function() {
-            const pic = document.getElementById('ws-up-pic').value; const shift = document.getElementById('ws-up-shift').value;
-            const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const durasi = document.getElementById('ws-up-durasi').value;
-            const statusTarget = document.getElementById('ws-up-status').value;
-            
-            if(!pic || !start || !finish || durasi.includes("Error")) return alert("Data PIC, Start, dan Finish wajib diisi dengan benar!");
-
-            const idProject = document.getElementById('ws-update-id-project').value; const idxUtama = parseInt(document.getElementById('ws-update-task-index').value); const idxSubRaw = document.getElementById('ws-update-subtask-index').value;
-            let projIndex = currentDatabase.findIndex(d => d.id === idProject); let projData = currentDatabase[projIndex];
-            
-            let tanggalHariIni = start.split('T')[0];
-            let objRiwayat = { tanggal: tanggalHariIni, durasi: parseFloat(durasi), pic: pic };
-
-            let tTarget; if(idxSubRaw !== "") { let sIdx = parseInt(idxSubRaw); tTarget = projData.rencanaKerja[idxUtama].subTugas[sIdx]; } else { tTarget = projData.rencanaKerja[idxUtama]; }
-
-            tTarget.status = statusTarget; tTarget.pic = pic; tTarget.shift = shift; tTarget.start = start; tTarget.finish = finish;
-            tTarget.durasiAktual = (tTarget.durasiAktual || 0) + parseFloat(durasi);
-            if(!tTarget.riwayatHarian) tTarget.riwayatHarian = [];
-            tTarget.riwayatHarian.push(objRiwayat);
-
-            let isAllDone = true;
-            projData.rencanaKerja.forEach(t => {
-                if(t.punyaSub) { t.subTugas.forEach(s => { if(s.status !== "Selesai") isAllDone = false; }); } else { if(t.status !== "Selesai") isAllDone = false; }
-            });
-            if(isAllDone) projData.statusProject = "Selesai";
-
-            window.toggleLoader(true, "Menyimpan Progress...");
-            try {
-                await updateDoc(doc(db, "projects", idProject), { rencanaKerja: projData.rencanaKerja, statusProject: projData.statusProject, tanggalSelesaiProject: isAllDone ? window.dapatkanWaktuRill() : null });
-                alert("Progress Berhasil Disimpan!"); document.getElementById('ws-form-update-task').style.display = 'none';
-                if(isAllDone) { alert("YAY! Seluruh tugas pada Mold ini telah Selesai."); await window.ambilDataServerWS(); window.renderUpdateListWS(); window.switchTabWS('selesai'); } else { window.bukaDaftarTugasWS(idProject); }
-            } catch(e) { alert("Error: "+e.message); } window.toggleLoader(false);
-        }
-
-        window.batalUpdateTaskWS = function() { document.getElementById('ws-form-update-task').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; }
-        window.switchTabProgressWS = function(tipe) { document.getElementById('tab-prog-view').classList.remove('tab-active'); document.getElementById('tab-prog-report').classList.remove('tab-active'); document.getElementById('ws-prog-view-data').style.display = 'none'; document.getElementById('ws-prog-report-data').style.display = 'none'; document.getElementById('tab-prog-' + (tipe==='data'?'view':'report')).classList.add('tab-active'); document.getElementById('ws-prog-' + (tipe==='data'?'view-data':'report-data')).style.display = 'block'; if(tipe === 'report') window.renderReportCheckboxList(); }
-        window.wsKataKunciFilter = ""; window.wsTanggalFilter = "";
-        window.terapkanFilterWS = function() { window.wsKataKunciFilter = document.getElementById('ws-filter-nama').value; window.wsTanggalFilter = document.getElementById('ws-filter-tanggal').value; window.renderProgressListWS(); }
-        window.resetFilterWS = function() { document.getElementById('ws-filter-nama').value = ""; window.wsKataKunciFilter = ""; document.getElementById('ws-filter-tanggal').value = ""; window.wsTanggalFilter = ""; window.renderProgressListWS(); }
-        window.renderProgressListWS = async function() { if(currentDatabase.length === 0) await window.ambilDataServerWS(); const container = document.getElementById('list-ws-progress'); if(!container) return; container.innerHTML = ""; let dataTampil = currentDatabase; if(window.wsKataKunciFilter) dataTampil = dataTampil.filter(d => d.namaProject.includes(window.wsKataKunciFilter)); if(dataTampil.length === 0) return container.innerHTML = `<p style="text-align:center;">Data tidak ditemukan.</p>`; dataTampil.forEach(data => { let badge = data.statusProject === "Selesai" ? `<span class="status-badge bg-cepat"><i class="fas fa-check-double"></i> Selesai</span>` : `<span class="status-badge bg-proses"><i class="fas fa-cog fa-spin"></i> Proses</span>`; container.innerHTML += `<div class="progress-card" style="border-left-color: ${data.statusProject === 'Selesai' ? 'var(--cepat)' : 'var(--proses)'}; cursor:pointer;" onclick="window.bukaDetailProjectWS('${data.id}')"><h4 style="margin:0 0 5px 0;">${data.namaProject}</h4><p style="margin:0; font-size:12px; color:gray;">Tgl Update Terakhir: ${data.waktuDibuat}</p><p style="margin:5px 0 0 0; font-size:12px; font-weight:bold; color:var(--secondary);">Mulai: ${data.tanggalMulai || '-'} | Target: ${data.targetSelesai || '-'}</p>${badge}</div>`; }); }
-        window.renderReportCheckboxList = function() { const container = document.getElementById('list-ws-report-checkbox'); if(!container) return; container.innerHTML = ""; if(currentDatabase.length === 0) return container.innerHTML = `<p style="text-align:center; font-size:12px; color:gray;">Belum ada proyek.</p>`; currentDatabase.forEach(data => { container.innerHTML += `<div style="display:flex; align-items:center; gap:10px; padding:10px; background:var(--card-dark); border-bottom:1px solid var(--border-dark); margin-bottom:5px; border-radius:4px;"><input type="checkbox" class="chk-report-ai" value="${data.id}" id="chk-rep-${data.id}" style="width:18px; height:18px; cursor:pointer;" checked><label for="chk-rep-${data.id}" style="font-size:14px; font-weight:bold; cursor:pointer; margin:0; flex:1; color:white;">${data.namaProject} <span style="font-size:10px; color:gray; font-weight:normal;">(${data.statusProject})</span></label></div>`; }); }
-        window.switchViewWS = function(viewType) { document.getElementById('tab-view-harian').classList.remove('tab-active'); document.getElementById('tab-view-global').classList.remove('tab-active'); document.getElementById('ws-view-harian').style.display = 'none'; document.getElementById('ws-view-global').style.display = 'none'; document.getElementById('tab-view-' + viewType).classList.add('tab-active'); document.getElementById('ws-view-' + viewType).style.display = 'block'; }
-
-        // EXPORT LOGIC
-        window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
-        window.exportData = function() { alert("Fitur Export Excel siap!"); }
+        // EXPORT INFO EXCEL
         window.exportInfoExcel = function() { alert("Fitur Export Excel Info siap!"); }
+        window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
+        window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#020617" }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(() => window.toggleLoader(false)); }, 200); }
+        window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
+        window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
+        window.downloadNotulenJPG = function() { window.cetakGambarUniversal('report-notulen-content', 'Notulen'); }
         
         document.addEventListener("DOMContentLoaded", () => { 
             setTimeout(window.muatDataPKMEltre, 2000); 
