@@ -1190,10 +1190,23 @@
         <div class="content-wrapper">
             <div class="header"><h2><i class="fas fa-history" style="margin-right:10px;"></i> Riwayat Gosok Mold</h2></div>
             <div class="export-row" style="margin-bottom:20px;">
-                <!-- TOMBOL EXPORT EXCEL DI SINI -->
                 <button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelLengkap()" style="width: 100%; padding:14px; border-radius:12px; background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; cursor:pointer; font-weight:bold;"><i class="fas fa-file-excel"></i> Download Rekap Semua Data (Excel)</button>
             </div>
+            <p style="font-size: 12px; text-align: center; color: var(--text-muted); margin-bottom: 15px; font-weight:600;"><i class="fas fa-hand-pointer"></i> Klik pada list di bawah ini untuk melihat detail dan menarik 1 laporan.</p>
             <div id="list-gosok-riwayat"></div>
+        </div>
+    </div>
+
+    <!-- PERBAIKAN: LAYAR DETAIL 1 DATA GOSOK -->
+    <div id="gosok-detail-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header"><h2><i class="fas fa-file-invoice" style="margin-right:10px;"></i> Detail Laporan Gosok</h2></div>
+            <div class="export-row" style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+                <button class="btn-export btn-jpg" type="button" onclick="window.downloadGosokJPG()" style="flex:1; padding:14px; border-radius:12px; background:linear-gradient(135deg, #f59e0b, #d97706); color:white; border:none; cursor:pointer; font-weight:bold;"><i class="fas fa-image"></i> Download JPG</button>
+                <button class="btn-export btn-pdf" type="button" onclick="window.cetakPDFUniversal()" style="flex:1; padding:14px; border-radius:12px; background:linear-gradient(135deg, #db2777, #be185d); color:white; border:none; cursor:pointer; font-weight:bold;"><i class="fas fa-file-pdf"></i> Download PDF</button>
+                <button class="btn-export btn-excel" type="button" onclick="window.exportGosokExcelSingle()" style="width:100%; padding:14px; border-radius:12px; background:linear-gradient(135deg, #3b82f6, #1d4ed8); color:white; border:none; cursor:pointer; font-weight:bold; margin-top:5px;"><i class="fas fa-file-excel"></i> Download Excel (Data Ini Saja)</button>
+            </div>
+            <div class="report-sheet dark-panel" id="report-gosok-content" style="box-shadow:none; overflow-x:auto; padding:25px;"></div>
         </div>
     </div>
 
@@ -1529,7 +1542,7 @@
         }
 
         // ==========================================
-        // GOSOK MOLD AI LOGIC (PERBAIKAN INPUT EDITABLE & EXPORT EXCEL)
+        // GOSOK MOLD AI LOGIC (PERBAIKAN INPUT EDITABLE & EXPORT EXCEL SINGLE)
         // ==========================================
         window.bukaInputGosokMold = function() {
             window.navigasi('gosok-mold-screen');
@@ -1553,9 +1566,8 @@
 
                 for (let i = 0; i < lines.length; i++) {
                     let line = lines[i].trim();
-                    if (line.length === 0) continue; // Skip baris kosong
+                    if (line.length === 0) continue; 
 
-                    // Deteksi rentang waktu (misal 08:21-08:25)
                     if (line.match(/\d{2}:\d{2}\s*-\s*\d{2}:\d{2}/)) {
                         let timeMatch = line.match(/(\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})/);
                         let start = timeMatch[1];
@@ -1581,11 +1593,7 @@
                         } catch(e){}
 
                         window.tempGosokOlahan.push({
-                            mesin: currentMesin, 
-                            mold: moldName, 
-                            start: start, 
-                            finish: finish, 
-                            durasi: durasi
+                            mesin: currentMesin, mold: moldName, start: start, finish: finish, durasi: durasi
                         });
                         
                         pendingLines = []; 
@@ -1599,7 +1607,6 @@
                 if(window.tempGosokOlahan.length === 0) {
                     tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:gray;">Format tidak dikenali AI. Pastikan format mengandung rentang jam (misal 16:15-16:20)</td></tr>`;
                 } else {
-                    // PERBAIKAN: JADIKAN TABEL BISA DIEDIT (INPUT BOX)
                     window.tempGosokOlahan.forEach((item, idx) => {
                         tb.innerHTML += `<tr>
                             <td style="padding:5px;"><input type="text" id="edit-mesin-${idx}" value="${item.mesin}" style="padding:8px; border-radius:8px; font-size:12px; border:1px solid #475569; width:100%; box-sizing:border-box;"></td>
@@ -1616,7 +1623,6 @@
             }, 800);
         }
 
-        // FUNGSI BARU: HITUNG ULANG DURASI KALAU JAM DIEDIT USER
         window.hitungUlangDurasiGosok = function(idx) {
             let start = document.getElementById(`edit-start-${idx}`).value;
             let finish = document.getElementById(`edit-finish-${idx}`).value;
@@ -1630,7 +1636,6 @@
             } catch(e){}
         }
 
-        // PERBAIKAN: SIMPAN DATA DARI INPUT YANG DIEDIT, BUKAN DARI ARRAY LAMA
         window.simpanOlahanGosokMold = async function() {
             if(!window.tempGosokOlahan || window.tempGosokOlahan.length === 0) return alert("Tidak ada data untuk disimpan!");
             
@@ -1641,10 +1646,7 @@
                 let startVal = document.getElementById(`edit-start-${i}`).value;
                 let finishVal = document.getElementById(`edit-finish-${i}`).value;
                 let durasiVal = document.getElementById(`edit-durasi-${i}`).value;
-                
-                dataFinal.push({
-                    mesin: mesinVal, mold: moldVal, start: startVal, finish: finishVal, durasi: durasiVal
-                });
+                dataFinal.push({ mesin: mesinVal, mold: moldVal, start: startVal, finish: finishVal, durasi: durasiVal });
             }
 
             window.toggleLoader(true, "Menyimpan ke Database...");
@@ -1658,12 +1660,11 @@
                 document.getElementById('gosok-result-container').style.display = 'none';
                 document.getElementById('gosok-raw-input').value = "";
                 window.navigasi('data-olahan-menu-screen');
-            } catch(e) {
-                alert("Gagal Menyimpan: " + e.message);
-            }
+            } catch(e) { alert("Gagal Menyimpan: " + e.message); }
             window.toggleLoader(false);
         }
 
+        // PERBAIKAN: Fungsi Mengambil & Menampilkan Detail Spesifik Saat Diklik
         window.ambilDataGosok = async function() {
             window.toggleLoader(true, "Memuat Data...");
             try {
@@ -1676,18 +1677,97 @@
                 snap.forEach(doc => { tempData.push({id: doc.id, ...doc.data()}); });
                 tempData.sort((a,b) => b.timestamp - a.timestamp); 
                 
+                gosokDatabase = tempData; // Simpan ke global
+                
                 tempData.forEach(data => {
                     count++;
-                    list.innerHTML += `<div class="progress-card" style="border-left-color: #eab308; cursor:pointer;" onclick="alert('Membuka detail rekap gosok mold... (Fitur PDF sedang disiapkan)')"><h4 style="margin:0 0 5px 0;">Data Olahan Gosok Mold</h4><p style="margin:0; font-size:12px; color:gray;">Waktu Record: ${data.waktu}</p><p style="margin:5px 0 0 0; font-size:11px; color:var(--secondary); font-weight:bold;">Total Data: ${data.dataTabel ? data.dataTabel.length : 0} Item</p></div>`;
+                    list.innerHTML += `<div class="progress-card" style="border-left-color: #eab308; cursor:pointer;" onclick="window.bukaDetailGosok('${data.id}')"><h4 style="margin:0 0 5px 0;">Data Olahan Gosok Mold</h4><p style="margin:0; font-size:12px; color:gray;">Waktu Record: ${data.waktu}</p><p style="margin:5px 0 0 0; font-size:11px; color:var(--secondary); font-weight:bold;">Total Data: ${data.dataTabel ? data.dataTabel.length : 0} Item</p></div>`;
                 });
                 if(count === 0) list.innerHTML = `<p style="text-align:center;color:gray;">Belum ada riwayat gosok mold tersimpan.</p>`;
             } catch(e) {}
             window.toggleLoader(false);
         }
-        
-        // PERBAIKAN: FUNGSI EXPORT EXCEL AKTIF (MENGGUNAKAN SHEETJS)
-        window.exportGosokExcelLengkap = async function() {
+
+        // FUNGSI BARU: Buka 1 Detail Spesifik Laporan Gosok
+        window.bukaDetailGosok = function(id) {
+            const data = gosokDatabase.find(d => d.id === id);
+            if(!data) return;
+            
+            let trHtml = '';
+            if(data.dataTabel && Array.isArray(data.dataTabel)) {
+                data.dataTabel.forEach(item => {
+                    trHtml += `<tr>
+                        <td>${item.mesin}</td>
+                        <td>${item.mold}</td>
+                        <td style="text-align:center;">${item.start}</td>
+                        <td style="text-align:center;">${item.finish}</td>
+                        <td style="text-align:center; font-weight:bold; color:var(--proses);">${item.durasi}</td>
+                    </tr>`;
+                });
+            }
+
+            let html = `
+                <div class="report-header" style="text-align:center; margin-bottom:20px;">
+                    <h2 style="color:white; margin:0;">LAPORAN GOSOK MOLD</h2>
+                    <p style="color:var(--secondary); font-weight:bold; margin:5px 0 0 0;">PT. CAHAYA BUANA INTITAMA</p>
+                </div>
+                <table class="report-table" style="margin-bottom:20px;">
+                    <tr><th style="width:35%;">Waktu Record</th><td><strong>${data.waktu}</strong></td></tr>
+                    <tr><th>Total Item</th><td>${data.dataTabel ? data.dataTabel.length : 0} Item</td></tr>
+                </table>
+                <h3 class="sub-title-box"><i class="fas fa-list" style="color:var(--secondary);"></i> Rincian Data Gosok:</h3>
+                <table class="report-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Mesin</th>
+                            <th>Nama Mold</th>
+                            <th style="text-align:center;">Start</th>
+                            <th style="text-align:center;">Finish</th>
+                            <th style="text-align:center;">Durasi</th>
+                        </tr>
+                    </thead>
+                    <tbody>${trHtml}</tbody>
+                </table>
+            `;
+
+            const content = document.getElementById('report-gosok-content');
+            if(content) content.innerHTML = html;
+            window.currentGosokId = id; // Simpan ID untuk fungsi export 1 file
+            window.navigasi('gosok-detail-screen');
+        }
+
+        // FUNGSI BARU: Export 1 Data Saja ke Excel
+        window.exportGosokExcelSingle = function() {
+            if(!window.currentGosokId) return alert("Data tidak ditemukan!");
+            const data = gosokDatabase.find(d => d.id === window.currentGosokId);
+            if(!data || !data.dataTabel) return alert("Data kosong!");
+
             window.toggleLoader(true, "Membuat File Excel...");
+            try {
+                let excelData = [];
+                data.dataTabel.forEach(item => {
+                    excelData.push({
+                        "Waktu Record": data.waktu,
+                        "Nama Mesin": item.mesin,
+                        "Nama Mold": item.mold,
+                        "Start": item.start,
+                        "Finish": item.finish,
+                        "Durasi": item.durasi
+                    });
+                });
+                const ws = XLSX.utils.json_to_sheet(excelData);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Detail Gosok Mold");
+                XLSX.writeFile(wb, `Gosok_Mold_${data.waktu.replace(/[^a-zA-Z0-9]/g, '_')}.xlsx`);
+            } catch(e) {
+                alert("Gagal export Excel: " + e.message);
+            }
+            window.toggleLoader(false);
+        }
+        
+        // FUNGSI LAMA: Export Seluruh Data Gosok di Menu Utama
+        window.exportGosokExcelLengkap = async function() {
+            window.toggleLoader(true, "Membuat File Excel Global...");
             try {
                 const q = query(collection(db, "gosok_mold"));
                 const snap = await getDocs(q);
@@ -1716,8 +1796,8 @@
 
                 const ws = XLSX.utils.json_to_sheet(allData);
                 const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Rekap Gosok Mold");
-                XLSX.writeFile(wb, `Rekap_Gosok_Mold_${Date.now()}.xlsx`);
+                XLSX.utils.book_append_sheet(wb, ws, "Rekap Seluruh Gosok Mold");
+                XLSX.writeFile(wb, `Semua_Data_Gosok_Mold_${Date.now()}.xlsx`);
 
             } catch(e) {
                 alert("Gagal export Excel: " + e.message);
@@ -1886,54 +1966,14 @@
             } catch(e){} window.toggleLoader(false);
         }
 
-        // --- ANALISA EXECUTIVE AI ---
-        window.inisialisasiDataAnalisaGlobal = async function() { await window.ambilDataServerWS(); window.generateAIReportDirect(); }
-        window.generateAIReportDirect = function() {
-            window.toggleLoader(true, "Mengkalkulasi Analisa Multi-Divisi...");
-            setTimeout(() => {
-                let targetProjects = currentDatabase; let totalEstAll = 0; let totalActAll = 0; let processCounts = {}; let projectNames = []; let projectEsts = []; let projectActs = []; let projectACH = []; let tableHtml = "";
-                targetProjects.forEach(proj => {
-                    let stringEstimasi = String(proj.totalEstimasiJam || "0"); let pEst = parseFloat(stringEstimasi.replace(/[^\d.]/g, '')) || 0; let pAct = 0;
-                    if(proj.rencanaKerja && Array.isArray(proj.rencanaKerja)) {
-                        proj.rencanaKerja.forEach(t => {
-                            if(t.punyaSub && t.subTugas) { t.subTugas.forEach(s => { pAct += (Number(s.durasiAktual) || 0); let proses = s.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1; }); } 
-                            else { pAct += (Number(t.durasiAktual) || 0); let proses = t.proses || 'Lainnya'; processCounts[proses] = (processCounts[proses] || 0) + 1; }
-                        });
-                    }
-                    totalEstAll += pEst; totalActAll += pAct; projectNames.push(proj.namaProject || 'Project'); projectEsts.push(pEst); projectActs.push(pAct);
-                    let pAchRate = pEst > 0 ? Math.min(100, Math.round((pAct/pEst)*100)) : 0; projectACH.push(pAchRate);
-                    let statusWarna = proj.statusProject === 'Selesai' ? 'color:#10b981;' : 'color:#f59e0b;';
-                    tableHtml += `<tr><td><strong>${proj.namaProject}</strong></td><td style="text-align:center;">${pEst}</td><td style="text-align:center;">${pAct}</td><td style="text-align:center; font-weight:bold;">${pAchRate}%</td><td style="${statusWarna} font-weight:bold;">${proj.statusProject}</td></tr>`;
-                });
-                if(targetProjects.length === 0) tableHtml = `<tr><td colspan="5" style="text-align:center; color:gray;">Belum ada data rekap proyek.</td></tr>`;
-                let globalAchRate = totalEstAll > 0 ? Math.min(100, Math.round((totalActAll/totalEstAll)*100)) : 0;
-                const kp = document.getElementById('dash-kpi-proyek'); if(kp) kp.innerText = targetProjects.length;
-                const ke = document.getElementById('dash-kpi-est'); if(ke) ke.innerText = totalEstAll + " Jam";
-                const ka = document.getElementById('dash-kpi-act'); if(ka) ka.innerText = totalActAll + " Jam";
-                const kc = document.getElementById('dash-kpi-ach'); if(kc) kc.innerText = globalAchRate + "%";
-                const dt = document.getElementById('dash-table-body'); if(dt) dt.innerHTML = tableHtml;
-
-                if(chartUni) chartUni.destroy(); if(chartBi) chartBi.destroy(); if(chartMulti) chartMulti.destroy();
-                let uniLabels = Object.keys(processCounts).length > 0 ? Object.keys(processCounts).map(k => `${k} (${processCounts[k]})`) : ['Belum Ada Data']; 
-                let uniData = Object.values(processCounts).length > 0 ? Object.values(processCounts) : [1];
-                let ctxUni = document.getElementById('chartUnivariate');
-                if(ctxUni) { chartUni = new Chart(ctxUni.getContext('2d'), { type: 'doughnut', data: { labels: uniLabels, datasets: [{ data: uniData, backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#f97316', '#6366f1'], borderWidth: 2, borderColor: 'transparent' }] }, options: { responsive: true, maintainAspectRatio: false, color: '#fff', plugins: { legend: { position: 'right', labels: { color: '#fff', boxWidth: 10, font: {size: 10} } } } } }); }
-                let ctxBi = document.getElementById('chartBivariate');
-                if(ctxBi) { chartBi = new Chart(ctxBi.getContext('2d'), { type: 'bar', data: { labels: projectNames.length > 0 ? projectNames : ['-'], datasets: [{ label: 'Estimasi (Jam)', data: projectEsts.length > 0 ? projectEsts : [0], backgroundColor: '#94a3b8', borderRadius: 4 }, { label: 'Actual (Jam)', data: projectActs.length > 0 ? projectActs : [0], backgroundColor: '#10b981', borderRadius: 4 }] }, options: { responsive: true, maintainAspectRatio: false, color: '#fff', scales: { y: { beginAtZero: true, grid: { color: '#334155', borderDash: [2, 4] }, ticks: { color: '#cbd5e1' } }, x: { grid: { display: false }, ticks: { color: '#cbd5e1' } } }, plugins: { legend: { position: 'top', labels: { color: '#fff' } } } } }); }
-                let ctxMulti = document.getElementById('chartMultivariate');
-                if(ctxMulti) { chartMulti = new Chart(ctxMulti.getContext('2d'), { type: 'line', data: { labels: projectNames.length > 0 ? projectNames : ['-'], datasets: [{ type: 'line', label: 'ACH Rate (%)', data: projectACH.length > 0 ? projectACH : [0], borderColor: '#8b5cf6', backgroundColor: 'rgba(139,92,246,0.2)', borderWidth: 3, pointRadius: 5, pointBackgroundColor: '#fff', fill: true, tension: 0.4 }, { type: 'bar', label: 'Estimasi Jam (Skala)', data: projectEsts.length > 0 ? projectEsts : [0], backgroundColor: 'rgba(59,130,246,0.2)', borderRadius: 4, yAxisID: 'y1' }] }, options: { responsive: true, maintainAspectRatio: false, color: '#fff', scales: { y: { beginAtZero: true, max: 100, position: 'left', grid: { color: '#334155' }, ticks: { color: '#cbd5e1' }, title: {display: true, text: 'ACH Rate %', color: '#cbd5e1'} }, y1: { beginAtZero: true, position: 'right', grid: {drawOnChartArea: false}, ticks: { color: '#cbd5e1' }, title: {display: true, text: 'Jam', color: '#cbd5e1'} }, x: { grid: {display: false}, ticks: { color: '#cbd5e1' } } }, plugins: { legend: { labels: { color: '#fff' } } } } }); }
-                window.toggleLoader(false);
-            }, 1000);
-        }
-        window.generateAIReport = function() { window.generateAIReportDirect(); window.navigasi('ai-dashboard-screen'); }
-        
-        // EXPORT INFO EXCEL
+        // --- EXPORT LOGIC ---
         window.exportInfoExcel = function() { alert("Fitur Export Excel Info siap!"); }
         window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF di HP."); } };
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#020617" }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(() => window.toggleLoader(false)); }, 200); }
         window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
         window.downloadNotulenJPG = function() { window.cetakGambarUniversal('report-notulen-content', 'Notulen'); }
+        window.downloadGosokJPG = function() { window.cetakGambarUniversal('report-gosok-content', 'Laporan_Gosok_Mold'); }
         
         document.addEventListener("DOMContentLoaded", () => { 
             setTimeout(window.muatDataPKMEltre, 2000); 
