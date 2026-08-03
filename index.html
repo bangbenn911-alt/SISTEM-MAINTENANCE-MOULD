@@ -36,48 +36,48 @@
             overflow-x: hidden; height: 100%; scroll-behavior: smooth;
         }
 
-        /* Latar Belakang Gambar & Overlay Redup */
+        /* Latar Belakang Gambar & Overlay Gelap (Kanvas Aurora) */
         .global-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('1000809442.png');
             background-size: cover; background-position: center;
-            z-index: -3; pointer-events: none;
+            z-index: -4; pointer-events: none;
         }
         .global-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: -1; pointer-events: none;
+            background: #000; opacity: 0.85; /* Gelap pekat agar cahaya neon menonjol */
+            z-index: -3; pointer-events: none;
         }
 
         /* ======================================================== */
-        /* --- ANIMASI AURORA NEON (LATAR BELAKANG GLOBAL) --- */
+        /* --- ANIMASI AURORA NEON GEMINI (TAMPIL DI SEMUA LAYAR) --- */
         /* ======================================================== */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -2; /* Di antara background gambar dan overlay */
-            overflow: hidden; pointer-events: none;
+            z-index: -2; /* Berada tepat di belakang panel menu */
+            pointer-events: none; overflow: hidden;
         }
         .aurora-blob {
             position: absolute; border-radius: 50%;
-            filter: blur(90px); opacity: 0.55;
+            filter: blur(80px); /* Blur kuat menyebar */
+            opacity: 0.8; mix-blend-mode: screen; /* Efek cahaya menyala */
             animation: floatAurora 15s infinite ease-in-out alternate;
         }
-        .blob-1 { width: 40vw; height: 40vw; background: #4285f4; top: -10%; left: -10%; animation-delay: 0s; }
-        .blob-2 { width: 50vw; height: 50vw; background: #9b72cb; bottom: -20%; right: -10%; animation-delay: -5s; }
-        .blob-3 { width: 45vw; height: 45vw; background: #d96570; top: 40%; left: 60%; animation-delay: -10s; }
-        .blob-4 { width: 35vw; height: 35vw; background: #139e8c; top: 70%; left: 10%; animation-delay: -7s; }
+        /* Palet Warna Aurora Ala Gemini */
+        .blob-1 { width: 50vw; height: 50vw; background: #0f9d58; top: -10%; left: -10%; animation-delay: 0s; } /* Hijau Gemini */
+        .blob-2 { width: 60vw; height: 60vw; background: #4285f4; bottom: -20%; right: -10%; animation-delay: -3s; } /* Biru Terang */
+        .blob-3 { width: 55vw; height: 55vw; background: #9b72cb; top: 30%; left: 50%; animation-delay: -6s; } /* Ungu */
+        .blob-4 { width: 45vw; height: 45vw; background: #d96570; top: 60%; left: -10%; animation-delay: -9s; } /* Merah Muda */
 
         @keyframes floatAurora {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(5vw, -8vh) scale(1.1); }
-            66% { transform: translate(-6vw, 4vh) scale(0.9); }
-            100% { transform: translate(4vw, 8vh) scale(1.05); }
+            33% { transform: translate(10vw, -10vh) scale(1.1); }
+            66% { transform: translate(-10vw, 5vh) scale(0.9); }
+            100% { transform: translate(5vw, 15vh) scale(1.15); }
         }
 
         /* --- BACKGROUND LANDING PAGE --- */
         #landing-page {
-            background-image: url('1000809442.png');
-            background-size: cover; background-position: center;
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000;
             transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
@@ -85,6 +85,7 @@
         #landing-page::before {
             content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
             background: rgba(15, 23, 42, 0.8); z-index: 0;
+            backdrop-filter: blur(10px);
         }
         #landing-page > div, #landing-page > button { position: relative; z-index: 1; }
 
@@ -1252,7 +1253,6 @@
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
         window.downloadNotulenJPG = function() { window.cetakGambarUniversal('report-notulen-content', 'Notulen'); }
         window.downloadGosokJPG = function() { window.cetakGambarUniversal('report-gosok-content', 'Laporan_Gosok_Mold'); }
-
         // =========================================================================
         // LOGIC FIX 1: SUB INFORMASI MOLD (Struktur Organisasi, Master Mold, dll)
         // =========================================================================
@@ -1420,7 +1420,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 4: JADWAL BESAR (Zooming & PDF/Image support)
+        // LOGIC FIX 4: JADWAL BESAR
         // =========================================================================
         window.bukaInputJadwal = async function() { window.navigasi('jadwal-besar-input-screen'); await window.muatJadwalBesar(); }
         window.bukaViewJadwal = async function() { window.navigasi('jadwal-besar-view-screen'); await window.muatJadwalBesar(); }
@@ -1474,6 +1474,7 @@
             } catch (e) { alert("Gagal memproses file: " + e.message); } 
             window.toggleLoader(false); 
         }
+
         // =========================================================================
         // LOGIC FIX 5: GOSOK MOLD AI & EXCEL
         // =========================================================================
@@ -1609,7 +1610,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 7: ADM HARIAN (Target, Actual, Progress)
+        // LOGIC FIX 7: ADM HARIAN
         // =========================================================================
         window.bukaInputTargetAdm = function() { window.navigasi('adm-harian-target-screen'); document.getElementById('adm-target-tgl').value = window.dapatkanTanggalLokal(); window.arrayRencanaKerjaAdm = []; document.getElementById('list-rencana-kerja').innerHTML = ""; }
         window.tambahRencanaKerja = function() { const v = document.getElementById('adm-input-rencana').value.trim(); if(!v)return; if(!window.arrayRencanaKerjaAdm) window.arrayRencanaKerjaAdm=[]; window.arrayRencanaKerjaAdm.push({tugas: v, done: false}); document.getElementById('list-rencana-kerja').innerHTML += `<li><i class="fas fa-check-circle" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('adm-input-rencana').value = ""; }
@@ -1659,7 +1660,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 8: WORKSHOP (CRUD Project & Control Progress AI)
+        // LOGIC FIX 8: WORKSHOP 
         // =========================================================================
         window.inisialisasiFormWS = function() {
             document.getElementById('ws-np-nama').value = ""; document.getElementById('ws-np-start-date').value = ""; document.getElementById('ws-np-finish-date').value = "";
@@ -1775,7 +1776,7 @@
         window.switchViewWS = function(view) { alert("Switch View ke mode: " + view); }
 
         // =========================================================================
-        // LOGIC FIX 9: MOLD STORE, TROUBLE, PKM ELTRE (Fungsi Buka Menu)
+        // LOGIC FIX 9: MOLD STORE, TROUBLE, PKM ELTRE
         // =========================================================================
         window.bukaInputNaikMold = function() { window.navigasi('ms-input-naik-screen'); document.getElementById('ms-naik-tgl').value = window.dapatkanTanggalLokal(); window.arrayNaikMold = []; document.getElementById('list-naik-mold').innerHTML = ""; }
         window.tambahMoldManual = function() { const v = document.getElementById('ms-naik-input-manual').value; if(v) { window.arrayNaikMold.push(v); document.getElementById('list-naik-mold').innerHTML += `<li><i class="fas fa-cube" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('ms-naik-input-manual').value = ""; } }
