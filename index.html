@@ -33,38 +33,36 @@
         body, html {
             margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-light); overflow-x: hidden; height: 100%; scroll-behavior: smooth;
-            /* PERBAIKAN: Background murni gelap agar Aurora menyala sempurna */
             background: #040d1a; 
         }
 
         /* ======================================================== */
-        /* --- AURORA NEON GEMINI (FIXED: 100% MENYALA & AKTIF) --- */
+        /* --- AURORA NEON GEMINI (FIX: LEBIH CEPAT & MENYALA) --- */
         /* ======================================================== */
         .aurora-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: 0; /* PERBAIKAN: Layer aurora dinaikkan di atas background dasar */
-            overflow: hidden; pointer-events: none;
+            z-index: 0; overflow: hidden; pointer-events: none;
         }
         .aurora-blob {
             position: absolute; border-radius: 50%;
-            filter: blur(90px);
-            mix-blend-mode: screen; /* Efek cahaya memancar */
-            animation: floatAurora 20s infinite alternate ease-in-out;
-            opacity: 0.8;
+            filter: blur(80px); /* Blur sedikit dikurangi agar warna lebih padat */
+            mix-blend-mode: screen; 
+            animation: floatAurora 12s infinite alternate ease-in-out; /* Durasi dipercepat dari 20s ke 12s */
+            opacity: 0.95; /* Opacity dinaikkan dari 0.8 ke 0.95 (Sangat terang) */
         }
-        .blob-1 { width: 55vw; height: 55vw; background: rgba(15, 157, 88, 0.5); top: -10%; left: -10%; animation-delay: 0s; }
-        .blob-2 { width: 65vw; height: 65vw; background: rgba(66, 133, 244, 0.45); bottom: -20%; right: -10%; animation-delay: -3s; }
-        .blob-3 { width: 60vw; height: 60vw; background: rgba(155, 114, 203, 0.45); top: 30%; left: 50%; animation-delay: -6s; }
-        .blob-4 { width: 45vw; height: 45vw; background: rgba(219, 68, 55, 0.35); top: 60%; left: -10%; animation-delay: -9s; }
+        .blob-1 { width: 55vw; height: 55vw; background: rgba(15, 157, 88, 0.6); top: -10%; left: -10%; animation-delay: 0s; }
+        .blob-2 { width: 65vw; height: 65vw; background: rgba(56, 189, 248, 0.55); bottom: -20%; right: -10%; animation-delay: -2s; }
+        .blob-3 { width: 60vw; height: 60vw; background: rgba(155, 114, 203, 0.55); top: 30%; left: 50%; animation-delay: -4s; }
+        .blob-4 { width: 45vw; height: 45vw; background: rgba(219, 68, 55, 0.45); top: 60%; left: -10%; animation-delay: -6s; }
 
         @keyframes floatAurora {
             0% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(10vw, -10vh) scale(1.15); }
-            66% { transform: translate(-10vw, 8vh) scale(0.85); }
-            100% { transform: translate(5vw, 15vh) scale(1.1); }
+            33% { transform: translate(12vw, -12vh) scale(1.15); }
+            66% { transform: translate(-12vw, 10vh) scale(0.85); }
+            100% { transform: translate(8vw, 18vh) scale(1.1); }
         }
 
-        /* --- SCREEN WRAPPER (LAYER DI ATAS AURORA) --- */
+        /* --- SCREEN WRAPPER --- */
         .screen { display: none; padding: 0 0 120px 0; min-height: 100vh; box-sizing: border-box; background: transparent; position: relative; z-index: 10; }
         .active-screen { display: block; animation: diveIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         @keyframes diveIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
@@ -73,26 +71,110 @@
         .content-wrapper-wide { max-width: 1100px; margin: auto; position: relative; padding: 25px 20px;}
 
         /* ======================================================== */
-        /* --- DESAIN PROFIL BARU (SESUAI GAMBAR REFERENSI) --- */
+        /* --- LANDING PAGE CYBER-TECH (DETAIL TINGKAT DEWA) --- */
         /* ======================================================== */
-        @keyframes pulseGreen {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        #landing-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: space-between; 
+            z-index: 2000;
+            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 50%, #020617 100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
+            overflow: hidden;
         }
-        input.profil-search-input {
-            background: transparent !important; border: none !important; box-shadow: none !important;
-            padding: 0 !important; margin: 0 !important; width: 100% !important; font-size: 14px !important; font-weight: 500 !important; color: white !important;
+
+        /* Bintang / Partikel Deep Space */
+        #landing-page::before {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%; z-index: 0; pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(56,189,248,0.8) 1.5px, transparent 2px),
+                radial-gradient(circle at 85% 30%, rgba(255,255,255,0.8) 1px, transparent 2px),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.5) 2px, transparent 3px),
+                radial-gradient(circle at 20% 70%, rgba(139,92,246,0.6) 1.5px, transparent 2px),
+                radial-gradient(circle at 80% 85%, rgba(56,189,248,0.9) 2px, transparent 4px),
+                radial-gradient(circle at 10% 90%, rgba(255,255,255,0.4) 1px, transparent 1.5px),
+                radial-gradient(circle at 90% 10%, rgba(56,189,248,0.5) 1.5px, transparent 2.5px);
+            animation: twinkleStars 4s infinite alternate;
         }
+        @keyframes twinkleStars { 0% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        /* Efek Mulus Saat Berpindah */
+        .door-open { transform: scale(1.3) translateY(-30px) !important; opacity: 0 !important; filter: blur(15px) !important; pointer-events: none; }
+
+        /* HEADER TEXT (Sesuai Referensi) */
+        .landing-top { margin-top: 80px; text-align: center; z-index: 2; width: 100%; padding: 0 20px; box-sizing: border-box; animation: fadeInDown 1s ease-out; }
+        .landing-title { margin: 0 0 8px 0; font-weight: 900; color: white; text-shadow: 0 0 15px rgba(255,255,255,0.4); font-size: clamp(24px, 7vw, 32px); letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;}
+        .landing-subtitle { margin: 0; font-weight: 700; color: #818cf8; text-shadow: 0 0 10px rgba(129,140,248,0.5); letter-spacing: 1.5px; font-size: clamp(12px, 3.5vw, 15px); }
+        
+        /* CENTER AREA: Gears & Fingerprint */
+        .landing-center { position: relative; width: 100%; max-width: 380px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; animation: fadeIn 1.5s ease-in-out; }
+        
+        /* GERIGI 3D (Berputar Mulus) */
+        .landing-gears { position: absolute; top: -10px; display: flex; align-items: center; justify-content: center; z-index: 3; }
+        .gear-silver { 
+            font-size: 110px; color: #e2e8f0; 
+            filter: drop-shadow(-5px 8px 6px rgba(0,0,0,0.8)) drop-shadow(0 0 4px rgba(255,255,255,0.5)); 
+            animation: spinRight 12s linear infinite; position: relative; left: 15px; z-index: 2;
+        }
+        .gear-bronze { 
+            font-size: 75px; color: #b45309; 
+            filter: drop-shadow(5px 8px 6px rgba(0,0,0,0.8)) drop-shadow(0 0 8px rgba(245,158,11,0.6)); 
+            animation: spinLeft 8s linear infinite; position: relative; right: 15px; top: 30px; z-index: 1;
+        }
+
+        /* SVG SIRKUIT LISTRIK */
+        .circuit-board { position: absolute; width: 140%; height: 100%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
+        .circuit-line { fill: none; stroke: rgba(56, 189, 248, 0.25); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+        .electric-pulse {
+            fill: none; stroke: #38bdf8; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
+            stroke-dasharray: 20 120; /* Pola listrik yang mengalir */
+            animation: pulseTravel 2s linear infinite;
+            filter: drop-shadow(0 0 8px #38bdf8);
+        }
+        @keyframes pulseTravel { from { stroke-dashoffset: 140; } to { stroke-dashoffset: 0; } }
+
+        /* FINGERPRINT BUTTON (Efek Tertekan Fisik & Neon) */
+        .fingerprint-btn {
+            position: relative; z-index: 5;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+            border: 2px solid rgba(56, 189, 248, 0.8); border-radius: 50%;
+            width: 130px; height: 130px;
+            color: #38bdf8; font-size: 70px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; outline: none;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.3);
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 130px; /* Menyesuaikan jarak antara gerigi dan fingerprint */
+        }
+        /* Pendaran Lingkaran Radar */
+        .fingerprint-btn::after {
+            content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
+            border: 2px solid #38bdf8; opacity: 0; animation: pulseRing 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; pointer-events: none;
+        }
+        @keyframes pulseRing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
+
+        /* EFEK REALISTIS SAAT DIPENCET */
+        .fingerprint-btn:active {
+            transform: scale(0.85); /* Tombol tenggelam */
+            box-shadow: 0 0 60px rgba(56, 189, 248, 1), inset 0 0 50px rgba(56, 189, 248, 0.9);
+            color: #ffffff; border-color: #ffffff;
+            filter: brightness(1.5);
+        }
+
+        /* FOOTER TEXT */
+        .landing-bottom { margin-bottom: 50px; text-align: center; z-index: 2; width: 100%; padding: 0 20px; box-sizing: border-box; animation: fadeInUp 1s ease-out; }
+        .landing-bottom p { font-style: italic; font-size: 14px; color: #cbd5e1; line-height:1.6; font-weight:600; text-shadow: 0 2px 5px rgba(0,0,0,0.9); margin:0; }
+
+        @keyframes fadeInDown { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+
+        /* ======================================================== */
+        /* --- HIGH-TECH HUD (BERANDA) & UI LAINNYA --- */
+        /* ======================================================== */
+        @keyframes pulseGreen { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        input.profil-search-input { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; font-size: 14px !important; font-weight: 500 !important; color: white !important; }
         input.profil-search-input:focus { box-shadow: none !important; border: none !important; background: transparent !important; }
         
-        .profil-list-item {
-            background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3);
-            border-radius: 14px; padding: 16px 20px; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 18px; cursor: pointer; transition: 0.2s;
-            box-shadow: inset 0 2px 5px rgba(255,255,255,0.05), 0 4px 10px rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-        }
+        .profil-list-item { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 14px; padding: 16px 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 18px; cursor: pointer; transition: 0.2s; box-shadow: inset 0 2px 5px rgba(255,255,255,0.05), 0 4px 10px rgba(0,0,0,0.2); backdrop-filter: blur(10px); }
         .profil-list-item:active { transform: scale(0.98); background: rgba(30, 41, 59, 0.8); }
         .profil-item-icon { font-size: 24px; color: #e2e8f0; width: 35px; text-align: center; }
         .profil-item-text { flex: 1; }
@@ -100,42 +182,6 @@
         .profil-item-sub { font-size: 12px; color: var(--text-muted); font-weight: 500; }
         .profil-item-arrow { font-size: 14px; color: var(--text-muted); }
 
-        /* ======================================================== */
-        /* --- LANDING PAGE DENGAN BACKGROUND GAMBAR ASLI PABRIK --- */
-        /* ======================================================== */
-        #landing-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000;
-            background-image: url('1000809442.png');
-            background-size: cover; background-position: center;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1), opacity 1.2s ease;
-        }
-        #landing-page::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(15, 23, 42, 0.85); z-index: 0;
-        }
-        #landing-page > div, #landing-page > button { position: relative; z-index: 1; }
-
-        .door-open { transform: scale(1.5); opacity: 0; pointer-events: none; }
-        .landing-top { position: absolute; top: 50px; left: 0; width: 100%; text-align: center; padding: 0 15px; box-sizing: border-box; animation: fadeInDown 1.5s ease-out; }
-        @keyframes fadeInDown { 0% { opacity: 0; transform: translateY(-30px); } 100% { opacity: 1; transform: translateY(0); } }
-
-        .landing-title { margin: 0 0 5px 0; font-weight: 900; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); font-size: clamp(18px, 6vw, 36px); letter-spacing: 0.5px; text-transform: uppercase; }
-        .landing-subtitle { margin: 0; font-weight: 700; color: #7dd3fc; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); letter-spacing: 1.5px; font-size: clamp(12px, 3.5vw, 18px); }
-        
-        .landing-middle { display: flex; flex-direction: column; align-items: center; margin-top: 60px; text-align: center; animation: fadeIn 2s ease-in-out; }
-        @keyframes fadeIn { 0% { opacity: 0; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
-        
-        .gears-wrapper { position: relative; height: 160px; width: 160px; margin-bottom: 20px; }
-        .gear-main { font-size: 110px; color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.3); position: absolute; top: 0; left: 0; animation: spinRight 10s linear infinite; }
-        .gear-sub { font-size: 70px; color: #3b82f6; text-shadow: 0 0 15px rgba(59, 130, 246, 0.5); position: absolute; top: 65px; left: 85px; animation: spinLeft 7s linear infinite; }
-
-        .btn-open { margin-top: 40px; padding: 16px 45px; font-size: 22px; font-weight: 900; letter-spacing: 2px; color: #0f172a; background: white; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 12px; }
-        .btn-open:active { transform: translateY(4px); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-
-        /* ======================================================== */
-        /* --- HIGH-TECH HUD (CIRCULAR ANIMATION) CSS --- */
-        /* ======================================================== */
         .hero-dashboard { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; margin-top: 10px; padding: 0 5px;}
         .hero-left { width: 45%; display: flex; flex-direction: column; gap: 15px; z-index:2;}
         .hero-right { width: 55%; display: flex; align-items: center; justify-content: center; position: relative; z-index:1; }
@@ -160,7 +206,6 @@
         @keyframes spinLeft { 100% { transform: rotate(-360deg); } }
         @keyframes pulseGlow { 0% { opacity: 0.5; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
 
-        /* --- UI COMPONENTS --- */
         .main-grid-container { background: var(--card-dark); border-radius: 30px; padding: 25px 20px; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); border: 1px solid var(--border-dark); position: relative; z-index: 10; margin-top: -10px; backdrop-filter: blur(10px);}
         .gopay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 12px; text-align: center; }
         .gopay-icon-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
@@ -181,7 +226,6 @@
         .btn-submit { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--secondary), #1d4ed8); color: white; border: none; border-radius: 14px; font-weight: 800; font-size: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 8px 20px rgba(37,99,235,0.3);}
         .btn-submit:active { transform: scale(0.98); }
 
-        /* Menu Bawah */
         .gopay-bottom-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-around; align-items: flex-end; padding: 10px 0 20px 0; border-top: 1px solid rgba(255,255,255,0.05); z-index: 5000; border-top-left-radius: 25px; border-top-right-radius: 25px; box-shadow: 0 -5px 25px rgba(0,0,0,0.8); }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #64748b; font-size: 10px; font-weight: 700; cursor: pointer; width: 20%; transition: 0.3s; }
         .nav-item.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
@@ -192,7 +236,6 @@
         .loader-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 6000; align-items: center; justify-content: center; flex-direction: column; color: white; text-align: center; }
         .spinner { border: 4px solid transparent; border-top: 4px solid var(--secondary); border-left: 4px solid var(--secondary); border-radius: 50%; width: 50px; height: 50px; animation: spinRight 1s linear infinite; margin-bottom: 20px;}
         
-        /* Utility */
         .tab-container { display: flex; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 16px; margin-bottom: 20px; border: 1px solid var(--border-dark);}
         .tab-btn { flex: 1; padding: 12px 6px; border: none; background: transparent; font-weight: 700; font-size: 12px; cursor: pointer; color: var(--text-muted); border-radius: 12px;}
         .tab-active { background: rgba(255,255,255,0.1) !important; color: var(--secondary) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
@@ -220,18 +263,74 @@
     <!-- LOADER -->
     <div id="loader" class="loader-overlay"><div class="spinner"></div><h3 id="loader-text" style="font-weight:600;">Memproses...</h3></div>
 
-    <!-- 1. LANDING PAGE (DENGAN GAMBAR ASLI) -->
+    <!-- 1. LANDING PAGE CYBER-TECH (DETAIL TINGKAT DEWA) -->
     <div id="landing-page">
+        <!-- Header -->
         <div class="landing-top">
-            <h1 class="landing-title">DEPARTEMENT MAINTENANCE MOULD</h1>
+            <h1 class="landing-title">DEPARTEMENT<br>MAINTENANCE MOULD</h1>
             <h2 class="landing-subtitle">PT. CAHAYA BUANA INTITAMA</h2>
         </div>
-        <div class="landing-middle">
-            <div class="gears-wrapper"><i class="fas fa-cog gear-main"></i><i class="fas fa-cog gear-sub"></i></div>
-            <p style="font-style: italic; font-size: 15px; color: white; margin-top: 10px; max-width:80%; line-height:1.5; font-weight:600; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
-                "Selamat datang pada sistem Control Kinerja Tim Maintenance Mould CBI"
-            </p>
-            <button class="btn-open" onclick="window.bukaPintu()"><i class="fas fa-door-open"></i> OPEN</button>
+        
+        <!-- Center Interactive Area -->
+        <div class="landing-center">
+            
+            <!-- Rotating Gears -->
+            <div class="landing-gears">
+                <i class="fas fa-cog gear-silver"></i>
+                <i class="fas fa-cog gear-bronze"></i>
+            </div>
+
+            <!-- SVG Circuit Lines & Animated Electricity -->
+            <svg class="circuit-board" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- Jalur Sirkuit Dasar -->
+                <g class="circuit-line">
+                    <path d="M 120 40 v 100 l 15 15 v 50" />
+                    <path d="M 150 40 v 120 v 40" />
+                    <path d="M 180 40 v 100 l -15 15 v 50" />
+                    <path d="M 100 60 v 80 l 20 20 v 40" />
+                    <path d="M 200 60 v 80 l -20 20 v 40" />
+                    
+                    <path d="M 20 200 h 60 l 15 -15 h 30" />
+                    <path d="M 0 230 h 80 h 25" />
+                    <path d="M 20 260 h 60 l 15 15 h 30" />
+                    
+                    <path d="M 280 200 h -60 l -15 -15 h -30" />
+                    <path d="M 300 230 h -80 h -25" />
+                    <path d="M 280 260 h -60 l -15 15 h -30" />
+
+                    <path d="M 150 380 v -60" />
+                    <path d="M 120 380 v -40 l 15 -15 v -25" />
+                    <path d="M 180 380 v -40 l -15 -15 v -25" />
+                </g>
+
+                <!-- Animasi Listrik Berjalan -->
+                <g>
+                    <path class="electric-pulse" style="animation-delay: 0s;" d="M 120 40 v 100 l 15 15 v 50" />
+                    <path class="electric-pulse" style="animation-delay: -1.2s;" d="M 150 40 v 120 v 40" />
+                    <path class="electric-pulse" style="animation-delay: -0.5s;" d="M 180 40 v 100 l -15 15 v 50" />
+                    
+                    <path class="electric-pulse" style="animation-delay: -0.3s;" d="M 0 230 h 80 h 25" />
+                    <path class="electric-pulse" style="animation-delay: -1.8s;" d="M 300 230 h -80 h -25" />
+                    
+                    <path class="electric-pulse" style="animation-delay: -0.7s;" d="M 150 380 v -60" />
+                    <path class="electric-pulse" style="animation-delay: -1.5s;" d="M 120 380 v -40 l 15 -15 v -25" />
+                </g>
+            </svg>
+
+            <!-- Tombol Fingerprint Interaktif (Anti-Lemot 0.4s) -->
+            <button class="fingerprint-btn" onclick="
+                const l = document.getElementById('landing-page');
+                const n = document.getElementById('global-bottom-nav');
+                if(l) l.classList.add('door-open');
+                setTimeout(() => { if(l) l.style.display='none'; if(n) n.style.display='flex'; window.navigasi('home-screen'); }, 400);
+            ">
+                <i class="fas fa-fingerprint"></i>
+            </button>
+        </div>
+
+        <!-- Footer Teks -->
+        <div class="landing-bottom">
+            <p>"Selamat datang pada sistem Control<br>Kinerja Tim Maintenance Mould CBI"</p>
         </div>
     </div>
 
@@ -650,7 +749,9 @@
         </div>
     </div>
 
-    <!-- AI EXECUTIVE DASHBOARD SCREEN -->
+    <!-- ========================================================= -->
+    <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
+    <!-- ========================================================= -->
     <div id="ai-dashboard-screen" class="screen">
         <div class="content-wrapper-wide">
             <div class="header" style="background:linear-gradient(135deg, #0f172a, #1e1b4b) !important; border:1px solid #f43f5e;">
@@ -1372,16 +1473,6 @@
             }
         }
         window.addEventListener('popstate', function(event) { window.kembaliKeSebelumnya(); });
-
-        window.bukaPintu = function() {
-            const landing = document.getElementById('landing-page');
-            if(landing) landing.classList.add('door-open');
-            setTimeout(() => { 
-                if(landing) landing.style.display = 'none'; 
-                document.getElementById('global-bottom-nav').style.display = 'flex';
-                window.navigasi('home-screen'); 
-            }, 1200); 
-        }
 
         // --- HELPER & ASYNC DATA ROUTERS ---
         window.toggleLoader = function(show, text = "Loading...") {
@@ -2111,7 +2202,6 @@
         // INIT ONLOAD
         // =========================================================================
         document.addEventListener("DOMContentLoaded", () => { 
-            // Inisialisasi Tarik Data Background agar notif hidup
             setTimeout(window.muatDataPKMEltre, 2000); 
             setTimeout(window.muatDataTrouble, 1500); 
         });
