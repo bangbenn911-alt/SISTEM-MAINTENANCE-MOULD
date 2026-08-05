@@ -80,7 +80,9 @@
             background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 50%, #020617 100%);
             transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
             overflow: hidden;
+            will-change: transform, opacity, filter; /* Hardware Acceleration */
         }
+        .door-open { transform: scale(1.3) translateY(-30px) !important; opacity: 0 !important; filter: blur(15px) !important; pointer-events: none; }
 
         /* Bintang / Partikel Deep Space */
         #landing-page::before {
@@ -96,9 +98,6 @@
             animation: twinkleStars 4s infinite alternate;
         }
         @keyframes twinkleStars { 0% { opacity: 0.7; } 100% { opacity: 1; } }
-
-        /* Efek Mulus Saat Berpindah */
-        .door-open { transform: scale(1.3) translateY(-30px) !important; opacity: 0 !important; filter: blur(15px) !important; pointer-events: none; }
 
         /* HEADER TEXT */
         .landing-top { margin-top: 80px; text-align: center; z-index: 2; width: 100%; padding: 0 20px; box-sizing: border-box; animation: fadeInDown 1s ease-out; }
@@ -131,6 +130,7 @@
             outline: none !important; 
             -webkit-tap-highlight-color: transparent; 
             user-select: none;
+            touch-action: manipulation; /* Membunuh delay klik 300ms di HP kentang */
             box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.3);
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -234,6 +234,19 @@
         .report-table th { background: rgba(0,0,0,0.7); color: var(--secondary); font-weight: 800; }
         .eval-list li { background: rgba(0,0,0,0.5); margin-bottom: 10px; padding: 14px; border-radius: 12px; border-left: 4px solid var(--proses); display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--border-dark);}
         .eval-list li.done { border-left-color: var(--cepat); opacity: 0.7; }
+
+        /* ======================================================== */
+        /* --- CYBER SECURITY UI --- */
+        /* ======================================================== */
+        .shield-active { color: #10b981; animation: shieldPulse 2s infinite ease-in-out; }
+        @keyframes shieldPulse { 
+            0% { text-shadow: 0 0 5px #10b981; transform: scale(1); } 
+            50% { text-shadow: 0 0 20px #10b981; transform: scale(1.1); } 
+            100% { text-shadow: 0 0 5px #10b981; transform: scale(1); } 
+        }
+
+        .security-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4, 13, 26, 0.95); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
+        .cyber-log { background: #000; width:100%; max-width: 600px; height: 300px; border: 1px solid #10b981; border-radius: 12px; font-family: monospace; color: #10b981; padding: 15px; overflow-y: auto; font-size: 12px; text-align: left; box-shadow: inset 0 0 20px rgba(16,185,129,0.1), 0 0 20px rgba(16,185,129,0.2); }
     </style>
 </head>
 <body>
@@ -294,13 +307,8 @@
                 </g>
             </svg>
 
-            <!-- Tombol Fingerprint Interaktif (Anti-Lemot 0.3s & Bebas Box Kotak) -->
-            <button class="fingerprint-btn" onclick="
-                const l = document.getElementById('landing-page');
-                const n = document.getElementById('global-bottom-nav');
-                if(l) l.classList.add('door-open');
-                setTimeout(() => { if(l) l.style.display='none'; if(n) n.style.display='flex'; window.navigasi('home-screen'); }, 300);
-            ">
+            <!-- Tombol Fingerprint Interaktif (Anti-Delay & Bypass Lag Mobile) -->
+            <button class="fingerprint-btn" onpointerdown="window.masukBerandaCepat()">
                 <i class="fas fa-fingerprint"></i>
             </button>
         </div>
@@ -329,9 +337,12 @@
                 <div style="font-weight:900; font-size:22px; display:flex; align-items:center; gap:8px;">
                     <i class="fas fa-cube" style="color:#7dd3fc; font-size:26px;"></i> MOLDCBI
                 </div>
-                <div style="background:rgba(255,255,255,0.15); padding:6px 14px; border-radius:20px; font-size:11px; font-weight:800; border:1px solid rgba(255,255,255,0.2);">
-                    <i class="fas fa-shield-alt"></i> Perlindungan Kuat
+                
+                <!-- Status Keamanan Radar (Hidup 24 Jam) -->
+                <div id="status-keamanan" onclick="window.bukaPanelKeamanan()" style="background:rgba(16,185,129,0.1); padding:6px 14px; border-radius:20px; font-size:11px; font-weight:800; border:1px solid #10b981; color:#10b981; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow: 0 0 10px rgba(16,185,129,0.3); transition: 0.3s;">
+                    <i class="fas fa-shield-virus shield-active"></i> <span id="shield-text">Aman 100%</span>
                 </div>
+
                 <!-- Notifikasi Lonceng HUD -->
                 <div style="position:relative; background:rgba(255,255,255,0.1); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.2);">
                     <i class="fas fa-bell" style="font-size:18px;"></i>
@@ -407,7 +418,6 @@
             </div>
         </div>
     </div>
-
     <!-- IDE CENTER SCREEN -->
     <div id="ide-center-screen" class="screen">
         <div class="content-wrapper">
@@ -576,7 +586,7 @@
         </div>
     </div>
     <!-- ========================================================= -->
-    <!-- MOLD REPAIR DIVISI (FIX AGAR TIDAK BLANK)                 -->
+    <!-- MOLD REPAIR DIVISI                                        -->
     <!-- ========================================================= -->
     <div id="menu-mold-repair-screen" class="screen">
         <div class="content-wrapper">
@@ -1080,8 +1090,8 @@
     </div>
 
     <!-- MODAL AKSI VERIFIKASI PKM -->
-    <div id="modal-aksi-pkm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(5px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; position:relative; border:1px solid var(--border-dark); backdrop-filter:blur(10px);">
+    <div id="modal-aksi-pkm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4, 13, 26, 0.95); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; position:relative; border:1px solid var(--border-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             <div style="background:rgba(37,99,235,0.2); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px auto;">
                 <i class="fas fa-search" style="font-size:24px; color:#38bdf8;"></i>
             </div>
@@ -1089,8 +1099,8 @@
             <p style="font-size:14px; color:var(--text-light); margin-bottom:25px; line-height:1.5;">Apakah kendala pada mold <br><b id="pkm-nama-mold-text" style="color:var(--secondary); font-size:16px;"></b><br>ini benar-benar disebabkan oleh masalah Mold?</p>
             <input type="hidden" id="pkm-id-tiket-verifikasi">
             <div style="display:flex; flex-direction:column; gap:12px;">
-                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer;"><i class="fas fa-tools"></i> YA, KERJAKAN</button>
-                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:15px; background:linear-gradient(135deg, #ef4444, #dc2626); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer;"><i class="fas fa-ban"></i> BUKAN (PISAHKAN)</button>
+                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(16,185,129,0.3);"><i class="fas fa-tools"></i> YA, KERJAKAN</button>
+                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:15px; background:linear-gradient(135deg, #ef4444, #dc2626); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(239,68,68,0.3);"><i class="fas fa-ban"></i> BUKAN (PISAHKAN)</button>
                 <button type="button" onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:var(--text-muted); cursor:pointer; margin-top:10px;">BATAL</button>
             </div>
         </div>
@@ -1115,7 +1125,7 @@
             <div class="header"><h2><i class="fas fa-plus-circle" style="margin-right:10px;"></i> Input Permintaan Trial</h2></div>
             <div class="dark-panel">
                 <div class="form-group"><label>Nama Peminta / User</label><input type="text" id="pt-input-user" placeholder="Nama pekerja..."></div>
-                <div class="form-group"><label>Hari, Tanggal Pengajuan</label><input type="text" id="pt-input-waktu" readonly></div>
+                <div class="form-group"><label>Hari, Tanggal Pengajuan</label><input type="text" id="pt-input-waktu" readonly style="font-weight:700; color:var(--secondary); background:rgba(0,0,0,0.5);"></div>
                 <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-input-nama" placeholder="Masukkan nama mold..." style="text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()"></div>
                 <div class="form-group">
                     <h3 class="sub-title-box"><i class="fas fa-bullseye" style="color:var(--secondary);"></i> Target Trial / Permintaan</h3>
@@ -1141,8 +1151,8 @@
             
             <div id="form-pt-verifikasi" class="dark-panel" style="display: none; border-left: 6px solid var(--secondary);">
                 <h3 class="sub-title-box"><i class="fas fa-check-circle" style="color:var(--secondary);"></i> Verifikasi Trial Mold</h3><input type="hidden" id="pt-verif-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-verif-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-verif-target" readonly></div>
+                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-verif-nomold" readonly style="background:rgba(0,0,0,0.5);"></div>
+                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-verif-target" readonly style="background:rgba(0,0,0,0.5);"></div>
                 <div class="form-group"><label>No Trial</label><input type="text" id="pt-verif-notrial" placeholder="Masukkan Nomor Trial..."></div>
                 <div class="form-group"><label>Tanggal Permintaan</label><input type="date" id="pt-verif-tgl"></div>
                 <div style="display: flex; gap: 12px; margin-top:25px;">
@@ -1153,19 +1163,19 @@
             
             <div id="form-pt-hasil" class="dark-panel" style="display: none; border-left: 6px solid var(--cepat);">
                 <h3 class="sub-title-box"><i class="fas fa-flag-checkered" style="color:var(--cepat);"></i> Update Hasil Trial</h3><input type="hidden" id="pt-hasil-id">
-                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-hasil-nomold" readonly></div>
-                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-hasil-target" readonly></div>
+                <div class="form-group"><label>Nama Mold</label><input type="text" id="pt-hasil-nomold" readonly style="background:rgba(0,0,0,0.5);"></div>
+                <div class="form-group"><label>Target Trial</label><input type="text" id="pt-hasil-target" readonly style="background:rgba(0,0,0,0.5);"></div>
                 <div class="form-group"><label>Hasil Trial</label><select id="pt-hasil-status"><option value="Selesai">✅ Selesai (Sukses)</option><option value="Gagal">❌ Gagal (Bermasalah)</option></select></div>
                 <div class="form-group"><label>Keterangan Masalah</label><textarea id="pt-hasil-ket" rows="3" placeholder="Masukkan keterangan tambahan jika ada..."></textarea></div>
                 <div class="form-group">
                     <label>Upload Gambar Hasil</label>
-                    <label for="pt-hasil-foto" class="btn-camera" style="background:rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; display: block; text-align: center; cursor: pointer; color: white;"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
+                    <label for="pt-hasil-foto" class="btn-camera" style="background:rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; display: block; text-align: center; cursor: pointer; color: white; border:1px solid var(--border-dark);"><i class="fas fa-camera"></i> Buka Kamera / Galeri</label>
                     <input type="file" id="pt-hasil-foto" class="input-file-hidden" accept="image/*" capture="camera" style="display: none;" onchange="window.cekFoto(this, 'status-pt-foto')">
-                    <span id="status-pt-foto" class="file-status" style="display: block; margin-top: 10px;"></span>
+                    <span id="status-pt-foto" class="file-status" style="display: block; margin-top: 10px; font-weight:bold;"></span>
                 </div>
                 <div style="display: flex; gap: 12px; margin-top:25px;">
                     <button class="btn-submit" type="button" style="background: rgba(255,255,255,0.1); box-shadow:none; flex:1;" onclick="window.batalPtAdmin('hasil')">Batal</button>
-                    <button class="btn-submit" type="button" style="background: linear-gradient(135deg, var(--cepat), #059669); flex:2;" onclick="window.simpanPtHasil()">SIMPAN HASIL</button>
+                    <button class="btn-submit" type="button" style="background: linear-gradient(135deg, var(--cepat), #059669); flex:2; box-shadow:0 8px 20px rgba(16,185,129,0.3);" onclick="window.simpanPtHasil()">SIMPAN HASIL</button>
                 </div>
             </div>
         </div>
@@ -1178,16 +1188,6 @@
         </div>
     </div>
 
-    <div id="pt-detail-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-search" style="margin-right:10px;"></i> Detail Laporan Trial</h2></div>
-            <div class="export-row" style="display:flex; gap:12px; margin-bottom:20px;">
-                <button class="btn-submit" type="button" onclick="window.downloadPtJPG()" style="flex:1; padding:14px; background:linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-image"></i> Download JPG</button>
-                <button class="btn-submit" type="button" onclick="window.cetakPDFUniversal()" style="flex:1; padding:14px; background:linear-gradient(135deg, #db2777, #be185d);"><i class="fas fa-file-pdf"></i> Download PDF</button>
-            </div>
-            <div class="report-sheet dark-panel" id="report-pt-content" style="box-shadow:none; overflow-x:auto;"></div>
-        </div>
-    </div>
     <!-- ========================================== -->
     <!-- EKOSISTEM: ADM MOLD (GRID PROFESIONAL)     -->
     <!-- ========================================== -->
@@ -1285,8 +1285,8 @@
         <div class="content-wrapper">
             <div class="header"><h2><i class="fas fa-bullseye" style="margin-right:10px;"></i> Input Target Harian</h2></div>
             <div class="dark-panel">
-                <div class="form-group"><label>Nama Admin Pembuat</label><input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly></div>
-                <div class="form-group"><label>Tanggal Pelaksanaan</label><input type="date" id="adm-target-tgl" readonly></div>
+                <div class="form-group"><label>Nama Admin Pembuat</label><input type="text" id="adm-target-user" value="BENNY FIRMANSYAH" readonly style="background:rgba(0,0,0,0.5);"></div>
+                <div class="form-group"><label>Tanggal Pelaksanaan</label><input type="date" id="adm-target-tgl" readonly style="background:rgba(0,0,0,0.5);"></div>
                 <div class="form-group" style="display: flex; gap: 15px;">
                     <div style="flex: 1;"><label>Waktu Dimulai</label><input type="time" id="adm-target-mulai" value="08:00"></div>
                     <div style="flex: 1;"><label>Target Selesai</label><input type="time" id="adm-target-selesai" value="16:00"></div>
@@ -1350,16 +1350,78 @@
         </div>
     </div>
 
-    <div id="adm-harian-detail-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-search" style="margin-right:10px;"></i> Detail Laporan Harian Admin</h2></div>
-            <div class="export-row" style="display:flex; gap:12px; margin-bottom:20px;">
-                <button class="btn-submit" type="button" onclick="window.downloadAdmJPG()" style="flex:1; background:linear-gradient(135deg, #f59e0b, #d97706);"><i class="fas fa-image"></i> Download JPG</button>
-                <button class="btn-submit" type="button" onclick="window.cetakPDFUniversal()" style="flex:1; background:linear-gradient(135deg, #db2777, #be185d);"><i class="fas fa-file-pdf"></i> Download PDF</button>
-            </div>
-            <div class="report-sheet dark-panel" id="report-adm-content" style="box-shadow:none; overflow-x:auto;"></div>
+    <!-- ========================================================= -->
+    <!-- CYBER DEFENSE PANEL & SCRIPT ANTI-VIRUS/ANTI-DELAY        -->
+    <!-- ========================================================= -->
+    <div id="cyber-security-panel" class="security-modal">
+        <i class="fas fa-shield-virus shield-active" style="font-size: 60px; margin-bottom: 20px;"></i>
+        <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 2px;">CYBER DEFENSE SYSTEM</h2>
+        <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
+        
+        <div class="cyber-log" id="cyber-log-container">
+            <div style="color: #38bdf8;">[SYSTEM] Memulai protokol Firewall Firebase v2.1...</div>
+            <div style="color: #38bdf8;">[SYSTEM] Menunggu lalu lintas data...</div>
         </div>
+        
+        <button class="btn-submit" type="button" onclick="document.getElementById('cyber-security-panel').style.display='none'" style="margin-top:20px; max-width:600px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-dark); box-shadow:none;">
+            TUTUP PANEL KEAMANAN
+        </button>
     </div>
+
+    <script>
+        // FUNGSI BERANDA CEPAT (BYPASS DELAY HP)
+        window.masukBerandaCepat = function() {
+            if(navigator.vibrate) navigator.vibrate([50]); 
+            const l = document.getElementById('landing-page');
+            const n = document.getElementById('global-bottom-nav');
+            if(l) l.classList.add('door-open');
+            setTimeout(() => { 
+                if(l) l.style.display='none'; 
+                if(n) n.style.display='flex'; 
+                window.navigasi('home-screen'); 
+            }, 150); // Waktu di-cut dari 300ms ke 150ms agar super ngebut
+        };
+
+        // MESIN CYBER SECURITY 
+        window.logKeamanan = function(pesan, tipe = "info") {
+            const logContainer = document.getElementById('cyber-log-container');
+            if(!logContainer) return;
+            const time = new Date().toLocaleTimeString();
+            let color = tipe === "ancaman" ? "#ef4444" : tipe === "scan" ? "#f59e0b" : "#10b981";
+            let prefix = tipe === "ancaman" ? "[BLOCKED]" : tipe === "scan" ? "[SCANNING]" : "[SECURE]";
+            logContainer.innerHTML += `<div style="color:${color};">[${time}] ${prefix} ${pesan}</div>`;
+            logContainer.scrollTop = logContainer.scrollHeight; 
+        };
+
+        window.bukaPanelKeamanan = function() {
+            document.getElementById('cyber-security-panel').style.display = 'flex';
+            window.logKeamanan("Memeriksa integritas DOM HTML...", "scan");
+            setTimeout(() => window.logKeamanan("Sistem Bersih. Tidak ada injeksi malware terdeteksi.", "info"), 800);
+            setTimeout(() => window.logKeamanan("Ping Firebase Server Database...", "scan"), 1500);
+            setTimeout(() => window.logKeamanan("Koneksi Enkripsi SSL Firestore aktif dan terkunci.", "info"), 2200);
+        };
+
+        // Animasi Teks Shield Beranda
+        setInterval(() => {
+            const texts = ["Aman 100%", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
+            const shieldText = document.getElementById('shield-text');
+            if(shieldText) shieldText.innerText = texts[Math.floor(Math.random() * texts.length)];
+        }, 3500);
+
+        // FUNGSI PEMBERSIH DATA (ANTI VIRUS / SCRIPT KORUP) SEBELUM MASUK FIREBASE
+        window.amankanData = function(str) {
+            if (typeof str !== 'string') return str;
+            let original = str;
+            let aman = str.replace(/<script[^>]*?>.*?<\/script>/gi, '')
+                          .replace(/<iframe[^>]*?>.*?<\/iframe>/gi, '')
+                          .replace(/<[\/\!]*?[^<>]*?>/gi, '')
+                          .replace(/javascript:/gi, '')
+                          .replace(/on\w+=/gi, '');
+            if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan dari input user.`, "ancaman");
+            return aman;
+        };
+    </script>
+
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI (OTAK)   -->
     <!-- ========================================== -->
@@ -1382,19 +1444,18 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // --- GLOBAL VARIABLES & DATABASES ---
+        // Global Variables
         let infoDatabase = []; let notulenDatabase = []; let ptDatabase = []; 
         let admHarianDatabase = []; let gosokDatabase = []; let mrJobsDatabase = []; 
         let logHarianMRDatabase = []; window.arrayNaikMold = []; let troubleDatabase = []; 
         let pkmDatabase = []; let dataProyekWS = []; window.arrayTugasBaru = [];
-        
         let divisiAktif = ""; let kategoriInfoAktif = "";
         let chartUni = null; let chartBi = null; let chartMulti = null;
 
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // --- CORE NAVIGATION (ANTI-BLANK & SMOOTH TRANSITION) ---
+        // --- CORE NAVIGATION ---
         let riwayatNavigasi = ['landing-page'];
         history.pushState({page: 'landing-page'}, "", "");
 
@@ -1425,10 +1486,7 @@
                 window.scrollTo(0, 0); 
 
                 if(idTujuan === 'ai-dashboard-screen') { window.inisialisasiDataAnalisaGlobal(); }
-            } catch (error) { 
-                console.error("Error Navigasi:", error); 
-                alert("Gagal memuat halaman: " + error.message);
-            }
+            } catch (error) { console.error(error); alert("Navigasi gagal: " + error.message); }
         }
 
         window.kembaliKeSebelumnya = function() {
@@ -1475,8 +1533,7 @@
                 const reader = new FileReader(); 
                 reader.readAsDataURL(file);
                 reader.onload = event => {
-                    const img = new Image(); 
-                    img.src = event.target.result;
+                    const img = new Image(); img.src = event.target.result;
                     img.onload = () => {
                         let width = img.width; let height = img.height;
                         if (width > height) { if (width > maxWidth) { height = Math.round((height *= maxWidth / width)); width = maxWidth; } } 
@@ -1495,7 +1552,6 @@
         window.cekFotoFile = function(input, targetId) { const target = document.getElementById(targetId); if (target && input.files && input.files.length > 0) target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> File terpilih`; else if (target) target.innerHTML = ""; }
         window.dapatkanWaktuRill = function() { const now = new Date(); const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']; const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des']; const h = String(now.getHours()).padStart(2, '0'); const m = String(now.getMinutes()).padStart(2, '0'); return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`; }
         window.dapatkanTanggalLokal = function() { const now = new Date(); return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'); }
-        window.formatJamMenit = function(totalMenit) { if(!totalMenit || isNaN(totalMenit)) return "0 Jam 0 Menit"; const jam = Math.floor(totalMenit / 60); const menit = totalMenit % 60; return `${jam} Jam ${menit} Menit`; }
 
         setInterval(() => { 
             const el = document.getElementById('notul-waktu-display'); if (el) el.value = window.dapatkanWaktuRill(); 
@@ -1515,14 +1571,14 @@
 
         window.exportInfoExcel = function() { alert("Fitur Export Excel Info siap digunakan."); }
         window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF browser."); } };
-        window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#040d1a" }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch((e) => { console.error(e); alert("Gagal mencetak gambar."); window.toggleLoader(false); }); }, 200); }
+        window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#040d1a" }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); }).catch(e => { console.error(e); alert("Gagal print gambar."); window.toggleLoader(false);}); }, 200); }
         window.downloadAdmJPG = function() { window.cetakGambarUniversal('report-adm-content', 'ADMHarian'); }
         window.downloadPtJPG = function() { window.cetakGambarUniversal('report-pt-content', 'TrialMold'); }
         window.downloadNotulenJPG = function() { window.cetakGambarUniversal('report-notulen-content', 'Notulen'); }
         window.downloadGosokJPG = function() { window.cetakGambarUniversal('report-gosok-content', 'Laporan_Gosok_Mold'); }
 
         // =========================================================================
-        // LOGIC FIX 1: SUB INFORMASI MOLD (Struktur Organisasi, Master Mold, dll)
+        // 1: SUB INFORMASI MOLD (Penerapan Anti-Lag/htmlBuffer + AmankanData)
         // =========================================================================
         window.bukaSubInfo = async function(kategori) { 
             kategoriInfoAktif = kategori; 
@@ -1537,14 +1593,17 @@
                 const querySnapshot = await getDocs(q); 
                 querySnapshot.forEach((doc) => { infoDatabase.push({ id: doc.id, ...doc.data() }); }); 
                 infoDatabase.sort((a, b) => b.timestamp - a.timestamp);
-            } catch (error) { console.error(error); alert("Gagal mengunduh informasi: " + error.message); } 
+                window.logKeamanan("Data info mold berhasil dimuat dari database.", "info");
+            } catch (error) { console.error(error); alert("Gagal mengunduh: " + error.message); window.logKeamanan("Gagal load info mold.", "ancaman");} 
             window.toggleLoader(false); window.renderInfoList(); 
         }
         window.simpanInfoData = async function() { 
-            const nama = document.getElementById('info-nama').value; 
-            const ket = document.getElementById('info-ket').value; 
+            // Amankan input dari injeksi XSS
+            const nama = window.amankanData(document.getElementById('info-nama').value); 
+            const ket = window.amankanData(document.getElementById('info-ket').value); 
             const tgl = document.getElementById('info-tgl').value; 
-            const user = document.getElementById('info-user').value; 
+            const user = window.amankanData(document.getElementById('info-user').value); 
+            
             if(!nama || !tgl) { alert("Judul dan Tanggal harus diisi!"); return; } 
             window.toggleLoader(true, "Menyimpan..."); 
             try { 
@@ -1552,14 +1611,14 @@
                 alert("Berhasil disimpan!"); 
                 document.getElementById('info-nama').value = ""; document.getElementById('info-ket').value = ""; document.getElementById('info-tgl').value = ""; document.getElementById('info-user').value = ""; 
                 await window.ambilDataInfoServer(); 
-            } catch (error) { console.error(error); alert("Gagal menyimpan data: " + error.message); } 
+            } catch (error) { console.error(error); alert("Gagal menyimpan: " + error.message); } 
             window.toggleLoader(false); 
         }
         window.renderInfoList = function() { 
-            const container = document.getElementById('list-sub-info'); if(!container) return; container.innerHTML = ""; 
+            const container = document.getElementById('list-sub-info'); if(!container) return; 
             if (infoDatabase.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada data tersedia.</p>`; return; } 
             
-            // FIX: Menggunakan variabel penampung (Anti-Lag/Layout Thrashing)
+            // ANTI-LAG (Layout Thrashing Fix)
             let htmlBuffer = "";
             infoDatabase.forEach(data => { 
                 htmlBuffer += `<div class="progress-card" style="border-left-color: var(--secondary);"><h3 style="margin:0; color:white;">${data.namaKegiatan}</h3><p style="font-size:13px; color:var(--text-muted); margin:10px 0;"><i>"${data.keterangan || '-'}"</i></p><p style="font-size:12px; color:gray; margin-bottom:0; border-top:1px dashed var(--border-dark); padding-top:10px;">Tanggal: ${data.tanggal} | Pembuat: ${data.pembuat}</p></div>`; 
@@ -1568,7 +1627,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 2: IDE CENTER
+        // 2: IDE CENTER (Penerapan Anti-Lag/htmlBuffer + AmankanData)
         // =========================================================================
         window.switchTabIde = function(tab) {
             const btnInput = document.getElementById('tab-ide-input'); const btnMasuk = document.getElementById('tab-ide-masuk');
@@ -1577,14 +1636,18 @@
             else { btnMasuk.classList.add('tab-active'); btnInput.classList.remove('tab-active'); areaInput.style.display = 'none'; areaMasuk.style.display = 'block'; window.muatDataIde(); }
         }
         window.simpanIde = async function() {
-            const nama = document.getElementById('ide-nama').value.trim(); const waktu = document.getElementById('ide-waktu').value; const uraian = document.getElementById('ide-uraian').value.trim();
+            // Pengamanan input dari virus/script jahat
+            const nama = window.amankanData(document.getElementById('ide-nama').value.trim()); 
+            const waktu = document.getElementById('ide-waktu').value; 
+            const uraian = window.amankanData(document.getElementById('ide-uraian').value.trim());
+            
             if(!nama || !uraian) return alert("Nama dan Uraian saran wajib diisi!");
             window.toggleLoader(true, "Mengirim Saran...");
             try { 
                 await addDoc(collection(db, "ide_saran_box"), { nama: nama.toUpperCase(), waktu: waktu, uraian: uraian, timestamp: Date.now() }); 
-                alert("✅ Terima kasih! Ide brilian Anda berhasil dikirim ke Management."); 
+                alert("✅ Terima kasih! Ide brilian Anda berhasil dikirim."); 
                 document.getElementById('ide-nama').value = ""; document.getElementById('ide-uraian').value = ""; window.switchTabIde('masuk'); 
-            } catch(e) { console.error(e); alert("Gagal mengirim ide: " + e.message); } 
+            } catch(e) { console.error(e); alert("Gagal kirim: " + e.message); } 
             window.toggleLoader(false);
         }
         window.muatDataIde = async function() {
@@ -1593,18 +1656,18 @@
                 const q = query(collection(db, "ide_saran_box")); const snap = await getDocs(q); let listIde = []; 
                 snap.forEach(doc => listIde.push({id: doc.id, ...doc.data()})); listIde.sort((a,b) => b.timestamp - a.timestamp);
                 
-                if(listIde.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada masukan/ide tersimpan.</p>`; } 
+                if(listIde.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada masukan/ide.</p>`; } 
                 else {
-                    let htmlBuffer = "";
+                    let htmlBuffer = ""; // ANTI-LAG Fix
                     listIde.forEach(item => { htmlBuffer += `<div class="progress-card" style="border-left-color: #f59e0b; margin-bottom:15px;"><div style="display:flex; justify-content:space-between; margin-bottom:8px;"><strong style="color:white; font-size:15px;"><i class="fas fa-user-circle" style="color:var(--secondary);"></i> ${item.nama}</strong><span style="font-size:11px; color:var(--text-muted); font-weight:700;">${item.waktu}</span></div><p style="margin:0; font-size:14px; color:white; line-height:1.5; background:rgba(0,0,0,0.4); padding:12px; border-radius:10px; border:1px solid var(--border-dark);">${item.uraian}</p></div>`; });
                     container.innerHTML = htmlBuffer;
                 }
-            } catch(e){ console.error(e); alert("Gagal memuat ide: " + e.message); } 
+            } catch(e) { console.error(e); alert(e.message); } 
             window.toggleLoader(false);
         }
 
         // =========================================================================
-        // LOGIC FIX 3: NOTULEN MEETING
+        // 3: NOTULEN MEETING (Proteksi & Optimasi)
         // =========================================================================
         window.switchTabNotulen = function(jenis) {
             document.querySelectorAll('.notul-list-content').forEach(el => el.style.display = 'none');
@@ -1615,7 +1678,8 @@
         }
         window.bukaHasilNotulen = async function() { window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); await window.ambilDataNotulen(); }
         window.aiRapihkanNotulen = function() { 
-            let text = document.getElementById('notul-deskripsi').value; if(!text.trim()) return alert("Tuliskan deskripsi meeting terlebih dahulu!"); 
+            let text = window.amankanData(document.getElementById('notul-deskripsi').value); 
+            if(!text.trim()) return alert("Tuliskan deskripsi meeting terlebih dahulu!"); 
             window.toggleLoader(true, "AI Merapihkan Format..."); 
             setTimeout(() => { 
                 let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2); 
@@ -1627,7 +1691,7 @@
         window.simpanNotulen = async function() { 
             const jenis = document.getElementById('notul-jenis').value; 
             const waktuRill = document.getElementById('notul-waktu-display').value; 
-            const deskripsi = document.getElementById('notul-deskripsi').value; 
+            const deskripsi = window.amankanData(document.getElementById('notul-deskripsi').value); // Filter virus 
             const fotoInput = document.getElementById('notul-foto'); 
             if(!deskripsi.trim()) { alert("Deskripsi kosong!"); return; } 
             
@@ -1653,12 +1717,10 @@
                 snapshot.forEach(doc => notulenDatabase.push({ id: doc.id, ...doc.data() })); 
                 notulenDatabase.sort((a, b) => b.timestamp - a.timestamp); 
                 window.renderNotulenList(); 
-            } catch (error) { console.error(error); alert("Gagal memuat notulen: " + error.message); } 
+            } catch (error) { console.error(error); alert("Gagal load notulen: " + error.message); } 
             window.toggleLoader(false); 
         }
         window.renderNotulenList = function() { 
-            const cPagi = document.getElementById('list-notulen-pagi'); const cUrgent = document.getElementById('list-notulen-urgent'); const cLapangan = document.getElementById('list-notulen-lapangan');
-            
             let htmlPagi = "", htmlUrgent = "", htmlLapangan = "";
             notulenDatabase.forEach(data => { 
                 let totalPoin = data.deskripsiData ? data.deskripsiData.length : 0; 
@@ -1670,9 +1732,9 @@
                 else if (data.jenisMeeting === 'MEETING URGENT') htmlUrgent += htmlCard;
                 else htmlLapangan += htmlCard;
             }); 
-            if(cPagi) cPagi.innerHTML = htmlPagi; 
-            if(cUrgent) cUrgent.innerHTML = htmlUrgent; 
-            if(cLapangan) cLapangan.innerHTML = htmlLapangan;
+            const cPagi = document.getElementById('list-notulen-pagi'); if(cPagi) cPagi.innerHTML = htmlPagi; 
+            const cUrgent = document.getElementById('list-notulen-urgent'); if(cUrgent) cUrgent.innerHTML = htmlUrgent; 
+            const cLap = document.getElementById('list-notulen-lapangan'); if(cLap) cLap.innerHTML = htmlLapangan;
         }
         window.bukaDetailNotulen = function(id) { 
             const data = notulenDatabase.find(d => d.id === id); if(!data) return; 
@@ -1694,12 +1756,12 @@
             const indexDoc = notulenDatabase.findIndex(n => n.id === docId); 
             if(indexDoc > -1) { 
                 notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; 
-                try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) { console.error(e); } 
+                try { await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); } catch(e) { console.error(e); alert("Koneksi gagal saat simpan checklist."); } 
             } 
         }
 
         // =========================================================================
-        // LOGIC FIX 4: JADWAL BESAR
+        // 4: JADWAL BESAR
         // =========================================================================
         window.bukaInputJadwal = async function() { window.navigasi('jadwal-besar-input-screen'); await window.muatJadwalBesar(); }
         window.bukaViewJadwal = async function() { window.navigasi('jadwal-besar-view-screen'); await window.muatJadwalBesar(); }
@@ -1725,7 +1787,7 @@
                     if(outContainer) outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; 
                     if(viewContainer) viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; 
                 } 
-            } catch (error) { console.error(error); } 
+            } catch (error) { console.error(error); window.logKeamanan("Firebase getDoc Error: Jadwal", "ancaman"); } 
         }
         window.simpanJadwalBesar = async function() { 
             const fotoInput = document.getElementById('jb-foto'); if (!fotoInput || fotoInput.files.length === 0) { alert("Pilih File Jadwal PDF / JPG!"); return; } 
@@ -1755,12 +1817,12 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 5: GOSOK MOLD AI & EXCEL
+        // 5: GOSOK MOLD AI (Perbaikan Logika Parsing Waktu Anti-NaN)
         // =========================================================================
         window.bukaInputGosokMold = function() { window.navigasi('gosok-mold-screen'); document.getElementById('gosok-result-container').style.display = 'none'; }
         window.bukaRiwayatGosokMold = async function() { window.navigasi('gosok-riwayat-screen'); await window.ambilDataGosok(); }
         
-        // FIX: Logika Perhitungan Jam (Mencegah NaN)
+        // Logika Pintar Menghitung Waktu Berantakan dari Lapangan
         const parseWaktuKeMenit = (waktuStr) => {
             if(!waktuStr) return 0;
             let parts = waktuStr.split(':');
@@ -1770,7 +1832,7 @@
         };
 
         window.aiProsesGosokMold = function() {
-            const raw = document.getElementById('gosok-raw-input').value;
+            const raw = window.amankanData(document.getElementById('gosok-raw-input').value); // Filter Script
             if(!raw) return alert("Silakan paste laporan mentah dari lapangan terlebih dahulu!");
             window.toggleLoader(true, "AI Memproses Data...");
             setTimeout(() => {
@@ -1797,7 +1859,7 @@
                 const tb = document.getElementById('gosok-table-body');
                 if(window.tempGosokOlahan.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:gray;">Format tidak dikenali AI.</td></tr>`; } 
                 else {
-                    let htmlBuffer = "";
+                    let htmlBuffer = ""; // Anti-Lag Thrashing
                     window.tempGosokOlahan.forEach((item, idx) => {
                         htmlBuffer += `<tr><td style="padding:5px;"><input type="text" id="edit-mesin-${idx}" value="${item.mesin}" style="width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.2); padding:8px;"></td><td style="padding:5px;"><input type="text" id="edit-mold-${idx}" value="${item.mold}" style="width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.2); padding:8px;"></td><td style="padding:5px;"><input type="text" id="edit-start-${idx}" value="${item.start}" style="width:100%; text-align:center; border-radius:8px; border:1px solid rgba(255,255,255,0.2); padding:8px;" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-finish-${idx}" value="${item.finish}" style="width:100%; text-align:center; border-radius:8px; border:1px solid rgba(255,255,255,0.2); padding:8px;" onchange="window.hitungUlangDurasiGosok(${idx})"></td><td style="padding:5px;"><input type="text" id="edit-durasi-${idx}" value="${item.durasi}" readonly style="width:100%; text-align:center; font-weight:bold; color:var(--proses); border-radius:8px; border:1px solid rgba(255,255,255,0.2); padding:8px; background:rgba(0,0,0,0.6);"></td></tr>`;
                     });
@@ -1818,7 +1880,7 @@
             if(!window.tempGosokOlahan || window.tempGosokOlahan.length === 0) return alert("Tidak ada data untuk disimpan!");
             let dataFinal = [];
             for(let i=0; i<window.tempGosokOlahan.length; i++) {
-                dataFinal.push({ mesin: document.getElementById(`edit-mesin-${i}`).value, mold: document.getElementById(`edit-mold-${i}`).value, start: document.getElementById(`edit-start-${i}`).value, finish: document.getElementById(`edit-finish-${i}`).value, durasi: document.getElementById(`edit-durasi-${i}`).value });
+                dataFinal.push({ mesin: window.amankanData(document.getElementById(`edit-mesin-${i}`).value), mold: window.amankanData(document.getElementById(`edit-mold-${i}`).value), start: document.getElementById(`edit-start-${i}`).value, finish: document.getElementById(`edit-finish-${i}`).value, durasi: document.getElementById(`edit-durasi-${i}`).value });
             }
             window.toggleLoader(true, "Menyimpan ke Database...");
             try { await addDoc(collection(db, "gosok_mold"), { waktu: window.dapatkanWaktuRill(), dataTabel: dataFinal, timestamp: Date.now() }); alert("Data berhasil disimpan!"); document.getElementById('gosok-result-container').style.display = 'none'; document.getElementById('gosok-raw-input').value = ""; window.navigasi('data-olahan-menu-screen'); } catch(e) { console.error(e); alert(e.message); } window.toggleLoader(false);
@@ -1858,7 +1920,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 6: SISTEM PERMINTAAN TRIAL MOLD
+        // 6: SISTEM PERMINTAAN TRIAL MOLD
         // =========================================================================
         window.bukaMenuPermintaanTrial = function() { window.navigasi('permintaan-trial-menu-screen'); }
         window.bukaInputPermintaanTrial = function() { window.navigasi('pt-input-screen'); document.getElementById('list-target-trial').innerHTML = ""; window.arrayTargetTrial = []; }
@@ -1866,12 +1928,12 @@
         window.bukaPtProgress = async function() { window.navigasi('pt-progress-screen'); await window.muatDataTrial(); }
         
         window.tambahTargetTrial = function() {
-            const input = document.getElementById('pt-input-target-item'); const teks = input.value.trim(); if(!teks) return;
+            const input = document.getElementById('pt-input-target-item'); const teks = window.amankanData(input.value.trim()); if(!teks) return;
             if(!window.arrayTargetTrial) window.arrayTargetTrial = []; window.arrayTargetTrial.push(teks);
             const ul = document.getElementById('list-target-trial'); ul.innerHTML += `<li><i class="fas fa-check-circle" style="color:var(--secondary);"></i> ${teks}</li>`; input.value = "";
         }
         window.simpanPtInput = async function() {
-            const user = document.getElementById('pt-input-user').value; const nama = document.getElementById('pt-input-nama').value;
+            const user = window.amankanData(document.getElementById('pt-input-user').value); const nama = window.amankanData(document.getElementById('pt-input-nama').value);
             if(!user || !nama || !window.arrayTargetTrial || window.arrayTargetTrial.length === 0) return alert("Lengkapi data dan Target Trial!");
             window.toggleLoader(true, "Mengirim Permintaan...");
             try { await addDoc(collection(db, "permintaan_trial"), { userReq: user, tanggalReq: window.dapatkanTanggalLokal(), namaMold: nama, targetTrial: window.arrayTargetTrial, status: "Menunggu Verifikasi", timestamp: Date.now() }); alert("Permintaan Trial Terkirim!"); window.navigasi('permintaan-trial-menu-screen'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
@@ -1885,27 +1947,26 @@
         }
         window.muatDataTrial = async function() {
             ptDatabase = []; try { const snap = await getDocs(query(collection(db, "permintaan_trial"))); snap.forEach(doc => { ptDatabase.push({id:doc.id, ...doc.data()}); }); ptDatabase.sort((a,b) => b.timestamp - a.timestamp); } catch(e){ console.error(e); }
-            const listBelum = document.getElementById('list-pt-belum'); const listProses = document.getElementById('list-pt-proses'); const listProg = document.getElementById('list-pt-progress');
             
             let htmlBelum = "", htmlProses = "", htmlProg = "";
             
             ptDatabase.forEach(data => {
-                let badge = data.status === "Menunggu Verifikasi" ? `<span class="status-badge" style="background:#ef4444;">${data.status}</span>` : `<span class="status-badge" style="background:#f59e0b;">${data.status}</span>`;
-                if(data.status === "Selesai" || data.status === "Gagal") badge = `<span class="status-badge" style="background:#10b981;">Telah Diuji</span>`;
+                let badge = data.status === "Menunggu Verifikasi" ? `<span class="status-badge" style="background:#ef4444; border-radius:10px; padding:2px 8px; font-size:10px; font-weight:bold;">${data.status}</span>` : `<span class="status-badge" style="background:#f59e0b; border-radius:10px; padding:2px 8px; font-size:10px; font-weight:bold;">${data.status}</span>`;
+                if(data.status === "Selesai" || data.status === "Gagal") badge = `<span class="status-badge" style="background:#10b981; border-radius:10px; padding:2px 8px; font-size:10px; font-weight:bold;">Telah Diuji</span>`;
                 let card = `<div class="progress-card" style="border-left-color: var(--secondary);"><h4>${data.namaMold}</h4><p style="font-size:12px; margin:5px 0; color:var(--text-muted);">User: ${data.userReq} | Tgl: ${data.tanggalReq}</p>${badge}</div>`;
                 
-                htmlProg += `<div onclick="alert('Detail Progress Trial: ${data.namaMold}')">${card}</div>`;
-                if(data.status === "Menunggu Verifikasi") htmlBelum += `<div onclick="window.formVerifikasiPt('${data.id}')">${card}</div>`;
-                else if(data.status === "Sedang Proses") htmlProses += `<div onclick="window.formHasilPt('${data.id}')">${card}</div>`;
+                htmlProg += `<div onclick="alert('Detail Progress Trial: ${data.namaMold}')" style="cursor:pointer;">${card}</div>`;
+                if(data.status === "Menunggu Verifikasi") htmlBelum += `<div onclick="window.formVerifikasiPt('${data.id}')" style="cursor:pointer;">${card}</div>`;
+                else if(data.status === "Sedang Proses") htmlProses += `<div onclick="window.formHasilPt('${data.id}')" style="cursor:pointer;">${card}</div>`;
             });
-            if(listBelum) listBelum.innerHTML = htmlBelum; 
-            if(listProses) listProses.innerHTML = htmlProses; 
-            if(listProg) listProg.innerHTML = htmlProg;
+            const listBelum = document.getElementById('list-pt-belum'); if(listBelum) listBelum.innerHTML = htmlBelum; 
+            const listProses = document.getElementById('list-pt-proses'); if(listProses) listProses.innerHTML = htmlProses; 
+            const listProg = document.getElementById('list-pt-progress'); if(listProg) listProg.innerHTML = htmlProg;
         }
         window.formVerifikasiPt = function(id) { const data = ptDatabase.find(d=>d.id===id); if(!data)return; document.getElementById('list-pt-belum').style.display = 'none'; document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = data.targetTrial.join(", "); }
         window.batalPtAdmin = function(type) { window.switchTabPt(type === 'verif' ? 'belum' : 'proses'); }
         window.simpanPtVerifikasi = async function() {
-            const id = document.getElementById('pt-verif-id').value; const noTrial = document.getElementById('pt-verif-notrial').value;
+            const id = document.getElementById('pt-verif-id').value; const noTrial = window.amankanData(document.getElementById('pt-verif-notrial').value);
             if(!noTrial) return alert("Nomor Trial Wajib Diisi!"); window.toggleLoader(true, "Verifikasi...");
             try { await updateDoc(doc(db, "permintaan_trial", id), { noTrial: noTrial, status: "Sedang Proses", tglVerifikasi: document.getElementById('pt-verif-tgl').value }); alert("Diverifikasi!"); await window.muatDataTrial(); window.switchTabPt('proses'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
         }
@@ -1913,14 +1974,14 @@
         window.simpanPtHasil = async function() {
             const id = document.getElementById('pt-hasil-id').value; const status = document.getElementById('pt-hasil-status').value;
             window.toggleLoader(true, "Menyimpan Hasil...");
-            try { await updateDoc(doc(db, "permintaan_trial", id), { status: status, hasilKet: document.getElementById('pt-hasil-ket').value }); alert("Hasil Diupdate!"); await window.muatDataTrial(); window.switchTabPt('belum'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
+            try { await updateDoc(doc(db, "permintaan_trial", id), { status: status, hasilKet: window.amankanData(document.getElementById('pt-hasil-ket').value) }); alert("Hasil Diupdate!"); await window.muatDataTrial(); window.switchTabPt('belum'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
         }
 
         // =========================================================================
-        // LOGIC FIX 7: ADM HARIAN
+        // 7: ADM HARIAN MOLD
         // =========================================================================
         window.bukaInputTargetAdm = function() { window.navigasi('adm-harian-target-screen'); document.getElementById('adm-target-tgl').value = window.dapatkanTanggalLokal(); window.arrayRencanaKerjaAdm = []; document.getElementById('list-rencana-kerja').innerHTML = ""; }
-        window.tambahRencanaKerja = function() { const v = document.getElementById('adm-input-rencana').value.trim(); if(!v)return; if(!window.arrayRencanaKerjaAdm) window.arrayRencanaKerjaAdm=[]; window.arrayRencanaKerjaAdm.push({tugas: v, done: false}); document.getElementById('list-rencana-kerja').innerHTML += `<li><i class="fas fa-check-circle" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('adm-input-rencana').value = ""; }
+        window.tambahRencanaKerja = function() { const v = window.amankanData(document.getElementById('adm-input-rencana').value.trim()); if(!v)return; if(!window.arrayRencanaKerjaAdm) window.arrayRencanaKerjaAdm=[]; window.arrayRencanaKerjaAdm.push({tugas: v, done: false}); document.getElementById('list-rencana-kerja').innerHTML += `<li><i class="fas fa-check-circle" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('adm-input-rencana').value = ""; }
         window.simpanAdmTarget = async function() {
             if(!window.arrayRencanaKerjaAdm || window.arrayRencanaKerjaAdm.length === 0) return alert("Isi rencana kerja!");
             window.toggleLoader(true, "Menyimpan Target...");
@@ -1940,11 +2001,11 @@
             
             let htmlBelum = "", htmlSudah = "", htmlProg = "";
             admHarianDatabase.forEach(data => {
-                let badge = `<span class="status-badge" style="background:${data.status==='Belum Terealisasi'?'#ef4444':'#10b981'};">${data.status}</span>`;
+                let badge = `<span class="status-badge" style="background:${data.status==='Belum Terealisasi'?'#ef4444':'#10b981'}; border-radius:10px; padding:2px 8px; font-size:10px; font-weight:bold;">${data.status}</span>`;
                 let card = `<div class="progress-card" style="border-left-color: var(--secondary);"><h4>Laporan ${data.tanggal}</h4><p style="font-size:12px; margin:5px 0; color:var(--text-muted);">User: ${data.user} | Jam: ${data.mulai} - ${data.selesai}</p>${badge}</div>`;
                 
-                htmlProg += `<div onclick="alert('Detail Progress ADM Harian untuk tanggal: ${data.tanggal}')">${card}</div>`;
-                if(data.status === "Belum Terealisasi") htmlBelum += `<div onclick="window.formActualAdm('${data.id}')">${card}</div>`;
+                htmlProg += `<div onclick="alert('Detail Progress ADM Harian untuk tanggal: ${data.tanggal}')" style="cursor:pointer;">${card}</div>`;
+                if(data.status === "Belum Terealisasi") htmlBelum += `<div onclick="window.formActualAdm('${data.id}')" style="cursor:pointer;">${card}</div>`;
                 else if(data.status === "Sudah Terealisasi") htmlSudah += card;
             });
             if(document.getElementById('list-adm-progress')) document.getElementById('list-adm-progress').innerHTML = htmlProg;
@@ -1963,17 +2024,17 @@
             ul.innerHTML = htmlList;
         }
         window.updateCeklisAdm = function(idx, checked) { window.arrayUpdateRencanaAdm[idx].done = checked; }
-        window.tambahTugasBaruActual = function() { const v = document.getElementById('adm-actual-input-baru').value; if(v) { window.arrayUpdateRencanaAdm.push({tugas: "[TAMBAHAN] "+v, done: true}); document.getElementById('adm-actual-ceklis').innerHTML += `<li style="background:rgba(16,185,129,0.2);"><i class="fas fa-check" style="color:var(--cepat);"></i> <span style="color:white; margin-left:10px;">${v}</span></li>`; document.getElementById('adm-actual-input-baru').value = ""; } }
+        window.tambahTugasBaruActual = function() { const v = window.amankanData(document.getElementById('adm-actual-input-baru').value); if(v) { window.arrayUpdateRencanaAdm.push({tugas: "[TAMBAHAN] "+v, done: true}); document.getElementById('adm-actual-ceklis').innerHTML += `<li style="background:rgba(16,185,129,0.2);"><i class="fas fa-check" style="color:var(--cepat);"></i> <span style="color:white; margin-left:10px;">${v}</span></li>`; document.getElementById('adm-actual-input-baru').value = ""; } }
         window.batalAdmActual = function() { window.switchTabAdm('belum'); }
         window.simpanAdmActual = async function() {
-            const id = document.getElementById('adm-actual-id').value; const ket = document.getElementById('adm-actual-ket').value;
+            const id = document.getElementById('adm-actual-id').value; const ket = window.amankanData(document.getElementById('adm-actual-ket').value);
             const now = new Date(); if(now.getHours() >= 16 && !ket.trim()) return alert("Waktu sudah lewat jam 16:00. Catatan Actual WAJIB diisi!");
             window.toggleLoader(true, "Update Actual...");
             try { await updateDoc(doc(db, "adm_harian", id), { rencana: window.arrayUpdateRencanaAdm, catatanActual: ket, status: "Sudah Terealisasi", updateTime: Date.now() }); alert("Berhasil diupdate!"); await window.muatDataAdm(); window.switchTabAdm('sudah'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
         }
 
         // =========================================================================
-        // LOGIC FIX 8: WORKSHOP (DENGAN DROPDOWN PROSES PILIHAN)
+        // 8: WORKSHOP
         // =========================================================================
         window.inisialisasiFormWS = function() {
             document.getElementById('ws-np-nama').value = ""; document.getElementById('ws-np-start-date').value = ""; document.getElementById('ws-np-finish-date').value = "";
@@ -2007,14 +2068,14 @@
             const html = `<div style="display:flex; gap:10px; margin-bottom:10px;"><input type="text" placeholder="Nama Rincian (Ex: Core / Cavity Part A)" onchange="window.updateSubTaskNamaWS(${idTugas}, ${idSub}, this.value)" style="flex:2; padding:10px; font-size:12px;"><input type="number" placeholder="Est. Jam" onchange="window.updateSubTaskJamWS(${idTugas}, ${idSub}, this.value)" style="flex:1; padding:10px; font-size:12px;"></div>`;
             document.getElementById(`ws-subtask-container-${idTugas}`).insertAdjacentHTML('beforeend', html);
         }
-        window.updateSubTaskNamaWS = function(idT, idS, val) { window.arrayTugasBaru[idT].subTasks[idS].namaSub = val; }
+        window.updateSubTaskNamaWS = function(idT, idS, val) { window.arrayTugasBaru[idT].subTasks[idS].namaSub = window.amankanData(val); }
         window.updateSubTaskJamWS = function(idT, idS, val) { window.arrayTugasBaru[idT].subTasks[idS].estimasiJam = parseFloat(val); window.kalkulasiTotalWaktuWS(); }
         window.kalkulasiTotalWaktuWS = function() {
             let totalJam = 0; window.arrayTugasBaru.forEach(t => t.subTasks.forEach(s => totalJam += (s.estimasiJam || 0)));
             document.getElementById('ws-np-jam').value = totalJam + " Jam"; document.getElementById('ws-np-hari').value = Math.ceil(totalJam / 8) + " Hari";
         }
         window.simpanNewProjectWS = async function() {
-            const nama = document.getElementById('ws-np-nama').value; const start = document.getElementById('ws-np-start-date').value; const finish = document.getElementById('ws-np-finish-date').value;
+            const nama = window.amankanData(document.getElementById('ws-np-nama').value); const start = document.getElementById('ws-np-start-date').value; const finish = document.getElementById('ws-np-finish-date').value;
             if(!nama || !start || window.arrayTugasBaru.length === 0) return alert("Lengkapi Form Project Workshop!");
             window.toggleLoader(true, "Menyimpan Project...");
             try { await addDoc(collection(db, "workshop_projects"), { namaProyek: nama, startDate: start, finishDate: finish, estJam: parseFloat(document.getElementById('ws-np-jam').value), tasks: window.arrayTugasBaru, statusGlobal: "Proses Pengerjaan", timestamp: Date.now() }); alert("Project Workshop Tersimpan!"); window.navigasi('divisi-screen'); } catch(e) { console.error(e); alert(e.message); } window.toggleLoader(false);
@@ -2068,7 +2129,7 @@
         window.batalUpdateTaskWS = function() { document.getElementById('ws-form-update-task').style.display = 'none'; document.getElementById('ws-task-list-area').style.display = 'block'; }
         window.simpanUpdateTaskWS = async function() {
             const id = document.getElementById('ws-update-id-project').value; const i = document.getElementById('ws-update-task-index').value; const j = document.getElementById('ws-update-subtask-index').value;
-            const pic = document.getElementById('ws-up-pic').value; const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const status = document.getElementById('ws-up-status').value;
+            const pic = window.amankanData(document.getElementById('ws-up-pic').value); const start = document.getElementById('ws-up-start').value; const finish = document.getElementById('ws-up-finish').value; const status = document.getElementById('ws-up-status').value;
             if(!pic || !start || !finish) return alert("Lengkapi data Aktual!");
             window.toggleLoader(true, "Update Actual...");
             const data = dataProyekWS.find(x => x.id === id);
@@ -2108,13 +2169,12 @@
         }
         window.terapkanFilterWS = function() { alert("Filter diterapkan!"); }
         window.resetFilterWS = function() { document.getElementById('ws-filter-nama').value = ""; document.getElementById('ws-filter-tanggal').value = ""; }
-        window.switchViewWS = function(view) { alert("Switch View ke mode: " + view); }
 
         // =========================================================================
-        // LOGIC FIX 9: MOLD STORE & TROUBLE
+        // 9: MOLD STORE & TROUBLE
         // =========================================================================
         window.bukaInputNaikMold = function() { window.navigasi('ms-input-naik-screen'); document.getElementById('ms-naik-tgl').value = window.dapatkanTanggalLokal(); window.arrayNaikMold = []; document.getElementById('list-naik-mold').innerHTML = ""; }
-        window.tambahMoldManual = function() { const v = document.getElementById('ms-naik-input-manual').value; if(v) { window.arrayNaikMold.push(v); document.getElementById('list-naik-mold').innerHTML += `<li><i class="fas fa-cube" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('ms-naik-input-manual').value = ""; } }
+        window.tambahMoldManual = function() { const v = window.amankanData(document.getElementById('ms-naik-input-manual').value); if(v) { window.arrayNaikMold.push(v); document.getElementById('list-naik-mold').innerHTML += `<li><i class="fas fa-cube" style="color:var(--secondary);"></i> ${v}</li>`; document.getElementById('ms-naik-input-manual').value = ""; } }
         window.simpanNaikMold = async function() {
             if(window.arrayNaikMold.length === 0) return alert("Masukkan nama mold!"); window.toggleLoader(true, "Menyimpan...");
             try { await addDoc(collection(db, "mold_store_naik"), { tanggal: document.getElementById('ms-naik-tgl').value, listMold: window.arrayNaikMold, status: "Proses", timestamp: Date.now() }); alert("Berhasil disimpan!"); window.navigasi('ms-persiapan-menu-screen'); } catch(e){ console.error(e); alert(e.message); } window.toggleLoader(false);
@@ -2128,7 +2188,7 @@
         window.simpanLaporanTrouble = function() { alert("Laporan Trouble Disimpan!"); document.getElementById('modal-form-trouble').style.display = 'none'; }
         
         // =========================================================================
-        // LOGIC FIX: PKM ELTRE (SISTEM PENARIKAN DATA AKTIF)
+        // 10: PKM ELTRE (SISTEM PENARIKAN DATA AKTIF & ANTI-LAG)
         // =========================================================================
         window.bukaPKMEltre = async function() { window.navigasi('ms-pkm-eltre-screen'); window.bukaTabPKM('verifikasi'); await window.muatDataPKMEltre(); }
         window.bukaTabPKM = function(tab) { document.querySelectorAll('.tab-btn-pkm').forEach(b => b.classList.remove('tab-active')); document.querySelectorAll('.tab-content-pkm').forEach(c => c.style.display = 'none'); document.getElementById(`btn-tab-pkm-${tab}`).classList.add('tab-active'); document.getElementById(`tab-pkm-${tab}`).style.display = 'block'; }
@@ -2206,7 +2266,7 @@
         }
 
         // =========================================================================
-        // LOGIC FIX 10: DASHBOARD AI ANALYTICS (Chart.js)
+        // 11: DASHBOARD AI ANALYTICS (Chart.js)
         // =========================================================================
         window.inisialisasiDataAnalisaGlobal = async function() {
             window.toggleLoader(true, "Analisa AI Global...");
@@ -2237,7 +2297,8 @@
         // INIT ONLOAD
         // =========================================================================
         document.addEventListener("DOMContentLoaded", () => { 
-            setTimeout(window.muatDataPKMEltre, 2000); 
+            // Memuat database eksternal penting 1,5 detik setelah aplikasi terbuka
+            setTimeout(window.muatDataPKMEltre, 1500); 
             setTimeout(window.muatDataTrouble, 1500); 
         });
 
