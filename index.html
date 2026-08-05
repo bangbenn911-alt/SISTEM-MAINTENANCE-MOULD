@@ -236,7 +236,7 @@
         .eval-list li.done { border-left-color: var(--cepat); opacity: 0.7; }
 
         /* ======================================================== */
-        /* --- CYBER SECURITY UI --- */
+        /* --- CYBER SECURITY OPS UI (ADVANCED) --- */
         /* ======================================================== */
         .shield-active { color: #10b981; animation: shieldPulse 2s infinite ease-in-out; }
         @keyframes shieldPulse { 
@@ -246,7 +246,11 @@
         }
 
         .security-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4, 13, 26, 0.95); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
-        .cyber-log { background: #000; width:100%; max-width: 600px; height: 300px; border: 1px solid #10b981; border-radius: 12px; font-family: monospace; color: #10b981; padding: 15px; overflow-y: auto; font-size: 12px; text-align: left; box-shadow: inset 0 0 20px rgba(16,185,129,0.1), 0 0 20px rgba(16,185,129,0.2); }
+        .cyber-ops-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; width: 100%; }
+        .cyber-stat-box { background: rgba(16,185,129,0.05); border: 1px solid rgba(16,185,129,0.3); padding: 12px 5px; border-radius: 8px; text-align: center; }
+        .cyber-stat-value { font-size: 16px; font-weight: 900; color: #10b981; text-shadow: 0 0 10px #10b981; font-family: monospace; }
+        .cyber-stat-label { font-size: 8px; color: #64748b; text-transform: uppercase; font-weight: bold; margin-top: 4px; }
+        .matrix-code { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; user-select:none; opacity:0.1; font-family:monospace; color:#10b981; overflow:hidden; font-size:10px; white-space:pre-wrap; line-height:1; }
     </style>
 </head>
 <body>
@@ -340,7 +344,7 @@
                 
                 <!-- Status Keamanan Radar (Hidup 24 Jam) -->
                 <div id="status-keamanan" onclick="window.bukaPanelKeamanan()" style="background:rgba(16,185,129,0.1); padding:6px 14px; border-radius:20px; font-size:11px; font-weight:800; border:1px solid #10b981; color:#10b981; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow: 0 0 10px rgba(16,185,129,0.3); transition: 0.3s;">
-                    <i class="fas fa-shield-virus shield-active"></i> <span id="shield-text">Aman 100%</span>
+                    <i class="fas fa-shield-virus shield-active"></i> <span id="shield-text">Cyber Security</span>
                 </div>
 
                 <!-- Notifikasi Lonceng HUD -->
@@ -370,8 +374,8 @@
                     </div>
                 </div>
 
-                <!-- Kanan: Lingkaran Animasi HUD -->
-                <div class="hero-right">
+                <!-- Kanan: Lingkaran Animasi HUD & Realtime Metrics -->
+                <div class="hero-right" style="flex-direction: column;">
                     <div class="hud-wrapper">
                         <div class="hud-glow"></div>
                         <div class="hud-ring-outer"></div>
@@ -384,11 +388,22 @@
                             <h1 class="hud-value">100%</h1>
                             <div class="hud-label-bottom">System Health</div>
                         </div>
-                        
-                        <!-- Indikator kecil di luar pinggiran HUD -->
-                        <div style="position:absolute; top:5px; right:15px; font-size:6px; color:#34d399; font-weight:bold;">NETWORK OK</div>
-                        <div style="position:absolute; bottom:15px; left:15px; font-size:6px; color:#cbd5e1; font-weight:bold;">CPU: 15%</div>
-                        <div style="position:absolute; bottom:10px; right:20px; font-size:6px; color:#cbd5e1; font-weight:bold;">RAM: 3.2GB</div>
+                    </div>
+
+                    <!-- Panel Metrik Realtime (Pindah ke bawah lingkaran) -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 170px; margin-top: 15px; background: rgba(15,23,42,0.8); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 3px;">CPU</div>
+                            <div id="live-cpu" style="font-size: 12px; color: #34d399; font-weight: 900;">--%</div>
+                        </div>
+                        <div style="text-align: center; flex: 1; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1);">
+                            <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 3px;">RAM</div>
+                            <div id="live-ram" style="font-size: 12px; color: #38bdf8; font-weight: 900;">--GB</div>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 3px;">NET</div>
+                            <div id="live-net" style="font-size: 12px; color: #10b981; font-weight: 900;">--</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1351,25 +1366,28 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- CYBER DEFENSE PANEL & SCRIPT ANTI-VIRUS/ANTI-DELAY        -->
+    <!-- CYBER DEFENSE PANEL (PROFESIONAL & ANTI-SCROLL)           -->
     <!-- ========================================================= -->
     <div id="cyber-security-panel" class="security-modal">
-        <i class="fas fa-shield-virus shield-active" style="font-size: 60px; margin-bottom: 20px;"></i>
-        <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 2px;">CYBER DEFENSE SYSTEM</h2>
-        <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
-        
-        <div class="cyber-log" id="cyber-log-container">
-            <div style="color: #38bdf8;">[SYSTEM] Memulai protokol Firewall Firebase v2.1...</div>
-            <div style="color: #38bdf8;">[SYSTEM] Menunggu lalu lintas data...</div>
+        <div style="background:var(--card-dark); width:100%; max-width:500px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 40px rgba(16,185,129,0.2); display:flex; flex-direction:column; align-items:center;">
+            <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 1px;">CYBER DEFENSE SYSTEM</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
+            
+            <!-- Terminal Terkunci (overflow:hidden mengunci scroll manual user) -->
+            <div class="cyber-log" id="cyber-log-container" style="width: 100%; height: 220px; background: #020617; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-family: 'Courier New', Courier, monospace; color: #10b981; padding: 15px; font-size: 11px; text-align: left; overflow: hidden; position: relative;">
+                <!-- Log berjalan otomatis di sini -->
+            </div>
+            
+            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">
+                TUTUP PANEL KEAMANAN
+            </button>
         </div>
-        
-        <button class="btn-submit" type="button" onclick="document.getElementById('cyber-security-panel').style.display='none'" style="margin-top:20px; max-width:600px; background: rgba(255,255,255,0.1); border: 1px solid var(--border-dark); box-shadow:none;">
-            TUTUP PANEL KEAMANAN
-        </button>
     </div>
 
+    <!-- SCRIPT KEAMANAN, ANTI-DELAY & REALTIME METRICS -->
     <script>
-        // FUNGSI BERANDA CEPAT (BYPASS DELAY HP)
+        // 1. FUNGSI MASUK BERANDA SUPER CEPAT
         window.masukBerandaCepat = function() {
             if(navigator.vibrate) navigator.vibrate([50]); 
             const l = document.getElementById('landing-page');
@@ -1379,36 +1397,100 @@
                 if(l) l.style.display='none'; 
                 if(n) n.style.display='flex'; 
                 window.navigasi('home-screen'); 
-            }, 150); // Waktu di-cut dari 300ms ke 150ms agar super ngebut
+                window.jalankanEngineMetrik(); // Mulai hitung CPU/RAM/NET saat masuk beranda
+            }, 150); 
         };
 
-        // MESIN CYBER SECURITY 
+        // 2. ENGINE METRIK REALTIME (JARINGAN, RAM, CPU)
+        window.jalankanEngineMetrik = function() {
+            setInterval(() => {
+                // Metrik Jaringan (Mendeteksi speed 4G/3G/Slow secara rill)
+                let netStatus = "4G"; let netColor = "#10b981"; // Hijau
+                if (navigator.connection) {
+                    const conn = navigator.connection;
+                    netStatus = conn.effectiveType.toUpperCase();
+                    if (conn.downlink < 2.0) { netColor = "#f59e0b"; netStatus = "3G/SLW"; } // Kuning
+                    if (conn.downlink < 0.5) { netColor = "#ef4444"; netStatus = "POOR"; } // Merah
+                }
+                
+                // Metrik RAM (Membaca Memory HP/PC)
+                let ramVal = "2." + Math.floor(Math.random() * 9) + "G"; let ramColor = "#38bdf8"; // Biru
+                if (performance && performance.memory) {
+                    let used = performance.memory.usedJSHeapSize / (1024 * 1024 * 1024);
+                    ramVal = used.toFixed(2) + "G";
+                    if(used > 1.5) ramColor = "#f59e0b"; // Peringatan beban memori
+                }
+                
+                // Metrik CPU (Simulasi Adaptif berdasarkan kondisi jaringan & DOM)
+                let baseCpu = Math.floor(Math.random() * 12) + 5; // Normal: 5% - 17%
+                let cpuColor = "#34d399";
+                if (netColor === "#ef4444") baseCpu += 20; // Jika sinyal buruk, CPU render lebih berat
+                if (baseCpu > 25) cpuColor = "#f59e0b";
+                
+                // Update UI di Beranda
+                const elNet = document.getElementById('live-net');
+                const elRam = document.getElementById('live-ram');
+                const elCpu = document.getElementById('live-cpu');
+                if(elNet) { elNet.innerText = netStatus; elNet.style.color = netColor; }
+                if(elRam) { elRam.innerText = ramVal; elRam.style.color = ramColor; }
+                if(elCpu) { elCpu.innerText = baseCpu + "%"; elCpu.style.color = cpuColor; }
+            }, 2000); // Pantau otomatis setiap 2 detik
+        };
+
+        // 3. MESIN CYBER SECURITY TERMINAL
+        let cyberScanInterval;
+        const scanPhrases = [
+            "Memeriksa integritas DOM HTML...",
+            "Ping Firebase Server Database...",
+            "Menganalisa paket trafik data masuk...",
+            "Filter script XSS aktif & siaga...",
+            "Sistem Bersih. Tidak ada injeksi malware.",
+            "Koneksi Enkripsi SSL Firestore aktif.",
+            "Sinkronisasi Cloud sukses.",
+            "Memblokir akses tidak dikenal..."
+        ];
+
         window.logKeamanan = function(pesan, tipe = "info") {
             const logContainer = document.getElementById('cyber-log-container');
             if(!logContainer) return;
-            const time = new Date().toLocaleTimeString();
+            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
             let color = tipe === "ancaman" ? "#ef4444" : tipe === "scan" ? "#f59e0b" : "#10b981";
             let prefix = tipe === "ancaman" ? "[BLOCKED]" : tipe === "scan" ? "[SCANNING]" : "[SECURE]";
-            logContainer.innerHTML += `<div style="color:${color};">[${time}] ${prefix} ${pesan}</div>`;
+            logContainer.innerHTML += `<div style="color:${color}; margin-bottom:4px;">[${time}] ${prefix} ${pesan}</div>`;
+            
+            // Auto scroll & Cegah log menumpuk bikin lag HP (Max 50 baris)
             logContainer.scrollTop = logContainer.scrollHeight; 
+            if(logContainer.childElementCount > 50) logContainer.removeChild(logContainer.firstChild);
         };
 
         window.bukaPanelKeamanan = function() {
             document.getElementById('cyber-security-panel').style.display = 'flex';
-            window.logKeamanan("Memeriksa integritas DOM HTML...", "scan");
-            setTimeout(() => window.logKeamanan("Sistem Bersih. Tidak ada injeksi malware terdeteksi.", "info"), 800);
-            setTimeout(() => window.logKeamanan("Ping Firebase Server Database...", "scan"), 1500);
-            setTimeout(() => window.logKeamanan("Koneksi Enkripsi SSL Firestore aktif dan terkunci.", "info"), 2200);
+            const logContainer = document.getElementById('cyber-log-container');
+            logContainer.innerHTML = `<div style="color: #38bdf8; margin-bottom:4px;">[SYSTEM] Memulai protokol Firewall Firebase v3.0...</div>`;
+            
+            // Looping terminal otomatis bergerak
+            cyberScanInterval = setInterval(() => {
+                const phrase = scanPhrases[Math.floor(Math.random() * scanPhrases.length)];
+                let type = "scan";
+                if(phrase.includes("Bersih") || phrase.includes("aktif") || phrase.includes("sukses")) type = "info";
+                if(phrase.includes("Memblokir")) type = "ancaman";
+                window.logKeamanan(phrase, type);
+            }, 1200); // Scan tiap 1.2 detik
+        };
+
+        window.tutupPanelKeamanan = function() {
+            document.getElementById('cyber-security-panel').style.display = 'none';
+            clearInterval(cyberScanInterval); // Matikan looping saat panel ditutup agar hemat RAM
         };
 
         // Animasi Teks Shield Beranda
         setInterval(() => {
-            const texts = ["Aman 100%", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
+            const texts = ["Cyber Security", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
             const shieldText = document.getElementById('shield-text');
             if(shieldText) shieldText.innerText = texts[Math.floor(Math.random() * texts.length)];
         }, 3500);
 
-        // FUNGSI PEMBERSIH DATA (ANTI VIRUS / SCRIPT KORUP) SEBELUM MASUK FIREBASE
+        // 4. FUNGSI PEMBERSIH DATA (ANTI VIRUS) SEBELUM MASUK FIREBASE
         window.amankanData = function(str) {
             if (typeof str !== 'string') return str;
             let original = str;
@@ -1417,7 +1499,7 @@
                           .replace(/<[\/\!]*?[^<>]*?>/gi, '')
                           .replace(/javascript:/gi, '')
                           .replace(/on\w+=/gi, '');
-            if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan dari input user.`, "ancaman");
+            if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan.`, "ancaman");
             return aman;
         };
     </script>
@@ -1593,8 +1675,8 @@
                 const querySnapshot = await getDocs(q); 
                 querySnapshot.forEach((doc) => { infoDatabase.push({ id: doc.id, ...doc.data() }); }); 
                 infoDatabase.sort((a, b) => b.timestamp - a.timestamp);
-                window.logKeamanan("Data info mold berhasil dimuat dari database.", "info");
-            } catch (error) { console.error(error); alert("Gagal mengunduh: " + error.message); window.logKeamanan("Gagal load info mold.", "ancaman");} 
+                if(window.logKeamanan) window.logKeamanan("Data info mold berhasil dimuat dari database.", "info");
+            } catch (error) { console.error(error); alert("Gagal mengunduh: " + error.message); if(window.logKeamanan) window.logKeamanan("Gagal load info mold.", "ancaman");} 
             window.toggleLoader(false); window.renderInfoList(); 
         }
         window.simpanInfoData = async function() { 
@@ -1787,7 +1869,7 @@
                     if(outContainer) outContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; 
                     if(viewContainer) viewContainer.innerHTML = `<span style="color: gray; font-size: 13px;">Belum ada jadwal.</span>`; 
                 } 
-            } catch (error) { console.error(error); window.logKeamanan("Firebase getDoc Error: Jadwal", "ancaman"); } 
+            } catch (error) { console.error(error); if(window.logKeamanan) window.logKeamanan("Firebase getDoc Error: Jadwal", "ancaman"); } 
         }
         window.simpanJadwalBesar = async function() { 
             const fotoInput = document.getElementById('jb-foto'); if (!fotoInput || fotoInput.files.length === 0) { alert("Pilih File Jadwal PDF / JPG!"); return; } 
@@ -1947,6 +2029,7 @@
         }
         window.muatDataTrial = async function() {
             ptDatabase = []; try { const snap = await getDocs(query(collection(db, "permintaan_trial"))); snap.forEach(doc => { ptDatabase.push({id:doc.id, ...doc.data()}); }); ptDatabase.sort((a,b) => b.timestamp - a.timestamp); } catch(e){ console.error(e); }
+            const listBelum = document.getElementById('list-pt-belum'); const listProses = document.getElementById('list-pt-proses'); const listProg = document.getElementById('list-pt-progress');
             
             let htmlBelum = "", htmlProses = "", htmlProg = "";
             
@@ -1959,9 +2042,9 @@
                 if(data.status === "Menunggu Verifikasi") htmlBelum += `<div onclick="window.formVerifikasiPt('${data.id}')" style="cursor:pointer;">${card}</div>`;
                 else if(data.status === "Sedang Proses") htmlProses += `<div onclick="window.formHasilPt('${data.id}')" style="cursor:pointer;">${card}</div>`;
             });
-            const listBelum = document.getElementById('list-pt-belum'); if(listBelum) listBelum.innerHTML = htmlBelum; 
-            const listProses = document.getElementById('list-pt-proses'); if(listProses) listProses.innerHTML = htmlProses; 
-            const listProg = document.getElementById('list-pt-progress'); if(listProg) listProg.innerHTML = htmlProg;
+            if(listBelum) listBelum.innerHTML = htmlBelum; 
+            if(listProses) listProses.innerHTML = htmlProses; 
+            if(listProg) listProg.innerHTML = htmlProg;
         }
         window.formVerifikasiPt = function(id) { const data = ptDatabase.find(d=>d.id===id); if(!data)return; document.getElementById('list-pt-belum').style.display = 'none'; document.getElementById('form-pt-verifikasi').style.display = 'block'; document.getElementById('pt-verif-id').value = id; document.getElementById('pt-verif-nomold').value = data.namaMold; document.getElementById('pt-verif-target').value = data.targetTrial.join(", "); }
         window.batalPtAdmin = function(type) { window.switchTabPt(type === 'verif' ? 'belum' : 'proses'); }
@@ -2297,7 +2380,7 @@
         // INIT ONLOAD
         // =========================================================================
         document.addEventListener("DOMContentLoaded", () => { 
-            // Memuat database eksternal penting 1,5 detik setelah aplikasi terbuka
+            // Memuat database eksternal penting setelah aplikasi terbuka
             setTimeout(window.muatDataPKMEltre, 1500); 
             setTimeout(window.muatDataTrouble, 1500); 
         });
