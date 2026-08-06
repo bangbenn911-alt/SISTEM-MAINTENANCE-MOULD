@@ -304,15 +304,15 @@
                 </g>
             </svg>
 
-            <!-- Tombol Fingerprint Interaktif (Diubah ke sistem Blind Frontend Google Auth nanti) -->
-            <button class="fingerprint-btn" onpointerdown="window.masukBerandaCepat()">
+            <!-- PERBAIKAN: Menggunakan onclick agar lolos dari Popup Blocker HP -->
+            <button class="fingerprint-btn" onclick="window.masukBerandaCepat()">
                 <i class="fas fa-fingerprint"></i>
             </button>
         </div>
 
         <!-- Footer Teks -->
         <div class="landing-bottom">
-            <p>"Selamat datang di sistem Control<br>Kinerja Tim Maintenance Mould CBI"</p>
+            <p>"Selamat datang pada sistem Control<br>Kinerja Tim Maintenance Mould CBI"</p>
         </div>
     </div>
 
@@ -347,7 +347,7 @@
                 </div>
             </div>
 
-            <p style="font-size: 14px; font-weight: 800; color:var(--text-muted); margin-bottom: 5px;">Status Kinerja Sistem</p>
+            <p style="font-size: 14px; font-weight: 800; color:var(--text-muted); margin-bottom: 5px;">Status Kinerja System</p>
 
             <!-- Bagian Hero Dashboard (Kiri: Kotak, Kanan: Lingkaran HUD) -->
             <div class="hero-dashboard">
@@ -1080,38 +1080,22 @@
         </div>
     </div>
     <!-- ========================================================= -->
-    <!-- PKM ELTRE APPSHEET                                        -->
+    <!-- CYBER DEFENSE PANEL (TERMINAL HACKER)                     -->
     <!-- ========================================================= -->
-    <div id="ms-pkm-eltre-screen" class="screen">
-        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
-            <div class="header"><h2><i class="fas fa-file-import" style="margin-right:10px;"></i> Data PKM Eltre</h2></div>
-            <div class="tab-container" style="overflow-x: auto; white-space:nowrap; padding-bottom:5px;">
-                <button class="tab-btn-pkm tab-btn tab-active" type="button" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="min-width: 110px;">Verifikasi ELTRE</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="min-width: 100px;">Dikerjakan</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="min-width: 100px;">Dipisahkan</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="min-width: 80px;">Selesai</button>
+    <div id="cyber-security-panel" class="security-modal">
+        <div style="background:var(--card-dark); width:100%; max-width:500px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 40px rgba(16,185,129,0.2); display:flex; flex-direction:column; align-items:center;">
+            <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 1px;">CYBER DEFENSE SYSTEM</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
+            
+            <!-- Terminal Terkunci (overflow:hidden mengunci scroll manual user) -->
+            <div class="cyber-log" id="cyber-log-container" style="width: 100%; height: 220px; background: #020617; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-family: 'Courier New', Courier, monospace; color: #10b981; padding: 15px; font-size: 11px; text-align: left; overflow: hidden; position: relative;">
+                <!-- Log berjalan otomatis di sini -->
             </div>
-            <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;"><ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
-            <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
-            <div id="tab-pkm-pisah" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-pisah" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
-            <div id="tab-pkm-selesai" class="tab-content-pkm" style="display: none;"><ul id="list-pkm-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul></div>
-        </div>
-    </div>
-
-    <!-- MODAL AKSI VERIFIKASI PKM -->
-    <div id="modal-aksi-pkm" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4, 13, 26, 0.95); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; padding:20px;">
-        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; position:relative; border:1px solid var(--border-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div style="background:rgba(37,99,235,0.2); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px auto;">
-                <i class="fas fa-search" style="font-size:24px; color:#38bdf8;"></i>
-            </div>
-            <h3 style="color:white; margin-top:0; font-weight:900;">Verifikasi Data PKM</h3>
-            <p style="font-size:14px; color:var(--text-light); margin-bottom:25px; line-height:1.5;">Apakah kendala pada mold <br><b id="pkm-nama-mold-text" style="color:var(--secondary); font-size:16px;"></b><br>ini benar-benar disebabkan oleh masalah Mold?</p>
-            <input type="hidden" id="pkm-id-tiket-verifikasi">
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(16,185,129,0.3);"><i class="fas fa-tools"></i> YA, KERJAKAN</button>
-                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:15px; background:linear-gradient(135deg, #ef4444, #dc2626); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(239,68,68,0.3);"><i class="fas fa-ban"></i> BUKAN (PISAHKAN)</button>
-                <button type="button" onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:var(--text-muted); cursor:pointer; margin-top:10px;">BATAL</button>
-            </div>
+            
+            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">
+                TUTUP PANEL KEAMANAN
+            </button>
         </div>
     </div>
 
@@ -1276,47 +1260,46 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
         // =========================================================================
-        // PINTU MASUK BLIND FRONTEND & PING SERVER FIREBASE
+        // PINTU MASUK BLIND FRONTEND & PING SERVER FIREBASE (MOBILE OPTIMIZED)
         // =========================================================================
         window.masukBerandaCepat = async function() {
             if(navigator.vibrate) navigator.vibrate([50]); 
             
             // SKENARIO A: User sudah pernah login di HP ini (Sesi Tersimpan)
             if (auth.currentUser) {
+                window.toggleLoader(true, "Membuka Enkripsi...");
                 try {
-                    // Ping Server: Cek apakah aturan Firebase Server mengizinkan email ini
                     await getDocs(query(collection(db, "informasi_mold")));
-                    
                     if(window.logKeamanan) window.logKeamanan(`Akses Instan: Sesi dipulihkan.`, "info");
+                    window.toggleLoader(false);
                     bukaPintuAnimasi(); 
                 } catch (error) {
-                    // Jika ditolak oleh Firebase Server
+                    window.toggleLoader(false);
                     await signOut(auth);
                     alert("⛔ Sesi tidak valid atau hak akses Anda telah dicabut oleh Administrator Pusat.");
                 }
                 return;
             }
 
-            // SKENARIO B: User Baru Login
-            window.toggleLoader(true, "Memverifikasi Otoritas Akun...");
+            // SKENARIO B: User Baru Login (Di HP Baru)
             try {
-                // Munculkan popup Google
+                // 1. PANGGIL POPUP GOOGLE LANGSUNG (Tanpa jeda loading agar tidak diblokir HP)
                 const result = await signInWithPopup(auth, provider);
                 const userEmail = result.user.email;
 
-                // PING SERVER RAHASIA: Coba baca data kecil dari database
-                // Jika email tidak terdaftar di 'Firebase Rules', kode ini akan melemparkan Error
+                // 2. SETELAH GOOGLE MUNCUL, BARU NYALAKAN LOADER
+                window.toggleLoader(true, "Memverifikasi Otoritas Akun...");
+
+                // 3. Ping Server Firebase
                 await getDocs(query(collection(db, "informasi_mold")));
 
-                // Jika lolos sampai sini, berarti Server Mengizinkan
+                // 4. Jika lolos
                 if(window.logKeamanan) window.logKeamanan(`Akses LOGIN sah untuk: ${userEmail}`, "info");
                 window.toggleLoader(false);
                 bukaPintuAnimasi();
 
             } catch (error) {
                 window.toggleLoader(false);
-                
-                // Menangkap penolakan murni dari Backend Firebase Rules
                 if (error.code === 'permission-denied') {
                     await signOut(auth); 
                     if(window.logKeamanan) window.logKeamanan(`AKSES DITOLAK SERVER!`, "ancaman");
