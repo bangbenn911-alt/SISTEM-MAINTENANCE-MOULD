@@ -216,7 +216,7 @@
         .gopay-icon-text { font-size: 11px; font-weight: 700; color: var(--text-light); line-height: 1.2; text-shadow: 1px 1px 2px rgba(0,0,0,0.8);}
         .promo-banner { background: linear-gradient(90deg, #10b981, #059669); color: white; font-size: 9px; padding: 3px 8px; border-radius: 6px; position: absolute; bottom: -8px; font-weight: 900; box-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
-        /* KOTAK DESAIN & KARTU DATA (TIDAK BOLEH DIHAPUS) */
+        /* KOTAK DESAIN & KARTU DATA */
         .header { background: linear-gradient(135deg, rgba(2,132,199,0.8), rgba(30,58,138,0.8)) !important; padding: 20px 25px; border-radius: 20px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.4) !important; border: 1px solid var(--border-dark); display: flex; align-items: center; backdrop-filter: blur(10px); }
         .header h2 { margin: 0; font-size: 18px; font-weight: 800; color: white; }
         .sub-title-box { background: rgba(30,41,59,0.8); padding: 12px 18px; border-radius: 12px; color: white; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 800; border: 1px solid var(--border-dark); }
@@ -340,7 +340,9 @@
 </head>
 <body>
 
-    <!-- ELEMEN AURORA NEON GEMINI -->
+    <!-- ========================================================= -->
+    <!-- ELEMEN AURORA NEON GEMINI                                 -->
+    <!-- ========================================================= -->
     <div class="aurora-bg">
         <div class="aurora-blob blob-1"></div>
         <div class="aurora-blob blob-2"></div>
@@ -348,10 +350,17 @@
         <div class="aurora-blob blob-4"></div>
     </div>
 
-    <!-- LOADER -->
-    <div id="loader" class="loader-overlay"><div class="spinner"></div><h3 id="loader-text" style="font-weight:600;">Memproses...</h3></div>
+    <!-- ========================================================= -->
+    <!-- LOADER OVERLAY                                            -->
+    <!-- ========================================================= -->
+    <div id="loader" class="loader-overlay">
+        <div class="spinner"></div>
+        <h3 id="loader-text" style="font-weight:600;">Memproses...</h3>
+    </div>
 
-    <!-- 1. LANDING PAGE CYBER-TECH -->
+    <!-- ========================================================= -->
+    <!-- 1. LANDING PAGE CYBER-TECH                                -->
+    <!-- ========================================================= -->
     <div id="landing-page">
         <div class="landing-top">
             <h1 class="landing-title">DEPARTEMENT<br>MAINTENANCE MOULD</h1>
@@ -359,12 +368,23 @@
         </div>
         
         <div class="landing-center">
+            <!-- SVG Circuit Board -->
             <svg class="circuit-board" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
                 <g class="circuit-line">
-                    <path d="M 120 40 v 100 l 15 15 v 50" /><path d="M 150 40 v 120 v 40" /><path d="M 180 40 v 100 l -15 15 v 50" /><path d="M 100 60 v 80 l 20 20 v 40" /><path d="M 200 60 v 80 l -20 20 v 40" />
-                    <path d="M 20 200 h 60 l 15 -15 h 30" /><path d="M 0 230 h 80 h 25" /><path d="M 20 260 h 60 l 15 15 h 30" />
-                    <path d="M 280 200 h -60 l -15 -15 h -30" /><path d="M 300 230 h -80 h -25" /><path d="M 280 260 h -60 l -15 15 h -30" />
-                    <path d="M 150 380 v -60" /><path d="M 120 380 v -40 l 15 -15 v -25" /><path d="M 180 380 v -40 l -15 -15 v -25" />
+                    <path d="M 120 40 v 100 l 15 15 v 50" />
+                    <path d="M 150 40 v 120 v 40" />
+                    <path d="M 180 40 v 100 l -15 15 v 50" />
+                    <path d="M 100 60 v 80 l 20 20 v 40" />
+                    <path d="M 200 60 v 80 l -20 20 v 40" />
+                    <path d="M 20 200 h 60 l 15 -15 h 30" />
+                    <path d="M 0 230 h 80 h 25" />
+                    <path d="M 20 260 h 60 l 15 15 h 30" />
+                    <path d="M 280 200 h -60 l -15 -15 h -30" />
+                    <path d="M 300 230 h -80 h -25" />
+                    <path d="M 280 260 h -60 l -15 15 h -30" />
+                    <path d="M 150 380 v -60" />
+                    <path d="M 120 380 v -40 l 15 -15 v -25" />
+                    <path d="M 180 380 v -40 l -15 -15 v -25" />
                 </g>
                 <g>
                     <path class="electric-pulse" style="animation-delay: 0s;" d="M 120 40 v 100 l 15 15 v 50" />
@@ -386,16 +406,32 @@
         </div>
     </div>
 
-    <!-- GLOBAL BOTTOM NAVIGATION -->
+    <!-- ========================================================= -->
+    <!-- GLOBAL BOTTOM NAVIGATION                                  -->
+    <!-- ========================================================= -->
     <div id="global-bottom-nav" class="gopay-bottom-nav" style="display:none;">
-        <div class="nav-item active" id="nav-home" onclick="window.navigasi('home-screen')"><i class="fas fa-home"></i><span>Beranda</span></div>
-        <div class="nav-item" id="nav-analisa" onclick="window.navigasi('ai-dashboard-screen')"><i class="fas fa-chart-pie"></i><span>Analisa</span></div>
-        <div class="nav-center-wrap"><div class="nav-center-btn" id="nav-lampu" onclick="window.navigasi('ide-center-screen')"><i class="fas fa-lightbulb"></i></div></div>
-        <div class="nav-item" id="nav-inbox" onclick="window.navigasi('inbox-screen')"><i class="fas fa-inbox"></i><span>Inbox</span></div>
-        <div class="nav-item" id="nav-profil" onclick="window.navigasi('profil-screen')"><i class="fas fa-user"></i><span>Profil</span></div>
+        <div class="nav-item active" id="nav-home" onclick="window.navigasi('home-screen')">
+            <i class="fas fa-home"></i><span>Beranda</span>
+        </div>
+        <div class="nav-item" id="nav-analisa" onclick="window.navigasi('ai-dashboard-screen')">
+            <i class="fas fa-chart-pie"></i><span>Analisa</span>
+        </div>
+        <div class="nav-center-wrap">
+            <div class="nav-center-btn" id="nav-lampu" onclick="window.navigasi('ide-center-screen')">
+                <i class="fas fa-lightbulb"></i>
+            </div>
+        </div>
+        <div class="nav-item" id="nav-inbox" onclick="window.navigasi('inbox-screen')">
+            <i class="fas fa-inbox"></i><span>Inbox</span>
+        </div>
+        <div class="nav-item" id="nav-profil" onclick="window.navigasi('profil-screen')">
+            <i class="fas fa-user"></i><span>Profil</span>
+        </div>
     </div>
 
-    <!-- 2. BERANDA UTAMA (HUD) -->
+    <!-- ========================================================= -->
+    <!-- 2. BERANDA UTAMA (HUD)                                    -->
+    <!-- ========================================================= -->
     <div id="home-screen" class="screen">
         <div class="content-wrapper" style="padding-top: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
@@ -413,6 +449,7 @@
 
             <p style="font-size: 14px; font-weight: 800; color:var(--text-muted); margin-bottom: 5px;">Status Kinerja System</p>
 
+            <!-- Dashboard HUD -->
             <div class="hero-dashboard">
                 <div class="hero-left">
                     <div class="glass-card analytics" onclick="window.navigasi('ai-dashboard-screen')">
@@ -442,6 +479,7 @@
                         </div>
                     </div>
 
+                    <!-- Realtime Metrics -->
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 170px; margin-top: 15px; background: rgba(15,23,42,0.8); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 3px;">CPU</div>
@@ -458,28 +496,67 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Grid Divisi Utama -->
+            
+            <!-- Grid Menu Utama -->
             <div class="main-grid-container">
                 <h3 style="color:white; margin:0 0 20px 5px; font-size:16px; font-weight:800;">Divisi Utama Maintenance</h3>
                 <div class="gopay-grid">
-                    <div class="gopay-icon-btn" onclick="window.masukDivisi('DIVISI MOLD STORE')"><div class="gopay-icon-box"><i class="fas fa-warehouse" style="color:#60a5fa;"></i></div><span class="gopay-icon-text">Store</span></div>
-                    <div class="gopay-icon-btn" onclick="window.navigasi('menu-mold-repair-screen')"><div class="gopay-icon-box"><i class="fas fa-tools" style="color:#fbbf24;"></i></div><span class="gopay-icon-text">Repair</span></div>
-                    <div class="gopay-icon-btn" onclick="window.navigasi('trouble-menu-screen')"><div class="gopay-icon-box"><i class="fas fa-exclamation-triangle" style="color:#f87171;"></i></div><span class="gopay-icon-text">Trouble</span></div>
-                    <div class="gopay-icon-btn" onclick="window.masukDivisi('DIVISI MOLD WORKSHOP')"><div class="gopay-icon-box"><i class="fas fa-cogs" style="color:#34d399;"></i><div class="promo-banner">AKTIF</div></div><span class="gopay-icon-text">Workshop</span></div>
+                    <div class="gopay-icon-btn" onclick="window.masukDivisi('DIVISI MOLD STORE')">
+                        <div class="gopay-icon-box"><i class="fas fa-warehouse" style="color:#60a5fa;"></i></div>
+                        <span class="gopay-icon-text">Store</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.navigasi('menu-mold-repair-screen')">
+                        <div class="gopay-icon-box"><i class="fas fa-tools" style="color:#fbbf24;"></i></div>
+                        <span class="gopay-icon-text">Repair</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.navigasi('trouble-menu-screen')">
+                        <div class="gopay-icon-box"><i class="fas fa-exclamation-triangle" style="color:#f87171;"></i></div>
+                        <span class="gopay-icon-text">Trouble</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.masukDivisi('DIVISI MOLD WORKSHOP')">
+                        <div class="gopay-icon-box">
+                            <i class="fas fa-cogs" style="color:#34d399;"></i>
+                            <div class="promo-banner">AKTIF</div>
+                        </div>
+                        <span class="gopay-icon-text">Workshop</span>
+                    </div>
                     
-                    <div class="gopay-icon-btn" onclick="window.navigasi('adm-mold-menu-screen')" style="margin-top:10px;"><div class="gopay-icon-box"><i class="fas fa-user-tie" style="color:#c084fc;"></i></div><span class="gopay-icon-text">ADM Mold</span></div>
-                    <div class="gopay-icon-btn" onclick="window.navigasi('informasi-mold-screen')" style="margin-top:10px;"><div class="gopay-icon-box"><i class="fas fa-clipboard-list" style="color:#2dd4bf;"></i></div><span class="gopay-icon-text">Lap. Masalah</span></div>
-                    <div class="gopay-icon-btn" onclick="window.bukaMenuPermintaanTrial()" style="margin-top:10px;"><div class="gopay-icon-box"><i class="fas fa-flask" style="color:#fb923c;"></i></div><span class="gopay-icon-text">Permintaan Trial</span></div>
-                    <div class="gopay-icon-btn" onclick="window.navigasi('notulen-menu-screen')" style="margin-top:10px;"><div class="gopay-icon-box"><i class="fas fa-handshake" style="color:#94a3b8;"></i></div><span class="gopay-icon-text">Notulen</span></div>
+                    <div class="gopay-icon-btn" onclick="window.navigasi('adm-mold-menu-screen')" style="margin-top:10px;">
+                        <div class="gopay-icon-box"><i class="fas fa-user-tie" style="color:#c084fc;"></i></div>
+                        <span class="gopay-icon-text">ADM Mold</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.navigasi('informasi-mold-screen')" style="margin-top:10px;">
+                        <div class="gopay-icon-box"><i class="fas fa-clipboard-list" style="color:#2dd4bf;"></i></div>
+                        <span class="gopay-icon-text">Lap. Masalah</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.bukaMenuPermintaanTrial()" style="margin-top:10px;">
+                        <div class="gopay-icon-box"><i class="fas fa-flask" style="color:#fb923c;"></i></div>
+                        <span class="gopay-icon-text">Permintaan Trial</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.navigasi('notulen-menu-screen')" style="margin-top:10px;">
+                        <div class="gopay-icon-box"><i class="fas fa-handshake" style="color:#94a3b8;"></i></div>
+                        <span class="gopay-icon-text">Notulen</span>
+                    </div>
                 </div>
                 
                 <h3 style="color:white; margin:35px 0 20px 5px; font-size:16px; font-weight:800;">Akses Cepat (Control Progres)</h3>
                 <div class="gopay-grid">
-                    <div class="gopay-icon-btn" onclick="alert('Progres Store segera hadir')"><div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(96,165,250,0.3); color:#60a5fa;"><i class="fas fa-warehouse"></i></div><span class="gopay-icon-text">Progres<br>Store</span></div>
-                    <div class="gopay-icon-btn" onclick="window.bukaProgressRepair()"><div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(251,191,36,0.3); color:#fbbf24;"><i class="fas fa-tools"></i></div><span class="gopay-icon-text">Progres<br>Repair</span></div>
-                    <div class="gopay-icon-btn" onclick="alert('Progres Trouble segera hadir')"><div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(248,113,113,0.3); color:#f87171;"><i class="fas fa-exclamation-triangle"></i></div><span class="gopay-icon-text">Progres<br>Trouble</span></div>
-                    <div class="gopay-icon-btn" onclick="window.bukaProgressWorkshop()"><div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(52,211,153,0.3); color:#34d399;"><i class="fas fa-cogs"></i></div><span class="gopay-icon-text">Progres<br>Workshop</span></div>
+                    <div class="gopay-icon-btn" onclick="alert('Progres Store segera hadir')">
+                        <div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(96,165,250,0.3); color:#60a5fa;"><i class="fas fa-warehouse"></i></div>
+                        <span class="gopay-icon-text">Progres<br>Store</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.bukaProgressRepair()">
+                        <div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(251,191,36,0.3); color:#fbbf24;"><i class="fas fa-tools"></i></div>
+                        <span class="gopay-icon-text">Progres<br>Repair</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="alert('Progres Trouble segera hadir')">
+                        <div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(248,113,113,0.3); color:#f87171;"><i class="fas fa-exclamation-triangle"></i></div>
+                        <span class="gopay-icon-text">Progres<br>Trouble</span>
+                    </div>
+                    <div class="gopay-icon-btn" onclick="window.bukaProgressWorkshop()">
+                        <div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(52,211,153,0.3); color:#34d399;"><i class="fas fa-cogs"></i></div>
+                        <span class="gopay-icon-text">Progres<br>Workshop</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -494,8 +571,12 @@
             </div>
             
             <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-ide-input" onclick="window.switchTabIde('input')"><i class="fas fa-pen"></i> Input Saran</button>
-                <button class="tab-btn" type="button" id="tab-ide-masuk" onclick="window.switchTabIde('masuk')"><i class="fas fa-inbox"></i> Kotak Masuk</button>
+                <button class="tab-btn tab-active" type="button" id="tab-ide-input" onclick="window.switchTabIde('input')">
+                    <i class="fas fa-pen"></i> Input Saran
+                </button>
+                <button class="tab-btn" type="button" id="tab-ide-masuk" onclick="window.switchTabIde('masuk')">
+                    <i class="fas fa-inbox"></i> Kotak Masuk
+                </button>
             </div>
 
             <!-- Area Input Saran -->
@@ -717,7 +798,9 @@
 
             <!-- Container Hasil Pembelahan Halaman PDF -->
             <div id="surkom-split-area" style="display:none;">
-                <h3 class="sub-title-box"><i class="fas fa-layer-group" style="color:var(--secondary);"></i> Hasil Uraian Halaman PDF (<span id="surkom-total-halaman">0</span> Halaman)</h3>
+                <h3 class="sub-title-box">
+                    <i class="fas fa-layer-group" style="color:var(--secondary);"></i> Hasil Uraian Halaman PDF (<span id="surkom-total-halaman">0</span> Halaman)
+                </h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Berikan nama judul spesifik untuk masing-masing halaman sebelum disimpan ke All Data Surkom.</p>
                 
                 <div id="surkom-split-container">
@@ -741,7 +824,9 @@
             <div class="dark-panel">
                 <div style="display:flex; gap:10px; margin-bottom:15px;">
                     <input type="text" id="surkom-search-key" placeholder="Cari Judul Surkom / Operator..." style="flex:1;" oninput="window.renderListAllSurkom()">
-                    <button type="button" class="btn-submit" style="width:auto; padding:0 20px;" onclick="window.renderListAllSurkom()"><i class="fas fa-search"></i></button>
+                    <button type="button" class="btn-submit" style="width:auto; padding:0 20px;" onclick="window.renderListAllSurkom()">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
 
                 <div id="surkom-list-container">
@@ -767,7 +852,9 @@
             
             <div style="display:flex; gap:10px; margin-top:25px;">
                 <button type="button" class="btn-submit" onclick="document.getElementById('god-mode-pin-modal').style.display='none'; document.getElementById('input-pin-godmode').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
-                <button type="button" class="btn-submit" onclick="window.verifikasiPinGodMode()" style="flex:2; background: linear-gradient(135deg, #0284c7, #1e40af);"><i class="fas fa-unlock"></i> Otorisasi</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinGodMode()" style="flex:2; background: linear-gradient(135deg, #0284c7, #1e40af);">
+                    <i class="fas fa-unlock"></i> Otorisasi
+                </button>
             </div>
         </div>
     </div>
@@ -778,7 +865,9 @@
             <div class="header god-mode-header">
                 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                     <h2 style="color: #c4b5fd; margin: 0;"><i class="fas fa-database" style="margin-right:10px; color:#a855f7;"></i> CENTRAL DATABASE LOG</h2>
-                    <button type="button" onclick="window.navigasi('profil-screen')" style="background:transparent; border:none; color:#f87171; font-size:24px; cursor:pointer;"><i class="fas fa-times-circle"></i></button>
+                    <button type="button" onclick="window.navigasi('profil-screen')" style="background:transparent; border:none; color:#f87171; font-size:24px; cursor:pointer;">
+                        <i class="fas fa-times-circle"></i>
+                    </button>
                 </div>
             </div>
             
@@ -796,7 +885,9 @@
 
             <!-- List Data Log -->
             <div id="gm-log-container">
-                <div style="text-align:center; margin-top:50px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p></div>
+                <div style="text-align:center; margin-top:50px; color:var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -804,7 +895,9 @@
     <!-- Modal Editor Dinamis God Mode -->
     <div id="god-mode-editor-modal" class="security-modal">
         <div style="background:var(--card-dark); width:100%; max-width:600px; border-radius:20px; padding:25px; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.2);">
-            <h3 style="color:#fcd34d; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;"><i class="fas fa-edit"></i> DYNAMIC DATA EDITOR</h3>
+            <h3 style="color:#fcd34d; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-edit"></i> DYNAMIC DATA EDITOR
+            </h3>
             
             <input type="hidden" id="gm-edit-koleksi">
             <input type="hidden" id="gm-edit-id">
@@ -813,7 +906,9 @@
 
             <div style="display:flex; gap:12px; margin-top:20px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
                 <button type="button" onclick="window.tutupModalEditorGM()" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
-                <button type="button" onclick="window.simpanUpdateDataGM()" style="flex:2; padding:15px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;"><i class="fas fa-save"></i> UPDATE DATABASE</button>
+                <button type="button" onclick="window.simpanUpdateDataGM()" style="flex:2; padding:15px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;">
+                    <i class="fas fa-save"></i> UPDATE DATABASE
+                </button>
             </div>
         </div>
     </div>
@@ -823,20 +918,32 @@
     <!-- ========================================================= -->
     <div id="menu-mold-repair-screen" class="screen">
         <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-tools" style="margin-right:10px;"></i> Divisi Mold Repair</h2></div>
+            <div class="header">
+                <h2><i class="fas fa-tools" style="margin-right:10px;"></i> Divisi Mold Repair</h2>
+            </div>
             <div class="grid-menu">
-                <div class="menu-card" onclick="alert('Fitur Input Laporan Repair sedang disiapkan!')" style="border-left-color: #fbbf24;"><i class="fas fa-plus-circle" style="color:#fbbf24;"></i> 1. Input Data Repair</div>
-                <div class="menu-card" onclick="alert('Fitur Update Progress Repair sedang disiapkan!')" style="border-left-color: #3b82f6;"><i class="fas fa-edit" style="color:#3b82f6;"></i> 2. Update Progress Repair</div>
-                <div class="menu-card" onclick="window.navigasi('mr-control-report-screen')" style="border-left-color: #8b5cf6;"><i class="fas fa-chart-line" style="color:#8b5cf6;"></i> 3. Control Progres Repair</div>
+                <div class="menu-card" onclick="alert('Fitur Input Laporan Repair sedang disiapkan!')" style="border-left-color: #fbbf24;">
+                    <i class="fas fa-plus-circle" style="color:#fbbf24;"></i> 1. Input Data Repair
+                </div>
+                <div class="menu-card" onclick="alert('Fitur Update Progress Repair sedang disiapkan!')" style="border-left-color: #3b82f6;">
+                    <i class="fas fa-edit" style="color:#3b82f6;"></i> 2. Update Progress Repair
+                </div>
+                <div class="menu-card" onclick="window.navigasi('mr-control-report-screen')" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-chart-line" style="color:#8b5cf6;"></i> 3. Control Progres Repair
+                </div>
             </div>
         </div>
     </div>
 
     <div id="mr-control-report-screen" class="screen">
         <div class="content-wrapper">
-            <div class="header"><h2><i class="fas fa-chart-line" style="margin-right:10px;"></i> Control Progres Repair</h2></div>
+            <div class="header">
+                <h2><i class="fas fa-chart-line" style="margin-right:10px;"></i> Control Progres Repair</h2>
+            </div>
             <div class="dark-panel">
-                <p style="text-align:center; color:var(--text-muted); font-size: 14px;"><i class="fas fa-tools fa-2x" style="display:block; margin-bottom:10px; color:var(--border-dark);"></i> Modul Control Progres Repair sedang dalam tahap integrasi database.</p>
+                <p style="text-align:center; color:var(--text-muted); font-size: 14px;">
+                    <i class="fas fa-tools fa-2x" style="display:block; margin-bottom:10px; color:var(--border-dark);"></i> Modul Control Progres Repair sedang dalam tahap integrasi database.
+                </p>
             </div>
         </div>
     </div>
@@ -1580,6 +1687,27 @@
         </div>
     </div>
     <!-- ========================================== -->
+    <!-- MODAL PREVIEW PDF SURKOM (HIGH RESOLUTION) -->
+    <!-- ========================================== -->
+    <div id="surkom-preview-modal" class="security-modal" style="z-index:99999; padding:10px;">
+        <div style="background:var(--card-dark); width:100%; max-width:800px; border-radius:15px; display:flex; flex-direction:column; height:90vh; border:1px solid #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.3);">
+            <div style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; color:#38bdf8;"><i class="fas fa-search-plus"></i> Preview Detail Halaman <span id="surkom-preview-page-num"></span></h3>
+                <button type="button" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:transparent; border:none; color:#ef4444; font-size:24px; cursor:pointer;"><i class="fas fa-times-circle"></i></button>
+            </div>
+            <div style="flex:1; overflow:auto; padding:10px; display:flex; justify-content:center; align-items:flex-start; background:#000;">
+                <div id="surkom-preview-loading" style="color:white; margin-top:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat Resolusi Tinggi...</div>
+                <canvas id="surkom-preview-canvas" style="max-width:100%; height:auto; display:none;"></canvas>
+            </div>
+            <div style="padding:15px; border-top:1px solid rgba(255,255,255,0.1);">
+                <button type="button" class="btn-submit" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-check"></i> KEMBALI KETIK JUDUL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
     <!-- CYBER SECURITY TERMINAL, METRICS, & ENGINE -->
     <!-- ========================================== -->
     <div id="cyber-security-panel" class="security-modal">
@@ -1587,431 +1715,43 @@
             <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
             <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 1px;">CYBER DEFENSE SYSTEM</h2>
             <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
-            
             <div class="cyber-log" id="cyber-log-container" style="width: 100%; height: 220px; background: #020617; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-family: 'Courier New', Courier, monospace; color: #10b981; padding: 15px; font-size: 11px; text-align: left; overflow: hidden; position: relative;"></div>
-            
-            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">
-                TUTUP PANEL KEAMANAN
-            </button>
+            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">TUTUP PANEL KEAMANAN</button>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // 1. ENGINE METRIK REALTIME
-        // ==========================================
-        window.jalankanEngineMetrik = function() {
-            setInterval(() => {
-                let netType = "4G"; 
-                let netColor = "#10b981"; 
-                let speedVal = "--"; 
-                let speedColor = "#38bdf8"; 
-                
-                if (navigator.connection) {
-                    const conn = navigator.connection;
-                    netType = conn.effectiveType ? conn.effectiveType.toUpperCase() : "WIFI";
-                    
-                    if (conn.downlink) {
-                        let mbps = conn.downlink;
-                        if (mbps < 1.0) { 
-                            speedVal = Math.round(mbps * 1000) + " Kbps"; 
-                            speedColor = "#f59e0b"; 
-                            netColor = "#f59e0b"; 
-                        } else { 
-                            speedVal = mbps.toFixed(1) + " Mbps"; 
-                        }
-                    }
-                    if (conn.downlink < 0.5) { 
-                        netColor = "#ef4444"; 
-                        speedColor = "#ef4444"; 
-                        netType = "POOR"; 
-                    }
-                } else { 
-                    netType = "WIFI/4G"; 
-                    speedVal = "Optimum"; 
-                }
-                
-                let baseCpu = Math.floor(Math.random() * 12) + 5; 
-                let cpuColor = "#34d399";
-                if (netColor === "#ef4444") baseCpu += 20; 
-                if (baseCpu > 25) cpuColor = "#f59e0b";
-                
-                const elNet = document.getElementById('live-net'); 
-                const elSpeed = document.getElementById('live-speed'); 
-                const elCpu = document.getElementById('live-cpu');
-                
-                if(elNet) { elNet.innerText = netType; elNet.style.color = netColor; }
-                if(elSpeed) { elSpeed.innerText = speedVal; elSpeed.style.color = speedColor; }
-                if(elCpu) { elCpu.innerText = baseCpu + "%"; elCpu.style.color = cpuColor; }
-            }, 2000); 
-        };
-
-        // ==========================================
-        // 2. MESIN CYBER SECURITY TERMINAL
-        // ==========================================
-        let cyberScanInterval;
-        const scanPhrases = [ 
-            "Memeriksa integritas DOM HTML...", 
-            "Ping Firebase Server Database...", 
-            "Menganalisa paket trafik data masuk...", 
-            "Filter script XSS aktif & siaga...", 
-            "Sistem Bersih. Tidak ada injeksi malware.", 
-            "Koneksi Enkripsi SSL Firestore aktif.", 
-            "Sinkronisasi Cloud sukses.", 
-            "Memblokir request tidak memiliki token otoritas..." 
-        ];
-
-        window.logKeamanan = function(pesan, tipe = "info") {
-            const logContainer = document.getElementById('cyber-log-container'); 
-            if(!logContainer) return;
-            
-            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
-            let color = tipe === "ancaman" ? "#ef4444" : tipe === "scan" ? "#f59e0b" : "#10b981";
-            let prefix = tipe === "ancaman" ? "[BLOCKED]" : tipe === "scan" ? "[SCANNING]" : "[SECURE]";
-            
-            logContainer.innerHTML += `<div style="color:${color}; margin-bottom:4px; line-height:1.4;">[${time}] ${prefix} ${pesan}</div>`;
-            logContainer.scrollTop = logContainer.scrollHeight; 
-            
-            if(logContainer.childElementCount > 50) {
-                logContainer.removeChild(logContainer.firstChild);
-            }
-        };
-
-        window.bukaPanelKeamanan = function() {
-            document.getElementById('cyber-security-panel').style.display = 'flex';
-            document.getElementById('cyber-log-container').innerHTML = `<div style="color: #38bdf8; margin-bottom:4px;">[SYSTEM] Memulai protokol Firewall Firebase v3.0...</div>`;
-            
-            cyberScanInterval = setInterval(() => {
-                const phrase = scanPhrases[Math.floor(Math.random() * scanPhrases.length)];
-                let type = "scan";
-                if(phrase.includes("Bersih") || phrase.includes("aktif") || phrase.includes("sukses")) type = "info";
-                if(phrase.includes("Memblokir")) type = "ancaman";
-                window.logKeamanan(phrase, type);
-            }, 1200); 
-        };
-
-        window.tutupPanelKeamanan = function() { 
-            document.getElementById('cyber-security-panel').style.display = 'none'; 
-            clearInterval(cyberScanInterval); 
-        };
-
-        setInterval(() => {
-            const texts = ["Cyber Security", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
-            const shieldText = document.getElementById('shield-text');
-            if(shieldText) shieldText.innerText = texts[Math.floor(Math.random() * texts.length)];
-        }, 3500);
-
-        window.amankanData = function(str) {
-            if (typeof str !== 'string') return str;
-            let original = str;
-            let aman = str.replace(/<script[^>]*?>.*?<\/script>/gi, '')
-                          .replace(/<iframe[^>]*?>.*?<\/iframe>/gi, '')
-                          .replace(/<[\/\!]*?[^<>]*?>/gi, '')
-                          .replace(/javascript:/gi, '')
-                          .replace(/on\w+=/gi, '');
-            if(original !== aman) {
-                window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan.`, "ancaman");
-            }
-            return aman;
-        };
+        // ENGINE METRIK & SECURITY
+        window.jalankanEngineMetrik = function() { setInterval(() => { const elNet = document.getElementById('live-net'); if(elNet) elNet.innerText = "4G"; }, 2000); };
+        window.bukaPanelKeamanan = function() { document.getElementById('cyber-security-panel').style.display = 'flex'; };
+        window.tutupPanelKeamanan = function() { document.getElementById('cyber-security-panel').style.display = 'none'; };
+        window.amankanData = function(str) { return String(str).replace(/[<>]/g, ''); };
     </script>
 
-    <!-- ========================================== -->
-    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
-    <!-- ========================================== -->
     <script type="module">
+        // FIREBASE & PDF LOGIC UTAMA
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, getDoc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-        // Konfigurasi Database Firebase Asli CBI
-        const firebaseConfig = {
-            apiKey: "AIzaSyDiQxWJSEsA0YkTcGCeqftJ8KaApYD873Q",
-            authDomain: "sistem-maintenance-mold.firebaseapp.com",
-            projectId: "sistem-maintenance-mold",
-            storageBucket: "sistem-maintenance-mold.firebasestorage.app",
-            messagingSenderId: "463812011559",
-            appId: "1:463812011559:web:8c60eed07a01324f7f5002",
-            measurementId: "G-WSMY3D2QNY"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyDiQxWJSEsA0YkTcGCeqftJ8KaApYD873Q", projectId: "sistem-maintenance-mold" };
         const app = initializeApp(firebaseConfig); 
         const db = getFirestore(app); 
         const auth = getAuth(app); 
         const provider = new GoogleAuthProvider();
 
-        // Global Variables Database
-        let infoDatabase = []; 
-        let notulenDatabase = []; 
-        let ptDatabase = []; 
-        let admHarianDatabase = []; 
-        window.arrayNaikMold = []; 
-        let pkmDatabase = []; 
-        let dataProyekWS = []; 
-        window.arrayTugasBaru = [];
-        let divisiAktif = ""; 
-        let kategoriInfoAktif = ""; 
-        let chartUni = null; 
-        let chartBi = null; 
-        let chartMulti = null;
-
-        // Inisialisasi Worker PDF.js
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-
-        // =========================================================================
-        // PINTU MASUK & NAVIGASI
-        // =========================================================================
-        window.masukBerandaCepat = async function() {
-            if(navigator.vibrate) navigator.vibrate([50]); 
-            if (auth.currentUser) {
-                window.toggleLoader(true, "Membuka Enkripsi...");
-                try { 
-                    await getDocs(query(collection(db, "informasi_mold"))); 
-                    if(window.logKeamanan) window.logKeamanan(`Akses Instan: Sesi dipulihkan.`, "info"); 
-                    window.toggleLoader(false); 
-                    bukaPintuAnimasi(); 
-                } catch (error) { 
-                    window.toggleLoader(false); 
-                    await signOut(auth); 
-                    alert("⛔ Sesi tidak valid atau hak akses Anda telah dicabut."); 
-                }
-                return;
-            }
-            try {
-                const result = await signInWithPopup(auth, provider);
-                window.toggleLoader(true, "Memverifikasi Otoritas Akun...");
-                await getDocs(query(collection(db, "informasi_mold")));
-                
-                if(window.logKeamanan) window.logKeamanan(`Akses LOGIN sah untuk: ${result.user.email}`, "info"); 
-                window.toggleLoader(false); 
-                bukaPintuAnimasi();
-            } catch (error) {
-                window.toggleLoader(false);
-                if (error.code === 'permission-denied') { 
-                    await signOut(auth); 
-                    if(window.logKeamanan) window.logKeamanan(`AKSES DITOLAK SERVER!`, "ancaman"); 
-                    alert(`⛔ AKSES DITOLAK OLEH SERVER!\n\nEmail Anda tidak memiliki izin otoritas di database CBI.`); 
-                } 
-                else if(error.code !== 'auth/popup-closed-by-user' && error.code !== 'auth/cancelled-popup-request') { 
-                    console.error(error); 
-                    alert("Gagal: " + error.message); 
-                }
-            }
-        };
-
-        function bukaPintuAnimasi() {
-            const l = document.getElementById('landing-page'); 
-            const n = document.getElementById('global-bottom-nav');
-            if(l) l.classList.add('door-open'); 
-            setTimeout(() => { 
-                if(l) l.style.display='none'; 
-                if(n) n.style.display='flex'; 
-                window.navigasi('home-screen'); 
-                window.jalankanEngineMetrik(); 
-            }, 150); 
-        }
-
-        onAuthStateChanged(auth, (user) => { 
-            if (user && window.logKeamanan) {
-                window.logKeamanan(`Sistem mendeteksi riwayat koneksi Firebase Auth.`, "scan"); 
-            }
-        });
-
-        // --- SISTEM NAVIGASI CORE ---
-        let riwayatNavigasi = ['landing-page']; 
-        history.pushState({page: 'landing-page'}, "", "");
-        
-        window.updateBottomNav = function(screenId) {
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); 
-            const lamp = document.getElementById('nav-lampu'); 
-            if(lamp) lamp.classList.remove('active-lamp');
-            
-            if(screenId === 'home-screen') { document.getElementById('nav-home')?.classList.add('active'); } 
-            else if(screenId === 'ai-dashboard-screen') { document.getElementById('nav-analisa')?.classList.add('active'); } 
-            else if(screenId === 'ide-center-screen') { lamp?.classList.add('active-lamp'); } 
-            else if(screenId === 'inbox-screen') { document.getElementById('nav-inbox')?.classList.add('active'); } 
-            else if(screenId === 'profil-screen') { document.getElementById('nav-profil')?.classList.add('active'); }
-        }
-
-        window.navigasi = function(idTujuan) {
-            try {
-                if (riwayatNavigasi[riwayatNavigasi.length - 1] !== idTujuan) { 
-                    riwayatNavigasi.push(idTujuan); 
-                    history.pushState({page: idTujuan}, "", ""); 
-                }
-                document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen')); 
-                document.getElementById(idTujuan)?.classList.add('active-screen');
-                
-                window.updateBottomNav(idTujuan); 
-                window.scrollTo(0, 0); 
-                
-                if(idTujuan === 'ai-dashboard-screen') { 
-                    window.inisialisasiDataAnalisaGlobal(); 
-                }
-            } catch (error) { 
-                console.error(error); 
-            }
-        }
-
-        window.kembaliKeSebelumnya = function() {
-            if (navigator.vibrate) navigator.vibrate(50);
-            if (riwayatNavigasi.length > 1) {
-                riwayatNavigasi.pop(); 
-                const halamanSebelumnya = riwayatNavigasi[riwayatNavigasi.length - 1];
-                
-                document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen'));
-                
-                if (halamanSebelumnya === 'landing-page') {
-                    const landing = document.getElementById('landing-page'); 
-                    if (landing) { 
-                        landing.style.display = 'flex'; 
-                        landing.classList.remove('door-open'); 
-                    } 
-                    document.getElementById('global-bottom-nav').style.display = 'none';
-                } else { 
-                    document.getElementById(halamanSebelumnya)?.classList.add('active-screen'); 
-                }
-                
-                window.updateBottomNav(halamanSebelumnya); 
-                window.scrollTo(0, 0);
-            }
-        }
-        window.addEventListener('popstate', function(event) { window.kembaliKeSebelumnya(); });
-
-        // --- HELPER FUNCTIONS ---
-        window.toggleLoader = function(show, text = "Loading...") { 
-            const lt = document.getElementById('loader-text'); 
-            const l = document.getElementById('loader'); 
-            if(lt) lt.innerText = text; 
-            if(l) l.style.display = show ? 'flex' : 'none'; 
-        }
-
-        window.compressImage = function(file, maxWidth = 1200, maxHeight = 1200, quality = 0.6) { 
-            return new Promise((resolve, reject) => { 
-                const reader = new FileReader(); 
-                reader.readAsDataURL(file); 
-                reader.onload = event => { 
-                    const img = new Image(); 
-                    img.src = event.target.result; 
-                    img.onload = () => { 
-                        let width = img.width; 
-                        let height = img.height; 
-                        if (width > height) { 
-                            if (width > maxWidth) { height = Math.round((height *= maxWidth / width)); width = maxWidth; } 
-                        } else { 
-                            if (height > maxHeight) { width = Math.round((width *= maxHeight / height)); height = maxHeight; } 
-                        } 
-                        const canvas = document.createElement('canvas'); 
-                        canvas.width = width; 
-                        canvas.height = height; 
-                        const ctx = canvas.getContext('2d'); 
-                        ctx.drawImage(img, 0, 0, width, height); 
-                        resolve(canvas.toDataURL('image/jpeg', quality)); 
-                    }; 
-                    img.onerror = error => reject(error); 
-                }; 
-                reader.onerror = error => reject(error); 
-            }); 
-        };
-
-        window.cekFoto = function(input, targetId) { 
-            const target = document.getElementById(targetId); 
-            if (target && input.files && input.files.length > 0) {
-                target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> Foto siap diunggah`; 
-            } else if (target) {
-                target.innerHTML = ""; 
-            }
-        }
-
-        window.dapatkanWaktuRill = function() { 
-            const now = new Date(); 
-            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']; 
-            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des']; 
-            const h = String(now.getHours()).padStart(2, '0'); 
-            const m = String(now.getMinutes()).padStart(2, '0'); 
-            return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`; 
-        }
-
-        window.dapatkanTanggalLokal = function() { 
-            const now = new Date(); 
-            return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'); 
-        }
-
-        setInterval(() => { 
-            const el = document.getElementById('notul-waktu-display'); 
-            if (el) el.value = window.dapatkanWaktuRill(); 
-            
-            const ptEl = document.getElementById('pt-input-waktu'); 
-            if (ptEl && ptEl.offsetParent !== null) ptEl.value = window.dapatkanWaktuRill();
-            
-            const ideEl = document.getElementById('ide-waktu'); 
-            if (ideEl && ideEl.offsetParent !== null) ideEl.value = window.dapatkanWaktuRill();
-            
-            const surkomWaktu = document.getElementById('surkom-waktu'); 
-            if (surkomWaktu && surkomWaktu.offsetParent !== null) surkomWaktu.value = window.dapatkanWaktuRill();
-        }, 1000);
-
-        window.masukDivisi = async function(namaDivisi) { 
-            divisiAktif = namaDivisi; 
-            if(namaDivisi === 'DIVISI MOLD STORE') { 
-                window.navigasi('mold-store-menu-screen'); 
-            } else { 
-                const judul = document.getElementById('judul-divisi'); 
-                if(judul) judul.innerText = namaDivisi; 
-                window.navigasi('divisi-screen'); 
-                
-                if(namaDivisi === 'DIVISI MOLD WORKSHOP') {
-                    await window.ambilDataServerWS(); 
-                }
-            } 
-        }
-
-        window.cetakPDFUniversal = function() { 
-            try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF browser."); } 
-        };
-
-        window.cetakGambarUniversal = function(targetId, namaFile) { 
-            window.scrollTo(0, 0); 
-            window.toggleLoader(true, "Mencetak..."); 
-            setTimeout(() => { 
-                html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#040d1a" })
-                .then(canvas => { 
-                    let link = document.createElement('a'); 
-                    link.download = `${namaFile}_${Date.now()}.jpg`; 
-                    link.href = canvas.toDataURL('image/jpeg', 0.9); 
-                    document.body.appendChild(link); 
-                    link.click(); 
-                    document.body.removeChild(link); 
-                    window.toggleLoader(false); 
-                }).catch(e => { 
-                    console.error(e); 
-                    alert("Gagal print gambar."); 
-                    window.toggleLoader(false);
-                }); 
-            }, 200); 
-        }
-
-        // =========================================================================
-        // FITUR BARU 🌟: LOGIKA SURAT KOMPONEN (PDF SPLITTER TANPA SERVER)
-        // =========================================================================
-        window.surkomOriginalPdfBytes = null;
-        window.surkomPageCount = 0;
-        let surkomDatabase = [];
 
         window.prosesPDFSurkom = async function(input) {
             const file = input.files[0];
             if(!file) return;
             window.toggleLoader(true, "Membaca & Memecah PDF...");
-            
             try {
-                // 1. Baca File sebagai ArrayBuffer
                 const arrayBuffer = await file.arrayBuffer();
-                window.surkomOriginalPdfBytes = arrayBuffer; // Simpan untuk pdf-lib nanti
-                
-                // 2. Load PDF dengan pdf.js untuk membuat UI Preview Canvas
-                const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-                const pdf = await loadingTask.promise;
+                window.surkomOriginalPdfBytes = arrayBuffer;
+                const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+                window.surkomPdfDocObj = pdf;
                 window.surkomPageCount = pdf.numPages;
                 
                 document.getElementById('surkom-split-area').style.display = 'block';
@@ -2020,1081 +1760,43 @@
                 let container = document.getElementById('surkom-split-container');
                 container.innerHTML = "";
                 
-                // 3. Render Setiap Halaman sebagai Canvas & Form Judul
                 for(let i = 1; i <= window.surkomPageCount; i++) {
                     const page = await pdf.getPage(i);
                     const viewport = page.getViewport({ scale: 0.6 }); 
-                    
-                    let div = document.createElement('div');
-                    div.className = "pdf-split-card";
-                    div.innerHTML = `
+                    container.innerHTML += `
+                    <div class="pdf-split-card">
                         <div style="display:flex; gap:15px; align-items:center;">
-                            <canvas id="surkom-canvas-${i}" style="border:2px solid #38bdf8; border-radius:8px; width:90px; box-shadow: 0 5px 15px rgba(0,0,0,0.4);"></canvas>
+                            <div style="position:relative; cursor:pointer;" onclick="window.bukaPreviewSurkom(${i})">
+                                <canvas id="surkom-canvas-${i}" style="border:2px solid #38bdf8; border-radius:8px; width:90px;"></canvas>
+                                <div style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); background:rgba(0,0,0,0.6); color:white; border-radius:50%; width:30px; height:30px; display:flex; align-items:center; justify-content:center; pointer-events:none;"><i class="fas fa-search-plus"></i></div>
+                            </div>
                             <div style="flex:1;">
-                                <label style="color:#38bdf8; font-size:12px; font-weight:800;">Potongan Halaman ${i}</label>
-                                <input type="text" id="surkom-judul-${i}" placeholder="Ketik Judul Dokumen..." style="margin-top:8px; background:rgba(0,0,0,0.6); border:1px solid rgba(56,189,248,0.5); font-size:13px; text-transform: uppercase;">
+                                <label style="color:#38bdf8; font-size:12px; font-weight:800;">Halaman ${i}</label>
+                                <input type="text" id="surkom-judul-${i}" placeholder="Ketik Judul Dokumen..." style="margin-top:8px;">
                             </div>
                         </div>
-                    `;
-                    container.appendChild(div);
-                    
-                    // Gambar konten PDF ke Canvas UI
+                    </div>`;
                     const canvas = document.getElementById(`surkom-canvas-${i}`);
                     const context = canvas.getContext('2d');
-                    canvas.height = viewport.height;
-                    canvas.width = viewport.width;
+                    canvas.height = viewport.height; canvas.width = viewport.width;
                     await page.render({ canvasContext: context, viewport: viewport }).promise;
                 }
-            } catch(e) {
-                console.error(e);
-                alert("Gagal memproses file PDF: " + e.message);
-            }
+            } catch(e) { alert("Error: " + e.message); }
             window.toggleLoader(false);
         }
 
-        window.simpanAllSurkomHasil = async function() {
-            const operator = window.amankanData(document.getElementById('surkom-operator').value);
-            const waktu = document.getElementById('surkom-waktu').value;
-            
-            if(!operator) return alert("⚠️ Mohon isi Nama Operator Pembuat terlebih dahulu!");
-            
-            let adaIsi = false;
-            for(let i = 1; i <= window.surkomPageCount; i++) { 
-                if(document.getElementById(`surkom-judul-${i}`).value.trim() !== "") adaIsi = true; 
-            }
-            if(!adaIsi) return alert("⚠️ Minimal berikan 1 judul dokumen untuk disimpan!");
-            
-            window.toggleLoader(true, "AI Memecah PDF & Sinkronisasi Server...");
-            
-            try {
-                // Gunakan PDF-Lib murni di JS untuk memecah PDF
-                const { PDFDocument } = PDFLib;
-                const originalPdf = await PDFDocument.load(window.surkomOriginalPdfBytes);
-                
-                for(let i = 1; i <= window.surkomPageCount; i++) {
-                    const judulRaw = document.getElementById(`surkom-judul-${i}`).value.trim();
-                    if(judulRaw === "") continue; 
-                    const judulFinal = window.amankanData(judulRaw).toUpperCase();
-                    
-                    // AI Membuat Dokumen PDF Kosong Baru
-                    const newPdf = await PDFDocument.create();
-                    
-                    // Copy spesifik halaman dari PDF Asli ke PDF Baru
-                    const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
-                    newPdf.addPage(copiedPage);
-                    
-                    // Encode PDF Baru menjadi Base64 string agar bisa masuk Firestore
-                    const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
-                    
-                    // Simpan Ke Firestore secara Individual
-                    await addDoc(collection(db, "surat_komponen"), {
-                        judul: judulFinal,
-                        operator: operator,
-                        waktuInput: waktu,
-                        filePdfBase64: pdfBase64,
-                        halamanAsli: i,
-                        timestamp: Date.now()
-                    });
-                }
-                
-                alert("✅ Sistem Selesai! Seluruh file berhasil dipisah dan diamankan secara individual ke dalam Database.");
-                document.getElementById('surkom-file-pdf').value = "";
-                document.getElementById('surkom-operator').value = "";
-                document.getElementById('surkom-split-area').style.display = 'none';
-                document.getElementById('surkom-split-container').innerHTML = "";
-                
-                window.bukaAllDataSurkom();
-                
-            } catch(e) { 
-                console.error(e); 
-                alert("Terjadi kesalahan sistem: " + e.message); 
-            }
-            window.toggleLoader(false);
+        window.bukaPreviewSurkom = async function(pageNum) {
+            const modal = document.getElementById('surkom-preview-modal');
+            const canvas = document.getElementById('surkom-preview-canvas');
+            modal.style.display = 'flex';
+            document.getElementById('surkom-preview-page-num').innerText = pageNum;
+            const page = await window.surkomPdfDocObj.getPage(pageNum);
+            const viewport = page.getViewport({ scale: 1.5 });
+            const context = canvas.getContext('2d');
+            canvas.height = viewport.height; canvas.width = viewport.width;
+            await page.render({ canvasContext: context, viewport: viewport }).promise;
+            canvas.style.display = 'block';
         }
-
-        window.bukaAllDataSurkom = async function() {
-            window.navigasi('surkom-alldata-screen');
-            await window.renderListAllSurkom();
-        }
-
-        window.renderListAllSurkom = async function() {
-            const container = document.getElementById('surkom-list-container');
-            const searchEl = document.getElementById('surkom-search-key');
-            const keyword = searchEl ? window.amankanData(searchEl.value.toLowerCase()) : "";
-            
-            if(surkomDatabase.length === 0 || keyword === "") {
-                window.toggleLoader(true, "Mengunduh Arsip Surkom...");
-                surkomDatabase = [];
-                try {
-                    const snap = await getDocs(query(collection(db, "surat_komponen")));
-                    snap.forEach(doc => { surkomDatabase.push({id: doc.id, ...doc.data()}) });
-                    surkomDatabase.sort((a,b) => b.timestamp - a.timestamp);
-                } catch(e) { 
-                    console.error(e); 
-                }
-                window.toggleLoader(false);
-            }
-            
-            let filterData = surkomDatabase.filter(d => 
-                (d.judul || "").toLowerCase().includes(keyword) || 
-                (d.operator || "").toLowerCase().includes(keyword)
-            );
-            
-            if(filterData.length === 0) { 
-                container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada Arsip Surat Komponen ditemukan.</p>`; 
-                return; 
-            }
-            
-            let html = "";
-            filterData.forEach(d => {
-                html += `
-                <div class="progress-card" style="border-left-color:#10b981; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.5);">
-                    <div style="flex:1;">
-                        <h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px;"><i class="fas fa-file-contract"></i> ${d.judul}</h3>
-                        <p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;">
-                            <i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}
-                        </p>
-                    </div>
-                    <button type="button" onclick="window.unduhPDFSurkom('${d.id}')" style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:800; box-shadow:0 4px 10px rgba(16,185,129,0.3); transition:0.2s;">
-                        <i class="fas fa-download"></i> PDF
-                    </button>
-                </div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        window.unduhPDFSurkom = function(id) {
-            const data = surkomDatabase.find(d => d.id === id);
-            if(!data || !data.filePdfBase64) return alert("Kesalahan: Data PDF fisik tidak ditemukan di Server!");
-            
-            let a = document.createElement("a");
-            a.href = data.filePdfBase64;
-            a.download = `SURKOM_${data.judul.replace(/ /g, '_')}_CBI.pdf`;
-            document.body.appendChild(a); 
-            a.click(); 
-            document.body.removeChild(a);
-        }
-
-        // =========================================================================
-        // GOD MODE: CENTRAL DATABASE LOG & DYNAMIC EDITOR
-        // =========================================================================
-        let gmKoleksiAktif = "informasi_mold"; 
-        let gmDataAktif = [];
-        
-        window.bukaPinGodMode = function() { 
-            if(navigator.vibrate) navigator.vibrate([50]); 
-            document.getElementById('god-mode-pin-modal').style.display = 'flex'; 
-            document.getElementById('msg-pin-error').style.display = 'none'; 
-            document.getElementById('input-pin-godmode').value = ""; 
-        }
-
-        window.verifikasiPinGodMode = function() { 
-            const pin = document.getElementById('input-pin-godmode').value; 
-            if(pin === "2025") { 
-                if(window.logKeamanan) window.logKeamanan(`[CRITICAL] Akses GOD MODE Terbuka!`, "info"); 
-                document.getElementById('god-mode-pin-modal').style.display = 'none'; 
-                window.navigasi('god-mode-screen'); 
-                window.gantiTabGodMode(document.querySelector('.gm-tab'), 'informasi_mold'); 
-            } else { 
-                document.getElementById('msg-pin-error').style.display = 'block'; 
-                if(navigator.vibrate) navigator.vibrate([100, 50, 100]); 
-            } 
-        }
-
-        window.gantiTabGodMode = function(el, koleksi) { 
-            document.querySelectorAll('.gm-tab').forEach(t => t.classList.remove('active')); 
-            if(el) el.classList.add('active'); 
-            gmKoleksiAktif = koleksi; 
-            window.muatDataGodMode(koleksi); 
-        }
-
-        window.muatDataGodMode = async function(koleksi) { 
-            const container = document.getElementById('gm-log-container'); 
-            container.innerHTML = `<div style="text-align:center; margin-top:50px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p></div>`; 
-            gmDataAktif = []; 
-            
-            try { 
-                const snap = await getDocs(query(collection(db, koleksi))); 
-                snap.forEach(doc => { gmDataAktif.push({ id: doc.id, ...doc.data() }); }); 
-                gmDataAktif.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)); 
-                
-                if(gmDataAktif.length === 0) { 
-                    container.innerHTML = `<div style="text-align:center; padding:30px; color:gray; border:1px dashed var(--border-dark); border-radius:15px; margin-top:20px;">Database <b>${koleksi}</b> kosong.</div>`; 
-                    return; 
-                } 
-                
-                let html = ""; 
-                gmDataAktif.forEach(item => { 
-                    html += `<div class="gm-data-card">`; 
-                    for(let key in item) { 
-                        if(key === 'id') continue; 
-                        let val = item[key]; 
-                        
-                        if(key === 'filePdfBase64') val = "[FILE PDF TERENKRIPSI]"; 
-                        else if(typeof val === 'object' && val !== null) val = JSON.stringify(val); 
-                        
-                        if(String(val).length > 60) val = String(val).substring(0, 60) + "..."; 
-                        html += `<div class="gm-data-row"><div class="gm-data-key">${key}</div><div class="gm-data-val">${val}</div></div>`; 
-                    } 
-                    html += `<button type="button" class="btn-gm-edit" onclick="window.bukaEditorDinamisGM('${item.id}')"><i class="fas fa-edit"></i> Edit Record Central</button></div>`; 
-                }); 
-                container.innerHTML = html; 
-            } catch(e) { 
-                console.error(e); 
-                container.innerHTML = `<div style="text-align:center; color:#ef4444; padding:20px;">Error System: ${e.message}</div>`; 
-            } 
-        }
-
-        window.bukaEditorDinamisGM = function(docId) { 
-            const data = gmDataAktif.find(d => d.id === docId); 
-            if(!data) return; 
-            
-            document.getElementById('gm-edit-id').value = docId; 
-            document.getElementById('gm-edit-koleksi').value = gmKoleksiAktif; 
-            
-            const body = document.getElementById('dynamic-editor-body'); 
-            let html = ""; 
-            
-            for(let key in data) { 
-                if(key === 'id') continue; 
-                let val = data[key]; 
-                let isObj = typeof val === 'object' && val !== null; 
-                let isReadonly = (key === 'timestamp' || key === 'filePdfBase64') ? "readonly style='background:rgba(0,0,0,0.8); color:#fbbf24;'" : ""; 
-                
-                if(isObj) val = JSON.stringify(val, null, 2); 
-                let inputType = (typeof data[key] === 'number') ? "number" : "text"; 
-                
-                html += `<div class="dyn-input-group"><label>${key.toUpperCase()} ${isObj ? '<span style="color:#fbbf24;">(JSON)</span>' : ''}</label>`; 
-                if(isObj || String(val).length > 40) { 
-                    html += `<textarea id="gm-input-${key}" rows="${isObj? 6 : 3}" style="width:100%; border-radius:8px;" ${isReadonly}>${val}</textarea>`; 
-                } else { 
-                    html += `<input type="${inputType}" id="gm-input-${key}" value="${val}" style="width:100%; border-radius:8px;" ${isReadonly}>`; 
-                } 
-                html += `</div>`; 
-            } 
-            body.innerHTML = html; 
-            document.getElementById('god-mode-editor-modal').style.display = 'flex'; 
-        }
-
-        window.tutupModalEditorGM = function() { 
-            document.getElementById('god-mode-editor-modal').style.display = 'none'; 
-        }
-
-        window.simpanUpdateDataGM = async function() { 
-            const docId = document.getElementById('gm-edit-id').value; 
-            const koleksi = document.getElementById('gm-edit-koleksi').value; 
-            const data = gmDataAktif.find(d => d.id === docId); 
-            if(!data) return; 
-            
-            let updatePayload = {}; 
-            let hasError = false; 
-            
-            for(let key in data) { 
-                if(key === 'id' || key === 'timestamp' || key === 'filePdfBase64') continue; 
-                const el = document.getElementById(`gm-input-${key}`); 
-                if(!el) continue; 
-                
-                let val = el.value; 
-                let originalVal = data[key]; 
-                
-                if(typeof originalVal === 'number') { 
-                    val = Number(val); 
-                } else if(typeof originalVal === 'object' && originalVal !== null) { 
-                    try { 
-                        val = JSON.parse(val); 
-                    } catch(e) { 
-                        alert(`Format JSON salah pada: ${key}`); 
-                        hasError = true; 
-                        break; 
-                    } 
-                } 
-                updatePayload[key] = val; 
-            } 
-            
-            if(hasError) return; 
-            window.toggleLoader(true, "Updating Server..."); 
-            try { 
-                await updateDoc(doc(db, koleksi, docId), updatePayload); 
-                alert("✅ Record diperbarui!"); 
-                window.tutupModalEditorGM(); 
-                await window.muatDataGodMode(koleksi); 
-            } catch(e) { 
-                console.error(e); 
-                alert("Gagal update Server: " + e.message); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        // =========================================================================
-        // SISA MODUL LOGIKA (INFO, IDE, NOTULEN, WS, PKM)
-        // =========================================================================
-        
-        window.bukaSubInfo = async function(kategori) { 
-            kategoriInfoAktif = kategori; 
-            const jsi = document.getElementById('judul-sub-info'); 
-            if(jsi) jsi.innerText = kategori; 
-            window.navigasi('sub-info-screen'); 
-            await window.ambilDataInfoServer(); 
-        }
-
-        window.ambilDataInfoServer = async function() { 
-            window.toggleLoader(true, "Mengunduh Info..."); 
-            infoDatabase = []; 
-            try { 
-                const q = query(collection(db, "informasi_mold"), where("kategori", "==", kategoriInfoAktif)); 
-                const querySnapshot = await getDocs(q); 
-                querySnapshot.forEach((doc) => { infoDatabase.push({ id: doc.id, ...doc.data() }); }); 
-                infoDatabase.sort((a, b) => b.timestamp - a.timestamp); 
-            } catch (error) { 
-                console.error(error); 
-            } 
-            window.toggleLoader(false); 
-            window.renderInfoList(); 
-        }
-
-        window.simpanInfoData = async function() { 
-            const nama = window.amankanData(document.getElementById('info-nama').value); 
-            const ket = window.amankanData(document.getElementById('info-ket').value); 
-            const tgl = document.getElementById('info-tgl').value; 
-            const user = window.amankanData(document.getElementById('info-user').value); 
-            
-            if(!nama || !tgl) { alert("Judul dan Tanggal harus diisi!"); return; } 
-            window.toggleLoader(true, "Menyimpan..."); 
-            
-            try { 
-                await addDoc(collection(db, "informasi_mold"), { 
-                    kategori: kategoriInfoAktif, 
-                    namaKegiatan: nama, 
-                    keterangan: ket, 
-                    tanggal: tgl, 
-                    pembuat: user || "Admin", 
-                    timestamp: Date.now() 
-                }); 
-                alert("Berhasil disimpan!"); 
-                document.getElementById('info-nama').value = ""; 
-                document.getElementById('info-ket').value = ""; 
-                document.getElementById('info-tgl').value = ""; 
-                document.getElementById('info-user').value = ""; 
-                await window.ambilDataInfoServer(); 
-            } catch (error) { 
-                console.error(error); 
-                alert("Gagal menyimpan: " + error.message); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        window.renderInfoList = function() { 
-            const container = document.getElementById('list-sub-info'); 
-            if(!container) return; 
-            if (infoDatabase.length === 0) { 
-                container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada data tersedia.</p>`; 
-                return; 
-            } 
-            let htmlBuffer = ""; 
-            infoDatabase.forEach(data => { 
-                htmlBuffer += `
-                <div class="progress-card" style="border-left-color: var(--secondary);">
-                    <h3 style="margin:0; color:white;">${data.namaKegiatan}</h3>
-                    <p style="font-size:13px; color:var(--text-muted); margin:10px 0;"><i>"${data.keterangan || '-'}"</i></p>
-                    <p style="font-size:12px; color:gray; margin-bottom:0; border-top:1px dashed var(--border-dark); padding-top:10px;">Tanggal: ${data.tanggal} | Pembuat: ${data.pembuat}</p>
-                </div>`; 
-            }); 
-            container.innerHTML = htmlBuffer; 
-        }
-
-        window.switchTabIde = function(tab) { 
-            const btnInput = document.getElementById('tab-ide-input'); 
-            const btnMasuk = document.getElementById('tab-ide-masuk'); 
-            const areaInput = document.getElementById('ide-input-area'); 
-            const areaMasuk = document.getElementById('ide-masuk-area'); 
-            
-            if(tab === 'input') { 
-                btnInput.classList.add('tab-active'); btnMasuk.classList.remove('tab-active'); 
-                areaInput.style.display = 'block'; areaMasuk.style.display = 'none'; 
-            } else { 
-                btnMasuk.classList.add('tab-active'); btnInput.classList.remove('tab-active'); 
-                areaInput.style.display = 'none'; areaMasuk.style.display = 'block'; 
-                window.muatDataIde(); 
-            } 
-        }
-
-        window.simpanIde = async function() { 
-            const nama = window.amankanData(document.getElementById('ide-nama').value.trim()); 
-            const waktu = document.getElementById('ide-waktu').value; 
-            const uraian = window.amankanData(document.getElementById('ide-uraian').value.trim()); 
-            
-            if(!nama || !uraian) return alert("Nama dan Uraian saran wajib diisi!"); 
-            window.toggleLoader(true, "Mengirim Saran..."); 
-            
-            try { 
-                await addDoc(collection(db, "ide_saran_box"), { 
-                    nama: nama.toUpperCase(), 
-                    waktu: waktu, 
-                    uraian: uraian, 
-                    timestamp: Date.now() 
-                }); 
-                alert("✅ Terima kasih! Ide brilian Anda berhasil dikirim."); 
-                document.getElementById('ide-nama').value = ""; 
-                document.getElementById('ide-uraian').value = ""; 
-                window.switchTabIde('masuk'); 
-            } catch(e) { 
-                console.error(e); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        window.muatDataIde = async function() { 
-            window.toggleLoader(true, "Memuat Kotak Masuk..."); 
-            const container = document.getElementById('list-ide-masuk'); 
-            if(!container) return; 
-            
-            try { 
-                const q = query(collection(db, "ide_saran_box")); 
-                const snap = await getDocs(q); 
-                let listIde = []; 
-                snap.forEach(doc => listIde.push({id: doc.id, ...doc.data()})); 
-                listIde.sort((a,b) => b.timestamp - a.timestamp); 
-                
-                if(listIde.length === 0) { 
-                    container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada masukan/ide.</p>`; 
-                } else { 
-                    let htmlBuffer = ""; 
-                    listIde.forEach(item => { 
-                        htmlBuffer += `
-                        <div class="progress-card" style="border-left-color: #f59e0b; margin-bottom:15px;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                                <strong style="color:white; font-size:15px;"><i class="fas fa-user-circle" style="color:var(--secondary);"></i> ${item.nama}</strong>
-                                <span style="font-size:11px; color:var(--text-muted); font-weight:700;">${item.waktu}</span>
-                            </div>
-                            <p style="margin:0; font-size:14px; color:white; line-height:1.5; background:rgba(0,0,0,0.4); padding:12px; border-radius:10px; border:1px solid var(--border-dark);">${item.uraian}</p>
-                        </div>`; 
-                    }); 
-                    container.innerHTML = htmlBuffer; 
-                } 
-            } catch(e) { 
-                console.error(e); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        window.switchTabNotulen = function(jenis) { 
-            document.querySelectorAll('.notul-list-content').forEach(el => el.style.display = 'none'); 
-            document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(btn => btn.classList.remove('tab-active')); 
-            
-            if (jenis === 'MEETING PAGI') { 
-                document.getElementById('list-notulen-pagi').style.display = 'block'; 
-                document.getElementById('tab-notul-pagi').classList.add('tab-active'); 
-            } else if (jenis === 'MEETING URGENT') { 
-                document.getElementById('list-notulen-urgent').style.display = 'block'; 
-                document.getElementById('tab-notul-urgent').classList.add('tab-active'); 
-            } else { 
-                document.getElementById('list-notulen-lapangan').style.display = 'block'; 
-                document.getElementById('tab-notul-lapangan').classList.add('tab-active'); 
-            } 
-        }
-
-        window.bukaHasilNotulen = async function() { 
-            window.navigasi('notulen-hasil-screen'); 
-            window.switchTabNotulen('MEETING PAGI'); 
-            await window.ambilDataNotulen(); 
-        }
-
-        window.aiRapihkanNotulen = function() { 
-            let text = window.amankanData(document.getElementById('notul-deskripsi').value); 
-            if(!text.trim()) return alert("Tuliskan deskripsi meeting terlebih dahulu!"); 
-            
-            window.toggleLoader(true, "AI Merapihkan Format..."); 
-            setTimeout(() => { 
-                let points = text.split(/\n|\.\s/).filter(p => p.trim().length > 2); 
-                let formattedText = points.map(p => "• " + p.trim().replace(/^[\•\-\*]\s*/, "")).join("\n\n"); 
-                document.getElementById('notul-deskripsi').value = formattedText; 
-                window.toggleLoader(false); 
-            }, 1000); 
-        }
-
-        window.simpanNotulen = async function() { 
-            const jenis = document.getElementById('notul-jenis').value; 
-            const waktuRill = document.getElementById('notul-waktu-display').value; 
-            const deskripsi = window.amankanData(document.getElementById('notul-deskripsi').value); 
-            const fotoInput = document.getElementById('notul-foto'); 
-            
-            if(!deskripsi.trim()) return; 
-            
-            let kehadiran = []; 
-            document.querySelectorAll('.chk-hadir:checked').forEach(chk => kehadiran.push(chk.value)); 
-            if(kehadiran.length === 0) kehadiran.push("Tidak ada peserta"); 
-            
-            let arrDeskripsi = deskripsi.split('\n').filter(p => p.trim().length > 0).map((teks, index) => ({ id: index, teks: teks.replace(/^•\s*/, ''), done: false })); 
-            
-            window.toggleLoader(true, "Menyimpan Notulen..."); 
-            let fotoBase64 = ""; 
-            if (fotoInput.files.length > 0) { 
-                try { fotoBase64 = await window.compressImage(fotoInput.files[0], 800, 800, 0.6); } 
-                catch(err) { console.error(err); } 
-            } 
-            
-            try { 
-                await addDoc(collection(db, "notulen_meeting"), { 
-                    jenisMeeting: jenis, 
-                    waktuRecord: waktuRill, 
-                    deskripsiData: arrDeskripsi, 
-                    peserta: kehadiran, 
-                    foto: fotoBase64, 
-                    timestamp: Date.now() 
-                }); 
-                alert("Notulen Berhasil Disimpan!"); 
-                document.getElementById('notul-deskripsi').value = ""; 
-                document.querySelectorAll('.chk-hadir').forEach(c => c.checked = false); 
-                document.getElementById('notul-foto').value = ""; 
-                
-                const sf = document.getElementById('status-notul-foto'); 
-                if(sf) sf.innerHTML = ""; 
-                
-                window.navigasi('notulen-menu-screen'); 
-            } catch (e) { 
-                console.error(e); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        window.ambilDataNotulen = async function() { 
-            window.toggleLoader(true, "Mengunduh Notulen..."); 
-            notulenDatabase = []; 
-            try { 
-                const q = query(collection(db, "notulen_meeting")); 
-                const snapshot = await getDocs(q); 
-                snapshot.forEach(doc => notulenDatabase.push({ id: doc.id, ...doc.data() })); 
-                notulenDatabase.sort((a, b) => b.timestamp - a.timestamp); 
-                window.renderNotulenList(); 
-            } catch (error) { 
-                console.error(error); 
-            } 
-            window.toggleLoader(false); 
-        }
-
-        window.renderNotulenList = function() { 
-            let htmlPagi = "", htmlUrgent = "", htmlLapangan = ""; 
-            notulenDatabase.forEach(data => { 
-                let totalPoin = data.deskripsiData ? data.deskripsiData.length : 0; 
-                let selesaiPoin = data.deskripsiData ? data.deskripsiData.filter(d => d.done).length : 0; 
-                let statusEval = selesaiPoin === totalPoin ? `<span style="color:var(--cepat); font-weight:800;">Tuntas ✓</span>` : `<span style="color:var(--proses); font-weight:800;">${selesaiPoin}/${totalPoin} Selesai</span>`; 
-                
-                let htmlCard = `
-                <div class="progress-card" style="border-left-color: #14b8a6; cursor:pointer;" onclick="window.bukaDetailNotulen('${data.id}')">
-                    <h4 style="margin:0 0 5px 0;">${data.jenisMeeting}</h4>
-                    <p style="margin:0; font-size:12px; color:var(--text-muted);">${data.waktuRecord}</p>
-                    <p style="margin:8px 0 0 0; font-size:13px; border-top:1px dashed var(--border-dark); padding-top:8px;">Status Evaluasi: ${statusEval}</p>
-                </div>`; 
-                
-                if (data.jenisMeeting === 'MEETING PAGI') htmlPagi += htmlCard; 
-                else if (data.jenisMeeting === 'MEETING URGENT') htmlUrgent += htmlCard; 
-                else htmlLapangan += htmlCard; 
-            }); 
-            
-            const cPagi = document.getElementById('list-notulen-pagi'); if(cPagi) cPagi.innerHTML = htmlPagi; 
-            const cUrgent = document.getElementById('list-notulen-urgent'); if(cUrgent) cUrgent.innerHTML = htmlUrgent; 
-            const cLap = document.getElementById('list-notulen-lapangan'); if(cLap) cLap.innerHTML = htmlLapangan; 
-        }
-
-        window.bukaDetailNotulen = function(id) { 
-            const data = notulenDatabase.find(d => d.id === id); 
-            if(!data) return; 
-            
-            let htmlListPeserta = data.peserta ? data.peserta.map(p => `• ${p}`).join('<br>') : '-'; 
-            let htmlDeskripsi = `<ul class="eval-list" style="list-style:none; padding:0;">`; 
-            
-            if(data.deskripsiData) { 
-                data.deskripsiData.forEach(item => { 
-                    let checked = item.done ? "checked" : ""; 
-                    let classDone = item.done ? "done" : ""; 
-                    htmlDeskripsi += `
-                    <li class="${classDone}" style="background:rgba(0,0,0,0.4); margin-bottom:10px; padding:12px; border-radius:10px; border-left:4px solid var(--proses); display:flex; align-items:flex-start; gap:10px;">
-                        <input type="checkbox" id="chk-${item.id}" ${checked} onchange="window.updateCeklisNotulen('${id}', ${item.id}, this.checked)" style="width:18px; height:18px; cursor:pointer;">
-                        <label for="chk-${item.id}" style="font-weight:normal; line-height:1.4; color:white; cursor:pointer;">${item.teks}</label>
-                    </li>`; 
-                }); 
-            } 
-            htmlDeskripsi += `</ul>`; 
-            
-            let html = `
-            <div class="report-header" style="text-align:center; margin-bottom:20px;">
-                <h2 style="color:white; margin:0;">NOTULEN & EVALUASI MEETING</h2>
-                <p style="color:var(--secondary); font-weight:bold; margin:5px 0 0 0;">PT. CAHAYA BUANA INTITAMA</p>
-            </div>
-            <table class="report-table" style="margin-bottom:20px;">
-                <tr><th>Jenis Meeting</th><td><strong>${data.jenisMeeting}</strong></td></tr>
-                <tr><th>Waktu Record</th><td>${data.waktuRecord}</td></tr>
-                <tr><th>Kehadiran Tim</th><td style="font-size:12px;">${htmlListPeserta}</td></tr>
-            </table>
-            <h3 class="sub-title-box"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>${htmlDeskripsi}`; 
-            
-            if(data.foto) {
-                html += `
-                <div class="report-img-box" style="margin-top:20px; text-align:center; border:1px solid var(--border-dark); background:rgba(0,0,0,0.5); padding:15px; border-radius:12px;">
-                    <strong style="color:var(--secondary);">FOTO DOKUMENTASI</strong><br>
-                    <img src="${data.foto}" style="max-width:100%; border-radius:10px; margin-top:10px;">
-                </div>`; 
-            }
-            
-            const rnc = document.getElementById('report-notulen-content'); 
-            if(rnc) rnc.innerHTML = html; 
-            window.navigasi('detail-notulen-screen'); 
-        }
-
-        window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { 
-            const indexDoc = notulenDatabase.findIndex(n => n.id === docId); 
-            if(indexDoc > -1) { 
-                notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; 
-                try { 
-                    await updateDoc(doc(db, "notulen_meeting", docId), { deskripsiData: notulenDatabase[indexDoc].deskripsiData }); 
-                } catch(e) { 
-                    console.error(e); 
-                } 
-            } 
-        }
-
-        // =====================================
-        // WORKSHOP LOGIC
-        // =====================================
-        window.inisialisasiFormWS = function() { 
-            document.getElementById('ws-np-nama').value = ""; 
-            document.getElementById('ws-np-start-date').value = ""; 
-            document.getElementById('ws-np-finish-date').value = ""; 
-            document.getElementById('ws-rencana-kerja-container').innerHTML = ""; 
-            window.arrayTugasBaru = []; 
-            window.tambahTugasUtamaWS(); 
-        }
-
-        window.tambahTugasUtamaWS = function() { 
-            const idTugas = window.arrayTugasBaru.length; 
-            window.arrayTugasBaru.push({ namaTugas: "BUBUT", subTasks: [] }); 
-            const html = `
-            <div class="dark-panel" style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.1); padding:15px; margin-bottom:15px;" id="ws-task-box-${idTugas}">
-                <label style="color:var(--secondary);">Pilih Proses Utama / Mesin</label>
-                <select onchange="window.updateNamaTugasWS(${idTugas}, this.value)" style="margin-bottom:15px; border-color:#38bdf8; font-weight:bold; background:rgba(0,0,0,0.6); color:white; padding:12px; border-radius:10px; width:100%;">
-                    <option value="BUBUT">BUBUT</option><option value="MILLING">MILLING</option><option value="CNC">CNC</option><option value="EDM">EDM</option><option value="GRINDING">GRINDING</option><option value="BUBUT MANUAL">BUBUT MANUAL</option><option value="ASSEMBLY">ASSEMBLY</option><option value="REPAIR PART">REPAIR PART</option><option value="POLISHING">POLISHING</option><option value="WELDING">WELDING</option>
-                </select>
-                <div id="ws-subtask-container-${idTugas}"></div>
-                <button type="button" class="btn-submit" style="background:transparent; border:1px dashed #10b981; color:#10b981; padding:10px; font-size:12px; box-shadow:none;" onclick="window.tambahSubTaskWS(${idTugas})">
-                    <i class="fas fa-plus"></i> Tambah Rincian Item
-                </button>
-            </div>`; 
-            document.getElementById('ws-rencana-kerja-container').insertAdjacentHTML('beforeend', html); 
-        }
-
-        window.updateNamaTugasWS = function(id, val) { window.arrayTugasBaru[id].namaTugas = val; }
-        
-        window.tambahSubTaskWS = function(idTugas) { 
-            const idSub = window.arrayTugasBaru[idTugas].subTasks.length; 
-            window.arrayTugasBaru[idTugas].subTasks.push({ namaSub: "", estimasiJam: 0, actualStart: "", actualFinish: "", actualDurasi: 0, status: "Belum Selesai" }); 
-            const html = `
-            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                <input type="text" placeholder="Nama Rincian" onchange="window.updateSubTaskNamaWS(${idTugas}, ${idSub}, this.value)" style="flex:2; padding:10px; font-size:12px;">
-                <input type="number" placeholder="Est. Jam" onchange="window.updateSubTaskJamWS(${idTugas}, ${idSub}, this.value)" style="flex:1; padding:10px; font-size:12px;">
-            </div>`; 
-            document.getElementById(`ws-subtask-container-${idTugas}`).insertAdjacentHTML('beforeend', html); 
-        }
-
-        window.updateSubTaskNamaWS = function(idT, idS, val) { window.arrayTugasBaru[idT].subTasks[idS].namaSub = window.amankanData(val); }
-        window.updateSubTaskJamWS = function(idT, idS, val) { window.arrayTugasBaru[idT].subTasks[idS].estimasiJam = parseFloat(val); window.kalkulasiTotalWaktuWS(); }
-        
-        window.kalkulasiTotalWaktuWS = function() { 
-            let totalJam = 0; 
-            window.arrayTugasBaru.forEach(t => t.subTasks.forEach(s => totalJam += (s.estimasiJam || 0))); 
-            document.getElementById('ws-np-jam').value = totalJam + " Jam"; 
-            document.getElementById('ws-np-hari').value = Math.ceil(totalJam / 8) + " Hari"; 
-        }
-
-        window.simpanNewProjectWS = async function() { 
-            const nama = window.amankanData(document.getElementById('ws-np-nama').value); 
-            const start = document.getElementById('ws-np-start-date').value; 
-            const finish = document.getElementById('ws-np-finish-date').value; 
-            
-            if(!nama || !start || window.arrayTugasBaru.length === 0) return alert("Lengkapi Form Project!"); 
-            window.toggleLoader(true, "Menyimpan Project..."); 
-            try { 
-                await addDoc(collection(db, "workshop_projects"), { 
-                    namaProyek: nama, 
-                    startDate: start, 
-                    finishDate: finish, 
-                    estJam: parseFloat(document.getElementById('ws-np-jam').value), 
-                    tasks: window.arrayTugasBaru, 
-                    statusGlobal: "Proses Pengerjaan", 
-                    timestamp: Date.now() 
-                }); 
-                alert("Project Workshop Tersimpan!"); 
-                window.navigasi('divisi-screen'); 
-            } catch(e) { console.error(e); } 
-            window.toggleLoader(false); 
-        }
-
-        window.ambilDataServerWS = async function() { 
-            dataProyekWS = []; 
-            try { 
-                const snap = await getDocs(query(collection(db, "workshop_projects"))); 
-                snap.forEach(doc => dataProyekWS.push({id: doc.id, ...doc.data()})); 
-                dataProyekWS.sort((a,b) => b.timestamp - a.timestamp); 
-            } catch(e){ console.error(e); } 
-        }
-
-        window.renderUpdateListWS = function() { 
-            window.switchTabWS('proses'); 
-            const listProses = document.getElementById('list-ws-proses'); 
-            const listSelesai = document.getElementById('list-ws-selesai'); 
-            let htmlProses = "", htmlSelesai = ""; 
-            
-            dataProyekWS.forEach(d => { 
-                let card = `
-                <div class="progress-card" style="border-left-color: ${d.statusGlobal==='Selesai'?'#10b981':'#3b82f6'}; cursor:pointer;" onclick="window.bukaFormUpdateTaskListWS('${d.id}')">
-                    <h3>${d.namaProyek}</h3>
-                    <p style="font-size:12px; margin:0; color:var(--text-muted);">Est: ${d.estJam} Jam | Tgl: ${d.startDate}</p>
-                </div>`; 
-                
-                if(d.statusGlobal === "Selesai") htmlSelesai += card; 
-                else htmlProses += card; 
-            }); 
-            
-            listProses.innerHTML = htmlProses; 
-            listSelesai.innerHTML = htmlSelesai; 
-        }
-
-        window.switchTabWS = function(tab) { 
-            document.getElementById('tab-ws-proses').classList.remove('tab-active'); 
-            document.getElementById('tab-ws-selesai').classList.remove('tab-active'); 
-            document.getElementById('list-ws-proses').style.display = 'none'; 
-            document.getElementById('list-ws-selesai').style.display = 'none'; 
-            document.getElementById('ws-task-list-area').style.display = 'none'; 
-            document.getElementById('ws-form-update-task').style.display = 'none'; 
-            
-            document.getElementById(`tab-ws-${tab}`).classList.add('tab-active'); 
-            document.getElementById(`list-ws-${tab}`).style.display = 'block'; 
-        }
-
-        window.bukaFormUpdateTaskListWS = function(id) { 
-            const data = dataProyekWS.find(x => x.id === id); 
-            if(!data) return; 
-            
-            document.getElementById('list-ws-proses').style.display = 'none'; 
-            document.getElementById('list-ws-selesai').style.display = 'none'; 
-            document.getElementById('ws-task-list-area').style.display = 'block'; 
-            document.getElementById('ws-update-id-project').value = id; 
-            document.getElementById('ws-nama-proyek-tampil').innerText = data.namaProyek; 
-            
-            let htmlBuffer = ""; 
-            data.tasks.forEach((t, i) => { 
-                htmlBuffer += `<div style="background:rgba(0,0,0,0.5); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); margin-bottom:15px;">
-                               <h4 style="color:#38bdf8; margin:0 0 10px 0;">Proses: ${t.namaTugas}</h4>`; 
-                
-                t.subTasks.forEach((s, j) => { 
-                    let badge = s.status === 'Selesai' ? `<span style="color:#10b981; font-weight:bold;">Selesai</span>` : `<button type="button" onclick="window.bukaFormInputRealisasiWS(${i}, ${j})" style="padding:6px 12px; background:#f59e0b; border:none; border-radius:8px; color:white; font-size:11px; cursor:pointer;">Update Actual</button>`; 
-                    htmlBuffer += `
-                    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px; background:rgba(255,255,255,0.05); border-radius:8px; margin-bottom:5px;">
-                        <div style="font-size:12px; color:white;">${s.namaSub} (Est: ${s.estimasiJam} J)</div>
-                        <div>${badge}</div>
-                    </div>`; 
-                }); 
-                htmlBuffer += `</div>`; 
-            }); 
-            document.getElementById('ws-tasks-container').innerHTML = htmlBuffer; 
-        }
-
-        window.tutupWsTaskList = function() { window.switchTabWS('proses'); }
-
-        window.bukaFormInputRealisasiWS = function(i, j) { 
-            document.getElementById('ws-task-list-area').style.display = 'none'; 
-            document.getElementById('ws-form-update-task').style.display = 'block'; 
-            document.getElementById('ws-update-task-index').value = i; 
-            document.getElementById('ws-update-subtask-index').value = j; 
-            
-            const data = dataProyekWS.find(x => x.id === document.getElementById('ws-update-id-project').value); 
-            document.getElementById('ws-nama-tugas-tampil').innerText = data.tasks[i].subTasks[j].namaSub; 
-            document.getElementById('ws-up-pic').value = ""; 
-            document.getElementById('ws-up-start').value = ""; 
-            document.getElementById('ws-up-finish').value = ""; 
-            document.getElementById('ws-up-durasi').value = ""; 
-        }
-
-        window.hitungDurasiUpdateWS = function() { 
-            let start = document.getElementById(`ws-up-start`).value; 
-            let finish = document.getElementById(`ws-up-finish`).value; 
-            if(start && finish) { 
-                try { 
-                    let s = new Date(start); 
-                    let f = new Date(finish); 
-                    let diff = (f - s) / 3600000; 
-                    if(diff > 0) document.getElementById('ws-up-durasi').value = diff.toFixed(2) + " Jam"; 
-                } catch(e){} 
-            } 
-        }
-
-        window.batalUpdateTaskWS = function() { 
-            document.getElementById('ws-form-update-task').style.display = 'none'; 
-            document.getElementById('ws-task-list-area').style.display = 'block'; 
-        }
-
-        window.simpanUpdateTaskWS = async function() { 
-            const id = document.getElementById('ws-update-id-project').value; 
-            const i = document.getElementById('ws-update-task-index').value; 
-            const j = document.getElementById('ws-update-subtask-index').value; 
-            const pic = window.amankanData(document.getElementById('ws-up-pic').value); 
-            const start = document.getElementById('ws-up-start').value; 
-            const finish = document.getElementById('ws-up-finish').value; 
-            const status = document.getElementById('ws-up-status').value; 
-            
-            if(!pic || !start || !finish) return alert("Lengkapi data Aktual!"); 
-            window.toggleLoader(true, "Update Actual..."); 
-            
-            const data = dataProyekWS.find(x => x.id === id); 
-            let s = new Date(start); 
-            let f = new Date(finish); 
-            let diff = (f - s) / 3600000; 
-            
-            data.tasks[i].subTasks[j].actualStart = start; 
-            data.tasks[i].subTasks[j].actualFinish = finish; 
-            data.tasks[i].subTasks[j].actualDurasi = (data.tasks[i].subTasks[j].actualDurasi || 0) + diff; 
-            data.tasks[i].subTasks[j].pic = pic; 
-            data.tasks[i].subTasks[j].status = status; 
-            
-            let allDone = true; 
-            data.tasks.forEach(t => t.subTasks.forEach(st => { if(st.status !== 'Selesai') allDone = false; })); 
-            if(allDone) data.statusGlobal = 'Selesai'; 
-            
-            try { 
-                await updateDoc(doc(db, "workshop_projects", id), { tasks: data.tasks, statusGlobal: data.statusGlobal }); 
-                alert("Tugas Diperbarui!"); 
-                await window.ambilDataServerWS(); 
-                window.bukaFormUpdateTaskListWS(id); 
-                document.getElementById('ws-form-update-task').style.display = 'none'; 
-            } catch(e){ console.error(e); } 
-            window.toggleLoader(false); 
-        }
-
-        window.switchTabProgressWS = function(tab) { 
-            document.getElementById('tab-prog-view').classList.remove('tab-active'); 
-            document.getElementById('tab-prog-report').classList.remove('tab-active'); 
-            document.getElementById('ws-prog-view-data').style.display = 'none'; 
-            document.getElementById('ws-prog-report-data').style.display = 'none'; 
-            
-            if(tab === 'data') { 
-                document.getElementById('tab-prog-view').classList.add('tab-active'); 
-                document.getElementById('ws-prog-view-data').style.display = 'block'; 
-            } else { 
-                document.getElementById('tab-prog-report').classList.add('tab-active'); 
-                document.getElementById('ws-prog-report-data').style.display = 'block'; 
-                window.renderCheckboxAIWS(); 
-            } 
-        }
-
-        window.renderProgressListWS = function() { 
-            const container = document.getElementById('list-ws-progress'); 
-            if(dataProyekWS.length === 0) { 
-                container.innerHTML = `<p style="text-align:center; color:gray; margin-top:20px;">Belum ada data proyek workshop.</p>`; 
-                return; 
-            } 
-            let htmlBuffer = ""; 
-            dataProyekWS.forEach(d => { 
-                let actualT = 0; 
-                d.tasks.forEach(t => t.subTasks.forEach(s => actualT += (s.actualDurasi || 0))); 
-                let ach = Math.round((d.estJam > 0 ? actualT / d.estJam : 0) * 100); 
-                htmlBuffer += `
-                <div class="progress-card" style="border-left-color: ${d.statusGlobal==='Selesai'?'#10b981':'#f59e0b'};" onclick="alert('Progres Project: ${d.namaProyek}')">
-                    <h3>${d.namaProyek}</h3>
-                    <p style="font-size:12px;">ACH Rate: ${ach}% | Estimasi: ${d.estJam} Jam | Aktual: ${actualT.toFixed(1)} Jam</p>
-                </div>`; 
-            }); 
-            container.innerHTML = htmlBuffer; 
-        }
-
-        window.renderCheckboxAIWS = function() { 
-            let htmlBuffer = ""; 
-            dataProyekWS.forEach(d => { 
-                htmlBuffer += `<label style="display:flex; align-items:center; gap:10px; color:white; margin-bottom:10px;"><input type="checkbox" class="chk-ai-ws" value="${d.id}" style="width:20px;height:20px;"> ${d.namaProyek}</label>`; 
-            }); 
-            document.getElementById('list-ws-report-checkbox').innerHTML = htmlBuffer; 
-        }
-
-        window.generateAIReport = function() { 
-            const selected = Array.from(document.querySelectorAll('.chk-ai-ws:checked')).map(cb => cb.value); 
-            if(selected.length === 0) return alert("Pilih minimal 1 proyek!"); 
-            window.toggleLoader(true, "AI Membuat Laporan..."); 
-            setTimeout(() => { 
-                alert("Report AI Executive Berhasil Dibuat."); 
-                window.toggleLoader(false); 
-            }, 1500); 
-        }
-
-        window.terapkanFilterWS = function() { alert("Filter diterapkan!"); }
-        window.resetFilterWS = function() { 
-            document.getElementById('ws-filter-nama').value = ""; 
-            document.getElementById('ws-filter-tanggal').value = ""; 
-        }
-
-        // =====================================
-        // PKM ELTRE LOGIC
-        // =====================================
-        window.bukaPKMEltre = async function() { 
-            window.navigasi('ms-pkm-eltre-screen'); 
-            window.bukaTabPKM('verifikasi'); 
-            await window.muatDataPKMEltre(); 
-        }
-
-        window.bukaTabPKM = function(tab) { 
-            document.querySelectorAll('.tab-btn-pkm').forEach(b => b.classList.remove('tab-active')); 
-            document.querySelectorAll('.tab-content-pkm').forEach(c => c.style.display = 'none'); 
-            document.getElementById(`btn-tab-pkm-${tab}`).classList.add('tab-active'); 
-            document.getElementById(`tab-pkm-${tab}`).style.display = 'block'; 
-        }
-        
-        window.muatDataPKMEltre = async function() {
-            pkmDatabase = [];
-            try {
-                const snap = await getDocs(query(collection(db, "pkm_eltre"))); 
-                snap.forEach(doc => pkmDatabase.push({id: doc.id, ...doc.data()}));
-                pkmDatabase.sort((a,b) => b.timestamp - a.timestamp);
-                
-                let notifCount = 0; 
-                let htmlVerif = "", htmlKerja = "", htmlPisah = "", htmlSelesai = "";
-
-                pkmDatabase.forEach(d => {
-                    let status = d.status || 'Verifikasi';
-                    let card = `
-                    <div class="progress-card" style="border-left-color: #3b82f6;">
-                        <h4 style="margin:0 0 5px 0; color:white;">${d.namaMold || 'MOLD TDK DIKETAHUI'}</h4>
-                        <p style="font-size:12px; color:var(--text-muted); margin:0 0 10px 0;">Kendala/Laporan: ${d.kendala || '-'}</p>
-                        <p style="font-size:11px; color:gray; margin:0;">Tanggal PKM: ${d.tanggal || '-'}</p>
-                    </div>`;
-                    
-                    if(status === 'Verifikasi') { 
-                        notifCount++; 
-                        htmlVerif += `<div onclick="window.formVerifikasiPKM('${d.id}')" style="cursor:pointer;">${card}</div>`; 
-                    } 
-                    else if(status === 'Dikerjakan') { 
-                        htmlKerja += `<div onclick="alert('Laporan progres penyelesaian tiket PKM segera hadir!')" style="cursor:pointer;">${card.replace('#3b82f6', '#f59e0b')}</div>`; 
-                    } 
-                    else if(status === 'Dipisahkan') { 
-                        htmlPisah += card.replace('#3b82f6', '#ef4444'); 
-                    } 
-                    else if(status === 'Selesai') { 
-                        htmlSelesai += card.replace('#3b82f6', '#10b981'); 
-                    }
-                });
-                
-                if(document.getElementById('list-pkm-verifikasi')) { 
-                    if(pkmDatabase.length === 0) document.getElementById('list-pkm-verifikasi').innerHTML = `<p style="text-align:center; color:gray;">Belum ada data tiket PKM dari sistem ELTRE.</p>`; 
-                    else document.getElementById('list-pkm-verifikasi').innerHTML = htmlVerif; 
-                }
-                
-                if(document.getElementById('list-pkm-kerjakan')) document.getElementById('list-pkm-kerjakan').innerHTML = htmlKerja;
-                if(document.getElementById('list-pkm-pisah')) document.getElementById('list-pkm-pisah').innerHTML = htmlPisah;
-                if(document.getElementById('list-pkm-selesai')) document.getElementById('list-pkm-selesai').innerHTML = htmlSelesai;
-                
-                const badge = document.getElementById('badge-pkm-notif');
-                if(badge) { 
-                    if(notifCount > 0) { badge.innerText = notifCount; badge.style.display = 'block'; } 
-                    else { badge.style.display = 'none'; } 
-                }
-            } catch(e) { console.error("Error load PKM Eltre:", e); }
-        }
-
-        window.formVerifikasiPKM = function(id) { 
-            const data = pkmDatabase.find(x => x.id === id); 
-            if(!data) return; 
-            document.getElementById('pkm-id-tiket-verifikasi').value = id; 
-            document.getElementById('pkm-nama-mold-text').innerText = data.namaMold || 'MOLD INI'; 
-            document.getElementById('modal-aksi-pkm').style.display = 'flex'; 
-        }
-
-        window.prosesVerifikasiPKM = async function(aksi) { 
-            const id = document.getElementById('pkm-id-tiket-verifikasi').value; 
-            if(!id) return; 
-            
-            let statusBaru = aksi === 'kerjakan' ? 'Dikerjakan' : 'Dipisahkan'; 
-            window.toggleLoader(true, "Memperbarui Data PKM..."); 
-            
-            try { 
-                await updateDoc(doc(db, "pkm_eltre", id), { status: statusBaru }); 
-                alert(`Tiket PKM telah dialihkan ke Tab: ${statusBaru}`); 
-                document.getElementById('modal-aksi-pkm').style.display = 'none'; 
-                await window.muatDataPKMEltre(); 
-                window.bukaTabPKM(aksi === 'kerjakan' ? 'kerjakan' : 'pisah'); 
-            } catch(e) { console.error(e); } 
-            
-            window.toggleLoader(false); 
-        }
-
-        // =====================================
-        // AI DASHBOARD & CHARTS
-        // =====================================
-        window.inisialisasiDataAnalisaGlobal = async function() {
-            window.toggleLoader(true, "Analisa AI Global...");
-            await window.ambilDataServerWS(); 
-            
-            let totalProyek = dataProyekWS.length; 
-            let totalEst = 0; 
-            let totalAct = 0; 
-            let achRate = 0;
-            
-            dataProyekWS.forEach(d => { 
-                totalEst += d.estJam || 0; 
-                d.tasks.forEach(t => t.subTasks.forEach(s => totalAct += (s.actualDurasi || 0))); 
-            });
-            
-            if(totalEst > 0) achRate = Math.round((totalAct / totalEst) * 100);
-            
-            document.getElementById('dash-kpi-proyek').innerText = totalProyek; 
-            document.getElementById('dash-kpi-est').innerText = totalEst.toFixed(0); 
-            document.getElementById('dash-kpi-act').innerText = totalAct.toFixed(1); 
-            document.getElementById('dash-kpi-ach').innerText = achRate + "%";
-            
-            if(chartUni) chartUni.destroy(); 
-            if(chartBi) chartBi.destroy(); 
-            if(chartMulti) chartMulti.destroy();
-            
-            try {
-                const ctxUni = document.getElementById('chartUnivariate').getContext('2d'); 
-                chartUni = new Chart(ctxUni, { 
-                    type: 'doughnut', 
-                    data: { 
-                        labels: ['Selesai', 'Proses'], 
-                        datasets: [{ data: [totalAct, totalEst-totalAct > 0 ? totalEst-totalAct : 0], backgroundColor: ['#10b981', '#38bdf8'] }] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: 'white' } } } } 
-                });
-                
-                const ctxBi = document.getElementById('chartBivariate').getContext('2d'); 
-                chartBi = new Chart(ctxBi, { 
-                    type: 'bar', 
-                    data: { 
-                        labels: ['Proyek 1', 'Proyek 2', 'Proyek 3'], 
-                        datasets: [
-                            { label: 'Estimasi', data: [10, 20, 30], backgroundColor: '#38bdf8' }, 
-                            { label: 'Aktual', data: [12, 18, 35], backgroundColor: '#f59e0b' }
-                        ] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } } 
-                });
-                
-                const ctxMulti = document.getElementById('chartMultivariate').getContext('2d'); 
-                chartMulti = new Chart(ctxMulti, { 
-                    type: 'line', 
-                    data: { 
-                        labels: ['Jan', 'Feb', 'Mar', 'Apr'], 
-                        datasets: [{ label: 'Trend ACH Rate', data: [80, 85, 90, achRate], borderColor: '#8b5cf6', fill: false, tension: 0.4 }] 
-                    }, 
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: 'white' } } }, scales: { x: { ticks: { color: 'white' } }, y: { ticks: { color: 'white' } } } } 
-                });
-            } catch(e) { console.error("Error merender Chart JS:", e); } 
-            
-            window.toggleLoader(false);
-        }
-
-        // =========================================================================
-        // INIT ONLOAD
-        // =========================================================================
-        document.addEventListener("DOMContentLoaded", () => { 
-            setTimeout(window.muatDataPKMEltre, 1500); 
-        });
-
     </script>
 </body>
 </html>
