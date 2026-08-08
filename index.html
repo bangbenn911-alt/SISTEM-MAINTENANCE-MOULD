@@ -1699,6 +1699,152 @@
             </div>
         </div>
     </div>
+    <!-- ========================================================= -->
+    <!-- DIVISI ADM MOLD (KINERJA HARIAN & GOSOK MOLD)             -->
+    <!-- ========================================================= -->
+    <div id="adm-mold-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-user-tie" style="margin-right:10px;"></i> Divisi ADM Mold</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('adm-form-harian-screen')" style="border-left-color: #3b82f6;">
+                    <i class="fas fa-edit" style="color:#3b82f6;"></i> 1. Input Kinerja Harian
+                </div>
+                <div class="menu-card" onclick="window.navigasi('adm-gosok-mold-screen')" style="border-left-color: #f59e0b;">
+                    <i class="fas fa-spray-can" style="color:#f59e0b;"></i> 2. Input Gosok / Polishing
+                </div>
+                <div class="menu-card" onclick="window.bukaDatabaseADM()" style="border-left-color: #10b981;">
+                    <i class="fas fa-database" style="color:#10b981;"></i> 3. Database Kinerja ADM
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM GOSOK / POLISHING MOLD -->
+    <div id="adm-gosok-mold-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #b45309, #f59e0b) !important;">
+                <h2><i class="fas fa-spray-can" style="margin-right:10px;"></i> Form Gosok / Polishing</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Tanggal & Shift</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="date" id="adm-gosok-tgl" style="flex:2;">
+                        <select id="adm-gosok-shift" style="flex:1;">
+                            <option value="1">Shift 1</option>
+                            <option value="2">Shift 2</option>
+                            <option value="3">Shift 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nama PIC (Operator)</label>
+                    <input type="text" id="adm-gosok-pic" placeholder="Nama Operator..." style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Nama Mold</label>
+                    <input type="text" id="adm-gosok-mold" placeholder="Contoh: MOLD CHAIR 101..." style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Bagian Mold yang Digosok (Bisa Pilih Banyak)</label>
+                    <div class="chk-grid" style="background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px solid rgba(245, 158, 11, 0.4);">
+                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Cavity" style="width:15px; height:15px;"> Area Cavity</label>
+                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Core" style="width:15px; height:15px;"> Area Core</label>
+                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Slider" style="width:15px; height:15px;"> Area Slider</label>
+                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Insert Part" style="width:15px; height:15px;"> Insert Part</label>
+                    </div>
+                </div>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <div style="flex:1;">
+                        <label>Jam Mulai</label>
+                        <input type="time" id="adm-gosok-start">
+                    </div>
+                    <div style="flex:1;">
+                        <label>Jam Selesai</label>
+                        <input type="time" id="adm-gosok-finish">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Keterangan / Kondisi Karat</label>
+                    <textarea id="adm-gosok-ket" rows="3" placeholder="Misal: Karat cukup tebal di bagian pinggir cavity..."></textarea>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanGosokMold()" style="background:linear-gradient(135deg, #f59e0b, #d97706); box-shadow:0 5px 15px rgba(245, 158, 11, 0.3);">
+                    <i class="fas fa-save"></i> SIMPAN DATA GOSOK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FORM KINERJA HARIAN (UMUM) -->
+    <div id="adm-form-harian-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-edit" style="margin-right:10px;"></i> Input Kinerja Harian</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Tanggal & Shift</label>
+                    <div style="display:flex; gap:10px;">
+                        <input type="date" id="adm-harian-tgl" style="flex:2;">
+                        <select id="adm-harian-shift" style="flex:1;">
+                            <option value="1">Shift 1</option>
+                            <option value="2">Shift 2</option>
+                            <option value="3">Shift 3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nama PIC (Operator)</label>
+                    <input type="text" id="adm-harian-pic" placeholder="Nama Operator..." style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Jenis Aktivitas Pekerjaan</label>
+                    <select id="adm-harian-jenis">
+                        <option value="Cek & Pembersihan Mold">Cek & Pembersihan Mold</option>
+                        <option value="Pembersihan Jalur Air">Pembersihan Jalur Air</option>
+                        <option value="Setting / Bongkar Pasang Mold">Setting / Bongkar Pasang Mold</option>
+                        <option value="Ganti Sparepart">Ganti Sparepart</option>
+                        <option value="Lainnya">Lain-lain (Tulis di Keterangan)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Keterangan Detail</label>
+                    <textarea id="adm-harian-ket" rows="4" placeholder="Deskripsikan secara rinci apa yang dikerjakan..."></textarea>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanAdmHarian()">
+                    <i class="fas fa-save"></i> SIMPAN KINERJA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATABASE KINERJA ADM -->
+    <div id="adm-view-data-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important;">
+                <h2><i class="fas fa-database" style="margin-right:10px;"></i> Database Kinerja ADM</h2>
+            </div>
+            <div class="dark-panel">
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <select id="adm-filter-tipe" style="flex:1;">
+                        <option value="Semua">Semua Tipe Pekerjaan</option>
+                        <option value="GOSOK MOLD">Khusus Gosok Mold</option>
+                        <option value="KINERJA HARIAN">Khusus Kinerja Harian</option>
+                    </select>
+                    <input type="date" id="adm-filter-tgl" style="flex:1;" onchange="window.renderListAdm()">
+                </div>
+                <button class="btn-submit" type="button" onclick="window.renderListAdm()" style="padding:12px; margin-bottom:20px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none;">
+                    <i class="fas fa-search"></i> FILTER DATA
+                </button>
+                
+                <div id="list-adm-harian">
+                    <p style="text-align:center; color:gray; font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Menyiapkan data...</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- ========================================== -->
     <!-- MODAL PREVIEW PDF SURKOM (HIGH RESOLUTION) -->
     <!-- ========================================== -->
@@ -2836,7 +2982,170 @@
                 } 
             } 
         }
+// =========================================================================
+        // ADM MOLD LOGIC (KINERJA HARIAN & GOSOK MOLD) - DENGAN VALIDASI KETAT
+        // =========================================================================
+        
+        window.simpanGosokMold = async function() {
+            const tgl = document.getElementById('adm-gosok-tgl').value;
+            const shift = document.getElementById('adm-gosok-shift').value;
+            const pic = window.amankanData(document.getElementById('adm-gosok-pic').value.trim());
+            const mold = window.amankanData(document.getElementById('adm-gosok-mold').value.trim());
+            const start = document.getElementById('adm-gosok-start').value;
+            const finish = document.getElementById('adm-gosok-finish').value;
+            const ket = window.amankanData(document.getElementById('adm-gosok-ket').value.trim());
 
+            // Loop untuk menangkap seluruh Checkbox yang dicentang
+            let area = [];
+            document.querySelectorAll('.chk-gosok:checked').forEach(el => area.push(el.value));
+
+            // SISTEM VALIDASI KETAT AGAR DATA MASUK 100% BENAR
+            if(!tgl) return alert("⚠️ TANGGAL tidak boleh kosong!");
+            if(!pic) return alert("⚠️ NAMA PIC / OPERATOR tidak boleh kosong!");
+            if(!mold) return alert("⚠️ NAMA MOLD tidak boleh kosong!");
+            if(area.length === 0) return alert("⚠️ Pilih minimal 1 BAGIAN MOLD yang digosok!");
+            if(!start || !finish) return alert("⚠️ JAM MULAI dan JAM SELESAI tidak boleh kosong!");
+
+            window.toggleLoader(true, "Menyimpan Data Gosok Mold...");
+            try {
+                await addDoc(collection(db, "adm_harian"), {
+                    tipe: "GOSOK MOLD",
+                    tanggal: tgl,
+                    shift: shift,
+                    pic: pic.toUpperCase(),
+                    namaMold: mold.toUpperCase(),
+                    areaGosok: area,
+                    jamMulai: start,
+                    jamSelesai: finish,
+                    keterangan: ket || "-",
+                    timestamp: Date.now()
+                });
+                
+                alert("✅ Data Gosok Mold Berhasil Disimpan 100%!");
+                
+                // Bersihkan form setelah sukses
+                document.getElementById('adm-gosok-pic').value = "";
+                document.getElementById('adm-gosok-mold').value = "";
+                document.getElementById('adm-gosok-start').value = "";
+                document.getElementById('adm-gosok-finish').value = "";
+                document.getElementById('adm-gosok-ket').value = "";
+                document.querySelectorAll('.chk-gosok').forEach(el => el.checked = false);
+                
+                window.navigasi('adm-mold-menu-screen');
+            } catch(e) {
+                console.error(e);
+                alert("❌ Gagal menyimpan data ke Server: " + e.message);
+            }
+            window.toggleLoader(false);
+        }
+
+        window.simpanAdmHarian = async function() {
+            const tgl = document.getElementById('adm-harian-tgl').value;
+            const shift = document.getElementById('adm-harian-shift').value;
+            const pic = window.amankanData(document.getElementById('adm-harian-pic').value.trim());
+            const jenis = document.getElementById('adm-harian-jenis').value;
+            const ket = window.amankanData(document.getElementById('adm-harian-ket').value.trim());
+
+            // SISTEM VALIDASI KETAT
+            if(!tgl) return alert("⚠️ TANGGAL tidak boleh kosong!");
+            if(!pic) return alert("⚠️ NAMA PIC tidak boleh kosong!");
+            if(!ket) return alert("⚠️ KETERANGAN PEKERJAAN harus diisi secara detail!");
+
+            window.toggleLoader(true, "Menyimpan Kinerja Harian...");
+            try {
+                await addDoc(collection(db, "adm_harian"), {
+                    tipe: "KINERJA HARIAN",
+                    tanggal: tgl,
+                    shift: shift,
+                    pic: pic.toUpperCase(),
+                    jenis: jenis,
+                    keterangan: ket,
+                    timestamp: Date.now()
+                });
+                
+                alert("✅ Data Kinerja Harian Berhasil Disimpan!");
+                
+                document.getElementById('adm-harian-pic').value = "";
+                document.getElementById('adm-harian-ket').value = "";
+                
+                window.navigasi('adm-mold-menu-screen');
+            } catch(e) {
+                console.error(e);
+                alert("❌ Gagal menyimpan data: " + e.message);
+            }
+            window.toggleLoader(false);
+        }
+
+        window.bukaDatabaseADM = async function() {
+            window.navigasi('adm-view-data-screen');
+            await window.renderListAdm();
+        }
+
+        window.renderListAdm = async function() {
+            const container = document.getElementById('list-adm-harian');
+            const filterTipe = document.getElementById('adm-filter-tipe').value;
+            const filterTgl = document.getElementById('adm-filter-tgl').value;
+
+            container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--secondary);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Mengambil Data dari Server...</p></div>`;
+
+            try {
+                let admData = [];
+                const snap = await getDocs(query(collection(db, "adm_harian")));
+                snap.forEach(doc => admData.push({id: doc.id, ...doc.data()}));
+
+                // Sorting otomatis dari yang terbaru
+                admData.sort((a,b) => b.timestamp - a.timestamp);
+
+                // Eksekusi Filter
+                if(filterTipe !== "Semua") {
+                    admData = admData.filter(d => d.tipe === filterTipe);
+                }
+                if(filterTgl) {
+                    admData = admData.filter(d => d.tanggal === filterTgl);
+                }
+
+                if(admData.length === 0) {
+                    container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada data kinerja ditemukan sesuai filter.</p>`;
+                    return;
+                }
+
+                let html = "";
+                admData.forEach(d => {
+                    if(d.tipe === "GOSOK MOLD") {
+                        let areaBadge = d.areaGosok ? d.areaGosok.map(a => `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:4px 8px; border-radius:8px; font-size:11px; border:1px solid #f59e0b; margin-right:5px;">${a}</span>`).join('') : '';
+
+                        html += `
+                        <div class="progress-card" style="border-left-color: #f59e0b; background:rgba(0,0,0,0.4);">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="font-weight:900; color:#f59e0b;"><i class="fas fa-spray-can"></i> GOSOK MOLD</span>
+                                <span style="font-size:11px; color:gray;">${d.tanggal} (Shift ${d.shift})</span>
+                            </div>
+                            <h3 style="margin:0 0 5px 0; color:white; font-size:16px;">${d.namaMold}</h3>
+                            <p style="margin:0 0 10px 0; font-size:12px; color:var(--text-muted);"><i class="fas fa-user-tag"></i> PIC: <b>${d.pic}</b></p>
+                            <div style="margin-bottom:12px;">${areaBadge}</div>
+                            <p style="margin:0; font-size:12px; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border:1px solid var(--border-dark);"><i class="fas fa-clock" style="color:var(--secondary);"></i> Waktu Pengerjaan: <b>${d.jamMulai} s/d ${d.jamSelesai}</b></p>
+                            <p style="margin:10px 0 0 0; font-size:13px; color:#e2e8f0; line-height:1.5;">Ket: <i>${d.keterangan}</i></p>
+                        </div>`;
+                    } else {
+                        html += `
+                        <div class="progress-card" style="border-left-color: #3b82f6; background:rgba(0,0,0,0.4);">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                                <span style="font-weight:900; color:#3b82f6;"><i class="fas fa-edit"></i> KINERJA HARIAN</span>
+                                <span style="font-size:11px; color:gray;">${d.tanggal} (Shift ${d.shift})</span>
+                            </div>
+                            <h3 style="margin:0 0 5px 0; color:white; font-size:16px;">${d.jenis}</h3>
+                            <p style="margin:0 0 10px 0; font-size:12px; color:var(--text-muted);"><i class="fas fa-user-tag"></i> PIC: <b>${d.pic}</b></p>
+                            <p style="margin:0; font-size:13px; color:#e2e8f0; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; border:1px solid var(--border-dark); line-height:1.5;">Detail: <i>${d.keterangan}</i></p>
+                        </div>`;
+                    }
+                });
+                container.innerHTML = html;
+
+            } catch (e) {
+                console.error(e);
+                container.innerHTML = `<p style="text-align:center; color:#ef4444;">❌ Gagal memuat database karena koneksi terputus.</p>`;
+            }
+        }
         // =====================================
         // WORKSHOP LOGIC
         // =====================================
