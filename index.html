@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Library Khusus PDF (PDF-LIB untuk Splitting PDF) -->
+    <!-- Library Khusus PDF (PDF-LIB untuk Splitting & Merging PDF) -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
     <style>
@@ -321,6 +321,11 @@
         .dyn-input-group { margin-bottom: 12px; }
         .dyn-input-group label { color: #8b5cf6; font-size: 10px; margin-bottom: 4px; }
         .dyn-input-group input, .dyn-input-group textarea { background: rgba(0,0,0,0.5); padding: 10px; font-size: 13px; }
+        
+        /* SCROLL BAR CUSTOM TABS SURKOM */
+        .tab-container-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
+        .tab-container-scroll::-webkit-scrollbar { height: 6px; }
+        .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -353,7 +358,6 @@
         </div>
         
         <div class="landing-center">
-            <!-- SVG Circuit Board -->
             <svg class="circuit-board" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
                 <g class="circuit-line">
                     <path d="M 120 40 v 100 l 15 15 v 50" />
@@ -413,7 +417,6 @@
             <i class="fas fa-user"></i><span>Profil</span>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- 2. BERANDA UTAMA (HUD)                                    -->
     <!-- ========================================================= -->
@@ -547,6 +550,7 @@
             </div>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- IDE CENTER SCREEN                                         -->
     <!-- ========================================================= -->
@@ -733,7 +737,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- SURAT KOMPONEN (SURKOM) MENU & SCREENS                    -->
     <!-- ========================================================= -->
@@ -769,6 +772,20 @@
                     <label>Nama Operator / Pembuat</label>
                     <input type="text" id="surkom-operator" placeholder="Masukkan nama Anda..." style="font-weight:700;">
                 </div>
+                
+                <!-- TAMBAHAN: PILIHAN TAHUN OTOMATIS -->
+                <div class="form-group">
+                    <label>Tahun Dokumen (Subjudul)</label>
+                    <select id="surkom-tahun-input" style="color:#10b981; font-weight:800; border-color:rgba(16,185,129,0.5);">
+                        <option value="2026">Tahun 2026</option>
+                        <option value="2025">Tahun 2025</option>
+                        <option value="2024">Tahun 2024</option>
+                        <option value="2023">Tahun 2023</option>
+                        <option value="2022">Tahun 2022</option>
+                        <option value="2021">Tahun 2021</option>
+                        <option value="2020">Tahun 2020</option>
+                    </select>
+                </div>
 
                 <!-- Zone Upload PDF -->
                 <div class="form-group">
@@ -800,24 +817,97 @@
         </div>
     </div>
 
-    <!-- ALL DATA SURKOM SCREEN -->
+    <!-- ALL DATA SURKOM SCREEN (UPGRADE PRO MAX) -->
     <div id="surkom-alldata-screen" class="screen">
         <div class="content-wrapper-wide">
             <div class="header" style="background: linear-gradient(135deg, #059669, #047857) !important;">
                 <h2><i class="fas fa-folder-open" style="margin-right:10px;"></i> ALL DATA SURAT KOMPONEN</h2>
             </div>
 
-            <div class="dark-panel">
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <input type="text" id="surkom-search-key" placeholder="Cari Judul Surkom / Operator..." style="flex:1;" oninput="window.renderListAllSurkom()">
-                    <button type="button" class="btn-submit" style="width:auto; padding:0 20px;" onclick="window.renderListAllSurkom()">
-                        <i class="fas fa-search"></i>
+            <!-- TABS TAHUN (BISA DI SCROLL KE SAMPING) -->
+            <div class="tab-container-scroll" id="surkom-tabs-tahun">
+                <button class="gm-tab active" onclick="window.filterTabTahunSurkom('ALL', this)">ALL DATA SURKOM</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2026', this)">SURKOM 2026</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2025', this)">SURKOM 2025</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2024', this)">SURKOM 2024</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2023', this)">SURKOM 2023</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2022', this)">SURKOM 2022</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2021', this)">SURKOM 2021</button>
+                <button class="gm-tab" onclick="window.filterTabTahunSurkom('2020', this)">SURKOM 2020</button>
+            </div>
+
+            <div class="dark-panel" style="padding: 20px;">
+                
+                <!-- ACTION BAR: PILIH DATA & UNDUH GLOBAL -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; gap:10px; flex-wrap:wrap; border-bottom:1px dashed var(--border-dark); padding-bottom:15px;">
+                    <button type="button" class="btn-submit" id="btn-mode-pilih-surkom" onclick="window.toggleModePilihSurkom()" style="width:auto; padding:10px 15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; font-size:12px;">
+                        <i class="fas fa-check-square"></i> Pilih Data
                     </button>
+                    
+                    <div id="surkom-action-buttons" style="display:none; gap:10px; flex:1; justify-content:flex-end;">
+                        <button type="button" class="btn-submit" onclick="window.bukaModalForwardSurkom()" style="width:auto; padding:10px 15px; background:linear-gradient(135deg, #f59e0b, #d97706); font-size:12px;">
+                            <i class="fas fa-share"></i> Pindah Tahun
+                        </button>
+                        <button type="button" class="btn-submit" onclick="window.bukaModalUnduhGlobal()" style="width:auto; padding:10px 15px; background:linear-gradient(135deg, #10b981, #059669); font-size:12px;">
+                            <i class="fas fa-file-pdf"></i> Unduh Global
+                        </button>
+                    </div>
+                </div>
+
+                <!-- FILTER SEARCH & TANGGAL UPDATE -->
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <input type="text" id="surkom-search-key" placeholder="Cari Judul / Operator..." style="flex:2;" oninput="window.renderListAllSurkom()">
+                    <input type="date" id="surkom-filter-date" style="flex:1;" onchange="window.renderListAllSurkom()" title="Filter Tanggal Update">
                 </div>
 
                 <div id="surkom-list-container">
                     <p style="text-align:center; color:var(--text-muted); margin-top:20px;">Memuat data Surkom...</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL UNDUH GLOBAL SURKOM -->
+    <div id="surkom-unduh-global-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:25px; text-align:center; border:1px solid #10b981; box-shadow:0 0 30px rgba(16,185,129,0.3);">
+            <h3 style="color:white; margin-top:0;"><i class="fas fa-download" style="color:#10b981; font-size:30px; margin-bottom:10px; display:block;"></i> Opsi Unduh Global</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Pilih metode pengunduhan untuk <b id="surkom-count-selected" style="color:#10b981;">0</b> dokumen yang dipilih:</p>
+            
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button type="button" class="btn-submit" onclick="window.prosesUnduhGlobalSurkom('merge')" style="background:linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                    <i class="fas fa-file-pdf"></i> 1. Satukan Jadi 1 PDF (Merge)
+                </button>
+                <button type="button" class="btn-submit" onclick="window.prosesUnduhGlobalSurkom('pisah')" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9);">
+                    <i class="fas fa-copy"></i> 2. Unduh Terurai (Satu-Satu)
+                </button>
+                <button type="button" class="btn-submit" onclick="document.getElementById('surkom-unduh-global-modal').style.display='none'" style="background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted); margin-top:10px;">
+                    BATAL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORWARD (PINDAH TAHUN) -->
+    <div id="surkom-forward-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:25px; text-align:center; border:1px solid #f59e0b; box-shadow:0 0 30px rgba(245,158,11,0.3);">
+            <h3 style="color:white; margin-top:0;"><i class="fas fa-share" style="color:#f59e0b; font-size:30px; margin-bottom:10px; display:block;"></i> Pindah Ke Subjudul</h3>
+            <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Pilih tab Tahun untuk menyortir data lama yang dipilih:</p>
+            
+            <select id="surkom-forward-tahun" style="margin-bottom:25px; color:#f59e0b; font-weight:800; border-color:rgba(245,158,11,0.5);">
+                <option value="2026">Tahun 2026</option>
+                <option value="2025">Tahun 2025</option>
+                <option value="2024">Tahun 2024</option>
+                <option value="2023">Tahun 2023</option>
+                <option value="2022">Tahun 2022</option>
+                <option value="2021">Tahun 2021</option>
+                <option value="2020">Tahun 2020</option>
+            </select>
+            
+            <div style="display:flex; gap:10px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('surkom-forward-modal').style.display='none'" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.prosesForwardDataSurkom()" style="flex:2; background:linear-gradient(135deg, #f59e0b, #d97706);">
+                    <i class="fas fa-save"></i> PINDAHKAN
+                </button>
             </div>
         </div>
     </div>
@@ -860,7 +950,7 @@
             <!-- Pos Kategori (Tabs) -->
             <div class="god-mode-tabs">
                 <div class="gm-tab active" onclick="window.gantiTabGodMode(this, 'informasi_mold')"><i class="fas fa-info-circle"></i> Info Mold</div>
-                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
+                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen_index')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'ide_saran_box')"><i class="fas fa-lightbulb"></i> Ide & Saran</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'notulen_meeting')"><i class="fas fa-handshake"></i> Notulen Meeting</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'workshop_projects')"><i class="fas fa-cogs"></i> Proyek Workshop</div>
@@ -1840,7 +1930,7 @@
             
             <div style="padding:15px; border-top:1px solid rgba(255,255,255,0.1);">
                 <button type="button" class="btn-submit" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:linear-gradient(135deg, #10b981, #059669);">
-                    <i class="fas fa-check"></i> KEMBALI KETIK JUDUL
+                    <i class="fas fa-check"></i> TUTUP PREVIEW
                 </button>
             </div>
         </div>
@@ -1962,6 +2052,9 @@
         window.infoDatabase = []; window.notulenDatabase = []; window.ptDatabase = []; window.admHarianDatabase = []; 
         window.arrayNaikMold = []; window.pkmDatabase = []; window.dataProyekWS = []; window.arrayTugasBaru = [];
         window.divisiAktif = ""; window.kategoriInfoAktif = ""; window.chartUni = null; window.chartBi = null; window.chartMulti = null;
+        
+        // GLOBAL VARIABLES SURKOM BARU
+        window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
 
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -1975,7 +2068,6 @@
                 window.toggleLoader(true, "Membuka Enkripsi...");
                 try { 
                     await getDocs(query(collection(window.db, "informasi_mold"))); 
-                    if(window.logKeamanan) window.logKeamanan(`Akses Instan: Sesi dipulihkan.`, "info"); 
                     window.toggleLoader(false); bukaPintuAnimasi(); 
                 } catch (error) { window.toggleLoader(false); await signOut(auth); alert("⛔ Sesi tidak valid atau hak akses Anda telah dicabut."); }
                 return;
@@ -1984,7 +2076,6 @@
                 const result = await signInWithPopup(auth, provider);
                 window.toggleLoader(true, "Memverifikasi Otoritas Akun...");
                 await getDocs(query(collection(window.db, "informasi_mold")));
-                if(window.logKeamanan) window.logKeamanan(`Akses LOGIN sah untuk: ${result.user.email}`, "info"); 
                 window.toggleLoader(false); bukaPintuAnimasi();
             } catch (error) {
                 window.toggleLoader(false);
@@ -1999,10 +2090,7 @@
             setTimeout(() => { if(l) l.style.display='none'; if(n) n.style.display='flex'; window.navigasi('home-screen'); window.jalankanEngineMetrik(); }, 150); 
         }
 
-        onAuthStateChanged(auth, (user) => { if (user && window.logKeamanan) window.logKeamanan(`Sistem mendeteksi riwayat koneksi Firebase Auth.`, "scan"); });
-
         let riwayatNavigasi = ['landing-page']; history.pushState({page: 'landing-page'}, "", "");
-        
         window.updateBottomNav = function(screenId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active')); const lamp = document.getElementById('nav-lampu'); if(lamp) lamp.classList.remove('active-lamp');
             if(screenId === 'home-screen') { document.getElementById('nav-home')?.classList.add('active'); } 
@@ -2041,6 +2129,7 @@
         window.compressImage = function(file, maxWidth = 1200, maxHeight = 1200, quality = 0.6) { return new Promise((resolve, reject) => { const reader = new FileReader(); reader.readAsDataURL(file); reader.onload = event => { const img = new Image(); img.src = event.target.result; img.onload = () => { let width = img.width; let height = img.height; if (width > height) { if (width > maxWidth) { height = Math.round((height *= maxWidth / width)); width = maxWidth; } } else { if (height > maxHeight) { width = Math.round((width *= maxHeight / height)); height = maxHeight; } } const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height; const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height); resolve(canvas.toDataURL('image/jpeg', quality)); }; img.onerror = error => reject(error); }; reader.onerror = error => reject(error); }); };
         window.cekFoto = function(input, targetId) { const target = document.getElementById(targetId); if (target && input.files && input.files.length > 0) { target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> Foto siap diunggah`; } else if (target) { target.innerHTML = ""; } }
         window.dapatkanWaktuRill = function() { const now = new Date(); const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu']; const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des']; const h = String(now.getHours()).padStart(2, '0'); const m = String(now.getMinutes()).padStart(2, '0'); return `${days[now.getDay()]}, ${h}:${m} - ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`; }
+        window.dapatkanTanggalLokal = function() { const now = new Date(); return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'); }
         
         setInterval(() => { 
             const el = document.getElementById('notul-waktu-display'); if (el) el.value = window.dapatkanWaktuRill(); 
@@ -2066,9 +2155,18 @@
         }
 
         // =========================================================================
-        // LOGIKA SURAT KOMPONEN (PRO MAX UPLOAD + ZOOM HD + DELETE PAGE)
+        // LOGIKA SURAT KOMPONEN: FITUR ENTERPRISE (MERGE PDF, TAHUN, PREVIEW)
         // =========================================================================
         window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null; 
+
+        // Fungsi Convert Base64 ke ArrayBuffer (Untuk Render PDF Server ke Canvas / Merge)
+        function base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64.split(',')[1]);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) bytes[i] = binary_string.charCodeAt(i);
+            return bytes.buffer;
+        }
 
         window.prosesPDFSurkom = async function(input) {
             const file = input.files[0]; if(!file) return;
@@ -2084,7 +2182,6 @@
                 for(let i = 1; i <= window.surkomPageCount; i++) {
                     const page = await pdf.getPage(i); const viewport = page.getViewport({ scale: 0.6 }); 
                     let div = document.createElement('div'); div.className = "pdf-split-card"; div.id = `surkom-card-${i}`; div.style.position = "relative"; 
-                    
                     div.innerHTML = `
                         <div onclick="window.hapusHalamanSurkom(${i})" style="position:absolute; top:-12px; right:-12px; background:#ef4444; color:white; width:30px; height:30px; border-radius:50%; display:flex; justify-content:center; align-items:center; cursor:pointer; box-shadow:0 4px 10px rgba(239,68,68,0.5); z-index:10; border:2px solid var(--card-dark); transition:0.2s;">
                             <i class="fas fa-times"></i>
@@ -2126,138 +2223,232 @@
             } catch(e) { console.error(e); loading.innerHTML = "Gagal memuat preview resolusi tinggi."; }
         }
 
-        
-                // =========================================================================
-        // LOGIKA PENYIMPANAN (UPLOAD PARALEL CEPAT & BACA BRANKAS LAMA)
-        // =========================================================================
+        // SIMPAN UPLOAD PARALEL (PRO MAX) DENGAN TAG TAHUN
         window.simpanAllSurkomHasil = async function() {
             const operator = window.amankanData(document.getElementById('surkom-operator').value);
             const waktu = document.getElementById('surkom-waktu').value;
+            const tahunInput = document.getElementById('surkom-tahun-input').value;
             
             if(!operator) return alert("⚠️ Mohon isi Nama Operator Pembuat terlebih dahulu!");
-            
             let adaIsi = false;
-            for(let i = 1; i <= window.surkomPageCount; i++) { 
-                let elemenInput = document.getElementById(`surkom-judul-${i}`);
-                if(elemenInput && elemenInput.value.trim() !== "") adaIsi = true; 
-            }
+            for(let i = 1; i <= window.surkomPageCount; i++) { let elemenInput = document.getElementById(`surkom-judul-${i}`); if(elemenInput && elemenInput.value.trim() !== "") adaIsi = true; }
             if(!adaIsi) return alert("⚠️ Minimal berikan 1 judul pada dokumen yang tersisa!");
             
-            // Indikator loading diubah agar operator tahu sistem sedang ngebut
-            window.toggleLoader(true, "Mengekstrak & Upload Paralel Kecepatan Tinggi...");
-            
+            window.toggleLoader(true, "AI Mengekstrak & Upload Paralel Kecepatan Tinggi...");
             try {
-                const { PDFDocument } = PDFLib;
-                const originalPdf = await PDFDocument.load(window.surkomOriginalPdfBytes);
-                
-                let arrayUpload = []; // Penampung tugas untuk di-upload serentak
-                
+                const { PDFDocument } = PDFLib; const originalPdf = await PDFDocument.load(window.surkomOriginalPdfBytes);
+                let arrayUpload = []; 
                 for(let i = 1; i <= window.surkomPageCount; i++) {
-                    const inputHalaman = document.getElementById(`surkom-judul-${i}`);
-                    if(!inputHalaman) continue; // Lewati jika sudah dihapus pakai tombol X
-
-                    const judulRaw = inputHalaman.value.trim();
-                    if(judulRaw === "") continue; 
+                    const inputHalaman = document.getElementById(`surkom-judul-${i}`); if(!inputHalaman) continue; 
+                    const judulRaw = inputHalaman.value.trim(); if(judulRaw === "") continue; 
                     const judulFinal = window.amankanData(judulRaw).toUpperCase();
                     
-                    const newPdf = await PDFDocument.create();
-                    const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
-                    newPdf.addPage(copiedPage);
-                    const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
+                    const newPdf = await PDFDocument.create(); const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
+                    newPdf.addPage(copiedPage); const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
                     
-                    // Kembalikan ke brankas "surat_komponen" agar bergabung dengan data 65 PDF lama Bapak
+                    // Kita simpan ke koleksi asli agar bergabung dengan data lama Bapak, tapi sekarang ditambah Label TAHUN!
                     const tugasUpload = addDoc(collection(window.db, "surat_komponen"), {
-                        judul: judulFinal,
-                        operator: operator,
-                        waktuInput: waktu,
-                        filePdfBase64: pdfBase64,
-                        halamanAsli: i,
-                        timestamp: Date.now()
+                        judul: judulFinal, operator: operator, waktuInput: waktu, 
+                        tahun: tahunInput, tglStandard: window.dapatkanTanggalLokal(), // Penanda untuk Filter Update
+                        filePdfBase64: pdfBase64, halamanAsli: i, timestamp: Date.now()
                     });
-                    
                     arrayUpload.push(tugasUpload);
                 }
-                
-                // EKSEKUSI SEMUA UPLOAD SECARA BERSAMAAN (Paralel / Tidak Antri)
                 await Promise.all(arrayUpload);
+                alert("✅ Sistem Selesai! Seluruh file berhasil dipisah dan masuk ke Database Tahun " + tahunInput);
                 
-                alert("✅ Sistem Selesai! Seluruh file berhasil dipisah dan di-Upload dengan sangat cepat.");
-                
-                document.getElementById('surkom-file-pdf').value = "";
-                document.getElementById('surkom-operator').value = "";
-                document.getElementById('surkom-split-area').style.display = 'none';
-                document.getElementById('surkom-split-container').innerHTML = "";
-                
+                document.getElementById('surkom-file-pdf').value = ""; document.getElementById('surkom-operator').value = ""; document.getElementById('surkom-split-area').style.display = 'none'; document.getElementById('surkom-split-container').innerHTML = "";
                 window.bukaAllDataSurkom();
-                
-            } catch(e) { 
-                console.error(e); 
-                alert("Terjadi kesalahan sistem: " + e.message); 
-            }
+            } catch(e) { console.error(e); alert("Terjadi kesalahan sistem: " + e.message); }
             window.toggleLoader(false);
         }
 
-        window.bukaAllDataSurkom = async function() {
-            window.navigasi('surkom-alldata-screen');
-            await window.renderListAllSurkom();
+        // =====================================
+        // FITUR ALL DATA (FILTER, CHECKBOX, FORWARD, UNDUH GLOBAL)
+        // =====================================
+        window.bukaAllDataSurkom = async function() { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); }
+
+        window.filterTabTahunSurkom = function(tahun, btnEl) {
+            document.querySelectorAll('#surkom-tabs-tahun .gm-tab').forEach(el => el.classList.remove('active'));
+            btnEl.classList.add('active');
+            window.surkomTahunAktif = tahun;
+            window.renderListAllSurkom();
+        }
+
+        window.toggleModePilihSurkom = function() {
+            window.isModePilihSurkom = !window.isModePilihSurkom;
+            const btn = document.getElementById('btn-mode-pilih-surkom');
+            const actions = document.getElementById('surkom-action-buttons');
+            if(window.isModePilihSurkom) {
+                btn.style.background = "linear-gradient(135deg, #10b981, #059669)";
+                btn.style.borderColor = "#10b981";
+                actions.style.display = 'flex';
+            } else {
+                btn.style.background = "rgba(255,255,255,0.1)";
+                btn.style.borderColor = "var(--border-dark)";
+                actions.style.display = 'none';
+            }
+            window.renderListAllSurkom();
         }
 
         window.renderListAllSurkom = async function() {
             const container = document.getElementById('surkom-list-container');
-            const searchEl = document.getElementById('surkom-search-key');
-            const keyword = searchEl ? window.amankanData(searchEl.value.toLowerCase()) : "";
+            const keyword = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
+            const filterDate = document.getElementById('surkom-filter-date').value; // Ambil nilai filter tanggal update
             
-            if(!window.surkomDatabase || window.surkomDatabase.length === 0 || keyword === "") {
+            if(!window.surkomDatabase || window.surkomDatabase.length === 0) {
                 window.toggleLoader(true, "Mengunduh Arsip Surkom...");
                 window.surkomDatabase = [];
                 try {
-                    // PENTING: Sistem diubah kembali mencari ke brankas lama Bapak
                     const snap = await getDocs(query(collection(window.db, "surat_komponen")));
                     snap.forEach(doc => { window.surkomDatabase.push({id: doc.id, ...doc.data()}) });
                     window.surkomDatabase.sort((a,b) => b.timestamp - a.timestamp);
-                } catch(e) { 
-                    console.error(e); 
-                }
+                } catch(e) { console.error(e); }
                 window.toggleLoader(false);
             }
             
-            let filterData = window.surkomDatabase.filter(d => 
-                (d.judul || "").toLowerCase().includes(keyword) || 
-                (d.operator || "").toLowerCase().includes(keyword)
-            );
+            // Proses Filter Multi-Lapis (Kata Kunci + Tahun + Tanggal Update)
+            let filterData = window.surkomDatabase.filter(d => {
+                let matchKey = (d.judul || "").toLowerCase().includes(keyword) || (d.operator || "").toLowerCase().includes(keyword);
+                let matchTahun = window.surkomTahunAktif === 'ALL' ? true : (d.tahun === window.surkomTahunAktif);
+                let matchDate = true;
+                if(filterDate) {
+                    // Jika ada data tglStandard, samakan. Jika data lama belum ada, anggap tidak lolos filter (agar akurat)
+                    matchDate = d.tglStandard === filterDate;
+                }
+                return matchKey && matchTahun && matchDate;
+            });
             
-            if(filterData.length === 0) { 
-                container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada Arsip Surat Komponen ditemukan.</p>`; 
-                return; 
-            }
+            if(filterData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada Arsip Surat Komponen ditemukan pada filter ini.</p>`; return; }
             
             let html = "";
             filterData.forEach(d => {
+                let badgeTahun = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:6px; font-size:9px; border:1px solid rgba(245,158,11,0.5); margin-left:8px;">${d.tahun}</span>` : '';
+                let checkboxHtml = window.isModePilihSurkom ? `<input type="checkbox" class="chk-surkom-item" value="${d.id}" style="width:20px; height:20px; margin-right:15px; cursor:pointer;" onclick="event.stopPropagation()">` : '';
+                
                 html += `
-                <div class="progress-card" style="border-left-color:#10b981; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.5);">
-                    <div style="flex:1;">
-                        <h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px;"><i class="fas fa-file-contract"></i> ${d.judul}</h3>
-                        <p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;">
-                            <i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}
-                        </p>
+                <div class="progress-card" style="border-left-color:#10b981; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.5); cursor:pointer;" onclick="window.bukaPreviewDariServer('${d.id}')">
+                    <div style="display:flex; align-items:center; flex:1;">
+                        ${checkboxHtml}
+                        <div>
+                            <h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px; display:flex; align-items:center;"><i class="fas fa-file-contract" style="margin-right:6px;"></i> ${d.judul} ${badgeTahun}</h3>
+                            <p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;">
+                                <i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}
+                            </p>
+                        </div>
                     </div>
-                    <button type="button" onclick="window.unduhPDFSurkom('${d.id}')" style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:800; box-shadow:0 4px 10px rgba(16,185,129,0.3); transition:0.2s;">
-                        <i class="fas fa-download"></i> PDF
+                    <button type="button" onclick="event.stopPropagation(); window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:800; box-shadow:0 4px 10px rgba(16,185,129,0.3); transition:0.2s;">
+                        <i class="fas fa-download"></i>
                     </button>
                 </div>`;
             });
             container.innerHTML = html;
         }
 
-        window.unduhPDFSurkom = function(id) {
+        // FITUR KLIK KARTU -> PREVIEW PDF RESOLUSI TINGGI
+        window.bukaPreviewDariServer = async function(id) {
+            const data = window.surkomDatabase.find(d => d.id === id);
+            if(data && data.filePdfBase64) {
+                window.toggleLoader(true, "Membuka Arsip Server...");
+                try {
+                    const pdfBytes = base64ToArrayBuffer(data.filePdfBase64);
+                    const loadingTask = pdfjsLib.getDocument({ data: pdfBytes });
+                    const pdf = await loadingTask.promise;
+                    const page = await pdf.getPage(1);
+                    const viewport = page.getViewport({ scale: 1.5 });
+                    
+                    const modal = document.getElementById('surkom-preview-modal'); 
+                    const canvas = document.getElementById('surkom-preview-canvas'); 
+                    const loading = document.getElementById('surkom-preview-loading');
+                    
+                    modal.style.display = 'flex'; canvas.style.display = 'none'; loading.style.display = 'block'; 
+                    document.getElementById('surkom-preview-page-num').innerText = "Arsip: " + data.judul;
+
+                    const context = canvas.getContext('2d'); canvas.height = viewport.height; canvas.width = viewport.width;
+                    await page.render({ canvasContext: context, viewport: viewport }).promise;
+                    
+                    loading.style.display = 'none'; canvas.style.display = 'block';
+                } catch(e) { console.error(e); alert("Gagal memuat PDF."); }
+                window.toggleLoader(false);
+            }
+        }
+
+        window.unduhPDFSurkom = function(id, judul) {
             const data = window.surkomDatabase.find(d => d.id === id);
             if(!data || !data.filePdfBase64) return alert("Kesalahan: Data PDF fisik tidak ditemukan di Server!");
-            let a = document.createElement("a");
-            a.href = data.filePdfBase64;
-            a.download = `SURKOM_${data.judul.replace(/ /g, '_')}_CBI.pdf`;
-            document.body.appendChild(a); 
-            a.click(); 
-            document.body.removeChild(a);
+            let a = document.createElement("a"); a.href = data.filePdfBase64; a.download = `SURKOM_${judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        }
+
+        // FITUR UNDUH GLOBAL & MERGE
+        window.bukaModalUnduhGlobal = function() {
+            const selected = document.querySelectorAll('.chk-surkom-item:checked');
+            if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu dengan mencentang kotaknya!");
+            document.getElementById('surkom-count-selected').innerText = selected.length;
+            document.getElementById('surkom-unduh-global-modal').style.display = 'flex';
+        }
+
+        window.prosesUnduhGlobalSurkom = async function(tipe) {
+            document.getElementById('surkom-unduh-global-modal').style.display = 'none';
+            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked');
+            const selectedIds = Array.from(selectedNodes).map(n => n.value);
+            
+            window.toggleLoader(true, tipe === 'merge' ? "Menyatukan Halaman PDF..." : "Mengunduh Massal...");
+            try {
+                if(tipe === 'pisah') {
+                    for(let id of selectedIds) {
+                        const d = window.surkomDatabase.find(x => x.id === id);
+                        if(d) {
+                            let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${d.judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                            await new Promise(r => setTimeout(r, 600)); // Delay agar browser tidak nge-hang
+                        }
+                    }
+                } else if(tipe === 'merge') {
+                    const { PDFDocument } = PDFLib;
+                    const mergedPdf = await PDFDocument.create();
+                    
+                    for(let id of selectedIds) {
+                        const docObj = window.surkomDatabase.find(x => x.id === id);
+                        if(docObj && docObj.filePdfBase64) {
+                            const pdfBytes = base64ToArrayBuffer(docObj.filePdfBase64);
+                            const pdf = await PDFDocument.load(pdfBytes);
+                            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+                            copiedPages.forEach(page => mergedPdf.addPage(page));
+                        }
+                    }
+                    const mergedPdfFile = await mergedPdf.saveAsBase64({ dataUri: true });
+                    let a = document.createElement("a"); a.href = mergedPdfFile; a.download = `SURKOM_GABUNGAN_${Date.now()}.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                }
+            } catch(e) { console.error(e); alert("Terjadi kesalahan saat memproses unduhan: " + e.message); }
+            window.toggleLoader(false);
+        }
+
+        // FITUR PINDAH DATA (FORWARD) TAHUN
+        window.bukaModalForwardSurkom = function() {
+            const selected = document.querySelectorAll('.chk-surkom-item:checked');
+            if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu!");
+            document.getElementById('surkom-forward-modal').style.display = 'flex';
+        }
+
+        window.prosesForwardDataSurkom = async function() {
+            const targetTahun = document.getElementById('surkom-forward-tahun').value;
+            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked');
+            const selectedIds = Array.from(selectedNodes).map(n => n.value);
+            
+            window.toggleLoader(true, `Memindahkan Data ke Tab ${targetTahun}...`);
+            try {
+                let promises = [];
+                for(let id of selectedIds) {
+                    promises.push(updateDoc(doc(window.db, "surat_komponen", id), { tahun: targetTahun }));
+                    let d = window.surkomDatabase.find(x => x.id === id);
+                    if(d) d.tahun = targetTahun; // Update lokal memori agar langsung muncul tanpa download ulang
+                }
+                await Promise.all(promises);
+                alert("✅ Berhasil memindahkan " + selectedIds.length + " data ke Subjudul " + targetTahun);
+                document.getElementById('surkom-forward-modal').style.display = 'none';
+                window.toggleModePilihSurkom(); // Matikan mode pilih
+                window.renderListAllSurkom(); // Render ulang daftar
+            } catch(e) { console.error(e); alert("Gagal memindahkan data ke database."); }
+            window.toggleLoader(false);
         }
 
 
