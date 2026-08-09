@@ -13,7 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Library Khusus PDF (PDF-LIB untuk Splitting & Merging PDF) -->
+    <!-- Library Khusus PDF -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 
     <style>
@@ -47,22 +47,12 @@
         /* --- AURORA NEON GEMINI (AKTIF, CEPAT, TERANG) --- */
         /* ======================================================== */
         .aurora-bg {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh;
-            z-index: 0; 
-            overflow: hidden; 
-            pointer-events: none;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0; overflow: hidden; pointer-events: none;
         }
         .aurora-blob {
-            position: absolute; 
-            border-radius: 50%;
-            filter: blur(80px);
-            mix-blend-mode: screen; 
-            animation: floatAurora 12s infinite alternate ease-in-out;
-            opacity: 0.95;
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            mix-blend-mode: screen; animation: floatAurora 12s infinite alternate ease-in-out; opacity: 0.95;
         }
         .blob-1 { width: 55vw; height: 55vw; background: rgba(15, 157, 88, 0.6); top: -10%; left: -10%; animation-delay: 0s; }
         .blob-2 { width: 65vw; height: 65vw; background: rgba(56, 189, 248, 0.55); bottom: -20%; right: -10%; animation-delay: -2s; }
@@ -77,23 +67,9 @@
         }
 
         /* --- SCREEN WRAPPER --- */
-        .screen { 
-            display: none; 
-            padding: 0 0 120px 0; 
-            min-height: 100vh; 
-            box-sizing: border-box; 
-            background: transparent; 
-            position: relative; 
-            z-index: 10; 
-        }
-        .active-screen { 
-            display: block; 
-            animation: diveIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
-        }
-        @keyframes diveIn { 
-            0% { opacity: 0; transform: translateY(10px); } 
-            100% { opacity: 1; transform: translateY(0); } 
-        }
+        .screen { display: none; padding: 0 0 120px 0; min-height: 100vh; box-sizing: border-box; background: transparent; position: relative; z-index: 10; }
+        .active-screen { display: block; animation: diveIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+        @keyframes diveIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 
         .content-wrapper { max-width: 750px; margin: auto; position: relative; padding: 25px 20px;} 
         .content-wrapper-wide { max-width: 1100px; margin: auto; position: relative; padding: 25px 20px;}
@@ -101,77 +77,26 @@
         /* ======================================================== */
         /* --- LANDING PAGE CYBER-TECH --- */
         /* ======================================================== */
-        #landing-page {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: space-between; 
-            z-index: 2000;
-            background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 50%, #020617 100%);
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
-            overflow: hidden;
-        }
-        .door-open { 
-            transform: scale(1.3) translateY(-30px) !important; 
-            opacity: 0 !important; 
-            filter: blur(15px) !important; 
-            pointer-events: none; 
-        }
-
-        #landing-page::before {
-            content: ''; position: absolute; top:0; left:0; width:100%; height:100%; z-index: 0; pointer-events: none;
-            background-image: 
-                radial-gradient(circle at 15% 25%, rgba(56,189,248,0.8) 1.5px, transparent 2px),
-                radial-gradient(circle at 85% 30%, rgba(255,255,255,0.8) 1px, transparent 2px),
-                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.5) 2px, transparent 3px),
-                radial-gradient(circle at 20% 70%, rgba(139,92,246,0.6) 1.5px, transparent 2px),
-                radial-gradient(circle at 80% 85%, rgba(56,189,248,0.9) 2px, transparent 4px);
-            animation: twinkleStars 4s infinite alternate;
-        }
+        #landing-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-between; z-index: 2000; background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 50%, #020617 100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease, filter 0.4s ease; overflow: hidden; }
+        .door-open { transform: scale(1.3) translateY(-30px) !important; opacity: 0 !important; filter: blur(15px) !important; pointer-events: none; }
+        #landing-page::before { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; z-index: 0; pointer-events: none; background-image: radial-gradient(circle at 15% 25%, rgba(56,189,248,0.8) 1.5px, transparent 2px), radial-gradient(circle at 85% 30%, rgba(255,255,255,0.8) 1px, transparent 2px), radial-gradient(circle at 50% 80%, rgba(255,255,255,0.5) 2px, transparent 3px), radial-gradient(circle at 20% 70%, rgba(139,92,246,0.6) 1.5px, transparent 2px), radial-gradient(circle at 80% 85%, rgba(56,189,248,0.9) 2px, transparent 4px); animation: twinkleStars 4s infinite alternate; }
         @keyframes twinkleStars { 0% { opacity: 0.7; } 100% { opacity: 1; } }
 
         .landing-top { margin-top: 80px; text-align: center; z-index: 2; width: 100%; padding: 0 20px; box-sizing: border-box; animation: fadeInDown 1s ease-out; }
         .landing-title { margin: 0 0 8px 0; font-weight: 900; color: white; text-shadow: 0 0 15px rgba(255,255,255,0.4); font-size: clamp(24px, 7vw, 32px); letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;}
         .landing-subtitle { margin: 0; font-weight: 700; color: #818cf8; text-shadow: 0 0 10px rgba(129,140,248,0.5); letter-spacing: 1.5px; font-size: clamp(12px, 3.5vw, 15px); }
-        
         .landing-center { position: relative; width: 100%; max-width: 380px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2; animation: fadeIn 1.5s ease-in-out; }
-
         .circuit-board { position: absolute; width: 140%; height: 100%; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; pointer-events: none; }
         .circuit-line { fill: none; stroke: rgba(56, 189, 248, 0.25); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
-        .electric-pulse {
-            fill: none; stroke: #38bdf8; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;
-            stroke-dasharray: 20 120; animation: pulseTravel 2s linear infinite; filter: drop-shadow(0 0 8px #38bdf8);
-        }
+        .electric-pulse { fill: none; stroke: #38bdf8; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 20 120; animation: pulseTravel 2s linear infinite; filter: drop-shadow(0 0 8px #38bdf8); }
         @keyframes pulseTravel { from { stroke-dashoffset: 140; } to { stroke-dashoffset: 0; } }
 
-        .fingerprint-btn {
-            position: relative; z-index: 5;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
-            border: 2px solid rgba(56, 189, 248, 0.8); border-radius: 50%;
-            width: 130px; height: 130px; color: #38bdf8; font-size: 70px;
-            display: flex; justify-content: center; align-items: center;
-            cursor: pointer; outline: none !important; -webkit-tap-highlight-color: transparent; 
-            box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.3);
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .fingerprint-btn::after {
-            content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            border: 2px solid #38bdf8; opacity: 0; animation: pulseRing 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; pointer-events: none;
-        }
+        .fingerprint-btn { position: relative; z-index: 5; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); border: 2px solid rgba(56, 189, 248, 0.8); border-radius: 50%; width: 130px; height: 130px; color: #38bdf8; font-size: 70px; display: flex; justify-content: center; align-items: center; cursor: pointer; outline: none !important; -webkit-tap-highlight-color: transparent; box-shadow: 0 0 30px rgba(56, 189, 248, 0.4), inset 0 0 25px rgba(56, 189, 248, 0.3); transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); }
+        .fingerprint-btn::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #38bdf8; opacity: 0; animation: pulseRing 2.5s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; pointer-events: none; }
         @keyframes pulseRing { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.6); opacity: 0; } }
-        .fingerprint-btn:active {
-            transform: scale(0.85); box-shadow: 0 0 60px rgba(56, 189, 248, 1), inset 0 0 50px rgba(56, 189, 248, 0.9);
-            color: #ffffff; border-color: #ffffff; filter: brightness(1.5);
-        }
-
+        .fingerprint-btn:active { transform: scale(0.85); box-shadow: 0 0 60px rgba(56, 189, 248, 1), inset 0 0 50px rgba(56, 189, 248, 0.9); color: #ffffff; border-color: #ffffff; filter: brightness(1.5); }
         .landing-bottom { margin-bottom: 50px; text-align: center; z-index: 2; width: 100%; padding: 0 20px; box-sizing: border-box; animation: fadeInUp 1s ease-out; }
         .landing-bottom p { font-style: italic; font-size: 14px; color: #cbd5e1; line-height:1.6; font-weight:600; text-shadow: 0 2px 5px rgba(0,0,0,0.9); margin:0; }
-
         @keyframes fadeInDown { 0% { opacity: 0; transform: translateY(-20px); } 100% { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
 
@@ -182,13 +107,7 @@
         .hero-left { width: 45%; display: flex; flex-direction: column; gap: 15px; z-index:2;}
         .hero-right { width: 55%; display: flex; align-items: center; justify-content: center; position: relative; z-index:1; }
 
-        .glass-card { 
-            background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 16px; padding: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
-            backdrop-filter: blur(10px); display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; color: white; cursor: pointer; 
-            transition: 0.2s; position: relative; overflow: hidden;
-        }
+        .glass-card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; padding: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.3); backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; cursor: pointer; transition: 0.2s; position: relative; overflow: hidden; }
         .glass-card:active { transform: scale(0.95); }
         .glass-card.analytics { background: linear-gradient(135deg, rgba(30, 58, 138, 0.7), rgba(15, 23, 42, 0.8)); min-height: 90px; }
         .glass-card.jadwal { min-height: 45px; flex-direction: row; gap: 10px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px;}
@@ -198,7 +117,6 @@
         .hud-ring-middle { position: absolute; width: 80%; height: 80%; border-radius: 50%; border: 3px dotted rgba(56, 189, 248, 0.8); animation: spinLeft 18s linear infinite; }
         .hud-ring-inner { position: absolute; width: 65%; height: 65%; border-radius: 50%; border: 2px solid transparent; border-top-color: #7dd3fc; border-bottom-color: #3b82f6; animation: spinRight 8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.5); }
         .hud-glow { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle, rgba(56,189,248,0.15) 0%, transparent 70%); border-radius: 50%; animation: pulseGlow 3s ease-in-out infinite alternate; pointer-events: none;}
-        
         .hud-core-text { position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         .hud-label-top { font-size: 9px; font-weight: 700; color: #94a3b8; letter-spacing: 1px; margin-bottom: 2px; }
         .hud-value { font-size: 32px; font-weight: 900; color: white; text-shadow: 0 0 15px #38bdf8; margin: 0; line-height: 1; letter-spacing: 1px; }
@@ -222,19 +140,7 @@
         .sub-title-box { background: rgba(30,41,59,0.8); padding: 12px 18px; border-radius: 12px; color: white; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 800; border: 1px solid var(--border-dark); }
         .dark-panel { background: var(--card-dark); padding: 25px; border-radius: 20px; border: 1px solid var(--border-dark); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); backdrop-filter: blur(10px); }
         
-        .progress-card { 
-            background: rgba(30, 41, 59, 0.6); 
-            padding: 18px 20px; 
-            border-radius: 16px; 
-            color: white; 
-            border: 1px solid var(--border-dark); 
-            border-left-width: 6px; 
-            border-left-style: solid; 
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px);
-        }
-        
+        .progress-card { background: rgba(30, 41, 59, 0.6); padding: 18px 20px; border-radius: 16px; color: white; border: 1px solid var(--border-dark); border-left-width: 6px; border-left-style: solid; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
         .status-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; color: white; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         .export-row { display: flex; gap: 15px; margin-bottom: 20px; }
         .grid-menu { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -258,7 +164,6 @@
         .report-table { width: 100%; border-collapse: collapse; font-size: 12px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-dark); }
         .report-table th, .report-table td { padding: 12px; border-bottom: 1px solid var(--border-dark); border-right: 1px solid var(--border-dark); color: var(--text-light); background: rgba(0,0,0,0.4); }
         .report-table th { background: rgba(0,0,0,0.7); color: var(--secondary); font-weight: 800; }
-        
         .eval-list { list-style: none; padding: 0; }
         .eval-list li { background: rgba(0,0,0,0.5); margin-bottom: 10px; padding: 14px; border-radius: 12px; border-left: 4px solid var(--proses); display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--border-dark);}
         .eval-list li.done { border-left-color: var(--cepat); opacity: 0.7; }
@@ -312,64 +217,72 @@
         .btn-gm-edit { width: 100%; padding: 10px; background: rgba(245, 158, 11, 0.1); border: 1px solid #f59e0b; color: #fbbf24; border-radius: 8px; margin-top: 10px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: 0.2s; }
         .btn-gm-edit:active { transform: scale(0.98); background: #f59e0b; color: white; }
 
-        /* SURKOM UI & MODAL PREVIEW PDF */
-        .pdf-split-card { background: rgba(30, 41, 59, 0.7); border: 1px solid var(--secondary); border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; }
-        .file-upload-zone { border: 2px dashed var(--secondary); padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; background: rgba(56, 189, 248, 0.05); }
-        .file-upload-zone:hover { background: rgba(56, 189, 248, 0.1); }
-        
-        #dynamic-editor-body { max-height: 50vh; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
-        .dyn-input-group { margin-bottom: 12px; }
-        .dyn-input-group label { color: #8b5cf6; font-size: 10px; margin-bottom: 4px; }
-        .dyn-input-group input, .dyn-input-group textarea { background: rgba(0,0,0,0.5); padding: 10px; font-size: 13px; }
-        
-        /* SCROLL BAR CUSTOM TABS SURKOM */
-        .tab-container-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
-        .tab-container-scroll::-webkit-scrollbar { height: 6px; }
-        .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
-
         /* ======================================================== */
         /* --- STRUKTUR ORGANISASI CSS (FLOWING LINES & ZOOM) --- */
         /* ======================================================== */
         .org-tree { display: inline-flex; justify-content: center; position: relative; padding-top: 20px; width:100%;}
-        .org-tree ul { padding-top: 30px; position: relative; display: flex; justify-content: center; padding-left: 0; list-style: none; margin: 0; }
-        .org-tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 30px 10px 0 10px; }
+        .org-tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; padding-left: 0; list-style: none; margin: 0; }
+        .org-tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; }
 
-        .org-tree li::before, .org-tree li::after {
-            content: ''; position: absolute; top: 0; right: 50%; width: 50%; height: 3px;
-            background: linear-gradient(90deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
-            background-size: 200% 100%; animation: flowLeft 1.5s infinite linear;
-        }
-        .org-tree li::after { right: auto; left: 50%; animation: flowRight 1.5s infinite linear; }
+        /* Basic Solid Connectors */
+        .org-tree li::before, .org-tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid rgba(56,189,248, 0.3); width: 50%; height: 20px; z-index:0; }
+        .org-tree li::after { right: auto; left: 50%; border-left: 2px solid rgba(56,189,248, 0.3); }
         .org-tree li:only-child::after, .org-tree li:only-child::before { display: none; }
         .org-tree li:only-child { padding-top: 0; }
-        .org-tree li:first-child::before, .org-tree li:last-child::after { display: none; }
+        .org-tree li:first-child::before, .org-tree li:last-child::after { border: 0 none; }
+        .org-tree li:last-child::before { border-right: 2px solid rgba(56,189,248, 0.3); border-radius: 0 4px 0 0; }
+        .org-tree li:first-child::after { border-radius: 4px 0 0 0; }
+        .org-tree ul::before { content: ''; position: absolute; top: 0; left: calc(50% - 1px); border-left: 2px solid rgba(56,189,248, 0.3); width: 0; height: 20px; z-index:0; }
 
-        .node-connector {
-            position: absolute; top: 0; left: calc(50% - 1.5px); width: 3px; height: 30px;
-            background: linear-gradient(180deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
-            background-size: 100% 200%; animation: flowDown 1.5s infinite linear;
-        }
-        .org-tree ul::before {
-            content: ''; position: absolute; top: 0; left: calc(50% - 1.5px); width: 3px; height: 30px;
-            background: linear-gradient(180deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
-            background-size: 100% 200%; animation: flowDown 1.5s infinite linear;
-        }
+        /* CIRCUIT ENERGY ANIMATIONS OVERLAY */
+        .line-v { position: absolute; top:0; left:calc(50% - 2px); width:4px; height:20px; z-index: 1; pointer-events:none;}
+        .line-v::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 30px; animation: flowD 1.5s infinite linear; }
+        
+        .line-h-l { position: absolute; top:-1px; right:50%; width:50%; height:4px; z-index: 1; pointer-events:none;}
+        .line-h-l::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowL 1.5s infinite linear; }
+        
+        .line-h-r { position: absolute; top:-1px; left:50%; width:50%; height:4px; z-index: 1; pointer-events:none;}
+        .line-h-r::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowR 1.5s infinite linear; }
 
-        @keyframes flowLeft { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-        @keyframes flowRight { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-        @keyframes flowDown { 0% { background-position: 0 -200%; } 100% { background-position: 0 200%; } }
+        @keyframes flowD { from { background-position: 0 -30px; } to { background-position: 0 100%; } }
+        @keyframes flowR { from { background-position: -50px 0; } to { background-position: 100% 0; } }
+        @keyframes flowL { from { background-position: 100% 0; } to { background-position: -50px 0; } }
 
-        .org-card { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-dark); border-top: 4px solid var(--secondary); border-radius: 14px; padding: 15px; width: 220px; text-align: center; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.5); backdrop-filter: blur(10px); transition: 0.3s; margin: 0 auto; display: inline-block; z-index: 5;}
-        .org-card.editable { cursor: pointer; border-style: dashed; border-top: 4px dashed #ef4444; }
-        .org-card.editable:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4); }
-        .org-icon { width: 45px; height: 45px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; color: white; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
-        .org-jabatan { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;}
-        .org-nama { font-size: 14px; color: white; font-weight: 900; margin-bottom: 8px; text-transform: uppercase;}
-        .org-anggota { font-size: 10px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; line-height: 1.4; border: 1px solid rgba(255,255,255,0.05); text-align: left; white-space: pre-wrap;}
+        /* ADMIN SIDE BRANCH CSS */
+        .trunk-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .trunk-line { width: 2px; height: 60px; background: rgba(56,189,248, 0.3); position: relative; margin: 0 auto; z-index:0;}
+        .trunk-line-energy { position:absolute; top:0; left:-1px; width:4px; height:100%; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 30px; background-repeat: no-repeat; animation: flowD 1.5s infinite linear; z-index:1;}
+        .admin-branch { position: absolute; right: 1px; top: 50%; display: flex; align-items: center; width:140px; height:2px; background: rgba(56,189,248, 0.3); }
+        .admin-branch-energy { position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowL 1.5s infinite linear; z-index:1;}
+        .admin-box-wrap { position:absolute; left: -160px; top:50%; transform:translateY(-50%); z-index:10; }
+
+        /* ORG CARD STYLING */
+        .org-box { background: rgba(30, 41, 59, 0.95); border: 1px solid var(--border-dark); border-radius: 8px; width: 160px; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden; position: relative; z-index: 5; transition:0.2s;}
+        .org-box.editable:hover { box-shadow: 0 0 15px #10b981; transform: scale(1.05); cursor:pointer; border-color:#10b981;}
+        .org-box-header { background: #94a3b8; color: #0f172a; font-size: 10px; font-weight: 900; padding: 6px; text-transform: uppercase; border-bottom: 1px solid #475569; }
+        .org-box-body { padding: 10px 5px; color: white; font-size: 13px; font-weight: 800; text-transform: uppercase; min-height: 20px;}
+        
+        .org-sub-box { background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border-dark); border-radius: 8px; width: 140px; margin: 0 auto; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 15px; position: relative;}
+        .org-sub-box::before { content: ''; position: absolute; top: -16px; left: calc(50% - 1px); width: 2px; height: 16px; background: rgba(56,189,248, 0.3); }
+        .org-sub-energy { position: absolute; top: -16px; left: calc(50% - 2px); width: 4px; height: 16px; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 20px; animation: flowD 1.5s infinite linear; }
+        .org-sub-header { background: #cbd5e1; color: #0f172a; font-size: 9px; font-weight: 900; padding: 5px; text-transform: uppercase; }
+        .org-sub-body { padding: 10px; color: #f8fafc; font-size: 10px; font-weight: 600; text-align: center; white-space: pre-line; line-height:1.5;}
 
         .btn-zoom { background: rgba(15,23,42,0.8); color: var(--secondary); border: 1px solid var(--secondary); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 18px; box-shadow: 0 0 15px rgba(56,189,248,0.3); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
         .btn-zoom:active { transform: scale(0.9); background: var(--secondary); color: white; }
         .org-viewport-scroll::-webkit-scrollbar { display: none; }
+        
+        /* SURKOM & OTHERS UI */
+        .pdf-split-card { background: rgba(30, 41, 59, 0.7); border: 1px solid var(--secondary); border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .file-upload-zone { border: 2px dashed var(--secondary); padding: 30px; border-radius: 20px; text-align: center; cursor: pointer; background: rgba(56, 189, 248, 0.05); }
+        .file-upload-zone:hover { background: rgba(56, 189, 248, 0.1); }
+        #dynamic-editor-body { max-height: 50vh; overflow-y: auto; padding-right: 5px; margin-bottom: 15px; }
+        .dyn-input-group { margin-bottom: 12px; }
+        .dyn-input-group label { color: #8b5cf6; font-size: 10px; margin-bottom: 4px; }
+        .dyn-input-group input, .dyn-input-group textarea { background: rgba(0,0,0,0.5); padding: 10px; font-size: 13px; }
+        .tab-container-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
+        .tab-container-scroll::-webkit-scrollbar { height: 6px; }
+        .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -2049,123 +1962,11 @@
         </div>
     </div>
     <!-- ========================================== -->
-    <!-- MODAL PREVIEW PDF SURKOM (HIGH RESOLUTION) -->
-    <!-- ========================================== -->
-    <div id="surkom-preview-modal" class="security-modal" style="z-index:99999; padding:10px;">
-        <div style="background:var(--card-dark); width:100%; max-width:800px; border-radius:15px; display:flex; flex-direction:column; height:90vh; border:1px solid #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.3);">
-            <div style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="margin:0; color:#38bdf8;"><i class="fas fa-search-plus"></i> Preview Detail Halaman <span id="surkom-preview-page-num"></span></h3>
-                <button type="button" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:transparent; border:none; color:#ef4444; font-size:24px; cursor:pointer;"><i class="fas fa-times-circle"></i></button>
-            </div>
-            
-            <div style="flex:1; overflow:auto; padding:10px; display:flex; justify-content:center; align-items:flex-start; background:#000;">
-                <div id="surkom-preview-loading" style="color:white; margin-top:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat Resolusi Tinggi...</div>
-                <canvas id="surkom-preview-canvas" style="max-width:100%; height:auto; display:none;"></canvas>
-            </div>
-            
-            <div style="padding:15px; border-top:1px solid rgba(255,255,255,0.1);">
-                <button type="button" class="btn-submit" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:linear-gradient(135deg, #10b981, #059669);">
-                    <i class="fas fa-check"></i> TUTUP PREVIEW
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- CYBER SECURITY TERMINAL, METRICS, & ENGINE -->
-    <!-- ========================================== -->
-    <div id="cyber-security-panel" class="security-modal">
-        <div style="background:var(--card-dark); width:100%; max-width:500px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 40px rgba(16,185,129,0.2); display:flex; flex-direction:column; align-items:center;">
-            <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
-            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 1px;">CYBER DEFENSE SYSTEM</h2>
-            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
-            
-            <div class="cyber-log" id="cyber-log-container" style="width: 100%; height: 220px; background: #020617; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-family: 'Courier New', Courier, monospace; color: #10b981; padding: 15px; font-size: 11px; text-align: left; overflow: hidden; position: relative;"></div>
-            
-            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">
-                TUTUP PANEL KEAMANAN
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // ==========================================
-        // 1. ENGINE METRIK REALTIME & SECURITY
-        // ==========================================
-        window.jalankanEngineMetrik = function() {
-            setInterval(() => {
-                let netType = "4G"; let netColor = "#10b981"; let speedVal = "--"; let speedColor = "#38bdf8"; 
-                if (navigator.connection) {
-                    const conn = navigator.connection;
-                    netType = conn.effectiveType ? conn.effectiveType.toUpperCase() : "WIFI";
-                    if (conn.downlink) {
-                        let mbps = conn.downlink;
-                        if (mbps < 1.0) { speedVal = Math.round(mbps * 1000) + " Kbps"; speedColor = "#f59e0b"; netColor = "#f59e0b"; } 
-                        else { speedVal = mbps.toFixed(1) + " Mbps"; }
-                    }
-                    if (conn.downlink < 0.5) { netColor = "#ef4444"; speedColor = "#ef4444"; netType = "POOR"; }
-                } else { netType = "WIFI/4G"; speedVal = "Optimum"; }
-                
-                let baseCpu = Math.floor(Math.random() * 12) + 5; let cpuColor = "#34d399";
-                if (netColor === "#ef4444") baseCpu += 20; 
-                if (baseCpu > 25) cpuColor = "#f59e0b";
-                
-                const elNet = document.getElementById('live-net'); const elSpeed = document.getElementById('live-speed'); const elCpu = document.getElementById('live-cpu');
-                if(elNet) { elNet.innerText = netType; elNet.style.color = netColor; }
-                if(elSpeed) { elSpeed.innerText = speedVal; elSpeed.style.color = speedColor; }
-                if(elCpu) { elCpu.innerText = baseCpu + "%"; elCpu.style.color = cpuColor; }
-            }, 2000); 
-        };
-
-        let cyberScanInterval;
-        const scanPhrases = [ "Memeriksa integritas DOM HTML...", "Ping Firebase Server Database...", "Menganalisa paket trafik data masuk...", "Filter script XSS aktif & siaga...", "Sistem Bersih. Tidak ada injeksi malware.", "Koneksi Enkripsi SSL Firestore aktif.", "Sinkronisasi Cloud sukses.", "Memblokir request tidak memiliki token otoritas..." ];
-
-        window.logKeamanan = function(pesan, tipe = "info") {
-            const logContainer = document.getElementById('cyber-log-container'); 
-            if(!logContainer) return;
-            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
-            let color = tipe === "ancaman" ? "#ef4444" : tipe === "scan" ? "#f59e0b" : "#10b981";
-            let prefix = tipe === "ancaman" ? "[BLOCKED]" : tipe === "scan" ? "[SCANNING]" : "[SECURE]";
-            logContainer.innerHTML += `<div style="color:${color}; margin-bottom:4px; line-height:1.4;">[${time}] ${prefix} ${pesan}</div>`;
-            logContainer.scrollTop = logContainer.scrollHeight; 
-            if(logContainer.childElementCount > 50) logContainer.removeChild(logContainer.firstChild);
-        };
-
-        window.bukaPanelKeamanan = function() {
-            document.getElementById('cyber-security-panel').style.display = 'flex';
-            document.getElementById('cyber-log-container').innerHTML = `<div style="color: #38bdf8; margin-bottom:4px;">[SYSTEM] Memulai protokol Firewall Firebase v3.0...</div>`;
-            cyberScanInterval = setInterval(() => {
-                const phrase = scanPhrases[Math.floor(Math.random() * scanPhrases.length)];
-                let type = "scan";
-                if(phrase.includes("Bersih") || phrase.includes("aktif") || phrase.includes("sukses")) type = "info";
-                if(phrase.includes("Memblokir")) type = "ancaman";
-                window.logKeamanan(phrase, type);
-            }, 1200); 
-        };
-
-        window.tutupPanelKeamanan = function() { document.getElementById('cyber-security-panel').style.display = 'none'; clearInterval(cyberScanInterval); };
-
-        setInterval(() => {
-            const texts = ["Cyber Security", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
-            const shieldText = document.getElementById('shield-text');
-            if(shieldText) shieldText.innerText = texts[Math.floor(Math.random() * texts.length)];
-        }, 3500);
-
-        window.amankanData = function(str) {
-            if (typeof str !== 'string') return str;
-            let original = str;
-            let aman = str.replace(/<script[^>]*?>.*?<\/script>/gi, '').replace(/<iframe[^>]*?>.*?<\/iframe>/gi, '').replace(/<[\/\!]*?[^<>]*?>/gi, '').replace(/javascript:/gi, '').replace(/on\w+=/gi, '');
-            if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan.`, "ancaman");
-            return aman;
-        };
-    </script>
-
-    <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
     <!-- ========================================== -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, getDoc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, where, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
         const firebaseConfig = {
@@ -2183,7 +1984,7 @@
         const auth = getAuth(app); 
         const provider = new GoogleAuthProvider();
 
-        // Global Variables
+        // GLOBAL VARIABLES
         window.infoDatabase = []; window.notulenDatabase = []; window.ptDatabase = []; window.admHarianDatabase = []; 
         window.arrayNaikMold = []; window.pkmDatabase = []; window.dataProyekWS = []; window.arrayTugasBaru = [];
         window.divisiAktif = ""; window.kategoriInfoAktif = ""; window.chartUni = null; window.chartBi = null; window.chartMulti = null;
@@ -2196,12 +1997,12 @@
         window.orgZoomScale = 1.0; window.isDraggingOrg = false; window.startXOrg = 0; window.startYOrg = 0; window.scrollLeftOrg = 0; window.scrollTopOrg = 0;
 
         const defaultOrg = [
-            { id: "org_head", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "Control Produksi Injection" },
+            { id: "org_head", level: 1, jabatan: "DEPT. HEAD (CONTROL PROD INJECTION)", nama: "EDI JUNAEDI", anggota: "" },
             { id: "org_admin", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
-            { id: "org_sec", level: 2, jabatan: "SECTION HEAD", nama: "HERU NUGRAHA", anggota: "Maintenance, Repair Injection & Mold Store" },
-            { id: "org_f1", level: 3, jabatan: "FOREMAN INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
-            { id: "org_f2", level: 3, jabatan: "FOREMAN INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
-            { id: "org_f3", level: 3, jabatan: "FOREMAN INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
+            { id: "org_sec", level: 2, jabatan: "MAINTENANCE, REPAIR INJECTION & MOLD STORE SECTION.HEAD", nama: "HERU NUGRAHA", anggota: "" },
+            { id: "org_f1", level: 3, jabatan: "FOREMAN GROUP INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
+            { id: "org_f2", level: 3, jabatan: "FOREMAN GROUP INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
+            { id: "org_f3", level: 3, jabatan: "FOREMAN GROUP INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
             { id: "org_store", level: 3, jabatan: "MOLD STORE FOREMAN", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)\n- NANANG (KARTAP)\n- SUPRIYATNA (PKWT)\n- HERMAN (PKWT)\n- MUSTOPA (PKWT)\n- ENDING (SO)\n- FIRDI (PKWT)\n- DASLAM (PKWT)" },
             { id: "org_dev", level: 3, jabatan: "DEVELOPMENT FOREMAN", nama: "TARMUJI", anggota: "" },
             { id: "org_machinery", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "- AHMAD ROFII (PKWT)\n- ENOH (SO)\n- WAWAN S (SO)\n- ARIS (PKWT)\n- BAYU (PKWT)\n- TOPIK H (SO)\n- AGI G (SO)\n- ZAENUDIN (PKWT)\n- RIDWAN (PKWT)\n- ARUL (OS)\n- YUSRIL MAHENDRA (PKWT)" }
@@ -2296,16 +2097,6 @@
             else { const judul = document.getElementById('judul-divisi'); if(judul) judul.innerText = namaDivisi; window.navigasi('divisi-screen'); if(namaDivisi === 'DIVISI MOLD WORKSHOP') await window.ambilDataServerWS(); } 
         }
 
-        window.cetakPDFUniversal = function() { try { window.print(); } catch (e) { alert("Gunakan fitur Simpan PDF browser."); } };
-        window.cetakGambarUniversal = function(targetId, namaFile) { 
-            window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); 
-            setTimeout(() => { 
-                html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#040d1a" })
-                .then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); })
-                .catch(e => { console.error(e); alert("Gagal print gambar."); window.toggleLoader(false); }); 
-            }, 200); 
-        }
-
         // =========================================================================
         // LOGIKA STRUKTUR ORGANISASI: ADMIN SEJAJAR SECTION HEAD & FLOWING LINES
         // =========================================================================
@@ -2331,34 +2122,71 @@
             const container = document.getElementById('org-tree-render');
             if(!container) return;
 
-            const head = window.orgDatabase.find(o => o.level === 1) || { id: "org_head", jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI" };
-            const admin = window.orgDatabase.find(o => o.jabatan.includes("ADMIN")) || { id: "org_admin", jabatan: "ADMIN", nama: "BENNY F" };
-            const sec = window.orgDatabase.find(o => o.level === 2 && !o.jabatan.includes("ADMIN")) || { id: "org_sec", jabatan: "SECTION HEAD", nama: "HERU NUGRAHA" };
+            const head = window.orgDatabase.find(o => o.level === 1) || { id: "org_head", jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" };
+            const admin = window.orgDatabase.find(o => o.jabatan.includes("ADMIN")) || { id: "org_admin", jabatan: "ADMIN", nama: "BENNY F", anggota: "" };
+            const sec = window.orgDatabase.find(o => o.level === 2 && !o.jabatan.includes("ADMIN")) || { id: "org_sec", jabatan: "SECTION HEAD", nama: "HERU NUGRAHA", anggota: "" };
             const level3List = window.orgDatabase.filter(o => o.level === 3);
 
-            let html = `
-            <ul>
-                <li>
-                    ${window.buatKartuOrgNode(head)}
-                    <div class="node-connector"></div>
-                    <ul>
-                        <li>
-                            ${window.buatKartuOrgNode(admin)}
-                        </li>
-                        <li>
-                            ${window.buatKartuOrgNode(sec)}
-                            <div class="node-connector"></div>
-                            <ul>`;
+            // Membentuk Rangkaian Elemen HTML Custom Sci-Fi
+            let html = `<div class="trunk-wrapper">`;
             
-            level3List.forEach(item => {
-                html += `<li>${window.buatKartuOrgNode(item)}</li>`;
-            });
+            // 1. DEPT HEAD
+            html += window.buatKartuUtama(head);
 
-            html += `       </ul>
-                        </li>
-                    </ul>
-                </li>
-            </ul>`;
+            // 2. TRUNK (GARIS) MENUJU SECTION HEAD DENGAN CABANG ADMIN KE KIRI
+            html += `
+            <div class="trunk-line">
+                <div class="trunk-line-energy"></div>
+                <div class="admin-branch">
+                    <div class="admin-branch-energy"></div>
+                    <div class="admin-box-wrap">
+                        ${window.buatKartuUtama(admin)}
+                    </div>
+                </div>
+            </div>`;
+
+            // 3. SECTION HEAD
+            html += window.buatKartuUtama(sec);
+
+            // 4. TRUNK (GARIS) MENUJU BARISAN FOREMAN
+            html += `
+            <div class="trunk-line" style="height:30px;">
+                <div class="trunk-line-energy"></div>
+            </div>`;
+
+            // 5. BARISAN FOREMAN (LEVEL 3) BESERTA KOTAK ANGGOTANYA
+            html += `<ul>`;
+            level3List.forEach((item, index) => {
+                let energyLines = `<div class="line-v"></div>`;
+                if (level3List.length > 1) {
+                    if (index === 0) {
+                        energyLines += `<div class="line-h-r"></div>`;
+                    } else if (index === level3List.length - 1) {
+                        energyLines += `<div class="line-h-l"></div>`;
+                    } else {
+                        energyLines += `<div class="line-h-l"></div><div class="line-h-r"></div>`;
+                    }
+                }
+                
+                let membersHtml = "";
+                if (item.anggota && item.anggota.trim() !== "") {
+                    membersHtml = `
+                    <div class="org-sub-box">
+                        <div class="org-sub-energy"></div>
+                        <div class="org-sub-header"><i class="fas fa-users"></i> TIM / ANGGOTA</div>
+                        <div class="org-sub-body">${item.anggota}</div>
+                    </div>`;
+                }
+
+                html += `
+                <li>
+                    ${energyLines}
+                    ${window.buatKartuUtama(item)}
+                    ${membersHtml}
+                </li>`;
+            });
+            html += `</ul>`;
+            html += `</div>`; // Close trunk-wrapper
 
             container.innerHTML = html;
 
@@ -2368,27 +2196,23 @@
                 btnLock.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
                 btnLock.style.borderColor = "#ef4444";
                 btnLock.innerHTML = `<i class="fas fa-lock-open"></i> Kunci Edit`;
-                document.getElementById('teks-info-org.').innerHTML = `<span style="color:#ef4444; font-weight:900;"><i class="fas fa-exclamation-triangle"></i> MODE EDIT AKTIF! Klik kotak jabatan untuk merubah nama.</span>`;
+                document.getElementById('teks-info-org').innerHTML = `<span style="color:#ef4444; font-weight:900;"><i class="fas fa-exclamation-triangle"></i> MODE EDIT AKTIF! Klik kotak jabatan untuk merubah nama.</span>`;
             } else {
                 btnLock.style.background = "rgba(0,0,0,0.3)";
                 btnLock.style.borderColor = "rgba(255,255,255,0.2)";
                 btnLock.innerHTML = `<i class="fas fa-lock"></i> Edit`;
+                document.getElementById('teks-info-org').innerHTML = `<i class="fas fa-arrows-alt"></i> Geser layar untuk melihat. Gunakan tombol zoom.`;
             }
         }
 
-        window.buatKartuOrgNode = function(data) {
+        window.buatKartuUtama = function(data) {
             let editableClass = window.isOrgUnlocked ? "editable" : "";
             let onclickAttr = window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${data.docId || data.id}')"` : "";
-            let icon = data.level === 1 ? "fa-user-secret" : data.jabatan.includes("ADMIN") ? "fa-user-edit" : data.level === 2 ? "fa-user-tie" : "fa-hard-hat";
-            let colorBg = data.level === 1 ? "#ef4444" : data.jabatan.includes("ADMIN") ? "#a855f7" : data.level === 2 ? "#f59e0b" : "#38bdf8";
-            let anggotaHtml = data.anggota ? `<div class="org-anggota">${data.anggota}</div>` : "";
-
+            
             return `
-            <div class="org-card ${editableClass}" ${onclickAttr}>
-                <div class="org-icon" style="background:${colorBg};"><i class="fas ${icon}"></i></div>
-                <div class="org-jabatan">${data.jabatan}</div>
-                <div class="org-nama">${data.nama}</div>
-                ${anggotaHtml}
+            <div class="org-box ${editableClass}" ${onclickAttr}>
+                <div class="org-box-header">${data.jabatan}</div>
+                <div class="org-box-body" style="display:flex; align-items:center; justify-content:center;">${data.nama}</div>
             </div>`;
         }
 
@@ -2822,7 +2646,7 @@
         }
 
         window.bukaPinGodMode = function() { if(navigator.vibrate) navigator.vibrate([50]); document.getElementById('god-mode-pin-modal').style.display = 'flex'; document.getElementById('msg-pin-error').style.display = 'none'; document.getElementById('input-pin-godmode').value = ""; }
-        window.verifikasiPinGodMode = function() { const pin = document.getElementById('input-pin-godmode').value; if(pin === "2025") { document.getElementById('god-mode-pin-modal').style.display = 'none'; window.navigasi('god-mode-screen'); window.gantiTabGodMode(document.querySelector('.gm-tab'), 'informasi_mold'); } else { document.getElementById('msg-pin-error').style.display = 'block'; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } }
+        window.verifikasiPinGodMode = function() { const pin = document.getElementById('input-pin-godmode').value; if(pin === "2025") { if(window.logKeamanan) window.logKeamanan(`[CRITICAL] Akses GOD MODE Terbuka!`, "info"); document.getElementById('god-mode-pin-modal').style.display = 'none'; window.navigasi('god-mode-screen'); window.gantiTabGodMode(document.querySelector('.gm-tab'), 'informasi_mold'); } else { document.getElementById('msg-pin-error').style.display = 'block'; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } }
         window.gantiTabGodMode = function(el, koleksi) { document.querySelectorAll('.gm-tab').forEach(t => t.classList.remove('active')); if(el) el.classList.add('active'); window.gmKoleksiAktif = koleksi; window.muatDataGodMode(koleksi); }
         window.muatDataGodMode = async function(koleksi) { 
             const container = document.getElementById('gm-log-container'); container.innerHTML = `<div style="text-align:center; margin-top:50px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p></div>`; window.gmDataAktif = []; 
