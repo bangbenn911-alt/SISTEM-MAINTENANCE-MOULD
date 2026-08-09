@@ -328,16 +328,48 @@
         .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
 
         /* ======================================================== */
-        /* --- STRUKTUR ORGANISASI CSS --- */
+        /* --- STRUKTUR ORGANISASI CSS (FLOWING LINES & ZOOM) --- */
         /* ======================================================== */
-        .org-level { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; position: relative; }
-        .org-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-dark); border-top: 4px solid var(--secondary); border-radius: 14px; padding: 15px; width: 100%; max-width: 250px; text-align: center; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); backdrop-filter: blur(10px); transition: 0.3s; }
-        .org-card.editable { cursor: pointer; border-style: dashed; }
-        .org-card.editable:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4); }
-        .org-icon { width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; color: white; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .org-tree { display: inline-flex; justify-content: center; position: relative; padding-top: 20px; width:100%;}
+        .org-tree ul { padding-top: 30px; position: relative; display: flex; justify-content: center; padding-left: 0; list-style: none; margin: 0; }
+        .org-tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 30px 10px 0 10px; }
+
+        .org-tree li::before, .org-tree li::after {
+            content: ''; position: absolute; top: 0; right: 50%; width: 50%; height: 3px;
+            background: linear-gradient(90deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
+            background-size: 200% 100%; animation: flowLeft 1.5s infinite linear;
+        }
+        .org-tree li::after { right: auto; left: 50%; animation: flowRight 1.5s infinite linear; }
+        .org-tree li:only-child::after, .org-tree li:only-child::before { display: none; }
+        .org-tree li:only-child { padding-top: 0; }
+        .org-tree li:first-child::before, .org-tree li:last-child::after { display: none; }
+
+        .node-connector {
+            position: absolute; top: 0; left: calc(50% - 1.5px); width: 3px; height: 30px;
+            background: linear-gradient(180deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
+            background-size: 100% 200%; animation: flowDown 1.5s infinite linear;
+        }
+        .org-tree ul::before {
+            content: ''; position: absolute; top: 0; left: calc(50% - 1.5px); width: 3px; height: 30px;
+            background: linear-gradient(180deg, rgba(56,189,248,0), #38bdf8, rgba(56,189,248,0));
+            background-size: 100% 200%; animation: flowDown 1.5s infinite linear;
+        }
+
+        @keyframes flowLeft { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        @keyframes flowRight { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+        @keyframes flowDown { 0% { background-position: 0 -200%; } 100% { background-position: 0 200%; } }
+
+        .org-card { background: rgba(15, 23, 42, 0.9); border: 1px solid var(--border-dark); border-top: 4px solid var(--secondary); border-radius: 14px; padding: 15px; width: 220px; text-align: center; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.5); backdrop-filter: blur(10px); transition: 0.3s; margin: 0 auto; display: inline-block; z-index: 5;}
+        .org-card.editable { cursor: pointer; border-style: dashed; border-top: 4px dashed #ef4444; }
+        .org-card.editable:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4); }
+        .org-icon { width: 45px; height: 45px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 20px; color: white; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         .org-jabatan { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;}
-        .org-nama { font-size: 16px; color: white; font-weight: 900; margin-bottom: 8px; text-transform: uppercase;}
-        .org-anggota { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; line-height: 1.4; border: 1px solid rgba(255,255,255,0.05); text-align: left; white-space: pre-wrap;}
+        .org-nama { font-size: 14px; color: white; font-weight: 900; margin-bottom: 8px; text-transform: uppercase;}
+        .org-anggota { font-size: 10px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; line-height: 1.4; border: 1px solid rgba(255,255,255,0.05); text-align: left; white-space: pre-wrap;}
+
+        .btn-zoom { background: rgba(15,23,42,0.8); color: var(--secondary); border: 1px solid var(--secondary); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 18px; box-shadow: 0 0 15px rgba(56,189,248,0.3); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .btn-zoom:active { transform: scale(0.9); background: var(--secondary); color: white; }
+        .org-viewport-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -660,12 +692,12 @@
                 <input type="text" class="profil-search-input" placeholder="Search">
             </div>
 
-            <!-- MENU BARU: STRUKTUR ORGANISASI (SUDAH DIPISAH) -->
+            <!-- MENU STRUKTUR ORGANISASI -->
             <div class="profil-list-item" onclick="window.navigasi('struktur-organisasi-screen')" style="border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.15);">
                 <div class="profil-item-icon"><i class="fas fa-sitemap" style="color:#10b981;"></i></div>
                 <div class="profil-item-text">
                     <div class="profil-item-title" style="color:#10b981;">Struktur Organisasi</div>
-                    <div class="profil-item-sub">Lihat Hierarki Tim Profesional</div>
+                    <div class="profil-item-sub">Lihat Hierarki Tim Penuh Interaktif</div>
                 </div>
                 <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#10b981;"></i></div>
             </div>
@@ -751,24 +783,44 @@
         </div>
     </div>
     <!-- ========================================================= -->
-    <!-- STRUKTUR ORGANISASI SCREEN (EKSEKUTIF)                    -->
+    <!-- STRUKTUR ORGANISASI SCREEN (INTERAKTIF & ZOOM)            -->
     <!-- ========================================================= -->
     <div id="struktur-organisasi-screen" class="screen">
-        <div class="content-wrapper-wide">
-            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important; display:flex; justify-content:space-between; align-items:center;">
+        <div class="content-wrapper-wide" style="max-width: 100%; padding: 15px;">
+            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
                 <h2 style="margin:0;"><i class="fas fa-sitemap" style="margin-right:10px;"></i> STRUKTUR ORGANISASI</h2>
                 <button type="button" id="btn-lock-org" onclick="window.bukaGembokOrg()" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s;">
                     <i class="fas fa-lock" id="icon-lock-org"></i> Edit
                 </button>
             </div>
             
-            <div class="dark-panel" style="padding:30px 15px; overflow-x:auto;">
-                <p id="teks-info-org" style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:30px;"><i class="fas fa-info-circle"></i> Klik tombol Gembok (Edit) di atas untuk memperbarui data hierarki.</p>
+            <div class="dark-panel" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
                 
-                <div id="org-chart-container" style="min-width: 800px;">
-                    <!-- Konten Kartu Hierarki Akan Dirender Oleh Javascript Secara Dinamis -->
-                    <div style="text-align:center; color:gray;"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Memuat Struktur...</div>
+                <!-- Info Text & Zoom Controls -->
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
+                    <p id="teks-info-org" style="color:var(--text-muted); font-size:11px; margin:0; background:rgba(0,0,0,0.5); padding:8px 12px; border-radius:8px; border:1px solid var(--border-dark);"><i class="fas fa-arrows-alt"></i> Geser layar untuk melihat. Gunakan tombol zoom.</p>
+                    
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn-zoom" onclick="window.zoomOrg(-0.1)" title="Perkecil"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn-zoom" onclick="window.zoomOrg(0)" title="Reset Zoom" style="font-size:12px; font-weight:bold; width:auto; padding:0 15px;">RESET</button>
+                        <button class="btn-zoom" onclick="window.zoomOrg(0.1)" title="Perbesar"><i class="fas fa-search-plus"></i></button>
+                    </div>
                 </div>
+                
+                <!-- Viewport untuk Drag & Drop Panning -->
+                <div id="org-viewport" class="org-viewport-scroll" style="flex:1; overflow:auto; cursor:grab; position:relative; background:radial-gradient(circle at center, rgba(56,189,248,0.05) 0%, transparent 70%); border:1px dashed var(--border-dark); border-radius:14px;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)">
+                    
+                    <!-- Wrapper yang akan di-Scale (Zoom) -->
+                    <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 40px; min-width: 1500px; display:flex; justify-content:center;">
+                        
+                        <!-- Konten Tree (Pohon Hierarki) Render Dinamis -->
+                        <div id="org-tree-render" class="org-tree">
+                            <div style="text-align:center; color:gray; width:100%;"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Merakit Jalur Energi...</div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -815,7 +867,7 @@
             <div style="display:flex; gap:10px; margin-top:10px;">
                 <button type="button" class="btn-submit" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
                 <button type="button" class="btn-submit" onclick="window.simpanEditOrg()" style="flex:2; background: linear-gradient(135deg, #38bdf8, #0284c7);">
-                    <i class="fas fa-save"></i> SIMPAN KE DATABASE
+                    <i class="fas fa-save"></i> SIMPAN PERUBAHAN
                 </button>
             </div>
         </div>
@@ -1031,7 +1083,7 @@
             <!-- Pos Kategori (Tabs) -->
             <div class="god-mode-tabs">
                 <div class="gm-tab active" onclick="window.gantiTabGodMode(this, 'informasi_mold')"><i class="fas fa-info-circle"></i> Info Mold</div>
-                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen_index')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
+                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'ide_saran_box')"><i class="fas fa-lightbulb"></i> Ide & Saran</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'notulen_meeting')"><i class="fas fa-handshake"></i> Notulen Meeting</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'workshop_projects')"><i class="fas fa-cogs"></i> Proyek Workshop</div>
@@ -1105,6 +1157,7 @@
             </div>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- DIVISI ADM MOLD (KINERJA HARIAN & GOSOK MOLD)             -->
     <!-- ========================================================= -->
@@ -2138,15 +2191,17 @@
         // GLOBAL VARIABLES SURKOM BARU
         window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
 
-        // GLOBAL VARIABLES STRUKTUR ORGANISASI
+        // GLOBAL VARIABLES STRUKTUR ORGANISASI (ZOOM & PAN)
         window.isOrgUnlocked = false; window.orgDatabase = [];
+        window.orgZoomScale = 1.0; window.isDraggingOrg = false; window.startXOrg = 0; window.startYOrg = 0; window.scrollLeftOrg = 0; window.scrollTopOrg = 0;
+
         const defaultOrg = [
-            { id: "org_head", level: 1, jabatan: "DEPT. HEAD (CONTROL PROD INJECTION)", nama: "EDI JUNAEDI", anggota: "" },
+            { id: "org_head", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "Control Produksi Injection" },
             { id: "org_admin", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
-            { id: "org_sec", level: 2, jabatan: "SECTION HEAD (MAINT, REPAIR & STORE)", nama: "HERU NUGRAHA", anggota: "" },
-            { id: "org_f1", level: 3, jabatan: "FOREMAN GROUP INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
-            { id: "org_f2", level: 3, jabatan: "FOREMAN GROUP INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
-            { id: "org_f3", level: 3, jabatan: "FOREMAN GROUP INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
+            { id: "org_sec", level: 2, jabatan: "SECTION HEAD", nama: "HERU NUGRAHA", anggota: "Maintenance, Repair Injection & Mold Store" },
+            { id: "org_f1", level: 3, jabatan: "FOREMAN INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
+            { id: "org_f2", level: 3, jabatan: "FOREMAN INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
+            { id: "org_f3", level: 3, jabatan: "FOREMAN INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
             { id: "org_store", level: 3, jabatan: "MOLD STORE FOREMAN", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)\n- NANANG (KARTAP)\n- SUPRIYATNA (PKWT)\n- HERMAN (PKWT)\n- MUSTOPA (PKWT)\n- ENDING (SO)\n- FIRDI (PKWT)\n- DASLAM (PKWT)" },
             { id: "org_dev", level: 3, jabatan: "DEVELOPMENT FOREMAN", nama: "TARMUJI", anggota: "" },
             { id: "org_machinery", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "- AHMAD ROFII (PKWT)\n- ENOH (SO)\n- WAWAN S (SO)\n- ARIS (PKWT)\n- BAYU (PKWT)\n- TOPIK H (SO)\n- AGI G (SO)\n- ZAENUDIN (PKWT)\n- RIDWAN (PKWT)\n- ARUL (OS)\n- YUSRIL MAHENDRA (PKWT)" }
@@ -2202,7 +2257,7 @@
                 document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen')); document.getElementById(idTujuan)?.classList.add('active-screen');
                 window.updateBottomNav(idTujuan); window.scrollTo(0, 0); 
                 if(idTujuan === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); 
-                if(idTujuan === 'struktur-organisasi-screen') window.ambilDataOrg(); // Auto Load Org Chart
+                if(idTujuan === 'struktur-organisasi-screen') window.ambilDataOrg(); 
             } catch (error) { console.error(error); }
         }
 
@@ -2252,15 +2307,14 @@
         }
 
         // =========================================================================
-        // LOGIKA STRUKTUR ORGANISASI (HIERARKI & EDIT DINAMIS)
+        // LOGIKA STRUKTUR ORGANISASI: ADMIN SEJAJAR SECTION HEAD & FLOWING LINES
         // =========================================================================
         window.ambilDataOrg = async function() {
-            window.toggleLoader(true, "Memuat Hierarki...");
+            window.toggleLoader(true, "Memuat Hierarki Interaktif...");
             window.orgDatabase = [];
             try {
                 const snap = await getDocs(collection(window.db, "struktur_organisasi"));
                 if(snap.empty) {
-                    // Inject Default Data Jika Kosong
                     for(let item of defaultOrg) {
                         await setDoc(doc(window.db, "struktur_organisasi", item.id), item);
                         window.orgDatabase.push(item);
@@ -2268,87 +2322,113 @@
                 } else {
                     snap.forEach(d => window.orgDatabase.push({docId: d.id, ...d.data()}));
                 }
-                
-                // Sort by level untuk render yang rapi
-                window.orgDatabase.sort((a,b) => { return a.level - b.level; });
-                window.renderOrgChart();
+                window.renderOrgChartTree();
             } catch(e) { console.error(e); alert("Gagal memuat Struktur Organisasi."); }
             window.toggleLoader(false);
         }
 
-        window.renderOrgChart = function() {
-            const container = document.getElementById('org-chart-container');
+        window.renderOrgChartTree = function() {
+            const container = document.getElementById('org-tree-render');
             if(!container) return;
+
+            const head = window.orgDatabase.find(o => o.level === 1) || { id: "org_head", jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI" };
+            const admin = window.orgDatabase.find(o => o.jabatan.includes("ADMIN")) || { id: "org_admin", jabatan: "ADMIN", nama: "BENNY F" };
+            const sec = window.orgDatabase.find(o => o.level === 2 && !o.jabatan.includes("ADMIN")) || { id: "org_sec", jabatan: "SECTION HEAD", nama: "HERU NUGRAHA" };
+            const level3List = window.orgDatabase.filter(o => o.level === 3);
+
+            let html = `
+            <ul>
+                <li>
+                    ${window.buatKartuOrgNode(head)}
+                    <div class="node-connector"></div>
+                    <ul>
+                        <li>
+                            ${window.buatKartuOrgNode(admin)}
+                        </li>
+                        <li>
+                            ${window.buatKartuOrgNode(sec)}
+                            <div class="node-connector"></div>
+                            <ul>`;
             
-            let html = "";
-            // Render Level 1 (Dept Head)
-            let lvl1 = window.orgDatabase.filter(o => o.level === 1);
-            html += `<div class="org-level">`;
-            lvl1.forEach(o => html += window.buatKartuOrg(o));
-            html += `</div>`;
-            
-            // Garis Penghubung
-            html += `<div style="width:3px; height:40px; background:var(--secondary); margin:0 auto; box-shadow:0 0 10px var(--secondary);"></div>`;
-            
-            // Render Level 2 (Admin & Section Head)
-            let lvl2 = window.orgDatabase.filter(o => o.level === 2);
-            html += `<div class="org-level" style="border-top:3px solid var(--secondary); box-shadow:0 -5px 10px rgba(56,189,248,0.2); padding-top:25px; width:70%; margin:0 auto; display:flex; justify-content:space-around;">`;
-            lvl2.forEach(o => html += window.buatKartuOrg(o));
-            html += `</div>`;
-            
-            // Garis Penghubung
-            html += `<div style="width:3px; height:40px; background:var(--secondary); margin:0 auto; box-shadow:0 0 10px var(--secondary);"></div>`;
-            
-            // Render Level 3 (Barisan Foreman)
-            let lvl3 = window.orgDatabase.filter(o => o.level === 3);
-            html += `<div class="org-level" style="border-top:3px solid var(--secondary); box-shadow:0 -5px 10px rgba(56,189,248,0.2); padding-top:25px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px;">`;
-            lvl3.forEach(o => html += window.buatKartuOrg(o));
-            html += `</div>`;
+            level3List.forEach(item => {
+                html += `<li>${window.buatKartuOrgNode(item)}</li>`;
+            });
+
+            html += `       </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>`;
 
             container.innerHTML = html;
-            
-            // Ubah Warna Tombol Gembok
+
+            // Update Status Teks & Tombol Gembok
             const btnLock = document.getElementById('btn-lock-org');
-            const iconLock = document.getElementById('icon-lock-org');
             if(window.isOrgUnlocked) {
                 btnLock.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
                 btnLock.style.borderColor = "#ef4444";
                 btnLock.innerHTML = `<i class="fas fa-lock-open"></i> Kunci Edit`;
-                document.getElementById('teks-info-org').innerHTML = `<span style="color:#ef4444; font-weight:900; font-size:14px;"><i class="fas fa-exclamation-triangle"></i> MODE EDIT AKTIF! Klik kotak jabatan untuk merubah data.</span>`;
+                document.getElementById('teks-info-org.').innerHTML = `<span style="color:#ef4444; font-weight:900;"><i class="fas fa-exclamation-triangle"></i> MODE EDIT AKTIF! Klik kotak jabatan untuk merubah nama.</span>`;
             } else {
                 btnLock.style.background = "rgba(0,0,0,0.3)";
                 btnLock.style.borderColor = "rgba(255,255,255,0.2)";
                 btnLock.innerHTML = `<i class="fas fa-lock"></i> Edit`;
-                document.getElementById('teks-info-org').innerHTML = `<i class="fas fa-info-circle"></i> Klik tombol Gembok (Edit) di atas untuk memperbarui data hierarki.`;
             }
         }
 
-        window.buatKartuOrg = function(data) {
+        window.buatKartuOrgNode = function(data) {
             let editableClass = window.isOrgUnlocked ? "editable" : "";
             let onclickAttr = window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${data.docId || data.id}')"` : "";
-            
-            let icon = "fa-user-tie"; // Default Icon
-            if(data.level === 1) icon = "fa-user-secret"; // Dept Head
-            if(data.jabatan.includes("ADMIN")) icon = "fa-user-edit";
-            if(data.jabatan.includes("FOREMAN")) icon = "fa-hard-hat";
-            
+            let icon = data.level === 1 ? "fa-user-secret" : data.jabatan.includes("ADMIN") ? "fa-user-edit" : data.level === 2 ? "fa-user-tie" : "fa-hard-hat";
+            let colorBg = data.level === 1 ? "#ef4444" : data.jabatan.includes("ADMIN") ? "#a855f7" : data.level === 2 ? "#f59e0b" : "#38bdf8";
             let anggotaHtml = data.anggota ? `<div class="org-anggota">${data.anggota}</div>` : "";
-            
+
             return `
             <div class="org-card ${editableClass}" ${onclickAttr}>
-                <div class="org-icon" style="background:${data.level === 1 ? '#ef4444' : data.level === 2 ? '#f59e0b' : '#38bdf8'};">
-                    <i class="fas ${icon}"></i>
-                </div>
+                <div class="org-icon" style="background:${colorBg};"><i class="fas ${icon}"></i></div>
                 <div class="org-jabatan">${data.jabatan}</div>
                 <div class="org-nama">${data.nama}</div>
                 ${anggotaHtml}
             </div>`;
         }
 
+        // FUNGSI ZOOM & PAN (GESER & PERBESAR)
+        window.zoomOrg = function(delta) {
+            if(delta === 0) window.orgZoomScale = 1.0;
+            else window.orgZoomScale = Math.min(Math.max(0.5, window.orgZoomScale + delta), 2.0);
+            document.getElementById('org-zoom-wrapper').style.transform = `scale(${window.orgZoomScale})`;
+        }
+
+        window.startPanOrg = function(e) {
+            window.isDraggingOrg = true;
+            const viewport = document.getElementById('org-viewport');
+            viewport.style.cursor = 'grabbing';
+            window.startXOrg = e.pageX - viewport.offsetLeft;
+            window.startYOrg = e.pageY - viewport.offsetTop;
+            window.scrollLeftOrg = viewport.scrollLeft;
+            window.scrollTopOrg = viewport.scrollTop;
+        }
+        window.stopPanOrg = function() {
+            window.isDraggingOrg = false;
+            const viewport = document.getElementById('org-viewport');
+            if(viewport) viewport.style.cursor = 'grab';
+        }
+        window.doPanOrg = function(e) {
+            if(!window.isDraggingOrg) return;
+            e.preventDefault();
+            const viewport = document.getElementById('org-viewport');
+            const x = e.pageX - viewport.offsetLeft;
+            const y = e.pageY - viewport.offsetTop;
+            const walkX = (x - window.startXOrg) * 1.5;
+            const walkY = (y - window.startYOrg) * 1.5;
+            viewport.scrollLeft = window.scrollLeftOrg - walkX;
+            viewport.scrollTop = window.scrollTopOrg - walkY;
+        }
+
         window.bukaGembokOrg = function() {
             if(window.isOrgUnlocked) {
                 window.isOrgUnlocked = false;
-                window.renderOrgChart(); // Kunci kembali
+                window.renderOrgChartTree();
             } else {
                 document.getElementById('org-pin-modal').style.display = 'flex';
                 document.getElementById('msg-pin-error-org').style.display = 'none';
@@ -2361,7 +2441,7 @@
             if(pin === "2025") {
                 window.isOrgUnlocked = true;
                 document.getElementById('org-pin-modal').style.display = 'none';
-                window.renderOrgChart(); // Buka gembok dan berikan border dashed (tanda edit)
+                window.renderOrgChartTree();
             } else {
                 document.getElementById('msg-pin-error-org').style.display = 'block';
                 if(navigator.vibrate) navigator.vibrate(100);
@@ -2372,12 +2452,10 @@
             if(!window.isOrgUnlocked) return;
             const data = window.orgDatabase.find(o => (o.docId || o.id) === id);
             if(!data) return;
-            
             document.getElementById('org-edit-id').value = id;
             document.getElementById('org-edit-jabatan').value = data.jabatan;
             document.getElementById('org-edit-nama').value = data.nama;
             document.getElementById('org-edit-anggota').value = data.anggota || "";
-            
             document.getElementById('org-edit-modal').style.display = 'flex';
         }
 
@@ -2387,29 +2465,19 @@
             const nama = document.getElementById('org-edit-nama').value.toUpperCase();
             const anggota = document.getElementById('org-edit-anggota').value;
             
-            window.toggleLoader(true, "Menyimpan Data ke Server...");
+            window.toggleLoader(true, "Menyimpan Perubahan...");
             try {
-                await updateDoc(doc(window.db, "struktur_organisasi", id), {
-                    jabatan: jabatan,
-                    nama: nama,
-                    anggota: anggota
-                });
-                
-                // Update Lokal Memori
+                await updateDoc(doc(window.db, "struktur_organisasi", id), { jabatan: jabatan, nama: nama, anggota: anggota });
                 const index = window.orgDatabase.findIndex(o => (o.docId || o.id) === id);
                 if(index > -1) {
                     window.orgDatabase[index].jabatan = jabatan;
                     window.orgDatabase[index].nama = nama;
                     window.orgDatabase[index].anggota = anggota;
                 }
-                
                 document.getElementById('org-edit-modal').style.display = 'none';
-                window.renderOrgChart();
-                alert("✅ Berhasil memperbarui data jabatan!");
-            } catch(e) {
-                console.error(e);
-                alert("❌ Gagal menyimpan data: " + e.message);
-            }
+                window.renderOrgChartTree();
+                alert("✅ Struktur berhasil diperbarui!");
+            } catch(e) { console.error(e); alert("Gagal menyimpan: " + e.message); }
             window.toggleLoader(false);
         }
 
@@ -2418,7 +2486,6 @@
         // =========================================================================
         window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null; 
 
-        // Fungsi Convert Base64 ke ArrayBuffer (Untuk Render PDF Server ke Canvas / Merge)
         function base64ToArrayBuffer(base64) {
             var binary_string = window.atob(base64.split(',')[1]);
             var len = binary_string.length;
@@ -2482,7 +2549,6 @@
             } catch(e) { console.error(e); loading.innerHTML = "Gagal memuat preview resolusi tinggi."; }
         }
 
-        // SIMPAN UPLOAD PARALEL (PRO MAX) DENGAN TAG TAHUN
         window.simpanAllSurkomHasil = async function() {
             const operator = window.amankanData(document.getElementById('surkom-operator').value);
             const waktu = document.getElementById('surkom-waktu').value;
@@ -2505,10 +2571,9 @@
                     const newPdf = await PDFDocument.create(); const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
                     newPdf.addPage(copiedPage); const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
                     
-                    // Kita simpan ke koleksi asli agar bergabung dengan data lama Bapak, tapi sekarang ditambah Label TAHUN!
                     const tugasUpload = addDoc(collection(window.db, "surat_komponen"), {
                         judul: judulFinal, operator: operator, waktuInput: waktu, 
-                        tahun: tahunInput, tglStandard: window.dapatkanTanggalLokal(), // Penanda untuk Filter Update
+                        tahun: tahunInput, tglStandard: window.dapatkanTanggalLokal(),
                         filePdfBase64: pdfBase64, halamanAsli: i, timestamp: Date.now()
                     });
                     arrayUpload.push(tugasUpload);
@@ -2522,9 +2587,6 @@
             window.toggleLoader(false);
         }
 
-        // =====================================
-        // FITUR ALL DATA (FILTER, CHECKBOX, FORWARD, UNDUH GLOBAL)
-        // =====================================
         window.bukaAllDataSurkom = async function() { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); }
 
         window.filterTabTahunSurkom = function(tahun, btnEl) {
@@ -2553,7 +2615,7 @@
         window.renderListAllSurkom = async function() {
             const container = document.getElementById('surkom-list-container');
             const keyword = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
-            const filterDate = document.getElementById('surkom-filter-date').value; // Ambil nilai filter tanggal update
+            const filterDate = document.getElementById('surkom-filter-date').value;
             
             if(!window.surkomDatabase || window.surkomDatabase.length === 0) {
                 window.toggleLoader(true, "Mengunduh Arsip Surkom...");
@@ -2566,15 +2628,11 @@
                 window.toggleLoader(false);
             }
             
-            // Proses Filter Multi-Lapis (Kata Kunci + Tahun + Tanggal Update)
             let filterData = window.surkomDatabase.filter(d => {
                 let matchKey = (d.judul || "").toLowerCase().includes(keyword) || (d.operator || "").toLowerCase().includes(keyword);
                 let matchTahun = window.surkomTahunAktif === 'ALL' ? true : (d.tahun === window.surkomTahunAktif);
                 let matchDate = true;
-                if(filterDate) {
-                    // Jika ada data tglStandard, samakan. Jika data lama belum ada, anggap tidak lolos filter (agar akurat)
-                    matchDate = d.tglStandard === filterDate;
-                }
+                if(filterDate) { matchDate = d.tglStandard === filterDate; }
                 return matchKey && matchTahun && matchDate;
             });
             
@@ -2604,7 +2662,6 @@
             container.innerHTML = html;
         }
 
-        // FITUR KLIK KARTU -> PREVIEW PDF RESOLUSI TINGGI
         window.bukaPreviewDariServer = async function(id) {
             const data = window.surkomDatabase.find(d => d.id === id);
             if(data && data.filePdfBase64) {
@@ -2638,7 +2695,6 @@
             let a = document.createElement("a"); a.href = data.filePdfBase64; a.download = `SURKOM_${judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
-        // FITUR UNDUH GLOBAL & MERGE
         window.bukaModalUnduhGlobal = function() {
             const selected = document.querySelectorAll('.chk-surkom-item:checked');
             if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu dengan mencentang kotaknya!");
@@ -2658,7 +2714,7 @@
                         const d = window.surkomDatabase.find(x => x.id === id);
                         if(d) {
                             let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${d.judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                            await new Promise(r => setTimeout(r, 600)); // Delay agar browser tidak nge-hang
+                            await new Promise(r => setTimeout(r, 600));
                         }
                     }
                 } else if(tipe === 'merge') {
@@ -2681,7 +2737,6 @@
             window.toggleLoader(false);
         }
 
-        // FITUR PINDAH DATA (FORWARD) TAHUN
         window.bukaModalForwardSurkom = function() {
             const selected = document.querySelectorAll('.chk-surkom-item:checked');
             if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu!");
@@ -2699,20 +2754,19 @@
                 for(let id of selectedIds) {
                     promises.push(updateDoc(doc(window.db, "surat_komponen", id), { tahun: targetTahun }));
                     let d = window.surkomDatabase.find(x => x.id === id);
-                    if(d) d.tahun = targetTahun; // Update lokal memori agar langsung muncul tanpa download ulang
+                    if(d) d.tahun = targetTahun;
                 }
                 await Promise.all(promises);
                 alert("✅ Berhasil memindahkan " + selectedIds.length + " data ke Subjudul " + targetTahun);
                 document.getElementById('surkom-forward-modal').style.display = 'none';
-                window.toggleModePilihSurkom(); // Matikan mode pilih
-                window.renderListAllSurkom(); // Render ulang daftar
+                window.toggleModePilihSurkom();
+                window.renderListAllSurkom();
             } catch(e) { console.error(e); alert("Gagal memindahkan data ke database."); }
             window.toggleLoader(false);
         }
 
-
         // =========================================================================
-        // ADM MOLD LOGIC (KINERJA HARIAN & GOSOK MOLD)
+        // ADM MOLD LOGIC & GOD MODE
         // =========================================================================
         window.simpanGosokMold = async function() {
             const tgl = document.getElementById('adm-gosok-tgl').value; const shift = document.getElementById('adm-gosok-shift').value;
@@ -2767,11 +2821,8 @@
             } catch (e) { console.error(e); container.innerHTML = `<p style="text-align:center; color:#ef4444;">❌ Gagal memuat database.</p>`; }
         }
 
-        // =========================================================================
-        // GOD MODE: CENTRAL DATABASE LOG & DYNAMIC EDITOR
-        // =========================================================================
         window.bukaPinGodMode = function() { if(navigator.vibrate) navigator.vibrate([50]); document.getElementById('god-mode-pin-modal').style.display = 'flex'; document.getElementById('msg-pin-error').style.display = 'none'; document.getElementById('input-pin-godmode').value = ""; }
-        window.verifikasiPinGodMode = function() { const pin = document.getElementById('input-pin-godmode').value; if(pin === "2025") { if(window.logKeamanan) window.logKeamanan(`[CRITICAL] Akses GOD MODE Terbuka!`, "info"); document.getElementById('god-mode-pin-modal').style.display = 'none'; window.navigasi('god-mode-screen'); window.gantiTabGodMode(document.querySelector('.gm-tab'), 'informasi_mold'); } else { document.getElementById('msg-pin-error').style.display = 'block'; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } }
+        window.verifikasiPinGodMode = function() { const pin = document.getElementById('input-pin-godmode').value; if(pin === "2025") { document.getElementById('god-mode-pin-modal').style.display = 'none'; window.navigasi('god-mode-screen'); window.gantiTabGodMode(document.querySelector('.gm-tab'), 'informasi_mold'); } else { document.getElementById('msg-pin-error').style.display = 'block'; if(navigator.vibrate) navigator.vibrate([100, 50, 100]); } }
         window.gantiTabGodMode = function(el, koleksi) { document.querySelectorAll('.gm-tab').forEach(t => t.classList.remove('active')); if(el) el.classList.add('active'); window.gmKoleksiAktif = koleksi; window.muatDataGodMode(koleksi); }
         window.muatDataGodMode = async function(koleksi) { 
             const container = document.getElementById('gm-log-container'); container.innerHTML = `<div style="text-align:center; margin-top:50px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p></div>`; window.gmDataAktif = []; 
@@ -2798,9 +2849,7 @@
             try { await updateDoc(doc(window.db, koleksi, docId), updatePayload); alert("✅ Record diperbarui!"); window.tutupModalEditorGM(); await window.muatDataGodMode(koleksi); } catch(e) { console.error(e); alert("Gagal update Server: " + e.message); } window.toggleLoader(false); 
         }
 
-        // =========================================================================
-        // SISA MODUL LOGIKA (INFO, IDE, NOTULEN, WS, PKM, AI DASHBOARD)
-        // =========================================================================
+        // SISA MODUL PENDUKUNG (INFO, IDE, NOTULEN, WS, PKM)
         window.bukaSubInfo = async function(kategori) { window.kategoriInfoAktif = kategori; const jsi = document.getElementById('judul-sub-info'); if(jsi) jsi.innerText = kategori; window.navigasi('sub-info-screen'); await window.ambilDataInfoServer(); }
         window.ambilDataInfoServer = async function() { window.toggleLoader(true, "Mengunduh Info..."); window.infoDatabase = []; try { const q = query(collection(window.db, "informasi_mold")); const querySnapshot = await getDocs(q); querySnapshot.forEach((doc) => { if(doc.data().kategori === window.kategoriInfoAktif) window.infoDatabase.push({ id: doc.id, ...doc.data() }); }); window.infoDatabase.sort((a, b) => b.timestamp - a.timestamp); } catch (error) { console.error(error); } window.toggleLoader(false); window.renderInfoList(); }
         window.simpanInfoData = async function() { const nama = window.amankanData(document.getElementById('info-nama').value); const ket = window.amankanData(document.getElementById('info-ket').value); const tgl = document.getElementById('info-tgl').value; const user = window.amankanData(document.getElementById('info-user').value); if(!nama || !tgl) return alert("Judul dan Tanggal harus diisi!"); window.toggleLoader(true, "Menyimpan..."); try { await addDoc(collection(window.db, "informasi_mold"), { kategori: window.kategoriInfoAktif, namaKegiatan: nama, keterangan: ket, tanggal: tgl, pembuat: user || "Admin", timestamp: Date.now() }); alert("Berhasil disimpan!"); document.getElementById('info-nama').value = ""; document.getElementById('info-ket').value = ""; document.getElementById('info-tgl').value = ""; document.getElementById('info-user').value = ""; await window.ambilDataInfoServer(); } catch (error) { console.error(error); alert("Gagal menyimpan: " + error.message); } window.toggleLoader(false); }
