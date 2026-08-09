@@ -2126,77 +2126,140 @@
             } catch(e) { console.error(e); loading.innerHTML = "Gagal memuat preview resolusi tinggi."; }
         }
 
+        
+                // =========================================================================
+        // LOGIKA PENYIMPANAN (UPLOAD PARALEL CEPAT & BACA BRANKAS LAMA)
+        // =========================================================================
         window.simpanAllSurkomHasil = async function() {
-            const operator = window.amankanData(document.getElementById('surkom-operator').value); const waktu = document.getElementById('surkom-waktu').value;
+            const operator = window.amankanData(document.getElementById('surkom-operator').value);
+            const waktu = document.getElementById('surkom-waktu').value;
+            
             if(!operator) return alert("⚠️ Mohon isi Nama Operator Pembuat terlebih dahulu!");
             
             let adaIsi = false;
-            for(let i = 1; i <= window.surkomPageCount; i++) { let elemenInput = document.getElementById(`surkom-judul-${i}`); if(elemenInput && elemenInput.value.trim() !== "") adaIsi = true; }
+            for(let i = 1; i <= window.surkomPageCount; i++) { 
+                let elemenInput = document.getElementById(`surkom-judul-${i}`);
+                if(elemenInput && elemenInput.value.trim() !== "") adaIsi = true; 
+            }
             if(!adaIsi) return alert("⚠️ Minimal berikan 1 judul pada dokumen yang tersisa!");
             
-            window.toggleLoader(true, "AI Mengekstrak & Upload Paralel (Kecepatan Tinggi)...");
+            // Indikator loading diubah agar operator tahu sistem sedang ngebut
+            window.toggleLoader(true, "Mengekstrak & Upload Paralel Kecepatan Tinggi...");
+            
             try {
-                const { PDFDocument } = PDFLib; const originalPdf = await PDFDocument.load(window.surkomOriginalPdfBytes);
-                let arrayUpload = []; 
+                const { PDFDocument } = PDFLib;
+                const originalPdf = await PDFDocument.load(window.surkomOriginalPdfBytes);
+                
+                let arrayUpload = []; // Penampung tugas untuk di-upload serentak
+                
                 for(let i = 1; i <= window.surkomPageCount; i++) {
-                    const inputHalaman = document.getElementById(`surkom-judul-${i}`); if(!inputHalaman) continue; 
-                    const judulRaw = inputHalaman.value.trim(); if(judulRaw === "") continue; 
+                    const inputHalaman = document.getElementById(`surkom-judul-${i}`);
+                    if(!inputHalaman) continue; // Lewati jika sudah dihapus pakai tombol X
+
+                    const judulRaw = inputHalaman.value.trim();
+                    if(judulRaw === "") continue; 
                     const judulFinal = window.amankanData(judulRaw).toUpperCase();
                     
-                    const newPdf = await PDFDocument.create(); const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
-                    newPdf.addPage(copiedPage); const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
+                    const newPdf = await PDFDocument.create();
+                    const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
+                    newPdf.addPage(copiedPage);
+                    const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
                     
-                    const tugasUpload = (async () => {
-                        const docRef = await addDoc(collection(window.db, "surat_komponen_index"), { judul: judulFinal, operator: operator, waktuInput: waktu, halamanAsli: i, timestamp: Date.now() });
-                        await setDoc(doc(window.db, "surat_komponen_files", docRef.id), { filePdfBase64: pdfBase64 });
-                    })();
+                    // Kembalikan ke brankas "surat_komponen" agar bergabung dengan data 65 PDF lama Bapak
+                    const tugasUpload = addDoc(collection(window.db, "surat_komponen"), {
+                        judul: judulFinal,
+                        operator: operator,
+                        waktuInput: waktu,
+                        filePdfBase64: pdfBase64,
+                        halamanAsli: i,
+                        timestamp: Date.now()
+                    });
+                    
                     arrayUpload.push(tugasUpload);
                 }
+                
+                // EKSEKUSI SEMUA UPLOAD SECARA BERSAMAAN (Paralel / Tidak Antri)
                 await Promise.all(arrayUpload);
-                alert("✅ Sistem Selesai! Seluruh file berhasil dipisah dan di-Upload dengan kecepatan tinggi.");
-                document.getElementById('surkom-file-pdf').value = ""; document.getElementById('surkom-operator').value = ""; document.getElementById('surkom-split-area').style.display = 'none'; document.getElementById('surkom-split-container').innerHTML = "";
+                
+                alert("✅ Sistem Selesai! Seluruh file berhasil dipisah dan di-Upload dengan sangat cepat.");
+                
+                document.getElementById('surkom-file-pdf').value = "";
+                document.getElementById('surkom-operator').value = "";
+                document.getElementById('surkom-split-area').style.display = 'none';
+                document.getElementById('surkom-split-container').innerHTML = "";
+                
                 window.bukaAllDataSurkom();
-            } catch(e) { console.error(e); alert("Terjadi kesalahan sistem saat pemrosesan memori: " + e.message); }
+                
+            } catch(e) { 
+                console.error(e); 
+                alert("Terjadi kesalahan sistem: " + e.message); 
+            }
             window.toggleLoader(false);
         }
 
-        window.bukaAllDataSurkom = async function() { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); }
+        window.bukaAllDataSurkom = async function() {
+            window.navigasi('surkom-alldata-screen');
+            await window.renderListAllSurkom();
+        }
 
         window.renderListAllSurkom = async function() {
-            const container = document.getElementById('surkom-list-container'); const keyword = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
+            const container = document.getElementById('surkom-list-container');
+            const searchEl = document.getElementById('surkom-search-key');
+            const keyword = searchEl ? window.amankanData(searchEl.value.toLowerCase()) : "";
             
             if(!window.surkomDatabase || window.surkomDatabase.length === 0 || keyword === "") {
-                window.toggleLoader(true, "Mengambil Index Surkom Cepat..."); window.surkomDatabase = [];
+                window.toggleLoader(true, "Mengunduh Arsip Surkom...");
+                window.surkomDatabase = [];
                 try {
-                    const snap = await getDocs(query(collection(window.db, "surat_komponen_index")));
-                    snap.forEach(doc => { window.surkomDatabase.push({id: doc.id, ...doc.data()}) }); window.surkomDatabase.sort((a,b) => b.timestamp - a.timestamp);
-                } catch(e) { console.error(e); }
+                    // PENTING: Sistem diubah kembali mencari ke brankas lama Bapak
+                    const snap = await getDocs(query(collection(window.db, "surat_komponen")));
+                    snap.forEach(doc => { window.surkomDatabase.push({id: doc.id, ...doc.data()}) });
+                    window.surkomDatabase.sort((a,b) => b.timestamp - a.timestamp);
+                } catch(e) { 
+                    console.error(e); 
+                }
                 window.toggleLoader(false);
             }
             
-            let filterData = window.surkomDatabase.filter(d => (d.judul || "").toLowerCase().includes(keyword) || (d.operator || "").toLowerCase().includes(keyword));
-            if(filterData.length === 0) { container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada Arsip Surat Komponen ditemukan.</p>`; return; }
+            let filterData = window.surkomDatabase.filter(d => 
+                (d.judul || "").toLowerCase().includes(keyword) || 
+                (d.operator || "").toLowerCase().includes(keyword)
+            );
+            
+            if(filterData.length === 0) { 
+                container.innerHTML = `<p style="text-align:center; color:gray; border:2px dashed var(--border-dark); padding:20px; border-radius:15px;">Tidak ada Arsip Surat Komponen ditemukan.</p>`; 
+                return; 
+            }
             
             let html = "";
             filterData.forEach(d => {
-                html += `<div class="progress-card" style="border-left-color:#10b981; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.5);">
-                    <div style="flex:1;"><h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px;"><i class="fas fa-file-contract"></i> ${d.judul}</h3><p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;"><i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}</p></div>
-                    <button type="button" onclick="window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:800; box-shadow:0 4px 10px rgba(16,185,129,0.3);"><i class="fas fa-download"></i> PDF</button>
+                html += `
+                <div class="progress-card" style="border-left-color:#10b981; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.5);">
+                    <div style="flex:1;">
+                        <h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px;"><i class="fas fa-file-contract"></i> ${d.judul}</h3>
+                        <p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;">
+                            <i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}
+                        </p>
+                    </div>
+                    <button type="button" onclick="window.unduhPDFSurkom('${d.id}')" style="background:linear-gradient(135deg, #10b981, #059669); color:white; border:none; padding:10px 15px; border-radius:10px; cursor:pointer; font-weight:800; box-shadow:0 4px 10px rgba(16,185,129,0.3); transition:0.2s;">
+                        <i class="fas fa-download"></i> PDF
+                    </button>
                 </div>`;
             });
             container.innerHTML = html;
         }
 
-        window.unduhPDFSurkom = async function(id, judul) {
-            window.toggleLoader(true, "Mendownload File Fisik PDF...");
-            try {
-                const fileDoc = await getDoc(doc(window.db, "surat_komponen_files", id));
-                if(fileDoc.exists() && fileDoc.data().filePdfBase64) {
-                    let a = document.createElement("a"); a.href = fileDoc.data().filePdfBase64; a.download = `SURKOM_${judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                } else { alert("Kesalahan: File Fisik PDF gagal ditemukan di Server Penyimpanan Berat!"); }
-            } catch(e) { console.error(e); alert("Gagal mendownload PDF karena koneksi jaringan terputus."); }
-            window.toggleLoader(false);
+        window.unduhPDFSurkom = function(id) {
+            const data = window.surkomDatabase.find(d => d.id === id);
+            if(!data || !data.filePdfBase64) return alert("Kesalahan: Data PDF fisik tidak ditemukan di Server!");
+            let a = document.createElement("a");
+            a.href = data.filePdfBase64;
+            a.download = `SURKOM_${data.judul.replace(/ /g, '_')}_CBI.pdf`;
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a);
         }
+
 
         // =========================================================================
         // ADM MOLD LOGIC (KINERJA HARIAN & GOSOK MOLD)
