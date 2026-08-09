@@ -326,6 +326,18 @@
         .tab-container-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
         .tab-container-scroll::-webkit-scrollbar { height: 6px; }
         .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+
+        /* ======================================================== */
+        /* --- STRUKTUR ORGANISASI CSS --- */
+        /* ======================================================== */
+        .org-level { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; position: relative; }
+        .org-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-dark); border-top: 4px solid var(--secondary); border-radius: 14px; padding: 15px; width: 100%; max-width: 250px; text-align: center; position: relative; box-shadow: 0 10px 20px rgba(0,0,0,0.3); backdrop-filter: blur(10px); transition: 0.3s; }
+        .org-card.editable { cursor: pointer; border-style: dashed; }
+        .org-card.editable:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(56, 189, 248, 0.4); }
+        .org-icon { width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 24px; color: white; margin: 0 auto 10px auto; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .org-jabatan { font-size: 11px; color: var(--text-muted); font-weight: 800; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.5px;}
+        .org-nama { font-size: 16px; color: white; font-weight: 900; margin-bottom: 8px; text-transform: uppercase;}
+        .org-anggota { font-size: 11px; color: #cbd5e1; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 8px; line-height: 1.4; border: 1px solid rgba(255,255,255,0.05); text-align: left; white-space: pre-wrap;}
     </style>
 </head>
 <body>
@@ -417,6 +429,7 @@
             <i class="fas fa-user"></i><span>Profil</span>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- 2. BERANDA UTAMA (HUD)                                    -->
     <!-- ========================================================= -->
@@ -647,14 +660,14 @@
                 <input type="text" class="profil-search-input" placeholder="Search">
             </div>
 
-            <!-- List Menu Profil -->
-            <div class="profil-list-item" onclick="window.navigasi('informasi-mold-screen')">
-                <div class="profil-item-icon"><i class="fas fa-sitemap"></i></div>
+            <!-- MENU BARU: STRUKTUR ORGANISASI (SUDAH DIPISAH) -->
+            <div class="profil-list-item" onclick="window.navigasi('struktur-organisasi-screen')" style="border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.15);">
+                <div class="profil-item-icon"><i class="fas fa-sitemap" style="color:#10b981;"></i></div>
                 <div class="profil-item-text">
-                    <div class="profil-item-title">Struktur Organisasi</div>
-                    <div class="profil-item-sub">Lihat hierarki tim saat ini</div>
+                    <div class="profil-item-title" style="color:#10b981;">Struktur Organisasi</div>
+                    <div class="profil-item-sub">Lihat Hierarki Tim Profesional</div>
                 </div>
-                <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#10b981;"></i></div>
             </div>
 
             <div class="profil-list-item" onclick="window.bukaSubInfo('JADWAL KERJA KARYAWAN')">
@@ -720,7 +733,7 @@
                 <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
             </div>
 
-            <!-- MENU BARU: SURAT KOMPONEN -->
+            <!-- MENU SURAT KOMPONEN -->
             <div class="profil-list-item" onclick="window.navigasi('surkom-menu-screen')" style="border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(14, 165, 233, 0.15);">
                 <div class="profil-item-icon"><i class="fas fa-file-contract" style="color:#38bdf8;"></i></div>
                 <div class="profil-item-text">
@@ -737,6 +750,77 @@
             </div>
         </div>
     </div>
+    <!-- ========================================================= -->
+    <!-- STRUKTUR ORGANISASI SCREEN (EKSEKUTIF)                    -->
+    <!-- ========================================================= -->
+    <div id="struktur-organisasi-screen" class="screen">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important; display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="margin:0;"><i class="fas fa-sitemap" style="margin-right:10px;"></i> STRUKTUR ORGANISASI</h2>
+                <button type="button" id="btn-lock-org" onclick="window.bukaGembokOrg()" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s;">
+                    <i class="fas fa-lock" id="icon-lock-org"></i> Edit
+                </button>
+            </div>
+            
+            <div class="dark-panel" style="padding:30px 15px; overflow-x:auto;">
+                <p id="teks-info-org" style="text-align:center; color:var(--text-muted); font-size:12px; margin-bottom:30px;"><i class="fas fa-info-circle"></i> Klik tombol Gembok (Edit) di atas untuk memperbarui data hierarki.</p>
+                
+                <div id="org-chart-container" style="min-width: 800px;">
+                    <!-- Konten Kartu Hierarki Akan Dirender Oleh Javascript Secara Dinamis -->
+                    <div style="text-align:center; color:gray;"><i class="fas fa-spinner fa-spin fa-2x"></i><br>Memuat Struktur...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIN STRUKTUR ORGANISASI -->
+    <div id="org-pin-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; border:1px solid #10b981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); backdrop-filter:blur(15px);">
+            <i class="fas fa-user-shield" style="font-size: 50px; color: #10b981; margin-bottom: 15px; text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI EDIT</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan PIN (2025) untuk merubah Struktur Organisasi</p>
+            
+            <input type="password" id="input-pin-org" class="pin-input-box" style="border-color:#10b981; color:#10b981;" placeholder="••••" maxlength="4">
+            <p id="msg-pin-error-org" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. PIN Salah!</p>
+            
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-pin-modal').style.display='none'; document.getElementById('input-pin-org').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinOrg()" style="flex:2; background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-unlock"></i> BUKA GEMBOK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA JABATAN -->
+    <div id="org-edit-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:450px; border-radius:20px; padding:25px; border:1px solid var(--secondary); box-shadow:0 0 30px rgba(56,189,248,0.3); max-height:90vh; overflow-y:auto;">
+            <h3 style="color:white; margin-top:0; border-bottom:1px dashed var(--border-dark); padding-bottom:15px;"><i class="fas fa-edit" style="color:var(--secondary);"></i> Edit Data Pejabat</h3>
+            <input type="hidden" id="org-edit-id">
+            
+            <div class="form-group">
+                <label>Nama Jabatan / Posisi</label>
+                <input type="text" id="org-edit-jabatan" placeholder="Contoh: DEPT. HEAD" style="background:rgba(0,0,0,0.6); color:var(--secondary);">
+            </div>
+            <div class="form-group">
+                <label>Nama Pejabat Inti</label>
+                <input type="text" id="org-edit-nama" placeholder="Contoh: EDI JUNAEDI" style="text-transform:uppercase;">
+            </div>
+            <div class="form-group">
+                <label>Daftar Anggota Tim (Opsional)</label>
+                <p style="font-size:10px; color:var(--text-muted); margin-top:-5px;">Gunakan baris baru (Enter) untuk memisahkan nama anggota.</p>
+                <textarea id="org-edit-anggota" rows="6" placeholder="Kosongkan jika tidak ada tim...&#10;Misal:&#10;- Budi (SO)&#10;- Andi (PKWT)"></textarea>
+            </div>
+            
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.simpanEditOrg()" style="flex:2; background: linear-gradient(135deg, #38bdf8, #0284c7);">
+                    <i class="fas fa-save"></i> SIMPAN KE DATABASE
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ========================================================= -->
     <!-- SURAT KOMPONEN (SURKOM) MENU & SCREENS                    -->
     <!-- ========================================================= -->
@@ -773,7 +857,7 @@
                     <input type="text" id="surkom-operator" placeholder="Masukkan nama Anda..." style="font-weight:700;">
                 </div>
                 
-                <!-- TAMBAHAN: PILIHAN TAHUN OTOMATIS -->
+                <!-- PILIHAN TAHUN OTOMATIS -->
                 <div class="form-group">
                     <label>Tahun Dokumen (Subjudul)</label>
                     <select id="surkom-tahun-input" style="color:#10b981; font-weight:800; border-color:rgba(16,185,129,0.5);">
@@ -806,9 +890,7 @@
                 </h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Berikan nama judul spesifik untuk masing-masing halaman sebelum disimpan ke All Data Surkom. Klik tanda (X) merah untuk membuang halaman yang tidak diperlukan.</p>
                 
-                <div id="surkom-split-container">
-                    <!-- Dinamis terisi oleh Javascript -->
-                </div>
+                <div id="surkom-split-container"></div>
 
                 <button class="btn-submit" type="button" onclick="window.simpanAllSurkomHasil()" style="background:linear-gradient(135deg, #10b981, #059669); margin-top:20px; box-shadow:0 8px 20px rgba(16,185,129,0.3);">
                     <i class="fas fa-save"></i> SIMPAN SELURUH DATA SURKOM
@@ -911,7 +993,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- GOD MODE: PIN MODAL & CENTRAL LOG SCREEN                  -->
     <!-- ========================================================= -->
@@ -957,6 +1038,7 @@
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'permintaan_trial')"><i class="fas fa-flask"></i> Trial Mold</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'adm_harian')"><i class="fas fa-user-tie"></i> ADM Harian</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'pkm_eltre')"><i class="fas fa-file-import"></i> PKM Eltre</div>
+                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'struktur_organisasi')"><i class="fas fa-sitemap"></i> Struktur Org</div>
             </div>
 
             <!-- List Data Log -->
@@ -1359,7 +1441,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
     <!-- ========================================================= -->
@@ -1496,6 +1577,7 @@
             <div id="list-sub-info"></div>
         </div>
     </div>
+    
     <!-- ========================================================= -->
     <!-- NOTULEN MEETING                                           -->
     <!-- ========================================================= -->
@@ -2056,6 +2138,20 @@
         // GLOBAL VARIABLES SURKOM BARU
         window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
 
+        // GLOBAL VARIABLES STRUKTUR ORGANISASI
+        window.isOrgUnlocked = false; window.orgDatabase = [];
+        const defaultOrg = [
+            { id: "org_head", level: 1, jabatan: "DEPT. HEAD (CONTROL PROD INJECTION)", nama: "EDI JUNAEDI", anggota: "" },
+            { id: "org_admin", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
+            { id: "org_sec", level: 2, jabatan: "SECTION HEAD (MAINT, REPAIR & STORE)", nama: "HERU NUGRAHA", anggota: "" },
+            { id: "org_f1", level: 3, jabatan: "FOREMAN GROUP INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
+            { id: "org_f2", level: 3, jabatan: "FOREMAN GROUP INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
+            { id: "org_f3", level: 3, jabatan: "FOREMAN GROUP INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
+            { id: "org_store", level: 3, jabatan: "MOLD STORE FOREMAN", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)\n- NANANG (KARTAP)\n- SUPRIYATNA (PKWT)\n- HERMAN (PKWT)\n- MUSTOPA (PKWT)\n- ENDING (SO)\n- FIRDI (PKWT)\n- DASLAM (PKWT)" },
+            { id: "org_dev", level: 3, jabatan: "DEVELOPMENT FOREMAN", nama: "TARMUJI", anggota: "" },
+            { id: "org_machinery", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "- AHMAD ROFII (PKWT)\n- ENOH (SO)\n- WAWAN S (SO)\n- ARIS (PKWT)\n- BAYU (PKWT)\n- TOPIK H (SO)\n- AGI G (SO)\n- ZAENUDIN (PKWT)\n- RIDWAN (PKWT)\n- ARUL (OS)\n- YUSRIL MAHENDRA (PKWT)" }
+        ];
+
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
@@ -2106,6 +2202,7 @@
                 document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen')); document.getElementById(idTujuan)?.classList.add('active-screen');
                 window.updateBottomNav(idTujuan); window.scrollTo(0, 0); 
                 if(idTujuan === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); 
+                if(idTujuan === 'struktur-organisasi-screen') window.ambilDataOrg(); // Auto Load Org Chart
             } catch (error) { console.error(error); }
         }
 
@@ -2152,6 +2249,168 @@
                 .then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); document.body.appendChild(link); link.click(); document.body.removeChild(link); window.toggleLoader(false); })
                 .catch(e => { console.error(e); alert("Gagal print gambar."); window.toggleLoader(false); }); 
             }, 200); 
+        }
+
+        // =========================================================================
+        // LOGIKA STRUKTUR ORGANISASI (HIERARKI & EDIT DINAMIS)
+        // =========================================================================
+        window.ambilDataOrg = async function() {
+            window.toggleLoader(true, "Memuat Hierarki...");
+            window.orgDatabase = [];
+            try {
+                const snap = await getDocs(collection(window.db, "struktur_organisasi"));
+                if(snap.empty) {
+                    // Inject Default Data Jika Kosong
+                    for(let item of defaultOrg) {
+                        await setDoc(doc(window.db, "struktur_organisasi", item.id), item);
+                        window.orgDatabase.push(item);
+                    }
+                } else {
+                    snap.forEach(d => window.orgDatabase.push({docId: d.id, ...d.data()}));
+                }
+                
+                // Sort by level untuk render yang rapi
+                window.orgDatabase.sort((a,b) => { return a.level - b.level; });
+                window.renderOrgChart();
+            } catch(e) { console.error(e); alert("Gagal memuat Struktur Organisasi."); }
+            window.toggleLoader(false);
+        }
+
+        window.renderOrgChart = function() {
+            const container = document.getElementById('org-chart-container');
+            if(!container) return;
+            
+            let html = "";
+            // Render Level 1 (Dept Head)
+            let lvl1 = window.orgDatabase.filter(o => o.level === 1);
+            html += `<div class="org-level">`;
+            lvl1.forEach(o => html += window.buatKartuOrg(o));
+            html += `</div>`;
+            
+            // Garis Penghubung
+            html += `<div style="width:3px; height:40px; background:var(--secondary); margin:0 auto; box-shadow:0 0 10px var(--secondary);"></div>`;
+            
+            // Render Level 2 (Admin & Section Head)
+            let lvl2 = window.orgDatabase.filter(o => o.level === 2);
+            html += `<div class="org-level" style="border-top:3px solid var(--secondary); box-shadow:0 -5px 10px rgba(56,189,248,0.2); padding-top:25px; width:70%; margin:0 auto; display:flex; justify-content:space-around;">`;
+            lvl2.forEach(o => html += window.buatKartuOrg(o));
+            html += `</div>`;
+            
+            // Garis Penghubung
+            html += `<div style="width:3px; height:40px; background:var(--secondary); margin:0 auto; box-shadow:0 0 10px var(--secondary);"></div>`;
+            
+            // Render Level 3 (Barisan Foreman)
+            let lvl3 = window.orgDatabase.filter(o => o.level === 3);
+            html += `<div class="org-level" style="border-top:3px solid var(--secondary); box-shadow:0 -5px 10px rgba(56,189,248,0.2); padding-top:25px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px;">`;
+            lvl3.forEach(o => html += window.buatKartuOrg(o));
+            html += `</div>`;
+
+            container.innerHTML = html;
+            
+            // Ubah Warna Tombol Gembok
+            const btnLock = document.getElementById('btn-lock-org');
+            const iconLock = document.getElementById('icon-lock-org');
+            if(window.isOrgUnlocked) {
+                btnLock.style.background = "linear-gradient(135deg, #ef4444, #dc2626)";
+                btnLock.style.borderColor = "#ef4444";
+                btnLock.innerHTML = `<i class="fas fa-lock-open"></i> Kunci Edit`;
+                document.getElementById('teks-info-org').innerHTML = `<span style="color:#ef4444; font-weight:900; font-size:14px;"><i class="fas fa-exclamation-triangle"></i> MODE EDIT AKTIF! Klik kotak jabatan untuk merubah data.</span>`;
+            } else {
+                btnLock.style.background = "rgba(0,0,0,0.3)";
+                btnLock.style.borderColor = "rgba(255,255,255,0.2)";
+                btnLock.innerHTML = `<i class="fas fa-lock"></i> Edit`;
+                document.getElementById('teks-info-org').innerHTML = `<i class="fas fa-info-circle"></i> Klik tombol Gembok (Edit) di atas untuk memperbarui data hierarki.`;
+            }
+        }
+
+        window.buatKartuOrg = function(data) {
+            let editableClass = window.isOrgUnlocked ? "editable" : "";
+            let onclickAttr = window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${data.docId || data.id}')"` : "";
+            
+            let icon = "fa-user-tie"; // Default Icon
+            if(data.level === 1) icon = "fa-user-secret"; // Dept Head
+            if(data.jabatan.includes("ADMIN")) icon = "fa-user-edit";
+            if(data.jabatan.includes("FOREMAN")) icon = "fa-hard-hat";
+            
+            let anggotaHtml = data.anggota ? `<div class="org-anggota">${data.anggota}</div>` : "";
+            
+            return `
+            <div class="org-card ${editableClass}" ${onclickAttr}>
+                <div class="org-icon" style="background:${data.level === 1 ? '#ef4444' : data.level === 2 ? '#f59e0b' : '#38bdf8'};">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="org-jabatan">${data.jabatan}</div>
+                <div class="org-nama">${data.nama}</div>
+                ${anggotaHtml}
+            </div>`;
+        }
+
+        window.bukaGembokOrg = function() {
+            if(window.isOrgUnlocked) {
+                window.isOrgUnlocked = false;
+                window.renderOrgChart(); // Kunci kembali
+            } else {
+                document.getElementById('org-pin-modal').style.display = 'flex';
+                document.getElementById('msg-pin-error-org').style.display = 'none';
+                document.getElementById('input-pin-org').value = '';
+            }
+        }
+
+        window.verifikasiPinOrg = function() {
+            const pin = document.getElementById('input-pin-org').value;
+            if(pin === "2025") {
+                window.isOrgUnlocked = true;
+                document.getElementById('org-pin-modal').style.display = 'none';
+                window.renderOrgChart(); // Buka gembok dan berikan border dashed (tanda edit)
+            } else {
+                document.getElementById('msg-pin-error-org').style.display = 'block';
+                if(navigator.vibrate) navigator.vibrate(100);
+            }
+        }
+
+        window.bukaEditOrg = function(id) {
+            if(!window.isOrgUnlocked) return;
+            const data = window.orgDatabase.find(o => (o.docId || o.id) === id);
+            if(!data) return;
+            
+            document.getElementById('org-edit-id').value = id;
+            document.getElementById('org-edit-jabatan').value = data.jabatan;
+            document.getElementById('org-edit-nama').value = data.nama;
+            document.getElementById('org-edit-anggota').value = data.anggota || "";
+            
+            document.getElementById('org-edit-modal').style.display = 'flex';
+        }
+
+        window.simpanEditOrg = async function() {
+            const id = document.getElementById('org-edit-id').value;
+            const jabatan = document.getElementById('org-edit-jabatan').value.toUpperCase();
+            const nama = document.getElementById('org-edit-nama').value.toUpperCase();
+            const anggota = document.getElementById('org-edit-anggota').value;
+            
+            window.toggleLoader(true, "Menyimpan Data ke Server...");
+            try {
+                await updateDoc(doc(window.db, "struktur_organisasi", id), {
+                    jabatan: jabatan,
+                    nama: nama,
+                    anggota: anggota
+                });
+                
+                // Update Lokal Memori
+                const index = window.orgDatabase.findIndex(o => (o.docId || o.id) === id);
+                if(index > -1) {
+                    window.orgDatabase[index].jabatan = jabatan;
+                    window.orgDatabase[index].nama = nama;
+                    window.orgDatabase[index].anggota = anggota;
+                }
+                
+                document.getElementById('org-edit-modal').style.display = 'none';
+                window.renderOrgChart();
+                alert("✅ Berhasil memperbarui data jabatan!");
+            } catch(e) {
+                console.error(e);
+                alert("❌ Gagal menyimpan data: " + e.message);
+            }
+            window.toggleLoader(false);
         }
 
         // =========================================================================
