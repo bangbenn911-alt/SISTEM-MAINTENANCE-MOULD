@@ -217,42 +217,42 @@
         .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
 
         /* ======================================================== */
-        /* --- PERBAIKAN TOTAL: STRUKTUR ORGANISASI (HARDCODE GRID) --- */
+        /* --- EFEK SIRKUIT NEON & KOTAK HOLOGRAFIK ORGANISASI --- */
         /* ======================================================== */
         .org-canvas { display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px 0; width: 100%; min-width: 1400px; position: relative;}
         
-        /* Garis Aliran Listrik Visual Presisi */
-        .line-v-electric { position: relative; width: 2px; background: rgba(255,255,255,0.15); margin: 0 auto; z-index: 1;}
-        .line-v-electric::after { content:''; position:absolute; top:0; left:-1px; width:4px; height:100%; background: linear-gradient(180deg, transparent, #38bdf8, transparent); background-size: 100% 50px; animation: flowV 1.2s linear infinite; pointer-events: none; opacity: 1; box-shadow: 0 0 8px #38bdf8;}
-        
-        .line-h-electric { position: relative; height: 2px; background: rgba(255,255,255,0.15); z-index: 1;}
-        .line-h-electric::after { content:''; position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(90deg, transparent, #38bdf8, transparent); background-size: 50px 100%; animation: flowHRight 1.8s linear infinite; pointer-events: none; opacity: 1; box-shadow: 0 0 8px #38bdf8;}
-        
-        .flow-line-h-left { position: absolute; height: 2px; background: rgba(255,255,255,0.15); z-index: 1;}
-        .flow-line-h-left::after { content:''; position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(270deg, transparent, #38bdf8, transparent); background-size: 50px 100%; animation: flowHLeft 1.8s linear infinite; box-shadow: 0 0 8px #38bdf8;}
+        .org-panel-transparent { background: rgba(4, 13, 26, 0.4) !important; backdrop-filter: blur(8px); border: 1px solid rgba(56, 189, 248, 0.3) !important; box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.1), 0 10px 30px rgba(0,0,0,0.8); }
 
-        @keyframes flowV { 0% { background-position: 0 -50px; } 100% { background-position: 0 100%; } }
-        @keyframes flowHRight { 0% { background-position: -50px 0; } 100% { background-position: 100% 0; } }
-        @keyframes flowHLeft { 0% { background-position: 100% 0; } 100% { background-position: -50px 0; } }
-
-        /* Desain Kotak Organisasi Persis Gambar Putih (1000822916.jpg) */
-        .org-box-exact { background: #ffffff; border: 1px solid #64748b; box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative; z-index: 5; transition: 0.2s; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 140px; border-radius: 2px;}
-        .org-box-exact.editable:hover { box-shadow: 0 0 20px #38bdf8; transform: scale(1.05); cursor: pointer; border-color: #38bdf8; }
+        .line-v-circuit { position: relative; width: 2px; background: rgba(56, 189, 248, 0.15); margin: 0 auto; z-index: 1; }
+        .line-v-circuit::after { content: ''; position: absolute; top: 0; left: -1px; width: 4px; height: 100%; background: linear-gradient(180deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 100% 60px; animation: flowVertical 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
         
-        .org-head-bg { background: #cbd5e1; color: #0f172a; font-size: 10px; font-weight: 900; padding: 8px 4px; text-transform: uppercase; border-bottom: 1px solid #64748b; letter-spacing: 0.5px;}
-        .org-body-bg { padding: 12px 10px; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; min-height: 20px; display:flex; justify-content:center; align-items:center; background: #ffffff;}
+        .line-h-circuit { position: relative; height: 2px; background: rgba(56, 189, 248, 0.15); z-index: 1; }
+        .line-h-circuit::after { content: ''; position: absolute; top: -1px; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 60px 100%; animation: flowHorizontalRight 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
         
-        .org-sub-exact { background: #ffffff; border: 1px solid #64748b; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 2px;}
-        .org-sub-head { background: #e2e8f0; color: #0f172a; font-size: 9px; font-weight: 900; padding: 6px; border-bottom: 1px solid #64748b; text-align: center;}
-        .org-sub-body { padding: 10px; color: #0f172a; font-size: 9px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; background: #ffffff;}
+        .flow-line-h-left-circuit { position: absolute; height: 2px; background: rgba(56, 189, 248, 0.15); z-index: 1; }
+        .flow-line-h-left-circuit::after { content: ''; position: absolute; top: -1px; left: 0; width: 100%; height: 4px; background: linear-gradient(270deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 60px 100%; animation: flowHorizontalLeft 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
 
-        /* Wrapper Hirarki */
+        @keyframes flowVertical { 0% { background-position: 0 -60px; } 100% { background-position: 0 100%; } }
+        @keyframes flowHorizontalRight { 0% { background-position: -60px 0; } 100% { background-position: 100% 0; } }
+        @keyframes flowHorizontalLeft { 0% { background-position: 100% 0; } 100% { background-position: -60px 0; } }
+
+        .org-box-neon { background: rgba(15, 23, 42, 0.75); border: 1px solid #38bdf8; position: relative; z-index: 5; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 140px; border-radius: 6px; backdrop-filter: blur(10px); overflow: hidden; animation: pulseNeonBox 2.5s infinite alternate ease-in-out; transition: all 0.3s ease; }
+        .org-box-neon.editable:hover { box-shadow: 0 0 35px #10b981, inset 0 0 15px rgba(16,185,129,0.3); border-color: #10b981; transform: scale(1.05); cursor: pointer;}
+        
+        .org-head-neon { background: rgba(56, 189, 248, 0.2); color: #e0f2fe; font-size: 10px; font-weight: 900; padding: 8px 4px; text-transform: uppercase; border-bottom: 1px solid rgba(56,189,248,0.5); letter-spacing: 0.5px; text-shadow: 0 0 8px rgba(56,189,248,0.8); }
+        .org-body-neon { padding: 12px 10px; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; min-height: 20px; display:flex; justify-content:center; align-items:center; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        
+        .org-sub-neon { background: rgba(15, 23, 42, 0.75); border: 1px solid #38bdf8; margin-top: 15px; position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 6px; backdrop-filter: blur(10px); animation: pulseNeonBox 2.5s infinite alternate ease-in-out; }
+        .org-sub-head-neon { background: rgba(56, 189, 248, 0.2); color: #e0f2fe; font-size: 9px; font-weight: 900; padding: 6px; border-bottom: 1px solid rgba(56,189,248,0.5); text-align: center; text-shadow: 0 0 5px #38bdf8; }
+        .org-sub-body-neon { padding: 10px; color: #e2e8f0; font-size: 9px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; }
+
+        .group-container-neon { border: 1px dashed rgba(56, 189, 248, 0.3); background: rgba(56,189,248,0.05); padding: 30px 10px 10px 10px; position: relative; margin: 0 8px; border-radius: 8px; box-shadow: inset 0 0 20px rgba(56,189,248,0.05); }
+        .group-header-label-neon { position: absolute; top: 0; left: 0; width: 100%; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 10px; font-weight: 900; padding: 6px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid rgba(56,189,248,0.3); box-sizing: border-box; text-shadow: 0 0 5px #38bdf8; }
+
+        @keyframes pulseNeonBox { 0% { box-shadow: 0 0 5px rgba(56,189,248,0.2), inset 0 0 5px rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.4); } 100% { box-shadow: 0 0 20px rgba(56,189,248,0.6), inset 0 0 10px rgba(56,189,248,0.3); border-color: #38bdf8; } }
+        
         .org-row { display: flex; justify-content: space-between; position: relative; width: 100%;}
         .org-col { display: flex; flex-direction: column; align-items: center; position: relative; }
-        
-        .group-container { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); padding: 30px 10px 10px 10px; position: relative; margin: 0 8px; border-radius: 4px;}
-        .group-header-label { position: absolute; top: 0; left: 0; width: 100%; background: #94a3b8; color: #0f172a; font-size: 10px; font-weight: 900; padding: 6px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #64748b; box-sizing: border-box;}
-
     </style>
 </head>
 <body>
@@ -331,7 +331,6 @@
     <!-- ========================================================= -->
     <div id="home-screen" class="screen">
         <div class="content-wrapper" style="padding-top: 20px;">
-            <!-- Header Status Keamanan -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
                 <div style="font-weight:900; font-size:22px; display:flex; align-items:center; gap:8px;">
                     <i class="fas fa-cube" style="color:#7dd3fc; font-size:26px;"></i> MOLDCBI
@@ -346,8 +345,7 @@
             </div>
 
             <p style="font-size: 14px; font-weight: 800; color:var(--text-muted); margin-bottom: 5px;">Status Kinerja System</p>
-            
-            <!-- Dashboard HUD -->
+
             <div class="hero-dashboard">
                 <div class="hero-left">
                     <div class="glass-card analytics" onclick="window.navigasi('ai-dashboard-screen')">
@@ -377,7 +375,6 @@
                         </div>
                     </div>
 
-                    <!-- Realtime Metrics -->
                     <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 170px; margin-top: 15px; background: rgba(15,23,42,0.8); padding: 10px; border-radius: 12px; border: 1px solid rgba(56,189,248,0.2); box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
                         <div style="text-align: center; flex: 1;">
                             <div style="font-size: 9px; color: var(--text-muted); font-weight: 800; margin-bottom: 3px;">CPU</div>
@@ -395,7 +392,6 @@
                 </div>
             </div>
             
-            <!-- Grid Menu Utama -->
             <div class="main-grid-container">
                 <h3 style="color:white; margin:0 0 20px 5px; font-size:16px; font-weight:800;">Divisi Utama Maintenance</h3>
                 <div class="gopay-grid">
@@ -427,7 +423,6 @@
                         <div class="gopay-icon-box"><i class="fas fa-clipboard-list" style="color:#2dd4bf;"></i></div>
                         <span class="gopay-icon-text">Lap. Masalah</span>
                     </div>
-                    <!-- TOMBOL TRIAL MOLD - BUG DIPERBAIKI -->
                     <div class="gopay-icon-btn" onclick="window.bukaMenuPermintaanTrial()" style="margin-top:10px;">
                         <div class="gopay-icon-box"><i class="fas fa-flask" style="color:#fb923c;"></i></div>
                         <span class="gopay-icon-text">Permintaan Trial</span>
@@ -645,182 +640,84 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- STRUKTUR ORGANISASI SCREEN (HARDCODE PRESISI SESUAI GAMBAR) -->
+    <!-- STRUKTUR ORGANISASI SCREEN (HOLOGRAPHIC CIRCUIT UI)       -->
     <!-- ========================================================= -->
     <div id="struktur-organisasi-screen" class="screen">
         <div class="content-wrapper-wide" style="max-width: 100%; padding: 15px;">
-            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
-                <h2 style="margin:0;"><i class="fas fa-sitemap" style="margin-right:10px;"></i> STRUKTUR ORGANISASI</h2>
+            <div class="header" style="background: linear-gradient(135deg, rgba(16,185,129,0.8), rgba(5,150,105,0.8)) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border: 1px solid #10b981; backdrop-filter: blur(10px);">
+                <h2 style="margin:0; color: white;"><i class="fas fa-sitemap" style="margin-right:10px; color: #34d399;"></i> STRUKTUR ORGANISASI</h2>
+                <button class="btn-submit" onclick="window.bukaGembokOrg()" style="width: auto; padding: 10px 15px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; font-size: 11px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); border-radius: 8px;">
+                    <i class="fas fa-lock"></i> EDIT DATA (PIN)
+                </button>
             </div>
             
-            <div class="dark-panel" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column; background: #f8fafc; border: 4px solid #cbd5e1;">
+            <div class="dark-panel org-panel-transparent" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
                 
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
-                    <p id="teks-info-org" style="color:#ffffff; font-size:11px; margin:0; background:#0f172a; padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);"><i class="fas fa-arrows-alt"></i> Geser & Zoom</p>
+                    <p id="teks-info-org" style="color:#e0f2fe; font-size:11px; margin:0; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); backdrop-filter:blur(5px);"><i class="fas fa-arrows-alt"></i> Geser Layar & Zoom</p>
                     
                     <div style="display:flex; gap:8px;">
-                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;"><i class="fas fa-search-minus"></i></button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;">RESET</button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;"><i class="fas fa-search-plus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);">RESET</button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-plus"></i></button>
                     </div>
                 </div>
                 
-                <!-- Viewport Panning Anti-Lag -->
-                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background: radial-gradient(circle, #e2e8f0 10%, transparent 11%), radial-gradient(circle at bottom left, #e2e8f0 5%, transparent 6%), radial-gradient(circle at bottom right, #e2e8f0 5%, transparent 6%), radial-gradient(circle at top left, #e2e8f0 5%, transparent 6%), radial-gradient(circle at top right, #e2e8f0 5%, transparent 6%); background-size: 20px 20px; background-color: #f1f5f9; border:1px solid #94a3b8; border-radius:8px; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
+                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background: transparent; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
                     
                     <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 20px 40px; display:flex; justify-content:center; min-width: 1400px;">
                         
-                        <!-- RENDER GRID MANUAL PERSIS FOTO (1000822916.jpg) -->
                         <div id="org-tree-render" class="org-canvas">
-                            
-                            <!-- BORDER BANNER JUDUL (SESUAI FOTO) -->
-                            <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: #cbd5e1; border: 1px solid #64748b; padding: 6px; font-size: 14px; font-weight: 900; color: #0f172a;">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
-
-                            <!-- DEPT HEAD -->
-                            <div class="org-col">
-                                <div class="org-box-exact">
-                                    <div class="org-head-bg" style="font-size: 13px; padding: 12px;">DEPT. HEAD</div>
-                                    <div class="org-body-bg">EDI JUNAEDI</div>
-                                </div>
-                                <div class="line-v-electric" style="height: 30px; position:relative;">
-                                    <!-- GARIS CABANG KE ADMIN (KIRI) -->
-                                    <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(255,255,255,0.15);">
-                                        <div class="flow-line-h-left" style="width:100%; top:-1px;"></div>
-                                    </div>
-                                    <!-- KOTAK ADMIN -->
-                                    <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
-                                        <div class="org-box-exact" style="width:130px;">
-                                            <div class="org-head-bg">ADMIN</div>
-                                            <div class="org-body-bg">BENNY F</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- SECTION HEAD -->
-                                <div class="org-box-exact" style="width: 320px;">
-                                    <div class="org-head-bg">MAINTENANCE, REPAIR INJECTION & MOLD STORE SECTION.HEAD</div>
-                                    <div class="org-body-bg">HERU NUGRAHA</div>
-                                </div>
-                                <div class="line-v-electric" style="height: 30px;"></div>
-                                
-                                <!-- BRANCHING HORIZONTAL UTAMA BAWAH -->
-                                <div class="org-row" style="width: 1400px;">
-                                    <div class="line-h-electric" style="width: 100%; position: absolute; top: 0;"></div>
-                                    
-                                    <!-- COL 1: CONTROL PRODUKSI INJECTION -->
-                                    <div class="org-col" style="flex: 1.5; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                            <div class="group-header-label" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
-                                            <div class="org-row" style="gap: 15px; margin-top:20px;">
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 135px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 1</div>
-                                                        <div class="org-body-bg">INDRA</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 135px;">
-                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                                        <div class="org-sub-body">- SUPRIYANTO (SO)<br>- APRILIAN (PKWT)<br>- IWAN (PKWT)<br>- HERU (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 135px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 2</div>
-                                                        <div class="org-body-bg">DENI.R</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 135px;">
-                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                                        <div class="org-sub-body">- KOMARUDIN (SO)<br>- EDI.R (SO)<br>- TAMSIL (PKWT)<br>- RAFLY (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 135px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 3</div>
-                                                        <div class="org-body-bg">KIKI</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 135px;">
-                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                                        <div class="org-sub-body">- ROHIDI (SO)<br>- ANDRIAN (PKWT)<br>- GUNAWAN (OS)<br>- SUKARYA (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- COL 2: MOLD STORE -->
-                                    <div class="org-col" style="flex: 1; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="org-box-exact" style="width: 160px;">
-                                            <div class="org-head-bg">MOLD STORE FOREMAN</div>
-                                            <div class="org-body-bg">KIKI</div>
-                                        </div>
-                                        <div class="org-sub-exact" style="width: 150px;">
-                                            <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
-                                            <div class="org-sub-body">- UHDI (SO)<br>- WARSITO (SO)<br>- NANANG (KARTAP)<br>- SUPRIYATNA (PKWT)<br>- HERMAN (PKWT)<br>- MUSTOPA (PKWT)<br>- ENDING (SO)<br>- FIRDI (PKWT)<br>- DASLAM (PKWT)</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- COL 3: DEVELOPMENT FOREMAN -->
-                                    <div class="org-col" style="flex: 1; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="org-box-exact" style="width: 160px;">
-                                            <div class="org-head-bg">DEVELOPMENT FOREMAN</div>
-                                            <div class="org-body-bg">TARMUJI</div>
-                                        </div>
-                                        <div class="org-sub-exact" style="width: 150px;">
-                                            <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
-                                            <div class="org-sub-body">- SUNARYO (SO)<br>- AHMAD ROFII (PKWT)<br>- ENOH (SO)<br>- WAWAN S (SO)<br>- ARIS (PKWT)<br>- BAYU (PKWT)</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- COL 4: MACHINERY MOLD FOREMAN -->
-                                    <div class="org-col" style="flex: 1.8; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                            <div class="group-header-label" style="width:100%;">MACHINERY MOLD FOREMAN</div>
-                                            <div class="org-row" style="gap: 10px; margin-top: 20px;">
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 120px; min-height:40px;">
-                                                        <div class="org-head-bg" style="font-size:8px;">CNC MILLING & ROUTER</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 120px;">
-                                                        <div class="org-sub-body">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                                        <div class="org-head-bg">EDM</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 100px;">
-                                                        <div class="org-sub-body">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                                        <div class="org-head-bg">MILLING</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 100px;">
-                                                        <div class="org-sub-body">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                                        <div class="org-head-bg">BUBUT</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 100px;">
-                                                        <div class="org-sub-body">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
+                            <div style="color: #38bdf8; font-weight: 800; text-align: center; margin-top: 50px; text-shadow: 0 0 10px #38bdf8;">
+                                <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px;"></i><br>MEMUAT SIRKUIT ORGANISASI...
                             </div>
                         </div>
 
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIN ORGANISASI -->
+    <div id="org-pin-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:350px; border-radius:20px; padding:30px; text-align:center; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.4); backdrop-filter:blur(15px);">
+            <i class="fas fa-lock" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; text-shadow: 0 0 15px rgba(245, 158, 11, 0.8);"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI EDIT</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan PIN (2025) untuk mengedit data Organisasi.</p>
+            <input type="password" id="input-pin-org" class="pin-input-box" placeholder="••••" maxlength="4" style="border-color: #f59e0b; color: #fbbf24; box-shadow: 0 0 15px rgba(245,158,11,0.2);">
+            <p id="msg-pin-error-org" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. PIN Salah!</p>
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-pin-modal').style.display='none'; document.getElementById('input-pin-org').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinOrg()" style="flex:2; background: linear-gradient(135deg, #b45309, #f59e0b); box-shadow: 0 5px 15px rgba(245,158,11,0.4);"><i class="fas fa-unlock"></i> BUKA GEMBOK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA ORGANISASI -->
+    <div id="org-edit-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); backdrop-filter:blur(15px);">
+            <h3 style="color:#34d399; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-user-edit"></i> UPDATE DATA JABATAN
+            </h3>
+            <input type="hidden" id="org-edit-id">
+            <div class="form-group">
+                <label style="color: #34d399;">Nama Jabatan</label>
+                <input type="text" id="org-edit-jabatan" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: DEPT. HEAD">
+            </div>
+            <div class="form-group">
+                <label style="color: #34d399;">Nama Orang</label>
+                <input type="text" id="org-edit-nama" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: EDI JUNAEDI">
+            </div>
+            <div class="form-group">
+                <label style="color: #34d399;">Anggota / Rincian (Opsional)</label>
+                <textarea id="org-edit-anggota" rows="4" style="background: rgba(0,0,0,0.5); font-size: 12px; white-space: pre-wrap;" placeholder="- Nama 1 (SO)&#10;- Nama 2 (PKWT)"></textarea>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:20px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
+                <button type="button" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanEditOrg()" style="flex:2; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer; box-shadow: 0 5px 15px rgba(16,185,129,0.4);">
+                    <i class="fas fa-save"></i> SIMPAN
+                </button>
             </div>
         </div>
     </div>
@@ -960,6 +857,7 @@
             <div id="gm-log-container"><div style="text-align:center; margin-top:50px; color:var(--text-muted);"><i class="fas fa-spinner fa-spin fa-2x"></i><p>Memuat Data Central...</p></div></div>
         </div>
     </div>
+    
     <!-- Modal Editor Dinamis God Mode -->
     <div id="god-mode-editor-modal" class="security-modal">
         <div style="background:var(--card-dark); width:100%; max-width:600px; border-radius:20px; padding:25px; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.2);">
@@ -1259,7 +1157,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- WORKSHOP DIVISI                                           -->
     <!-- ========================================================= -->
@@ -2125,7 +2022,7 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('trial-mold-screen'); window.switchTabTrial('input'); };
 
         // ---------------------------------------------------------
-        // 3. STRUKTUR ORGANISASI (SCROLL MULUS & ENGINE)
+        // 3. STRUKTUR ORGANISASI (EFEK NEON & SIRKUIT LISTRIK)
         // ---------------------------------------------------------
         window.isDraggingOrg = false; window.ticking = false; window.orgZoomScale = 1.0;
         let startXOrg, startYOrg, scrollLeftOrg, scrollTopOrg;
@@ -2169,7 +2066,7 @@
             } catch(e) { console.error(e); }
         };
 
-        // --- PENYESUAIAN RENDER ENGINE KE STRUKTUR BARU (TAHAP 3) ---
+        // --- PENYESUAIAN RENDER ENGINE KE EFEK NEON (TAHAP 5) ---
         window.renderOrgSvgEngine = function() {
             const tree = document.getElementById('org-tree-render'); if(!tree) return;
             const h = window.orgDatabase.find(o => o.id === "o1") || defaultOrg[0];
@@ -2187,71 +2084,71 @@
 
             tree.innerHTML = `
                 <!-- BORDER BANNER JUDUL -->
-                <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: #cbd5e1; border: 1px solid #64748b; padding: 6px; font-size: 14px; font-weight: 900; color: #0f172a;">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
+                <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); padding: 8px; font-size: 14px; font-weight: 900; color: #e0f2fe; text-shadow: 0 0 8px #38bdf8; border-radius: 8px; backdrop-filter: blur(5px);">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
 
                 <!-- DEPT HEAD -->
                 <div class="org-col">
-                    <div class="org-box-exact ${ec}" ${ck(h.id)}>
-                        <div class="org-head-bg" style="font-size: 13px; padding: 12px;">${h.jabatan}</div>
-                        <div class="org-body-bg">${h.nama}</div>
+                    <div class="org-box-neon ${ec}" ${ck(h.id)}>
+                        <div class="org-head-neon" style="font-size: 13px; padding: 12px;">${h.jabatan}</div>
+                        <div class="org-body-neon">${h.nama}</div>
                     </div>
-                    <div class="line-v-electric" style="height: 30px; position:relative;">
-                        <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(255,255,255,0.15);">
-                            <div class="flow-line-h-left" style="width:100%; top:-1px;"></div>
+                    <div class="line-v-circuit" style="height: 30px; position:relative;">
+                        <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(56,189,248,0.15);">
+                            <div class="flow-line-h-left-circuit" style="width:100%; top:-1px;"></div>
                         </div>
                         <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
-                            <div class="org-box-exact ${ec}" style="width:130px;" ${ck(adm.id)}>
-                                <div class="org-head-bg">${adm.jabatan}</div>
-                                <div class="org-body-bg">${adm.nama}</div>
+                            <div class="org-box-neon ${ec}" style="width:130px;" ${ck(adm.id)}>
+                                <div class="org-head-neon">${adm.jabatan}</div>
+                                <div class="org-body-neon">${adm.nama}</div>
                             </div>
                         </div>
                     </div>
                     
                     <!-- SECTION HEAD -->
-                    <div class="org-box-exact ${ec}" style="width: 320px;" ${ck(sec.id)}>
-                        <div class="org-head-bg">${sec.jabatan}</div>
-                        <div class="org-body-bg">${sec.nama}</div>
+                    <div class="org-box-neon ${ec}" style="width: 320px;" ${ck(sec.id)}>
+                        <div class="org-head-neon">${sec.jabatan}</div>
+                        <div class="org-body-neon">${sec.nama}</div>
                     </div>
-                    <div class="line-v-electric" style="height: 30px;"></div>
+                    <div class="line-v-circuit" style="height: 30px;"></div>
                     
                     <!-- BRANCHING HORIZONTAL UTAMA BAWAH -->
                     <div class="org-row" style="width: 1400px;">
-                        <div class="line-h-electric" style="width: 100%; position: absolute; top: 0;"></div>
+                        <div class="line-h-circuit" style="width: 100%; position: absolute; top: 0;"></div>
                         
                         <!-- COL 1: CONTROL PRODUKSI INJECTION -->
                         <div class="org-col" style="flex: 1.5; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                <div class="group-header-label" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center;">
+                                <div class="group-header-label-neon" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
                                 <div class="org-row" style="gap: 15px; margin-top:20px;">
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f1.id)}>
-                                            <div class="org-head-bg">${f1.jabatan}</div>
-                                            <div class="org-body-bg">${f1.nama}</div>
+                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f1.id)}>
+                                            <div class="org-head-neon">${f1.jabatan}</div>
+                                            <div class="org-body-neon">${f1.nama}</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 135px;">
-                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                            <div class="org-sub-body">${f1.anggota}</div>
-                                        </div>
-                                    </div>
-                                    <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f2.id)}>
-                                            <div class="org-head-bg">${f2.jabatan}</div>
-                                            <div class="org-body-bg">${f2.nama}</div>
-                                        </div>
-                                        <div class="org-sub-exact" style="width: 135px;">
-                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                            <div class="org-sub-body">${f2.anggota}</div>
+                                        <div class="org-sub-neon" style="width: 135px;">
+                                            <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body-neon">${f1.anggota}</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f3.id)}>
-                                            <div class="org-head-bg">${f3.jabatan}</div>
-                                            <div class="org-body-bg">${f3.nama}</div>
+                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f2.id)}>
+                                            <div class="org-head-neon">${f2.jabatan}</div>
+                                            <div class="org-body-neon">${f2.nama}</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 135px;">
-                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
-                                            <div class="org-sub-body">${f3.anggota}</div>
+                                        <div class="org-sub-neon" style="width: 135px;">
+                                            <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body-neon">${f2.anggota}</div>
+                                        </div>
+                                    </div>
+                                    <div class="org-col">
+                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f3.id)}>
+                                            <div class="org-head-neon">${f3.jabatan}</div>
+                                            <div class="org-body-neon">${f3.nama}</div>
+                                        </div>
+                                        <div class="org-sub-neon" style="width: 135px;">
+                                            <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body-neon">${f3.anggota}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -2260,66 +2157,66 @@
 
                         <!-- COL 2: MOLD STORE -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-exact ${ec}" style="width: 160px;" ${ck(mS.id)}>
-                                <div class="org-head-bg">${mS.jabatan}</div>
-                                <div class="org-body-bg">${mS.nama}</div>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="org-box-neon ${ec}" style="width: 160px;" ${ck(mS.id)}>
+                                <div class="org-head-neon">${mS.jabatan}</div>
+                                <div class="org-body-neon">${mS.nama}</div>
                             </div>
-                            <div class="org-sub-exact" style="width: 150px;">
-                                <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
-                                <div class="org-sub-body">${mS.anggota}</div>
+                            <div class="org-sub-neon" style="width: 150px;">
+                                <div class="org-sub-head-neon">SO & OPERATOR MAINTENANCE</div>
+                                <div class="org-sub-body-neon">${mS.anggota}</div>
                             </div>
                         </div>
 
                         <!-- COL 3: DEVELOPMENT FOREMAN -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-exact ${ec}" style="width: 160px;" ${ck(dev.id)}>
-                                <div class="org-head-bg">${dev.jabatan}</div>
-                                <div class="org-body-bg">${dev.nama}</div>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="org-box-neon ${ec}" style="width: 160px;" ${ck(dev.id)}>
+                                <div class="org-head-neon">${dev.jabatan}</div>
+                                <div class="org-body-neon">${dev.nama}</div>
                             </div>
-                            <div class="org-sub-exact" style="width: 150px;">
-                                <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
-                                <div class="org-sub-body">${dev.anggota}</div>
+                            <div class="org-sub-neon" style="width: 150px;">
+                                <div class="org-sub-head-neon">SO & OPERATOR MAINTENANCE</div>
+                                <div class="org-sub-body-neon">${dev.anggota}</div>
                             </div>
                         </div>
 
                         <!-- COL 4: MACHINERY MOLD FOREMAN -->
                         <div class="org-col" style="flex: 1.8; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                <div class="group-header-label" style="width:100%;">${mac.jabatan}</div>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center;">
+                                <div class="group-header-label-neon" style="width:100%;">${mac.jabatan}</div>
                                 <div class="org-row" style="gap: 10px; margin-top: 20px;">
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 120px; min-height:40px;" ${ck(mac.id)}>
-                                            <div class="org-head-bg" style="font-size:8px;">CNC MILLING & ROUTER</div>
+                                        <div class="org-box-neon ${ec}" style="width: 120px; min-height:40px;" ${ck(mac.id)}>
+                                            <div class="org-head-neon" style="font-size:8px;">CNC MILLING & ROUTER</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 120px;">
-                                            <div class="org-sub-body">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
-                                        </div>
-                                    </div>
-                                    <div class="org-col">
-                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                            <div class="org-head-bg">EDM</div>
-                                        </div>
-                                        <div class="org-sub-exact" style="width: 100px;">
-                                            <div class="org-sub-body">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
+                                        <div class="org-sub-neon" style="width: 120px;">
+                                            <div class="org-sub-body-neon">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                            <div class="org-head-bg">MILLING</div>
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-neon">EDM</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 100px;">
-                                            <div class="org-sub-body">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
+                                        <div class="org-sub-neon" style="width: 100px;">
+                                            <div class="org-sub-body-neon">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
-                                            <div class="org-head-bg">BUBUT</div>
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-neon">MILLING</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 100px;">
-                                            <div class="org-sub-body">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
+                                        <div class="org-sub-neon" style="width: 100px;">
+                                            <div class="org-sub-body-neon">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
+                                        </div>
+                                    </div>
+                                    <div class="org-col">
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-neon">BUBUT</div>
+                                        </div>
+                                        <div class="org-sub-neon" style="width: 100px;">
+                                            <div class="org-sub-body-neon">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
                                         </div>
                                     </div>
                                 </div>
