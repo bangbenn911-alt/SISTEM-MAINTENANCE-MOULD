@@ -104,6 +104,7 @@
         @keyframes spinLeft { 100% { transform: rotate(-360deg); } }
         @keyframes pulseGlow { 0% { opacity: 0.5; transform: scale(0.95); } 100% { opacity: 1; transform: scale(1.05); } }
 
+        /* BATAS TAHAP 1 */
         .main-grid-container { background: var(--card-dark); border-radius: 30px; padding: 25px 20px; box-shadow: 0 -10px 40px rgba(0,0,0,0.5); border: 1px solid var(--border-dark); position: relative; z-index: 10; margin-top: -10px; backdrop-filter: blur(10px);}
         .gopay-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px 12px; text-align: center; }
         .gopay-icon-btn { display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: pointer; transition: 0.2s; }
@@ -134,7 +135,7 @@
         .tab-btn { flex: 1; padding: 12px 6px; border: none; background: transparent; font-weight: 700; font-size: 12px; cursor: pointer; color: var(--text-muted); border-radius: 12px;}
         .tab-active { background: rgba(255,255,255,0.1) !important; color: var(--secondary) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
 
-        /* PERBAIKAN NOTULEN MEETING UI (Sesuai Gambar 1000823614.jpg & 1000820489.jpg) */
+        /* PERBAIKAN NOTULEN MEETING UI */
         .notulen-dark-card { background: #0f172a; border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; }
         .notulen-dark-card:active { transform: scale(0.98); }
         .notulen-dark-card h3 { color: #f8fafc; font-size: 16px; font-weight: 800; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;}
@@ -181,13 +182,13 @@
         /* CYBER SECURITY & GOD MODE */
         .shield-active { color: #10b981; animation: shieldPulse 2s infinite ease-in-out; }
         @keyframes shieldPulse { 0% { text-shadow: 0 0 5px #10b981; transform: scale(1); } 50% { text-shadow: 0 0 20px #10b981; transform: scale(1.1); } 100% { text-shadow: 0 0 5px #10b981; transform: scale(1); } }
-        /* PERBAIKAN Z-INDEX CYBER SECURITY AGAR SELALU DI ATAS */
         .security-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4, 13, 26, 0.95); backdrop-filter:blur(10px); z-index:9999999 !important; align-items:center; justify-content:center; flex-direction:column; padding:20px; }
 
         .processor-core { position: relative; width: 90px; height: 90px; margin: 40px auto 30px auto; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 10; }
         .processor-core:active { transform: scale(0.85); }
         .processor-circuit { position: absolute; width: 100%; height: 100%; border-radius: 18px; border: 2px solid #0284c7; box-shadow: 0 0 25px #0ea5e9, inset 0 0 15px #0284c7; animation: pulseCore 2.5s infinite alternate ease-in-out; }
         .processor-core i { font-size: 45px; color: #38bdf8; text-shadow: 0 0 15px #e0f2fe; z-index: 2; }
+        @keyframes pulseCore { 0% { opacity:0.6; transform:scale(0.95); } 100% { opacity:1; transform:scale(1.05); } }
         
         .pin-input-box { background: rgba(0,0,0,0.6); border: 2px solid var(--secondary); color: white; font-size: 28px; text-align: center; letter-spacing: 15px; padding: 15px; border-radius: 15px; width: 100%; box-shadow: 0 0 20px rgba(56,189,248,0.2); font-weight: 900; font-family: monospace; }
         .god-mode-header { background: linear-gradient(135deg, #4c1d95, #1e1b4b) !important; border: 1px solid #8b5cf6 !important; box-shadow: 0 10px 30px rgba(139,92,246,0.3) !important; }
@@ -219,34 +220,39 @@
         /* ======================================================== */
         /* --- PERBAIKAN TOTAL: STRUKTUR ORGANISASI (HARDCODE GRID) --- */
         /* ======================================================== */
-        .org-canvas { display: flex; flex-direction: column; align-items: center; padding: 20px 0 60px 0; width: 100%; min-width: 1400px; }
+        .org-canvas { display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px 0; width: 100%; min-width: 1400px; position: relative;}
         
         /* Garis Aliran Listrik Visual Presisi */
-        .line-v-electric { position: relative; width: 2px; background: rgba(255,255,255,0.1); margin: 0 auto;}
-        .line-v-electric::after { content:''; position:absolute; top:0; left:-1px; width:4px; height:100%; background: linear-gradient(180deg, transparent, #38bdf8, transparent); background-size: 100% 50px; animation: flowV 1s linear infinite; pointer-events: none; opacity: 0.9; }
+        .line-v-electric { position: relative; width: 2px; background: rgba(255,255,255,0.15); margin: 0 auto; z-index: 1;}
+        .line-v-electric::after { content:''; position:absolute; top:0; left:-1px; width:4px; height:100%; background: linear-gradient(180deg, transparent, #38bdf8, transparent); background-size: 100% 50px; animation: flowV 1.2s linear infinite; pointer-events: none; opacity: 1; box-shadow: 0 0 8px #38bdf8;}
         
-        .line-h-electric { position: relative; height: 2px; background: rgba(255,255,255,0.1); }
-        .line-h-electric::after { content:''; position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(90deg, transparent, #38bdf8, transparent); background-size: 50px 100%; animation: flowHRight 1.5s linear infinite; pointer-events: none; opacity: 0.9; }
+        .line-h-electric { position: relative; height: 2px; background: rgba(255,255,255,0.15); z-index: 1;}
+        .line-h-electric::after { content:''; position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(90deg, transparent, #38bdf8, transparent); background-size: 50px 100%; animation: flowHRight 1.8s linear infinite; pointer-events: none; opacity: 1; box-shadow: 0 0 8px #38bdf8;}
         
-        .line-h-electric.left::after { background: linear-gradient(270deg, transparent, #38bdf8, transparent); animation: flowHLeft 1.5s linear infinite; }
+        .flow-line-h-left { position: absolute; height: 2px; background: rgba(255,255,255,0.15); z-index: 1;}
+        .flow-line-h-left::after { content:''; position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(270deg, transparent, #38bdf8, transparent); background-size: 50px 100%; animation: flowHLeft 1.8s linear infinite; box-shadow: 0 0 8px #38bdf8;}
 
         @keyframes flowV { 0% { background-position: 0 -50px; } 100% { background-position: 0 100%; } }
         @keyframes flowHRight { 0% { background-position: -50px 0; } 100% { background-position: 100% 0; } }
         @keyframes flowHLeft { 0% { background-position: 100% 0; } 100% { background-position: -50px 0; } }
 
-        /* Desain Kotak Organisasi Persis Gambar */
-        .org-box-exact { background: rgba(30, 41, 59, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden; position: relative; z-index: 5; transition: 0.2s; display: flex; flex-direction: column; text-align: center; margin: 0 auto;}
-        .org-box-exact.editable:hover { box-shadow: 0 0 15px #10b981; transform: scale(1.05); cursor: pointer; border-color: #10b981; }
-        .org-head-bg { background: #cbd5e1; color: #0f172a; font-size: 9px; font-weight: 900; padding: 6px 4px; text-transform: uppercase; border-bottom: 1px solid #94a3b8; }
-        .org-body-bg { padding: 10px; color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; min-height: 15px; display:flex; justify-content:center; align-items:center;}
+        /* Desain Kotak Organisasi Persis Gambar Putih (1000822916.jpg) */
+        .org-box-exact { background: #ffffff; border: 1px solid #64748b; box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative; z-index: 5; transition: 0.2s; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 140px; border-radius: 2px;}
+        .org-box-exact.editable:hover { box-shadow: 0 0 20px #38bdf8; transform: scale(1.05); cursor: pointer; border-color: #38bdf8; }
         
-        .org-sub-exact { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden; position: relative; display: flex; flex-direction: column; text-align: center; z-index: 5; margin-left: auto; margin-right: auto;}
-        .org-sub-head { background: #f8fafc; color: #0f172a; font-size: 9px; font-weight: 900; padding: 4px; }
-        .org-sub-body { padding: 8px; color: #f8fafc; font-size: 9px; font-weight: 600; white-space: pre-line; line-height: 1.5; }
+        .org-head-bg { background: #cbd5e1; color: #0f172a; font-size: 10px; font-weight: 900; padding: 8px 4px; text-transform: uppercase; border-bottom: 1px solid #64748b; letter-spacing: 0.5px;}
+        .org-body-bg { padding: 12px 10px; color: #0f172a; font-size: 11px; font-weight: 800; text-transform: uppercase; min-height: 20px; display:flex; justify-content:center; align-items:center; background: #ffffff;}
+        
+        .org-sub-exact { background: #ffffff; border: 1px solid #64748b; margin-top: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 2px;}
+        .org-sub-head { background: #e2e8f0; color: #0f172a; font-size: 9px; font-weight: 900; padding: 6px; border-bottom: 1px solid #64748b; text-align: center;}
+        .org-sub-body { padding: 10px; color: #0f172a; font-size: 9px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; background: #ffffff;}
 
-        /* Grup Kotak Abu-Abu Besar seperti di gambar */
-        .group-container { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.02); padding: 10px; position: relative; margin: 0 10px; border-radius: 8px;}
-        .group-header-label { background: #94a3b8; color: #0f172a; font-size: 11px; font-weight: 900; padding: 6px; text-align: center; text-transform: uppercase; margin-bottom: 10px; border-radius: 4px;}
+        /* Wrapper Hirarki */
+        .org-row { display: flex; justify-content: space-between; position: relative; width: 100%;}
+        .org-col { display: flex; flex-direction: column; align-items: center; position: relative; }
+        
+        .group-container { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.03); padding: 30px 10px 10px 10px; position: relative; margin: 0 8px; border-radius: 4px;}
+        .group-header-label { position: absolute; top: 0; left: 0; width: 100%; background: #94a3b8; color: #0f172a; font-size: 10px; font-weight: 900; padding: 6px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #64748b; box-sizing: border-box;}
 
     </style>
 </head>
@@ -341,7 +347,7 @@
             </div>
 
             <p style="font-size: 14px; font-weight: 800; color:var(--text-muted); margin-bottom: 5px;">Status Kinerja System</p>
-
+/* BATAS TAHAP 2 */
             <!-- Dashboard HUD -->
             <div class="hero-dashboard">
                 <div class="hero-left">
@@ -638,6 +644,7 @@
             </div>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- STRUKTUR ORGANISASI SCREEN (HARDCODE PRESISI SESUAI GAMBAR) -->
     <!-- ========================================================= -->
@@ -647,165 +654,165 @@
                 <h2 style="margin:0;"><i class="fas fa-sitemap" style="margin-right:10px;"></i> STRUKTUR ORGANISASI</h2>
             </div>
             
-            <div class="dark-panel" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
+            <div class="dark-panel" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column; background: #f8fafc; border: 4px solid #cbd5e1;">
                 
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
-                    <p id="teks-info-org" style="color:var(--text-muted); font-size:11px; margin:0; background:rgba(0,0,0,0.5); padding:8px 12px; border-radius:8px; border:1px solid var(--border-dark);"><i class="fas fa-arrows-alt"></i> Geser layar. Gunakan tombol zoom.</p>
+                    <p id="teks-info-org" style="color:#ffffff; font-size:11px; margin:0; background:#0f172a; padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);"><i class="fas fa-arrows-alt"></i> Geser & Zoom</p>
                     
                     <div style="display:flex; gap:8px;">
-                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;"><i class="fas fa-search-minus"></i></button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;">RESET</button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;"><i class="fas fa-search-plus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;">RESET</button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:#0f172a; border: 1px solid #38bdf8; box-shadow:none;"><i class="fas fa-search-plus"></i></button>
                     </div>
                 </div>
                 
                 <!-- Viewport Panning Anti-Lag -->
-                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background:rgba(0,0,0,0.2); border:1px dashed var(--border-dark); border-radius:14px; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
+                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background: radial-gradient(circle, #e2e8f0 10%, transparent 11%), radial-gradient(circle at bottom left, #e2e8f0 5%, transparent 6%), radial-gradient(circle at bottom right, #e2e8f0 5%, transparent 6%), radial-gradient(circle at top left, #e2e8f0 5%, transparent 6%), radial-gradient(circle at top right, #e2e8f0 5%, transparent 6%); background-size: 20px 20px; background-color: #f1f5f9; border:1px solid #94a3b8; border-radius:8px; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
                     
-                    <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 40px; display:flex; justify-content:center; min-width: 1400px;">
+                    <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 20px 40px; display:flex; justify-content:center; min-width: 1400px;">
                         
-                        <!-- RENDER GRID MANUAL PERSIS FOTO (1000823612.jpg) -->
+                        <!-- RENDER GRID MANUAL PERSIS FOTO (1000822916.jpg) -->
                         <div id="org-tree-render" class="org-canvas">
                             
+                            <!-- BORDER BANNER JUDUL (SESUAI FOTO) -->
+                            <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: #cbd5e1; border: 1px solid #64748b; padding: 6px; font-size: 14px; font-weight: 900; color: #0f172a;">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
+
                             <!-- DEPT HEAD -->
                             <div class="org-col">
                                 <div class="org-box-exact">
-                                    <div class="org-head-bg">DEPT. HEAD (CONTROL PROD INJECTION)</div>
+                                    <div class="org-head-bg" style="font-size: 13px; padding: 12px;">DEPT. HEAD</div>
                                     <div class="org-body-bg">EDI JUNAEDI</div>
                                 </div>
                                 <div class="line-v-electric" style="height: 30px; position:relative;">
                                     <!-- GARIS CABANG KE ADMIN (KIRI) -->
-                                    <div style="position:absolute; top:50%; right:1px; width:120px; height:2px; background:rgba(255,255,255,0.1);">
+                                    <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(255,255,255,0.15);">
                                         <div class="flow-line-h-left" style="width:100%; top:-1px;"></div>
                                     </div>
                                     <!-- KOTAK ADMIN -->
-                                    <div style="position:absolute; top:50%; right:120px; transform:translateY(-50%);">
-                                        <div class="org-box-exact" style="width:120px;">
-                                            <div class="org-head-bg" style="background:#94a3b8;">ADMIN</div>
-                                            <div class="org-body-bg" style="font-size:11px;">BENNY F</div>
+                                    <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
+                                        <div class="org-box-exact" style="width:130px;">
+                                            <div class="org-head-bg">ADMIN</div>
+                                            <div class="org-body-bg">BENNY F</div>
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <!-- SECTION HEAD -->
-                                <div class="org-box-exact" style="width: 220px;">
-                                    <div class="org-head-bg">SECTION HEAD (MAINT, REPAIR & STORE)</div>
+                                <div class="org-box-exact" style="width: 320px;">
+                                    <div class="org-head-bg">MAINTENANCE, REPAIR INJECTION & MOLD STORE SECTION.HEAD</div>
                                     <div class="org-body-bg">HERU NUGRAHA</div>
                                 </div>
                                 <div class="line-v-electric" style="height: 30px;"></div>
                                 
                                 <!-- BRANCHING HORIZONTAL UTAMA BAWAH -->
-                                <div class="org-row" style="width: 1300px;">
+                                <div class="org-row" style="width: 1400px;">
                                     <div class="line-h-electric" style="width: 100%; position: absolute; top: 0;"></div>
                                     
-                                    <!-- COL 1: DEVELOPMENT FOREMAN -->
-                                    <div class="org-col" style="flex: 1; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="org-box-exact" style="width: 150px;">
-                                            <div class="org-head-bg">DEVELOPMENT FOREMAN</div>
-                                            <div class="org-body-bg">TARMUJI</div>
-                                        </div>
-                                        <div class="org-sub-exact" style="width: 140px;">
-                                            <div class="org-sub-head">SO & OPERATOR</div>
-                                            <div class="org-sub-body" style="text-align:left; padding-left:20px;">- SUNARYO (SO)<br>- AHMAD ROFII (PKWT)<br>- ENOH (SO)<br>- WAWAN S (SO)<br>- ARIS (PKWT)<br>- BAYU (PKWT)</div>
-                                        </div>
-                                    </div>
-
-                                    <!-- COL 2: CONTROL PRODUKSI INJECTION -->
+                                    <!-- COL 1: CONTROL PRODUKSI INJECTION -->
                                     <div class="org-col" style="flex: 1.5; padding-top: 20px;">
                                         <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
                                         <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
                                             <div class="group-header-label" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
-                                            <div class="org-row" style="gap: 10px;">
+                                            <div class="org-row" style="gap: 15px; margin-top:20px;">
                                                 <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 130px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP INJECTION 1</div>
+                                                    <div class="org-box-exact" style="width: 135px;">
+                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 1</div>
                                                         <div class="org-body-bg">INDRA</div>
                                                     </div>
-                                                    <div class="org-sub-exact" style="width: 120px;">
-                                                        <div class="org-sub-head">SO & OPERATOR</div>
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:10px;">- SUPRIYANTO (SO)<br>- APRILIAN (PKWT)<br>- IWAN (PKWT)<br>- HERU (PKWT)</div>
+                                                    <div class="org-sub-exact" style="width: 135px;">
+                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                                        <div class="org-sub-body">- SUPRIYANTO (SO)<br>- APRILIAN (PKWT)<br>- IWAN (PKWT)<br>- HERU (PKWT)</div>
                                                     </div>
                                                 </div>
                                                 <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 130px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP INJECTION 2</div>
+                                                    <div class="org-box-exact" style="width: 135px;">
+                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 2</div>
                                                         <div class="org-body-bg">DENI.R</div>
                                                     </div>
-                                                    <div class="org-sub-exact" style="width: 120px;">
-                                                        <div class="org-sub-head">SO & OPERATOR</div>
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:10px;">- KOMARUDIN (SO)<br>- EDI.R (SO)<br>- TAMSIL (PKWT)<br>- RAFLY (PKWT)</div>
+                                                    <div class="org-sub-exact" style="width: 135px;">
+                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                                        <div class="org-sub-body">- KOMARUDIN (SO)<br>- EDI.R (SO)<br>- TAMSIL (PKWT)<br>- RAFLY (PKWT)</div>
                                                     </div>
                                                 </div>
                                                 <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 130px;">
-                                                        <div class="org-head-bg">FOREMAN GROUP INJECTION 3</div>
+                                                    <div class="org-box-exact" style="width: 135px;">
+                                                        <div class="org-head-bg">FOREMAN GROUP<br>INJECTION 3</div>
                                                         <div class="org-body-bg">KIKI</div>
                                                     </div>
-                                                    <div class="org-sub-exact" style="width: 120px;">
-                                                        <div class="org-sub-head">SO & OPERATOR</div>
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:10px;">- ROHIDI (SO)<br>- ANDRIAN (PKWT)<br>- GUNAWAN (OS)<br>- SUKARYA (PKWT)</div>
+                                                    <div class="org-sub-exact" style="width: 135px;">
+                                                        <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                                        <div class="org-sub-body">- ROHIDI (SO)<br>- ANDRIAN (PKWT)<br>- GUNAWAN (OS)<br>- SUKARYA (PKWT)</div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <!-- COL 3: MACHINERY MOLD FOREMAN -->
-                                    <div class="org-col" style="flex: 1.8; padding-top: 20px;">
-                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                            <div class="org-box-exact" style="width: 180px; margin-bottom: 15px; margin-top:-20px;">
-                                                <div class="org-head-bg">MACHINERY MOLD FOREMAN</div>
-                                                <div class="org-body-bg">SUNARYO (SO)</div>
-                                            </div>
-                                            <div class="org-row" style="gap: 8px;">
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 110px; min-height:30px;">
-                                                        <div class="org-head-bg">CNC MILLING & ROUTER</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 100px; margin-top:5px;">
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:5px;">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 90px; min-height:30px;">
-                                                        <div class="org-head-bg">EDM</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 80px; margin-top:5px;">
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:5px;">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 90px; min-height:30px;">
-                                                        <div class="org-head-bg">MILLING</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 80px; margin-top:5px;">
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:5px;">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                                <div class="org-col">
-                                                    <div class="org-box-exact" style="width: 90px; min-height:30px;">
-                                                        <div class="org-head-bg">BUBUT</div>
-                                                    </div>
-                                                    <div class="org-sub-exact" style="width: 80px; margin-top:5px;">
-                                                        <div class="org-sub-body" style="text-align:left; padding-left:5px;">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- COL 4: MOLD STORE -->
+                                    <!-- COL 2: MOLD STORE -->
                                     <div class="org-col" style="flex: 1; padding-top: 20px;">
                                         <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                                        <div class="org-box-exact" style="width: 150px;">
+                                        <div class="org-box-exact" style="width: 160px;">
                                             <div class="org-head-bg">MOLD STORE FOREMAN</div>
                                             <div class="org-body-bg">KIKI</div>
                                         </div>
-                                        <div class="org-sub-exact" style="width: 140px;">
-                                            <div class="org-sub-head">SO & OPERATOR</div>
-                                            <div class="org-sub-body" style="text-align:left; padding-left:20px;">- UHDI (SO)<br>- WARSITO (SO)<br>- NANANG (KARTAP)<br>- SUPRIYATNA (PKWT)<br>- HERMAN (PKWT)<br>- MUSTOPA (PKWT)<br>- ENDING (SO)<br>- FIRDI (PKWT)<br>- DASLAM (PKWT)</div>
+                                        <div class="org-sub-exact" style="width: 150px;">
+                                            <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
+                                            <div class="org-sub-body">- UHDI (SO)<br>- WARSITO (SO)<br>- NANANG (KARTAP)<br>- SUPRIYATNA (PKWT)<br>- HERMAN (PKWT)<br>- MUSTOPA (PKWT)<br>- ENDING (SO)<br>- FIRDI (PKWT)<br>- DASLAM (PKWT)</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- COL 3: DEVELOPMENT FOREMAN -->
+                                    <div class="org-col" style="flex: 1; padding-top: 20px;">
+                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
+                                        <div class="org-box-exact" style="width: 160px;">
+                                            <div class="org-head-bg">DEVELOPMENT FOREMAN</div>
+                                            <div class="org-body-bg">TARMUJI</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 150px;">
+                                            <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
+                                            <div class="org-sub-body">- SUNARYO (SO)<br>- AHMAD ROFII (PKWT)<br>- ENOH (SO)<br>- WAWAN S (SO)<br>- ARIS (PKWT)<br>- BAYU (PKWT)</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- COL 4: MACHINERY MOLD FOREMAN -->
+                                    <div class="org-col" style="flex: 1.8; padding-top: 20px;">
+                                        <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
+                                        <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
+                                            <div class="group-header-label" style="width:100%;">MACHINERY MOLD FOREMAN</div>
+                                            <div class="org-row" style="gap: 10px; margin-top: 20px;">
+                                                <div class="org-col">
+                                                    <div class="org-box-exact" style="width: 120px; min-height:40px;">
+                                                        <div class="org-head-bg" style="font-size:8px;">CNC MILLING & ROUTER</div>
+                                                    </div>
+                                                    <div class="org-sub-exact" style="width: 120px;">
+                                                        <div class="org-sub-body">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="org-col">
+                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                                        <div class="org-head-bg">EDM</div>
+                                                    </div>
+                                                    <div class="org-sub-exact" style="width: 100px;">
+                                                        <div class="org-sub-body">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="org-col">
+                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                                        <div class="org-head-bg">MILLING</div>
+                                                    </div>
+                                                    <div class="org-sub-exact" style="width: 100px;">
+                                                        <div class="org-sub-body">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="org-col">
+                                                    <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                                        <div class="org-head-bg">BUBUT</div>
+                                                    </div>
+                                                    <div class="org-sub-exact" style="width: 100px;">
+                                                        <div class="org-sub-body">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -818,7 +825,7 @@
             </div>
         </div>
     </div>
-
+/* BATAS TAHAP 3 */
     <!-- ========================================================= -->
     <!-- SURAT KOMPONEN (SURKOM) MENU & SCREENS                    -->
     <!-- ========================================================= -->
@@ -1985,7 +1992,6 @@
             </button>
         </div>
     </div>
-
     <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
@@ -2144,15 +2150,15 @@
         window.zoomOrg = (d) => { const wp = document.getElementById('org-zoom-wrapper'); if(d === 0) window.orgZoomScale = 1.0; else window.orgZoomScale = Math.min(Math.max(0.4, window.orgZoomScale + d), 2.0); wp.style.transform = `scale(${window.orgZoomScale})`; };
 
         const defaultOrg = [
-            { id: "o1", level: 1, jabatan: "DEPT. HEAD (CONTROL PROD INJECTION)", nama: "EDI JUNAEDI", anggota: "" },
+            { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
             { id: "o2", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
-            { id: "o3", level: 2, jabatan: "SECTION HEAD (MAINT, REPAIR & STORE)", nama: "HERU NUGRAHA", anggota: "" },
-            { id: "o4", level: 3, jabatan: "FOREMAN GROUP INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
-            { id: "o5", level: 3, jabatan: "FOREMAN GROUP INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
-            { id: "o6", level: 3, jabatan: "FOREMAN GROUP INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
+            { id: "o3", level: 2, jabatan: "MAINTENANCE, REPAIR INJECTION & MOLD STORE SECTION.HEAD", nama: "HERU NUGRAHA", anggota: "" },
+            { id: "o4", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
+            { id: "o5", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
+            { id: "o6", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
             { id: "o7", level: 3, jabatan: "MOLD STORE FOREMAN", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)\n- NANANG (KARTAP)\n- SUPRIYATNA (PKWT)\n- HERMAN (PKWT)\n- MUSTOPA (PKWT)\n- ENDING (SO)\n- FIRDI (PKWT)\n- DASLAM (PKWT)" },
             { id: "o8", level: 3, jabatan: "DEVELOPMENT FOREMAN", nama: "TARMUJI", anggota: "- SUNARYO (SO)\n- AHMAD ROFII (PKWT)\n- ENOH (SO)\n- WAWAN S (SO)\n- ARIS (PKWT)\n- BAYU (PKWT)" },
-            { id: "o9", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "HARDCODE_UI" } // Anggota diabaikan karena UI machinery di-hardcode
+            { id: "o9", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "HARDCODE_UI" }
         ];
 
         window.ambilDataOrg = async function() {
@@ -2165,6 +2171,7 @@
             } catch(e) { console.error(e); }
         };
 
+        // --- PENYESUAIAN RENDER ENGINE KE STRUKTUR BARU (TAHAP 3) ---
         window.renderOrgSvgEngine = function() {
             const tree = document.getElementById('org-tree-render'); if(!tree) return;
             const h = window.orgDatabase.find(o => o.id === "o1") || defaultOrg[0];
@@ -2181,65 +2188,146 @@
             let ck = (id) => window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${id}')"` : "";
 
             tree.innerHTML = `
+                <!-- BORDER BANNER JUDUL -->
+                <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: #cbd5e1; border: 1px solid #64748b; padding: 6px; font-size: 14px; font-weight: 900; color: #0f172a;">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
+
+                <!-- DEPT HEAD -->
                 <div class="org-col">
-                    <div class="org-box-exact ${ec}" ${ck(h.id)}><div class="org-head-bg">${h.jabatan}</div><div class="org-body-bg">${h.nama}</div></div>
+                    <div class="org-box-exact ${ec}" ${ck(h.id)}>
+                        <div class="org-head-bg" style="font-size: 13px; padding: 12px;">${h.jabatan}</div>
+                        <div class="org-body-bg">${h.nama}</div>
+                    </div>
                     <div class="line-v-electric" style="height: 30px; position:relative;">
-                        <div style="position:absolute; top:50%; right:1px; width:120px; height:2px; background:rgba(255,255,255,0.1);"><div class="flow-line-h-left" style="width:100%; top:-1px;"></div></div>
-                        <div style="position:absolute; top:50%; right:120px; transform:translateY(-50%);">
-                            <div class="org-box-exact ${ec}" style="width:120px;" ${ck(adm.id)}><div class="org-head-bg" style="background:#94a3b8;">${adm.jabatan}</div><div class="org-body-bg" style="font-size:11px;">${adm.nama}</div></div>
+                        <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(255,255,255,0.15);">
+                            <div class="flow-line-h-left" style="width:100%; top:-1px;"></div>
+                        </div>
+                        <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
+                            <div class="org-box-exact ${ec}" style="width:130px;" ${ck(adm.id)}>
+                                <div class="org-head-bg">${adm.jabatan}</div>
+                                <div class="org-body-bg">${adm.nama}</div>
+                            </div>
                         </div>
                     </div>
-                    <div class="org-box-exact ${ec}" style="width: 220px;" ${ck(sec.id)}><div class="org-head-bg">${sec.jabatan}</div><div class="org-body-bg">${sec.nama}</div></div>
+                    
+                    <!-- SECTION HEAD -->
+                    <div class="org-box-exact ${ec}" style="width: 320px;" ${ck(sec.id)}>
+                        <div class="org-head-bg">${sec.jabatan}</div>
+                        <div class="org-body-bg">${sec.nama}</div>
+                    </div>
                     <div class="line-v-electric" style="height: 30px;"></div>
                     
-                    <div class="org-row" style="width: 1300px;">
+                    <!-- BRANCHING HORIZONTAL UTAMA BAWAH -->
+                    <div class="org-row" style="width: 1400px;">
                         <div class="line-h-electric" style="width: 100%; position: absolute; top: 0;"></div>
                         
-                        <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-exact ${ec}" style="width: 150px;" ${ck(dev.id)}><div class="org-head-bg">${dev.jabatan}</div><div class="org-body-bg">${dev.nama}</div></div>
-                            <div class="org-sub-exact" style="width: 140px;"><div class="org-sub-head">SO & OPERATOR</div><div class="org-sub-body" style="text-align:left; padding-left:20px;">${dev.anggota}</div></div>
-                        </div>
-
+                        <!-- COL 1: CONTROL PRODUKSI INJECTION -->
                         <div class="org-col" style="flex: 1.5; padding-top: 20px;">
                             <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
                             <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
                                 <div class="group-header-label" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
-                                <div class="org-row" style="gap: 10px;">
+                                <div class="org-row" style="gap: 15px; margin-top:20px;">
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 130px;" ${ck(f1.id)}><div class="org-head-bg">${f1.jabatan}</div><div class="org-body-bg">${f1.nama}</div></div>
-                                        <div class="org-sub-exact" style="width: 120px;"><div class="org-sub-head">SO & OPERATOR</div><div class="org-sub-body" style="text-align:left; padding-left:10px;">${f1.anggota}</div></div>
+                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f1.id)}>
+                                            <div class="org-head-bg">${f1.jabatan}</div>
+                                            <div class="org-body-bg">${f1.nama}</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 135px;">
+                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body">${f1.anggota}</div>
+                                        </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 130px;" ${ck(f2.id)}><div class="org-head-bg">${f2.jabatan}</div><div class="org-body-bg">${f2.nama}</div></div>
-                                        <div class="org-sub-exact" style="width: 120px;"><div class="org-sub-head">SO & OPERATOR</div><div class="org-sub-body" style="text-align:left; padding-left:10px;">${f2.anggota}</div></div>
+                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f2.id)}>
+                                            <div class="org-head-bg">${f2.jabatan}</div>
+                                            <div class="org-body-bg">${f2.nama}</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 135px;">
+                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body">${f2.anggota}</div>
+                                        </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-exact ${ec}" style="width: 130px;" ${ck(f3.id)}><div class="org-head-bg">${f3.jabatan}</div><div class="org-body-bg">${f3.nama}</div></div>
-                                        <div class="org-sub-exact" style="width: 120px;"><div class="org-sub-head">SO & OPERATOR</div><div class="org-sub-body" style="text-align:left; padding-left:10px;">${f3.anggota}</div></div>
+                                        <div class="org-box-exact ${ec}" style="width: 135px;" ${ck(f3.id)}>
+                                            <div class="org-head-bg">${f3.jabatan}</div>
+                                            <div class="org-body-bg">${f3.nama}</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 135px;">
+                                            <div class="org-sub-head">SO & OPERATOR<br>MAINTENANCE</div>
+                                            <div class="org-sub-body">${f3.anggota}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- COL 2: MOLD STORE -->
+                        <div class="org-col" style="flex: 1; padding-top: 20px;">
+                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="org-box-exact ${ec}" style="width: 160px;" ${ck(mS.id)}>
+                                <div class="org-head-bg">${mS.jabatan}</div>
+                                <div class="org-body-bg">${mS.nama}</div>
+                            </div>
+                            <div class="org-sub-exact" style="width: 150px;">
+                                <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
+                                <div class="org-sub-body">${mS.anggota}</div>
+                            </div>
+                        </div>
+
+                        <!-- COL 3: DEVELOPMENT FOREMAN -->
+                        <div class="org-col" style="flex: 1; padding-top: 20px;">
+                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
+                            <div class="org-box-exact ${ec}" style="width: 160px;" ${ck(dev.id)}>
+                                <div class="org-head-bg">${dev.jabatan}</div>
+                                <div class="org-body-bg">${dev.nama}</div>
+                            </div>
+                            <div class="org-sub-exact" style="width: 150px;">
+                                <div class="org-sub-head">SO & OPERATOR MAINTENANCE</div>
+                                <div class="org-sub-body">${dev.anggota}</div>
+                            </div>
+                        </div>
+
+                        <!-- COL 4: MACHINERY MOLD FOREMAN -->
                         <div class="org-col" style="flex: 1.8; padding-top: 20px;">
                             <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
                             <div class="group-container" style="display:flex; flex-direction:column; align-items:center;">
-                                <div class="org-box-exact ${ec}" style="width: 180px; margin-bottom: 15px; margin-top:-20px;" ${ck(mac.id)}><div class="org-head-bg">${mac.jabatan}</div><div class="org-body-bg">${mac.nama}</div></div>
-                                <div class="org-row" style="gap: 8px;">
-                                    <div class="org-col"><div class="org-box-exact" style="width: 110px; min-height:30px;"><div class="org-head-bg">CNC MILLING & ROUTER</div></div><div class="org-sub-exact" style="width: 100px; margin-top:5px;"><div class="org-sub-body" style="text-align:left; padding-left:5px;">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div></div></div>
-                                    <div class="org-col"><div class="org-box-exact" style="width: 90px; min-height:30px;"><div class="org-head-bg">EDM</div></div><div class="org-sub-exact" style="width: 80px; margin-top:5px;"><div class="org-sub-body" style="text-align:left; padding-left:5px;">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div></div></div>
-                                    <div class="org-col"><div class="org-box-exact" style="width: 90px; min-height:30px;"><div class="org-head-bg">MILLING</div></div><div class="org-sub-exact" style="width: 80px; margin-top:5px;"><div class="org-sub-body" style="text-align:left; padding-left:5px;">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div></div></div>
-                                    <div class="org-col"><div class="org-box-exact" style="width: 90px; min-height:30px;"><div class="org-head-bg">BUBUT</div></div><div class="org-sub-exact" style="width: 80px; margin-top:5px;"><div class="org-sub-body" style="text-align:left; padding-left:5px;">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div></div></div>
+                                <div class="group-header-label" style="width:100%;">${mac.jabatan}</div>
+                                <div class="org-row" style="gap: 10px; margin-top: 20px;">
+                                    <div class="org-col">
+                                        <div class="org-box-exact ${ec}" style="width: 120px; min-height:40px;" ${ck(mac.id)}>
+                                            <div class="org-head-bg" style="font-size:8px;">CNC MILLING & ROUTER</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 120px;">
+                                            <div class="org-sub-body">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
+                                        </div>
+                                    </div>
+                                    <div class="org-col">
+                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-bg">EDM</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 100px;">
+                                            <div class="org-sub-body">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
+                                        </div>
+                                    </div>
+                                    <div class="org-col">
+                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-bg">MILLING</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 100px;">
+                                            <div class="org-sub-body">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
+                                        </div>
+                                    </div>
+                                    <div class="org-col">
+                                        <div class="org-box-exact" style="width: 100px; min-height:40px;">
+                                            <div class="org-head-bg">BUBUT</div>
+                                        </div>
+                                        <div class="org-sub-exact" style="width: 100px;">
+                                            <div class="org-sub-body">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-electric" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-exact ${ec}" style="width: 150px;" ${ck(mS.id)}><div class="org-head-bg">${mS.jabatan}</div><div class="org-body-bg">${mS.nama}</div></div>
-                            <div class="org-sub-exact" style="width: 140px;"><div class="org-sub-head">SO & OPERATOR</div><div class="org-sub-body" style="text-align:left; padding-left:20px;">${mS.anggota}</div></div>
-                        </div>
                     </div>
                 </div>`;
         };
@@ -2298,7 +2386,7 @@
                 try { const snap = await getDocs(query(collection(window.db, "surat_komponen"))); snap.forEach(d => window.surkomDatabase.push({id: d.id, ...d.data()})); window.surkomDatabase.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch(e){} window.toggleLoader(false);
             }
             
-            // LOGIKA FILTER TAHUN (Bug Fixed: memunculkan data tanpa tag tahun sebagai DATA LAMA jika tab ALL dipilih)
+            // LOGIKA FILTER TAHUN
             let data = window.surkomDatabase.filter(d => {
                 let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw);
                 let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif);
@@ -2366,7 +2454,7 @@
         window.simpanPermintaanTrial = async () => { const t = document.getElementById('trial-tgl').value, p = window.amankanData(document.getElementById('trial-pemohon').value), m = window.amankanData(document.getElementById('trial-mold').value), a = window.amankanData(document.getElementById('trial-alasan').value); if(!t||!p||!m) return alert("Isi Form!"); window.toggleLoader(true); try { await addDoc(collection(window.db,"permintaan_trial"),{tanggal:t, pemohon:p.toUpperCase(), namaMold:m.toUpperCase(), alasan:a, status:"Menunggu Jadwal", timestamp:Date.now()}); alert("Terkirim!"); window.switchTabTrial('database'); } catch(e){} window.toggleLoader(false); };
         window.renderTrialDatabase = async () => { const c = document.getElementById('list-trial-database'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"permintaan_trial"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.namaMold}</h4><p>Pemohon: ${d.pemohon} | Status: ${d.status}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
-        // PERBAIKAN LOGIKA NOTULEN MEETING (DESAIN PERSIS FOTO 1000823614.jpg & 1000820489.jpg)
+        // PERBAIKAN LOGIKA NOTULEN MEETING
         window.aiRapihkanNotulen = () => { let t = document.getElementById('notul-deskripsi').value; if(!t) return; window.toggleLoader(true,"AI Merapihkan..."); setTimeout(()=>{ document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); window.toggleLoader(false); }, 1000); };
         window.simpanNotulen = async () => { const j = document.getElementById('notul-jenis').value, d = window.amankanData(document.getElementById('notul-deskripsi').value), w = document.getElementById('notul-waktu-display').value, f = document.getElementById('notul-foto'); if(!d) return alert("Isi deskripsi!"); let p=[]; document.querySelectorAll('.chk-hadir:checked').forEach(c=>p.push(c.value)); if(p.length===0) p.push("Tidak ada peserta"); let arrD = d.split('\n').filter(x=>x.trim().length>0).map((tx,i)=>({id:i, teks:tx.replace(/^•\s*/,''), done:false})); window.toggleLoader(true); let b64=""; if(f.files.length>0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); try { await addDoc(collection(window.db,"notulen_meeting"), {jenisMeeting:j, waktuRecord:w, deskripsiData:arrD, peserta:p, foto:b64, timestamp:Date.now()}); alert("Disimpan!"); window.navigasi('notulen-menu-screen'); } catch(e){} window.toggleLoader(false); };
         window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-content').forEach(e=>e.style.display='none'); document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(b=>b.classList.remove('tab-active')); if(j==='MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display='block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); } else if(j==='MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display='block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); } else { document.getElementById('list-notulen-lapangan').style.display='block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); } };
@@ -2377,7 +2465,6 @@
                 const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); 
                 let hP="",hU="",hL=""; 
                 window.notulenDatabase.forEach(d=>{ 
-                    // MENGGUNAKAN DESAIN NOTULEN DARK CARD PERSIS FOTO
                     let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; 
                     if(d.jenisMeeting==='MEETING PAGI') hP+=c; else if(d.jenisMeeting==='MEETING URGENT') hU+=c; else hL+=c; 
                 }); 
@@ -2393,7 +2480,6 @@
                 d.deskripsiData.forEach(x => { 
                     let chk = x.done ? "checked" : ""; 
                     let classDone = x.done ? "done" : ""; 
-                    // MENGGUNAKAN DESAIN POIN CARD PERSIS FOTO (CHECKBOX DI KIRI)
                     hd += `<div class="poin-card ${classDone}">
                              <input type="checkbox" id="chk-${x.id}" ${chk} onchange="window.updateCeklisNotulen('${d.id}', ${x.id}, this.checked)">
                              <label for="chk-${x.id}">${x.teks}</label>
@@ -2418,7 +2504,7 @@
             
             if(d.foto) h+=`<div style="margin-top:20px; text-align:center; background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);"><strong style="color:#38bdf8; font-size:14px; letter-spacing:1px; display:block; margin-bottom:10px;">FOTO DOKUMENTASI</strong><img src="${d.foto}" style="max-width:100%; border-radius:10px;"></div>`; 
             
-            h += `</div>`; // Tutup wrapper
+            h += `</div>`; 
             document.getElementById('report-notulen-content').innerHTML = h; window.navigasi('detail-notulen-screen'); 
         };
         
