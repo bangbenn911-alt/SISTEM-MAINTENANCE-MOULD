@@ -34,7 +34,7 @@
         body, html {
             margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif;
             color: var(--text-light); overflow-x: hidden; height: 100%; 
-            scroll-behavior: smooth; background: #040d1a; 
+            scroll-behavior: smooth; background: #040d1a; overscroll-behavior-y: none;
         }
 
         .aurora-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; overflow: hidden; pointer-events: none; }
@@ -134,7 +134,6 @@
         .tab-btn { flex: 1; padding: 12px 6px; border: none; background: transparent; font-weight: 700; font-size: 12px; cursor: pointer; color: var(--text-muted); border-radius: 12px;}
         .tab-active { background: rgba(255,255,255,0.1) !important; color: var(--secondary) !important; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
 
-        /* PERBAIKAN NOTULEN MEETING UI */
         .notulen-dark-card { background: #0f172a; border-radius: 16px; padding: 20px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.3); cursor: pointer; transition: 0.2s; }
         .notulen-dark-card:active { transform: scale(0.98); }
         .notulen-dark-card h3 { color: #f8fafc; font-size: 16px; font-weight: 800; margin: 0 0 10px 0; text-transform: uppercase; letter-spacing: 0.5px;}
@@ -156,7 +155,6 @@
         .poin-card.done input[type="checkbox"] { accent-color: #10b981; }
         .poin-card label { color: #f8fafc; font-size: 13px; font-weight: 600; line-height: 1.6; cursor: pointer; text-transform: uppercase; margin:0;}
 
-        /* SURKOM & PROFIL CSS */
         .chk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         input.profil-search-input { background: transparent !important; border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; width: 100% !important; font-size: 14px !important; font-weight: 500 !important; color: white !important; }
         input.profil-search-input:focus { box-shadow: none !important; border: none !important; background: transparent !important; }
@@ -217,42 +215,61 @@
         .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
 
         /* ======================================================== */
-        /* --- EFEK SIRKUIT NEON & KOTAK HOLOGRAFIK ORGANISASI --- */
+        /* --- EFEK SIRKUIT NEON TERSINKRONISASI (STRUKTUR ORG) --- */
         /* ======================================================== */
+        
         .org-canvas { display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px 0; width: 100%; min-width: 1400px; position: relative;}
         
+        /* Layar Transparan untuk area Scroll */
         .org-panel-transparent { background: rgba(4, 13, 26, 0.4) !important; backdrop-filter: blur(8px); border: 1px solid rgba(56, 189, 248, 0.3) !important; box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.1), 0 10px 30px rgba(0,0,0,0.8); }
 
-        .line-v-circuit { position: relative; width: 2px; background: rgba(56, 189, 248, 0.15); margin: 0 auto; z-index: 1; }
-        .line-v-circuit::after { content: ''; position: absolute; top: 0; left: -1px; width: 4px; height: 100%; background: linear-gradient(180deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 100% 60px; animation: flowVertical 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
+        /* Konfigurasi Garis Kabel Sirkuit (Mati/Gelap) */
+        .line-v-circuit { position: relative; width: 3px; background: #0f172a; margin: 0 auto; z-index: 1; overflow: hidden; border-radius: 2px;}
+        .line-h-circuit { position: relative; height: 3px; background: #0f172a; z-index: 1; overflow: hidden; border-radius: 2px;}
         
-        .line-h-circuit { position: relative; height: 2px; background: rgba(56, 189, 248, 0.15); z-index: 1; }
-        .line-h-circuit::after { content: ''; position: absolute; top: -1px; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 60px 100%; animation: flowHorizontalRight 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
-        
-        .flow-line-h-left-circuit { position: absolute; height: 2px; background: rgba(56, 189, 248, 0.15); z-index: 1; }
-        .flow-line-h-left-circuit::after { content: ''; position: absolute; top: -1px; left: 0; width: 100%; height: 4px; background: linear-gradient(270deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); background-size: 60px 100%; animation: flowHorizontalLeft 1.5s linear infinite; box-shadow: 0 0 12px #38bdf8; }
+        /* Animasi Cahaya Bergerak di dalam Garis */
+        .line-v-circuit::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 0%, #38bdf8 80%, #ffffff 100%); animation: flowVSync 4s infinite linear var(--delay, 0s); box-shadow: 0 0 10px #38bdf8; }
+        .line-h-circuit::after { content: ''; position: absolute; left: 0%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); animation: flowHSync 4s infinite linear var(--delay, 0s); box-shadow: 0 0 10px #38bdf8; }
 
-        @keyframes flowVertical { 0% { background-position: 0 -60px; } 100% { background-position: 0 100%; } }
-        @keyframes flowHorizontalRight { 0% { background-position: -60px 0; } 100% { background-position: 100% 0; } }
-        @keyframes flowHorizontalLeft { 0% { background-position: 100% 0; } 100% { background-position: -60px 0; } }
+        @keyframes flowVSync { 0% { top: -100%; opacity: 1; } 15% { top: 100%; opacity: 1; } 16% { top: 100%; opacity: 0; } 100% { top: 100%; opacity: 0; } }
+        @keyframes flowHSync { 0% { transform: scaleX(0); opacity: 1; } 15% { transform: scaleX(1); opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
 
-        .org-box-neon { background: rgba(15, 23, 42, 0.75); border: 1px solid #38bdf8; position: relative; z-index: 5; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 140px; border-radius: 6px; backdrop-filter: blur(10px); overflow: hidden; animation: pulseNeonBox 2.5s infinite alternate ease-in-out; transition: all 0.3s ease; }
-        .org-box-neon.editable:hover { box-shadow: 0 0 35px #10b981, inset 0 0 15px rgba(16,185,129,0.3); border-color: #10b981; transform: scale(1.05); cursor: pointer;}
+        /* Konfigurasi Kotak Tabel Normal (Gelap/Mati) dan Animasi Berdenyut Saat Dihantam Aliran */
+        .org-box-neon { 
+            background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; position: relative; z-index: 5; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 150px; border-radius: 8px; backdrop-filter: blur(10px); overflow: hidden; transition: transform 0.2s ease;
+            animation: circuitBoxHit 4s infinite var(--delay, 0s);
+        }
+        .org-box-neon.editable:hover { border-color: #10b981; transform: scale(1.05); cursor: pointer;}
         
-        .org-head-neon { background: rgba(56, 189, 248, 0.2); color: #e0f2fe; font-size: 10px; font-weight: 900; padding: 8px 4px; text-transform: uppercase; border-bottom: 1px solid rgba(56,189,248,0.5); letter-spacing: 0.5px; text-shadow: 0 0 8px rgba(56,189,248,0.8); }
-        .org-body-neon { padding: 12px 10px; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; min-height: 20px; display:flex; justify-content:center; align-items:center; text-shadow: 0 0 5px rgba(255,255,255,0.5); }
+        .org-head-neon { background: rgba(0, 0, 0, 0.5); color: #94a3b8; font-size: 10px; font-weight: 900; padding: 10px 6px; text-transform: uppercase; border-bottom: 1px solid #1e293b; letter-spacing: 0.5px; transition: 0.3s;}
+        .org-body-neon { padding: 14px 10px; color: #64748b; font-size: 12px; font-weight: 800; text-transform: uppercase; min-height: 25px; display:flex; justify-content:center; align-items:center; transition: 0.3s;}
         
-        .org-sub-neon { background: rgba(15, 23, 42, 0.75); border: 1px solid #38bdf8; margin-top: 15px; position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 6px; backdrop-filter: blur(10px); animation: pulseNeonBox 2.5s infinite alternate ease-in-out; }
-        .org-sub-head-neon { background: rgba(56, 189, 248, 0.2); color: #e0f2fe; font-size: 9px; font-weight: 900; padding: 6px; border-bottom: 1px solid rgba(56,189,248,0.5); text-align: center; text-shadow: 0 0 5px #38bdf8; }
-        .org-sub-body-neon { padding: 10px; color: #e2e8f0; font-size: 9px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; }
+        /* Keyframes untuk Kotak Menyala Tersinkronisasi */
+        @keyframes circuitBoxHit {
+            0% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
+            5% { border-color: #38bdf8; box-shadow: 0 0 25px #38bdf8, inset 0 0 15px rgba(56,189,248,0.5); background: rgba(15, 23, 42, 0.95); }
+            15% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
+            100% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
+        }
 
-        .group-container-neon { border: 1px dashed rgba(56, 189, 248, 0.3); background: rgba(56,189,248,0.05); padding: 30px 10px 10px 10px; position: relative; margin: 0 8px; border-radius: 8px; box-shadow: inset 0 0 20px rgba(56,189,248,0.05); }
-        .group-header-label-neon { position: absolute; top: 0; left: 0; width: 100%; background: rgba(56, 189, 248, 0.2); color: #38bdf8; font-size: 10px; font-weight: 900; padding: 6px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid rgba(56,189,248,0.3); box-sizing: border-box; text-shadow: 0 0 5px #38bdf8; }
+        /* Saat Kotak Menyala, Text Di Dalamnya Ikut Terang */
+        .org-box-neon:has(~ .line-v-circuit), /* Trigger trick (handled mathematically in JS) */
+        .org-box-neon { /* Will be controlled by CSS variables */ }
 
-        @keyframes pulseNeonBox { 0% { box-shadow: 0 0 5px rgba(56,189,248,0.2), inset 0 0 5px rgba(56,189,248,0.1); border-color: rgba(56,189,248,0.4); } 100% { box-shadow: 0 0 20px rgba(56,189,248,0.6), inset 0 0 10px rgba(56,189,248,0.3); border-color: #38bdf8; } }
-        
+        .org-sub-neon { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; margin-top: 15px; position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 8px; backdrop-filter: blur(10px); animation: circuitBoxHit 4s infinite var(--delay, 0s); }
+        .org-sub-head-neon { background: rgba(0,0,0,0.5); color: #94a3b8; font-size: 9px; font-weight: 900; padding: 8px; border-bottom: 1px solid #1e293b; text-align: center; }
+        .org-sub-body-neon { padding: 12px; color: #475569; font-size: 10px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; }
+
+        .group-container-neon { border: 1px dashed rgba(56, 189, 248, 0.2); background: rgba(0,0,0,0.3); padding: 35px 10px 15px 10px; position: relative; margin: 0 8px; border-radius: 12px; animation: groupHit 4s infinite var(--delay, 0s); }
+        .group-header-label-neon { position: absolute; top: 0; left: 0; width: 100%; background: rgba(15,23,42,0.8); color: #64748b; font-size: 10px; font-weight: 900; padding: 8px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #1e293b; box-sizing: border-box; border-top-left-radius: 12px; border-top-right-radius: 12px;}
+
+        @keyframes groupHit { 0%, 15%, 100% { border-color: rgba(56, 189, 248, 0.2); box-shadow:none; } 5% { border-color: #38bdf8; box-shadow: inset 0 0 20px rgba(56,189,248,0.2); } }
+
         .org-row { display: flex; justify-content: space-between; position: relative; width: 100%;}
         .org-col { display: flex; flex-direction: column; align-items: center; position: relative; }
+        
+        /* Smooth Zoom Wrapper */
+        #org-zoom-wrapper { transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; touch-action: none;}
     </style>
 </head>
 <body>
@@ -457,6 +474,90 @@
     </div>
 
     <!-- ========================================================= -->
+    <!-- STRUKTUR ORGANISASI SCREEN (LIVE CIRCUIT HOLOGRAPHIC)     -->
+    <!-- ========================================================= -->
+    <div id="struktur-organisasi-screen" class="screen">
+        <div class="content-wrapper-wide" style="max-width: 100%; padding: 15px;">
+            <div class="header" style="background: linear-gradient(135deg, rgba(16,185,129,0.5), rgba(5,150,105,0.5)) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border: 1px solid #10b981; backdrop-filter: blur(10px);">
+                <h2 style="margin:0; color: white; text-shadow: 0 0 10px #10b981;"><i class="fas fa-sitemap" style="margin-right:10px; color: #34d399;"></i> STRUKTUR ORGANISASI</h2>
+                <button class="btn-submit" onclick="window.bukaGembokOrg()" style="width: auto; padding: 10px 15px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; font-size: 11px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); border-radius: 8px;">
+                    <i class="fas fa-lock"></i> EDIT DATA (PIN)
+                </button>
+            </div>
+            
+            <div class="dark-panel org-panel-transparent" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
+                
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
+                    <p id="teks-info-org" style="color:#e0f2fe; font-size:11px; margin:0; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); backdrop-filter:blur(5px);"><i class="fas fa-arrows-alt"></i> Gunakan Dua Jari (Pinch) untuk Zoom & Geser</p>
+                    
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);">RESET</button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-plus"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Viewport Panning & Pinch-to-Zoom Anti-Lag -->
+                <div id="org-viewport" style="flex:1; overflow:hidden; cursor:grab; position:relative; background: transparent; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
+                    
+                    <div id="org-zoom-wrapper" style="transform-origin: center center; padding: 40px; display:flex; justify-content:center; align-items:center; min-width: 100%; min-height: 100%;">
+                        
+                        <!-- RENDER GRID JS AKAN MASUK KE SINI -->
+                        <div id="org-tree-render" class="org-canvas">
+                            <div style="color: #38bdf8; font-weight: 800; text-align: center; margin-top: 50px; text-shadow: 0 0 10px #38bdf8;">
+                                <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px;"></i><br>MENGAKTIFKAN JARINGAN SIRKUIT...
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIN ORGANISASI -->
+    <div id="org-pin-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:350px; border-radius:20px; padding:30px; text-align:center; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.4); backdrop-filter:blur(15px);">
+            <i class="fas fa-lock" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; text-shadow: 0 0 15px rgba(245, 158, 11, 0.8);"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI EDIT</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan PIN (2025) untuk mengedit data Organisasi.</p>
+            <input type="password" id="input-pin-org" class="pin-input-box" placeholder="••••" maxlength="4" style="border-color: #f59e0b; color: #fbbf24; box-shadow: 0 0 15px rgba(245,158,11,0.2);">
+            <p id="msg-pin-error-org" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. PIN Salah!</p>
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-pin-modal').style.display='none'; document.getElementById('input-pin-org').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinOrg()" style="flex:2; background: linear-gradient(135deg, #b45309, #f59e0b); box-shadow: 0 5px 15px rgba(245,158,11,0.4);"><i class="fas fa-unlock"></i> BUKA GEMBOK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA ORGANISASI -->
+    <div id="org-edit-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); backdrop-filter:blur(15px);">
+            <h3 style="color:#34d399; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-user-edit"></i> UPDATE DATA JABATAN
+            </h3>
+            <input type="hidden" id="org-edit-id">
+            <div class="form-group">
+                <label style="color: #34d399;">Nama Jabatan</label>
+                <input type="text" id="org-edit-jabatan" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: DEPT. HEAD">
+            </div>
+            <div class="form-group">
+                <label style="color: #34d399;">Nama Orang</label>
+                <input type="text" id="org-edit-nama" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: EDI JUNAEDI">
+            </div>
+            <div class="form-group">
+                <label style="color: #34d399;">Anggota / Rincian (Opsional)</label>
+                <textarea id="org-edit-anggota" rows="4" style="background: rgba(0,0,0,0.5); font-size: 12px; white-space: pre-wrap;" placeholder="- Nama 1 (SO)&#10;- Nama 2 (PKWT)"></textarea>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:20px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
+                <button type="button" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanEditOrg()" style="flex:2; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer; box-shadow: 0 5px 15px rgba(16,185,129,0.4);">
+                    <i class="fas fa-save"></i> SIMPAN
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================= -->
     <!-- IDE CENTER SCREEN                                         -->
     <!-- ========================================================= -->
     <div id="ide-center-screen" class="screen">
@@ -639,88 +740,6 @@
         </div>
     </div>
 
-    <!-- ========================================================= -->
-    <!-- STRUKTUR ORGANISASI SCREEN (HOLOGRAPHIC CIRCUIT UI)       -->
-    <!-- ========================================================= -->
-    <div id="struktur-organisasi-screen" class="screen">
-        <div class="content-wrapper-wide" style="max-width: 100%; padding: 15px;">
-            <div class="header" style="background: linear-gradient(135deg, rgba(16,185,129,0.8), rgba(5,150,105,0.8)) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px; border: 1px solid #10b981; backdrop-filter: blur(10px);">
-                <h2 style="margin:0; color: white;"><i class="fas fa-sitemap" style="margin-right:10px; color: #34d399;"></i> STRUKTUR ORGANISASI</h2>
-                <button class="btn-submit" onclick="window.bukaGembokOrg()" style="width: auto; padding: 10px 15px; background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; font-size: 11px; box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); border-radius: 8px;">
-                    <i class="fas fa-lock"></i> EDIT DATA (PIN)
-                </button>
-            </div>
-            
-            <div class="dark-panel org-panel-transparent" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
-                
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
-                    <p id="teks-info-org" style="color:#e0f2fe; font-size:11px; margin:0; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); backdrop-filter:blur(5px);"><i class="fas fa-arrows-alt"></i> Geser Layar & Zoom</p>
-                    
-                    <div style="display:flex; gap:8px;">
-                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-minus"></i></button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);">RESET</button>
-                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(15,23,42,0.8); border: 1px solid #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.2); backdrop-filter:blur(5px);"><i class="fas fa-search-plus"></i></button>
-                    </div>
-                </div>
-                
-                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background: transparent; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
-                    
-                    <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 20px 40px; display:flex; justify-content:center; min-width: 1400px;">
-                        
-                        <div id="org-tree-render" class="org-canvas">
-                            <div style="color: #38bdf8; font-weight: 800; text-align: center; margin-top: 50px; text-shadow: 0 0 10px #38bdf8;">
-                                <i class="fas fa-spinner fa-spin fa-2x" style="margin-bottom: 10px;"></i><br>MEMUAT SIRKUIT ORGANISASI...
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL PIN ORGANISASI -->
-    <div id="org-pin-modal" class="security-modal" style="z-index: 9999999 !important;">
-        <div style="background:var(--card-dark); width:100%; max-width:350px; border-radius:20px; padding:30px; text-align:center; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.4); backdrop-filter:blur(15px);">
-            <i class="fas fa-lock" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; text-shadow: 0 0 15px rgba(245, 158, 11, 0.8);"></i>
-            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI EDIT</h2>
-            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan PIN (2025) untuk mengedit data Organisasi.</p>
-            <input type="password" id="input-pin-org" class="pin-input-box" placeholder="••••" maxlength="4" style="border-color: #f59e0b; color: #fbbf24; box-shadow: 0 0 15px rgba(245,158,11,0.2);">
-            <p id="msg-pin-error-org" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. PIN Salah!</p>
-            <div style="display:flex; gap:10px; margin-top:25px;">
-                <button type="button" class="btn-submit" onclick="document.getElementById('org-pin-modal').style.display='none'; document.getElementById('input-pin-org').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
-                <button type="button" class="btn-submit" onclick="window.verifikasiPinOrg()" style="flex:2; background: linear-gradient(135deg, #b45309, #f59e0b); box-shadow: 0 5px 15px rgba(245,158,11,0.4);"><i class="fas fa-unlock"></i> BUKA GEMBOK</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL EDIT DATA ORGANISASI -->
-    <div id="org-edit-modal" class="security-modal" style="z-index: 9999999 !important;">
-        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); backdrop-filter:blur(15px);">
-            <h3 style="color:#34d399; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
-                <i class="fas fa-user-edit"></i> UPDATE DATA JABATAN
-            </h3>
-            <input type="hidden" id="org-edit-id">
-            <div class="form-group">
-                <label style="color: #34d399;">Nama Jabatan</label>
-                <input type="text" id="org-edit-jabatan" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: DEPT. HEAD">
-            </div>
-            <div class="form-group">
-                <label style="color: #34d399;">Nama Orang</label>
-                <input type="text" id="org-edit-nama" style="background: rgba(0,0,0,0.5); font-size: 13px;" placeholder="Contoh: EDI JUNAEDI">
-            </div>
-            <div class="form-group">
-                <label style="color: #34d399;">Anggota / Rincian (Opsional)</label>
-                <textarea id="org-edit-anggota" rows="4" style="background: rgba(0,0,0,0.5); font-size: 12px; white-space: pre-wrap;" placeholder="- Nama 1 (SO)&#10;- Nama 2 (PKWT)"></textarea>
-            </div>
-            <div style="display:flex; gap:12px; margin-top:20px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
-                <button type="button" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
-                <button type="button" onclick="window.simpanEditOrg()" style="flex:2; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer; box-shadow: 0 5px 15px rgba(16,185,129,0.4);">
-                    <i class="fas fa-save"></i> SIMPAN
-                </button>
-            </div>
-        </div>
-    </div>
     <!-- ========================================================= -->
     <!-- SURAT KOMPONEN (SURKOM) MENU & SCREENS                    -->
     <!-- ========================================================= -->
@@ -1957,6 +1976,88 @@
             if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan.`, "ancaman");
             return aman;
         };
+
+        // =========================================================
+        // ENGINE PANNING & PINCH-TO-ZOOM (SMOOTH & AUTO CENTER)
+        // =========================================================
+        window.isDraggingOrg = false; 
+        window.orgZoomScale = 1.0;
+        let startXOrg, startYOrg, scrollLeftOrg, scrollTopOrg;
+        let initialPinchDist = null;
+        let initialScale = 1;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const vp = document.getElementById('org-viewport');
+            const wrapper = document.getElementById('org-zoom-wrapper');
+            if(!vp) return;
+
+            // Touch events for Pinch-to-Zoom & Pan
+            vp.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 2) {
+                    initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    initialScale = window.orgZoomScale;
+                } else if (e.touches.length === 1) {
+                    window.isDraggingOrg = true;
+                    vp.style.cursor = 'grabbing';
+                    startXOrg = e.touches[0].clientX - vp.offsetLeft;
+                    startYOrg = e.touches[0].clientY - vp.offsetTop;
+                    scrollLeftOrg = vp.scrollLeft;
+                    scrollTopOrg = vp.scrollTop;
+                }
+            }, {passive: false});
+
+            vp.addEventListener('touchmove', (e) => {
+                if (e.touches.length === 2 && initialPinchDist) {
+                    e.preventDefault();
+                    const currentDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+                    const scaleChange = currentDist / initialPinchDist;
+                    window.orgZoomScale = Math.min(Math.max(0.4, initialScale * scaleChange), 2.5);
+                    wrapper.style.transform = `scale(${window.orgZoomScale})`;
+                } else if (e.touches.length === 1 && window.isDraggingOrg) {
+                    e.preventDefault();
+                    requestAnimationFrame(() => {
+                        const x = e.touches[0].clientX - vp.offsetLeft;
+                        const y = e.touches[0].clientY - vp.offsetTop;
+                        vp.scrollLeft = scrollLeftOrg - (x - startXOrg);
+                        vp.scrollTop = scrollTopOrg - (y - startYOrg);
+                    });
+                }
+            }, {passive: false});
+
+            vp.addEventListener('touchend', (e) => {
+                if (e.touches.length < 2) initialPinchDist = null;
+                if (e.touches.length === 0) {
+                    window.isDraggingOrg = false;
+                    vp.style.cursor = 'grab';
+                }
+            });
+
+            // Mouse events for Desktop
+            window.startPanOrg = (e) => { if(e.touches) return; window.isDraggingOrg = true; vp.style.cursor = 'grabbing'; startXOrg = e.pageX - vp.offsetLeft; startYOrg = e.pageY - vp.offsetTop; scrollLeftOrg = vp.scrollLeft; scrollTopOrg = vp.scrollTop; };
+            window.stopPanOrg = () => { window.isDraggingOrg = false; vp.style.cursor = 'grab'; };
+            window.doPanOrg = (e) => { if(!window.isDraggingOrg || e.touches) return; requestAnimationFrame(() => { vp.scrollLeft = scrollLeftOrg - (e.pageX - vp.offsetLeft - startXOrg); vp.scrollTop = scrollTopOrg - (e.pageY - vp.offsetTop - startYOrg); }); };
+        });
+
+        window.zoomOrg = (d) => { 
+            const wp = document.getElementById('org-zoom-wrapper'); 
+            if(d === 0) {
+                window.orgZoomScale = 1.0; 
+                wp.style.transform = `scale(1.0)`;
+                setTimeout(() => { window.centerOrgView(); }, 150); // Auto center saat reset
+            } else {
+                window.orgZoomScale = Math.min(Math.max(0.4, window.orgZoomScale + d), 2.5); 
+                wp.style.transform = `scale(${window.orgZoomScale})`; 
+            }
+        };
+
+        window.centerOrgView = () => {
+            const vp = document.getElementById('org-viewport');
+            const wp = document.getElementById('org-zoom-wrapper');
+            if(vp && wp) {
+                const scrollX = (wp.scrollWidth - vp.clientWidth) / 2;
+                vp.scrollTo({ left: scrollX, behavior: 'smooth' });
+            }
+        };
     </script>
 
     <!-- ========================================== -->
@@ -1991,20 +2092,13 @@
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
 
-        // ---------------------------------------------------------
-        // 1. UTILITAS & SISTEM DASAR
-        // ---------------------------------------------------------
         window.toggleLoader = function(show, text = "Memproses...") { const lt = document.getElementById('loader-text'); const l = document.getElementById('loader'); if(lt) lt.innerText = text; if(l) l.style.display = show ? 'flex' : 'none'; };
-        window.dapatkanTanggalLokal = function() { const now = new Date(); return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0'); };
         
         window.cetakPDFUniversal = function() { window.print(); };
         window.cetakGambarUniversal = function(targetId, namaFile) { window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak..."); setTimeout(() => { html2canvas(document.getElementById(targetId), { scale: 2, useCORS: true, backgroundColor: "#040d1a" }).then(canvas => { let link = document.createElement('a'); link.download = `${namaFile}_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); window.toggleLoader(false); }).catch(e => { alert("Gagal cetak gambar."); window.toggleLoader(false); }); }, 300); };
         window.compressImage = function(file, maxW = 1200, maxH = 1200, q = 0.6) { return new Promise((res, rej) => { const r = new FileReader(); r.readAsDataURL(file); r.onload = e => { const img = new Image(); img.src = e.target.result; img.onload = () => { let w = img.width, h = img.height; if(w > maxW) { h = Math.round(h * maxW / w); w = maxW; } const cvs = document.createElement('canvas'); cvs.width = w; cvs.height = h; cvs.getContext('2d').drawImage(img, 0, 0, w, h); res(cvs.toDataURL('image/jpeg', q)); }; img.onerror = rej; }; r.onerror = rej; }); };
         window.cekFoto = function(input, targetId) { const target = document.getElementById(targetId); if (target && input.files && input.files.length > 0) { target.innerHTML = `<i class="fas fa-check-circle" style="color:var(--cepat);"></i> File siap`; } else if (target) { target.innerHTML = ""; } }; window.cekFotoFile = window.cekFoto;
 
-        // ---------------------------------------------------------
-        // 2. NAVIGASI, AUTH & DETEKTOR REALTIME
-        // ---------------------------------------------------------
         window.masukBerandaCepat = async function() {
             if(navigator.vibrate) navigator.vibrate([50]);
             if(auth.currentUser) { window.toggleLoader(true, "Membuka Sistem..."); try { await getDocs(query(collection(window.db, "informasi_mold"))); window.toggleLoader(false); bukaPintu(); } catch(e) { window.toggleLoader(false); await signOut(auth); alert("Sesi tidak valid."); } return; }
@@ -2013,7 +2107,15 @@
         function bukaPintu() { const l = document.getElementById('landing-page'); if(l) l.classList.add('door-open'); setTimeout(() => { if(l) l.style.display='none'; document.getElementById('global-bottom-nav').style.display='flex'; window.navigasi('home-screen'); window.jalankanEngineMetrik(); }, 300); }
         
         let riwayatNav = ['landing-page'];
-        window.navigasi = function(id) { if(riwayatNav[riwayatNav.length-1] !== id) { riwayatNav.push(id); history.pushState({page: id}, "", ""); } document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); document.getElementById(id)?.classList.add('active-screen'); window.updateBottomNav(id); window.scrollTo(0, 0); if(id === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); if(id === 'struktur-organisasi-screen') window.ambilDataOrg(); };
+        window.navigasi = function(id) { 
+            if(riwayatNav[riwayatNav.length-1] !== id) { riwayatNav.push(id); history.pushState({page: id}, "", ""); } 
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
+            document.getElementById(id)?.classList.add('active-screen'); 
+            window.updateBottomNav(id); 
+            window.scrollTo(0, 0); 
+            if(id === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); 
+            if(id === 'struktur-organisasi-screen') { window.ambilDataOrg(); setTimeout(()=>window.centerOrgView(), 500); } 
+        };
         window.kembaliKeSebelumnya = function() { if(riwayatNav.length > 1) { riwayatNav.pop(); const prev = riwayatNav[riwayatNav.length-1]; document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); if(prev === 'landing-page') { const l = document.getElementById('landing-page'); if(l) { l.style.display='flex'; l.classList.remove('door-open'); } document.getElementById('global-bottom-nav').style.display='none'; } else { document.getElementById(prev)?.classList.add('active-screen'); } window.updateBottomNav(prev); window.scrollTo(0, 0); } };
         window.addEventListener('popstate', () => window.kembaliKeSebelumnya());
         window.updateBottomNav = function(id) { document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active')); const l = document.getElementById('nav-lampu'); if(l) l.classList.remove('active-lamp'); if(id==='home-screen') document.getElementById('nav-home')?.classList.add('active'); else if(id==='ai-dashboard-screen') document.getElementById('nav-analisa')?.classList.add('active'); else if(id==='ide-center-screen') { if(l) l.classList.add('active-lamp'); } else if(id==='inbox-screen') document.getElementById('nav-inbox')?.classList.add('active'); else if(id==='profil-screen') document.getElementById('nav-profil')?.classList.add('active'); };
@@ -2022,28 +2124,8 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('trial-mold-screen'); window.switchTabTrial('input'); };
 
         // ---------------------------------------------------------
-        // 3. STRUKTUR ORGANISASI (EFEK NEON & SIRKUIT LISTRIK)
+        // 3. STRUKTUR ORGANISASI (SYNC DELAY ENGINE)
         // ---------------------------------------------------------
-        window.isDraggingOrg = false; window.ticking = false; window.orgZoomScale = 1.0;
-        let startXOrg, startYOrg, scrollLeftOrg, scrollTopOrg;
-
-        window.startPanOrg = (e) => { window.isDraggingOrg = true; const vp = document.getElementById('org-viewport'); vp.style.cursor = 'grabbing'; let cx = e.touches ? e.touches[0].clientX : e.pageX; let cy = e.touches ? e.touches[0].clientY : e.pageY; startXOrg = cx - vp.offsetLeft; startYOrg = cy - vp.offsetTop; scrollLeftOrg = vp.scrollLeft; scrollTopOrg = vp.scrollTop; };
-        window.stopPanOrg = () => { window.isDraggingOrg = false; const vp = document.getElementById('org-viewport'); if(vp) vp.style.cursor = 'grab'; };
-        window.doPanOrg = (e) => {
-            if(!window.isDraggingOrg) return;
-            if(!window.ticking) {
-                requestAnimationFrame(() => {
-                    const vp = document.getElementById('org-viewport');
-                    let cx = e.touches ? e.touches[0].clientX : e.pageX; let cy = e.touches ? e.touches[0].clientY : e.pageY;
-                    vp.scrollLeft = scrollLeftOrg - (cx - vp.offsetLeft - startXOrg);
-                    vp.scrollTop = scrollTopOrg - (cy - vp.offsetTop - startYOrg);
-                    window.ticking = false;
-                });
-                window.ticking = true;
-            }
-        };
-        window.zoomOrg = (d) => { const wp = document.getElementById('org-zoom-wrapper'); if(d === 0) window.orgZoomScale = 1.0; else window.orgZoomScale = Math.min(Math.max(0.4, window.orgZoomScale + d), 2.0); wp.style.transform = `scale(${window.orgZoomScale})`; };
-
         const defaultOrg = [
             { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
             { id: "o2", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
@@ -2066,7 +2148,7 @@
             } catch(e) { console.error(e); }
         };
 
-        // --- PENYESUAIAN RENDER ENGINE KE EFEK NEON (TAHAP 5) ---
+        // --- PENYESUAIAN RENDER ENGINE DENGAN CSS VAR DELAY UNTUK SINKRONISASI CAHAYA ---
         window.renderOrgSvgEngine = function() {
             const tree = document.getElementById('org-tree-render'); if(!tree) return;
             const h = window.orgDatabase.find(o => o.id === "o1") || defaultOrg[0];
@@ -2086,67 +2168,69 @@
                 <!-- BORDER BANNER JUDUL -->
                 <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); padding: 8px; font-size: 14px; font-weight: 900; color: #e0f2fe; text-shadow: 0 0 8px #38bdf8; border-radius: 8px; backdrop-filter: blur(5px);">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
 
-                <!-- DEPT HEAD -->
+                <!-- L1: DEPT HEAD -->
                 <div class="org-col">
-                    <div class="org-box-neon ${ec}" ${ck(h.id)}>
+                    <div class="org-box-neon ${ec}" style="--delay: 0s;" ${ck(h.id)}>
                         <div class="org-head-neon" style="font-size: 13px; padding: 12px;">${h.jabatan}</div>
                         <div class="org-body-neon">${h.nama}</div>
                     </div>
-                    <div class="line-v-circuit" style="height: 30px; position:relative;">
-                        <div style="position:absolute; top:50%; right:1px; width:150px; height:2px; background:rgba(56,189,248,0.15);">
-                            <div class="flow-line-h-left-circuit" style="width:100%; top:-1px;"></div>
+                    
+                    <!-- L2: LINE TO ADMIN & SEC HEAD -->
+                    <div class="line-v-circuit" style="height: 30px; position:relative; --delay: 0.2s;">
+                        <div style="position:absolute; top:50%; right:1px; width:150px; height:3px; background:#0f172a;">
+                            <div class="flow-line-h-left-circuit" style="width:100%; top:-1px; --delay: 0.4s;"></div>
                         </div>
                         <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
-                            <div class="org-box-neon ${ec}" style="width:130px;" ${ck(adm.id)}>
+                            <div class="org-box-neon ${ec}" style="width:130px; --delay: 0.6s;" ${ck(adm.id)}>
                                 <div class="org-head-neon">${adm.jabatan}</div>
                                 <div class="org-body-neon">${adm.nama}</div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- SECTION HEAD -->
-                    <div class="org-box-neon ${ec}" style="width: 320px;" ${ck(sec.id)}>
+                    <!-- L2: SEC HEAD BOX -->
+                    <div class="org-box-neon ${ec}" style="width: 320px; --delay: 0.8s;" ${ck(sec.id)}>
                         <div class="org-head-neon">${sec.jabatan}</div>
                         <div class="org-body-neon">${sec.nama}</div>
                     </div>
-                    <div class="line-v-circuit" style="height: 30px;"></div>
+                    <div class="line-v-circuit" style="height: 30px; --delay: 1.0s;"></div>
                     
-                    <!-- BRANCHING HORIZONTAL UTAMA BAWAH -->
+                    <!-- L3: BRANCHING HORIZONTAL UTAMA BAWAH -->
                     <div class="org-row" style="width: 1400px;">
-                        <div class="line-h-circuit" style="width: 100%; position: absolute; top: 0;"></div>
+                        <div class="line-h-circuit" style="width: 100%; position: absolute; top: 0; --delay: 1.2s;"></div>
                         
                         <!-- COL 1: CONTROL PRODUKSI INJECTION -->
                         <div class="org-col" style="flex: 1.5; padding-top: 20px;">
-                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center;">
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
+                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center; --delay: 1.6s;">
                                 <div class="group-header-label-neon" style="width:100%;">CONTROL PRODUKSI INJECTION</div>
                                 <div class="org-row" style="gap: 15px; margin-top:20px;">
                                     <div class="org-col">
-                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f1.id)}>
+                                        <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f1.id)}>
                                             <div class="org-head-neon">${f1.jabatan}</div>
                                             <div class="org-body-neon">${f1.nama}</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 135px;">
+                                        <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
                                             <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
                                             <div class="org-sub-body-neon">${f1.anggota}</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f2.id)}>
+                                        <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f2.id)}>
                                             <div class="org-head-neon">${f2.jabatan}</div>
                                             <div class="org-body-neon">${f2.nama}</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 135px;">
+                                        <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
                                             <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
                                             <div class="org-sub-body-neon">${f2.anggota}</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-neon ${ec}" style="width: 135px;" ${ck(f3.id)}>
+                                        <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f3.id)}>
                                             <div class="org-head-neon">${f3.jabatan}</div>
                                             <div class="org-body-neon">${f3.nama}</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 135px;">
+                                        <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
                                             <div class="org-sub-head-neon">SO & OPERATOR<br>MAINTENANCE</div>
                                             <div class="org-sub-body-neon">${f3.anggota}</div>
                                         </div>
@@ -2157,12 +2241,12 @@
 
                         <!-- COL 2: MOLD STORE -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-neon ${ec}" style="width: 160px;" ${ck(mS.id)}>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
+                            <div class="org-box-neon ${ec}" style="width: 160px; --delay: 1.6s;" ${ck(mS.id)}>
                                 <div class="org-head-neon">${mS.jabatan}</div>
                                 <div class="org-body-neon">${mS.nama}</div>
                             </div>
-                            <div class="org-sub-neon" style="width: 150px;">
+                            <div class="org-sub-neon" style="width: 150px; --delay: 1.8s;">
                                 <div class="org-sub-head-neon">SO & OPERATOR MAINTENANCE</div>
                                 <div class="org-sub-body-neon">${mS.anggota}</div>
                             </div>
@@ -2170,12 +2254,12 @@
 
                         <!-- COL 3: DEVELOPMENT FOREMAN -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
-                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="org-box-neon ${ec}" style="width: 160px;" ${ck(dev.id)}>
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
+                            <div class="org-box-neon ${ec}" style="width: 160px; --delay: 1.6s;" ${ck(dev.id)}>
                                 <div class="org-head-neon">${dev.jabatan}</div>
                                 <div class="org-body-neon">${dev.nama}</div>
                             </div>
-                            <div class="org-sub-neon" style="width: 150px;">
+                            <div class="org-sub-neon" style="width: 150px; --delay: 1.8s;">
                                 <div class="org-sub-head-neon">SO & OPERATOR MAINTENANCE</div>
                                 <div class="org-sub-body-neon">${dev.anggota}</div>
                             </div>
@@ -2183,39 +2267,39 @@
 
                         <!-- COL 4: MACHINERY MOLD FOREMAN -->
                         <div class="org-col" style="flex: 1.8; padding-top: 20px;">
-                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0;"></div>
-                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center;">
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
+                            <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center; --delay: 1.6s;">
                                 <div class="group-header-label-neon" style="width:100%;">${mac.jabatan}</div>
                                 <div class="org-row" style="gap: 10px; margin-top: 20px;">
                                     <div class="org-col">
-                                        <div class="org-box-neon ${ec}" style="width: 120px; min-height:40px;" ${ck(mac.id)}>
+                                        <div class="org-box-neon ${ec}" style="width: 120px; min-height:40px; --delay: 1.8s;" ${ck(mac.id)}>
                                             <div class="org-head-neon" style="font-size:8px;">CNC MILLING & ROUTER</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 120px;">
+                                        <div class="org-sub-neon" style="width: 120px; --delay: 2.0s;">
                                             <div class="org-sub-body-neon">- TOPIK H (SO)<br>- AGI G (SO)<br>- ZAENUDIN (PKWT)<br>- RIDWAN (PKWT)<br>- ARUL (OS)<br>- YUSRIL MAHENDRA (PKWT)</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px; --delay: 1.8s;">
                                             <div class="org-head-neon">EDM</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 100px;">
+                                        <div class="org-sub-neon" style="width: 100px; --delay: 2.0s;">
                                             <div class="org-sub-body-neon">- AJI. S (SO)<br>- RANDY P (PKWT)<br>- BANDANI (PKWT)<br>- MUHAMMAD RICI RIFAI (OS)</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px; --delay: 1.8s;">
                                             <div class="org-head-neon">MILLING</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 100px;">
+                                        <div class="org-sub-neon" style="width: 100px; --delay: 2.0s;">
                                             <div class="org-sub-body-neon">- EKO M (SO)<br>- A HAERUDIN (SO)<br>- LALAN Q (SO)<br>- INDRAWAN (PKWT)</div>
                                         </div>
                                     </div>
                                     <div class="org-col">
-                                        <div class="org-box-neon" style="width: 100px; min-height:40px;">
+                                        <div class="org-box-neon" style="width: 100px; min-height:40px; --delay: 1.8s;">
                                             <div class="org-head-neon">BUBUT</div>
                                         </div>
-                                        <div class="org-sub-neon" style="width: 100px;">
+                                        <div class="org-sub-neon" style="width: 100px; --delay: 2.0s;">
                                             <div class="org-sub-body-neon">- SUMARDI (SO)<br>- WAWAN (SO)<br>- ADE NOVIANDANA (PKWT)</div>
                                         </div>
                                     </div>
