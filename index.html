@@ -326,6 +326,59 @@
         .tab-container-scroll { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 10px; margin-bottom: 15px; border-bottom: 1px solid var(--border-dark); }
         .tab-container-scroll::-webkit-scrollbar { height: 6px; }
         .tab-container-scroll::-webkit-scrollbar-thumb { background: var(--secondary); border-radius: 10px; }
+
+        /* ======================================================== */
+        /* --- STRUKTUR ORGANISASI CSS (FLOWING LINES & ZOOM) --- */
+        /* ======================================================== */
+        .org-tree { display: inline-flex; justify-content: center; position: relative; padding-top: 20px; width:100%;}
+        .org-tree ul { padding-top: 20px; position: relative; display: flex; justify-content: center; padding-left: 0; list-style: none; margin: 0; }
+        .org-tree li { float: left; text-align: center; list-style-type: none; position: relative; padding: 20px 5px 0 5px; }
+
+        /* Basic Solid Connectors */
+        .org-tree li::before, .org-tree li::after { content: ''; position: absolute; top: 0; right: 50%; border-top: 2px solid rgba(56,189,248, 0.3); width: 50%; height: 20px; z-index:0; }
+        .org-tree li::after { right: auto; left: 50%; border-left: 2px solid rgba(56,189,248, 0.3); }
+        .org-tree li:only-child::after, .org-tree li:only-child::before { display: none; }
+        .org-tree li:only-child { padding-top: 0; }
+        .org-tree li:first-child::before, .org-tree li:last-child::after { border: 0 none; }
+        .org-tree li:last-child::before { border-right: 2px solid rgba(56,189,248, 0.3); border-radius: 0 4px 0 0; }
+        .org-tree li:first-child::after { border-radius: 4px 0 0 0; }
+        .org-tree ul::before { content: ''; position: absolute; top: 0; left: calc(50% - 1px); border-left: 2px solid rgba(56,189,248, 0.3); width: 0; height: 20px; z-index:0; }
+
+        /* CIRCUIT ENERGY ANIMATIONS OVERLAY */
+        .line-v { position: absolute; top:0; left:calc(50% - 2px); width:4px; height:20px; z-index: 1; pointer-events:none;}
+        .line-v::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 30px; animation: flowD 1.5s infinite linear; }
+        .line-h-l { position: absolute; top:-1px; right:50%; width:50%; height:4px; z-index: 1; pointer-events:none;}
+        .line-h-l::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowL 1.5s infinite linear; }
+        .line-h-r { position: absolute; top:-1px; left:50%; width:50%; height:4px; z-index: 1; pointer-events:none;}
+        .line-h-r::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowR 1.5s infinite linear; }
+
+        @keyframes flowD { from { background-position: 0 -30px; } to { background-position: 0 100%; } }
+        @keyframes flowR { from { background-position: -50px 0; } to { background-position: 100% 0; } }
+        @keyframes flowL { from { background-position: 100% 0; } to { background-position: -50px 0; } }
+
+        /* ADMIN SIDE BRANCH CSS */
+        .trunk-wrapper { display: flex; flex-direction: column; align-items: center; position: relative; }
+        .trunk-line { width: 2px; height: 60px; background: rgba(56,189,248, 0.3); position: relative; margin: 0 auto; z-index:0;}
+        .trunk-line-energy { position:absolute; top:0; left:-1px; width:4px; height:100%; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 30px; background-repeat: no-repeat; animation: flowD 1.5s infinite linear; z-index:1;}
+        .admin-branch { position: absolute; right: 1px; top: 50%; display: flex; align-items: center; width:140px; height:2px; background: rgba(56,189,248, 0.3); }
+        .admin-branch-energy { position:absolute; top:-1px; left:0; width:100%; height:4px; background: linear-gradient(90deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 50px 100%; animation: flowL 1.5s infinite linear; z-index:1;}
+        .admin-box-wrap { position:absolute; left: -160px; top:50%; transform:translateY(-50%); z-index:10; }
+
+        /* ORG CARD STYLING */
+        .org-box { background: rgba(30, 41, 59, 0.95); border: 1px solid var(--border-dark); border-radius: 8px; width: 160px; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5); overflow: hidden; position: relative; z-index: 5; transition:0.2s;}
+        .org-box.editable:hover { box-shadow: 0 0 15px #10b981; transform: scale(1.05); cursor:pointer; border-color:#10b981;}
+        .org-box-header { background: #94a3b8; color: #0f172a; font-size: 10px; font-weight: 900; padding: 6px; text-transform: uppercase; border-bottom: 1px solid #475569; text-align: center; }
+        .org-box-body { padding: 10px 5px; color: white; font-size: 13px; font-weight: 800; text-transform: uppercase; min-height: 20px; text-align: center; display: flex; justify-content: center; align-items: center; }
+        
+        .org-sub-box { background: rgba(15, 23, 42, 0.95); border: 1px solid var(--border-dark); border-radius: 8px; width: 140px; margin: 0 auto; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.5); margin-top: 15px; position: relative;}
+        .org-sub-box::before { content: ''; position: absolute; top: -16px; left: calc(50% - 1px); width: 2px; height: 16px; background: rgba(56,189,248, 0.3); }
+        .org-sub-energy { position: absolute; top: -16px; left: calc(50% - 2px); width: 4px; height: 16px; background: linear-gradient(180deg, transparent 0%, #0ea5e9 50%, transparent 100%); background-size: 100% 20px; animation: flowD 1.5s infinite linear; }
+        .org-sub-header { background: #cbd5e1; color: #0f172a; font-size: 9px; font-weight: 900; padding: 5px; text-transform: uppercase; text-align: center; }
+        .org-sub-body { padding: 10px; color: #f8fafc; font-size: 10px; font-weight: 600; text-align: center; white-space: pre-line; line-height:1.5;}
+
+        .btn-zoom { background: rgba(15,23,42,0.8); color: var(--secondary); border: 1px solid var(--secondary); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 18px; box-shadow: 0 0 15px rgba(56,189,248,0.3); transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .btn-zoom:active { transform: scale(0.9); background: var(--secondary); color: white; }
+        .org-viewport-scroll::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -550,7 +603,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- IDE CENTER SCREEN                                         -->
     <!-- ========================================================= -->
@@ -647,14 +699,14 @@
                 <input type="text" class="profil-search-input" placeholder="Search">
             </div>
 
-            <!-- List Menu Profil -->
-            <div class="profil-list-item" onclick="window.navigasi('informasi-mold-screen')">
-                <div class="profil-item-icon"><i class="fas fa-sitemap"></i></div>
+            <!-- MENU STRUKTUR ORGANISASI -->
+            <div class="profil-list-item" onclick="window.navigasi('struktur-organisasi-screen')" style="border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.15);">
+                <div class="profil-item-icon"><i class="fas fa-sitemap" style="color:#10b981;"></i></div>
                 <div class="profil-item-text">
-                    <div class="profil-item-title">Struktur Organisasi</div>
-                    <div class="profil-item-sub">Lihat hierarki tim saat ini</div>
+                    <div class="profil-item-title" style="color:#10b981;">Struktur Organisasi</div>
+                    <div class="profil-item-sub">Lihat Hierarki Tim Penuh Interaktif</div>
                 </div>
-                <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#10b981;"></i></div>
             </div>
 
             <div class="profil-list-item" onclick="window.bukaSubInfo('JADWAL KERJA KARYAWAN')">
@@ -720,7 +772,7 @@
                 <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
             </div>
 
-            <!-- MENU BARU: SURAT KOMPONEN -->
+            <!-- MENU SURAT KOMPONEN -->
             <div class="profil-list-item" onclick="window.navigasi('surkom-menu-screen')" style="border: 1px solid rgba(56, 189, 248, 0.4); background: rgba(14, 165, 233, 0.15);">
                 <div class="profil-item-icon"><i class="fas fa-file-contract" style="color:#38bdf8;"></i></div>
                 <div class="profil-item-text">
@@ -734,6 +786,88 @@
             <div class="processor-core" onclick="window.bukaPinGodMode()">
                 <div class="processor-circuit"></div>
                 <i class="fas fa-microchip"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- STRUKTUR ORGANISASI SCREEN (INTERAKTIF & OPTIMIZED)       -->
+    <!-- ========================================================= -->
+    <div id="struktur-organisasi-screen" class="screen">
+        <div class="content-wrapper-wide" style="max-width: 100%; padding: 15px;">
+            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 10px;">
+                <h2 style="margin:0;"><i class="fas fa-sitemap" style="margin-right:10px;"></i> STRUKTUR ORGANISASI</h2>
+                <button type="button" id="btn-lock-org" onclick="window.bukaGembokOrg()" style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.2); color:white; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition:0.3s;">
+                    <i class="fas fa-lock" id="icon-lock-org"></i> Edit
+                </button>
+            </div>
+            
+            <div class="dark-panel" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
+                
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
+                    <p id="teks-info-org" style="color:var(--text-muted); font-size:11px; margin:0; background:rgba(0,0,0,0.5); padding:8px 12px; border-radius:8px; border:1px solid var(--border-dark);"><i class="fas fa-arrows-alt"></i> Geser layar untuk melihat. Gunakan tombol zoom.</p>
+                    
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn-submit" onclick="window.zoomOrg(-0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;"><i class="fas fa-search-minus"></i></button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0)" style="width:auto; padding:0 15px; font-size:11px; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;">RESET</button>
+                        <button class="btn-submit" onclick="window.zoomOrg(0.1)" style="width:40px; height:40px; padding:0; border-radius:8px; background:rgba(255,255,255,0.1); box-shadow:none;"><i class="fas fa-search-plus"></i></button>
+                    </div>
+                </div>
+                
+                <!-- Viewport Panning Dioptimalkan -->
+                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background:rgba(0,0,0,0.2); border:1px dashed var(--border-dark); border-radius:14px; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
+                    <div id="org-zoom-wrapper" style="transform-origin: top center; transition: transform 0.2s ease-out; padding: 40px; min-width: 1500px; display:flex; justify-content:center;">
+                        <div id="org-tree-render" class="org-tree"><div style="text-align:center; color:gray; width:100%;"><i class="fas fa-spinner fa-spin fa-2x"></i></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIN STRUKTUR ORGANISASI -->
+    <div id="org-pin-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; border:1px solid #10b981; box-shadow: 0 0 30px rgba(16, 185, 129, 0.4); backdrop-filter:blur(15px);">
+            <i class="fas fa-user-shield" style="font-size: 50px; color: #10b981; margin-bottom: 15px; text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI EDIT</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan PIN (2025) untuk merubah Struktur Organisasi</p>
+            
+            <input type="password" id="input-pin-org" class="pin-input-box" style="border-color:#10b981; color:#10b981;" placeholder="••••" maxlength="4">
+            <p id="msg-pin-error-org" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. PIN Salah!</p>
+            
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-pin-modal').style.display='none'; document.getElementById('input-pin-org').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinOrg()" style="flex:2; background: linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-unlock"></i> BUKA GEMBOK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA JABATAN -->
+    <div id="org-edit-modal" class="security-modal" style="z-index:99999;">
+        <div style="background:var(--card-dark); width:100%; max-width:450px; border-radius:20px; padding:25px; border:1px solid var(--secondary); box-shadow:0 0 30px rgba(56,189,248,0.3); max-height:90vh; overflow-y:auto;">
+            <h3 style="color:white; margin-top:0; border-bottom:1px dashed var(--border-dark); padding-bottom:15px;"><i class="fas fa-edit" style="color:var(--secondary);"></i> Edit Data Pejabat</h3>
+            <input type="hidden" id="org-edit-id">
+            
+            <div class="form-group">
+                <label>Nama Jabatan / Posisi</label>
+                <input type="text" id="org-edit-jabatan" placeholder="Contoh: DEPT. HEAD" style="background:rgba(0,0,0,0.6); color:var(--secondary);">
+            </div>
+            <div class="form-group">
+                <label>Nama Pejabat Inti</label>
+                <input type="text" id="org-edit-nama" placeholder="Contoh: EDI JUNAEDI" style="text-transform:uppercase;">
+            </div>
+            <div class="form-group">
+                <label>Daftar Anggota Tim (Opsional)</label>
+                <p style="font-size:10px; color:var(--text-muted); margin-top:-5px;">Gunakan baris baru (Enter) untuk memisahkan nama anggota.</p>
+                <textarea id="org-edit-anggota" rows="6" placeholder="Kosongkan jika tidak ada tim...&#10;Misal:&#10;- Budi (SO)&#10;- Andi (PKWT)"></textarea>
+            </div>
+            
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('org-edit-modal').style.display='none'" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.simpanEditOrg()" style="flex:2; background: linear-gradient(135deg, #38bdf8, #0284c7);">
+                    <i class="fas fa-save"></i> SIMPAN PERUBAHAN
+                </button>
             </div>
         </div>
     </div>
@@ -950,7 +1084,7 @@
             <!-- Pos Kategori (Tabs) -->
             <div class="god-mode-tabs">
                 <div class="gm-tab active" onclick="window.gantiTabGodMode(this, 'informasi_mold')"><i class="fas fa-info-circle"></i> Info Mold</div>
-                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen_index')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
+                <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'surat_komponen')"><i class="fas fa-file-contract"></i> Surat Komponen</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'ide_saran_box')"><i class="fas fa-lightbulb"></i> Ide & Saran</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'notulen_meeting')"><i class="fas fa-handshake"></i> Notulen Meeting</div>
                 <div class="gm-tab" onclick="window.gantiTabGodMode(this, 'workshop_projects')"><i class="fas fa-cogs"></i> Proyek Workshop</div>
@@ -985,6 +1119,102 @@
                 <button type="button" onclick="window.simpanUpdateDataGM()" style="flex:2; padding:15px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;">
                     <i class="fas fa-save"></i> UPDATE DATABASE
                 </button>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================= -->
+    <!-- MOLD STORE (NAIK/TURUN & PRODUKSI)                        -->
+    <!-- ========================================================= -->
+    <div id="mold-store-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-warehouse" style="margin-right:10px;"></i> DIVISI MOLD STORE</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;">
+                    <i class="fas fa-calendar-check" style="color:#f59e0b;"></i> 1. Rencana Naik Mold
+                </div>
+                <div class="menu-card" onclick="window.navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;">
+                    <i class="fas fa-dolly" style="color:#3b82f6;"></i> 2. Laporan Persiapan Naik/Turun Mold
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ms-persiapan-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-dolly" style="margin-right:10px;"></i> Persiapan Naik & Turun Mold</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaInputNaikMold()" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-arrow-up" style="color:#8b5cf6;"></i> 1. Input Naik Mold
+                </div>
+                <div class="menu-card" onclick="window.bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;">
+                    <i class="fas fa-sync-alt" style="color:#3b82f6;"></i> 2. Update Mold Produksi
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ms-input-naik-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-arrow-up" style="margin-right:10px;"></i> Input Naik Mold</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Tanggal Penaikan Mold</label>
+                    <input type="date" id="ms-naik-tgl">
+                </div>
+                <div class="form-group">
+                    <label>Penanggung Jawab</label>
+                    <input type="text" id="ms-naik-pj" value="Bapak Kiki Foreman" readonly style="font-weight:800; background:rgba(0,0,0,0.5);">
+                </div>
+                <div class="form-group" style="margin-top: 25px;">
+                    <h3 class="sub-title-box"><i class="fas fa-list" style="color:var(--secondary);"></i> List Nama Mold</h3>
+                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual..." style="flex:1; text-transform: uppercase; background:rgba(0,0,0,0.4);" oninput="this.value = this.value.toUpperCase()">
+                        <button type="button" onclick="window.tambahMoldManual()" style="padding: 0 20px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border-dark); border-radius: 14px; cursor: pointer;">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <ul id="list-naik-mold" class="eval-list" style="margin-bottom: 20px; border: 2px dashed var(--border-dark); padding: 15px; min-height: 80px; border-radius: 16px; background:rgba(0,0,0,0.4);"></ul>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanNaikMold()">
+                    <i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="ms-update-mold-screen" class="screen">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
+            <div class="header">
+                <h2><i class="fas fa-sync-alt" style="margin-right:10px;"></i> Update Mold Produksi</h2>
+            </div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" onclick="window.bukaTabMold('proses')" id="btn-tab-proses"><i class="fas fa-cogs"></i> Proses Produksi</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai"><i class="fas fa-check-circle"></i> Selesai Baik</button>
+                <button class="tab-btn" type="button" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal"><i class="fas fa-exclamation-triangle"></i> Kendala</button>
+            </div>
+            <div id="tab-proses" class="tab-content" style="display: block;">
+                <div class="dark-panel" style="border-top: 6px solid #f59e0b;">
+                    <h3 class="sub-title-box"><i class="fas fa-cogs" style="color:#f59e0b;"></i> Proses Produksi</h3>
+                    <ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
+                </div>
+            </div>
+            <div id="tab-selesai" class="tab-content" style="display: none;">
+                <div class="dark-panel" style="border-top: 6px solid #10b981;">
+                    <h3 class="sub-title-box"><i class="fas fa-check-circle" style="color:#10b981;"></i> Mold Selesai Baik</h3>
+                    <ul id="kolom-selesai-baik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
+                </div>
+            </div>
+            <div id="tab-gagal" class="tab-content" style="display: none;">
+                <div class="dark-panel" style="border-top: 6px solid #ef4444;">
+                    <h3 class="sub-title-box"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Gangguan / Gagal Naik</h3>
+                    <ul id="kolom-gagal-naik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
+                </div>
             </div>
         </div>
     </div>
@@ -1023,6 +1253,7 @@
             </div>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- DIVISI ADM MOLD (KINERJA HARIAN & GOSOK MOLD)             -->
     <!-- ========================================================= -->
@@ -1169,7 +1400,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- WORKSHOP DIVISI                                           -->
     <!-- ========================================================= -->
@@ -1361,6 +1591,198 @@
     </div>
 
     <!-- ========================================================= -->
+    <!-- MOLD TROUBLE                                              -->
+    <!-- ========================================================= -->
+    <div id="trouble-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-exclamation-triangle" style="margin-right:10px;"></i> Divisi Mold Trouble</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative; border-left-color:#ef4444;">
+                    <i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> 1. Masalah/Gagal Persiapan Mold
+                    <span class="badge-trouble-notif" style="position: absolute; right: 20px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; display: none;">0</span>
+                </div>
+                <div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
+                    <i class="fas fa-file-import" style="color:#2563eb;"></i> 2. New Data PKM Eltre Mold
+                    <span id="badge-pkm-notif" style="position: absolute; right: 20px; background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; display: none;">0</span>
+                </div>
+                <div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
+                    <i class="fas fa-chart-line" style="color:#8b5cf6;"></i> 3. Control Progres
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ms-trouble-screen" class="screen">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
+            <div class="header">
+                <h2><i class="fas fa-tools" style="margin-right:10px;"></i> Daftar Mold Trouble</h2>
+            </div>
+            <div class="tab-container">
+                <button class="tab-btn tab-active tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('belum')" id="btn-tab-trouble-belum"><i class="fas fa-clock"></i> Belum Update</button>
+                <button class="tab-btn tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai"><i class="fas fa-check-circle"></i> Sudah Selesai</button>
+            </div>
+            <div id="tab-trouble-belum" class="tab-content-trouble" style="display: block;">
+                <ul id="list-trouble-belum" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+            <div id="tab-trouble-selesai" class="tab-content-trouble" style="display: none;">
+                <ul id="list-trouble-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORM UPDATE PROJECT TROUBLE -->
+    <div id="modal-form-trouble" class="security-modal">
+        <div style="background:var(--card-dark); width:100%; max-width:550px; border-radius:20px; padding:30px; max-height:90vh; overflow-y:auto; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.8); border:1px solid var(--border-dark); backdrop-filter:blur(10px);">
+            <h3 style="color:#ef4444; margin-top:0; border-bottom:2px dashed var(--border-dark); padding-bottom:15px; font-weight:900;"><i class="fas fa-clipboard-list"></i> Update Project Trouble</h3>
+            <input type="hidden" id="trouble-id-tiket">
+            <input type="hidden" id="trouble-id-produksi">
+            <input type="hidden" id="trouble-index-produksi">
+            
+            <div style="margin-bottom:15px;">
+                <label style="font-size:12px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Nama Mold</label>
+                <input type="text" id="trouble-nama-mold" readonly style="width:100%; padding:12px; background:rgba(0,0,0,0.5); border-radius:10px; font-weight:800; color:white; border:1px solid var(--border-dark);">
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">1. Type Mold</label>
+                    <input type="text" id="tr-type" placeholder="Contoh: Injection" style="width:100%; padding:12px; border-radius:10px;">
+                </div>
+                <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">7. Eksekutor</label>
+                    <input type="text" id="tr-eksekutor" placeholder="Nama Teknisi" style="width:100%; padding:12px; border-radius:10px;">
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
+                <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">2. Start Penanganan</label>
+                    <input type="datetime-local" id="tr-start" style="width:100%; padding:12px; border-radius:10px;">
+                </div>
+                <div>
+                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">3. Estimasi Waktu</label>
+                    <input type="text" id="tr-estimasi" placeholder="Misal: 2 Jam" style="width:100%; padding:12px; border-radius:10px;">
+                </div>
+            </div>
+            <div style="margin-bottom:15px;">
+                <label style="font-size:12px; font-weight:700; color:var(--text-muted);">4. Finish Pengerjaan</label>
+                <input type="datetime-local" id="tr-finish" style="width:100%; padding:12px; border-radius:10px;">
+            </div>
+            <div style="margin-bottom:15px; padding:15px; background:rgba(245, 158, 11, 0.1); border-radius:12px; border:1px solid #b45309;">
+                <label style="font-size:12px; font-weight:800; color:#f59e0b; text-transform:uppercase;"><i class="fas fa-exclamation-circle"></i> 5. Masalah & Penyebab</label>
+                <input type="text" id="tr-masalah" placeholder="Masalah..." style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;">
+                <input type="text" id="tr-penyebab" placeholder="Penyebab..." style="width:100%; padding:12px; border-radius:8px;">
+            </div>
+            <div style="margin-bottom:25px;">
+                <label style="font-size:12px; font-weight:700; color:var(--text-muted);">6. Tindakan</label>
+                <textarea id="tr-tindakan" rows="3" placeholder="Langkah perbaikan..." style="width:100%; padding:12px; border-radius:10px;"></textarea>
+            </div>
+            <div style="display:flex; gap:12px;">
+                <button type="button" onclick="document.getElementById('modal-form-trouble').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanLaporanTrouble()" style="flex:2; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;">
+                    <i class="fas fa-save"></i> SIMPAN TIKET
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- PKM ELTRE APPSHEET                                        -->
+    <!-- ========================================================= -->
+    <div id="ms-pkm-eltre-screen" class="screen">
+        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
+            <div class="header">
+                <h2><i class="fas fa-file-import" style="margin-right:10px;"></i> Data PKM Eltre</h2>
+            </div>
+            <div class="tab-container" style="overflow-x: auto; white-space:nowrap; padding-bottom:5px;">
+                <button class="tab-btn-pkm tab-btn tab-active" type="button" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="min-width: 110px;">Verifikasi ELTRE</button>
+                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="min-width: 100px;">Dikerjakan</button>
+                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="min-width: 100px;">Dipisahkan</button>
+                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="min-width: 80px;">Selesai</button>
+            </div>
+            <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;">
+                <ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+            <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;">
+                <ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+            <div id="tab-pkm-pisah" class="tab-content-pkm" style="display: none;">
+                <ul id="list-pkm-pisah" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+            <div id="tab-pkm-selesai" class="tab-content-pkm" style="display: none;">
+                <ul id="list-pkm-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AKSI VERIFIKASI PKM -->
+    <div id="modal-aksi-pkm" class="security-modal">
+        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; position:relative; border:1px solid var(--border-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            <div style="background:rgba(37,99,235,0.2); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px auto;">
+                <i class="fas fa-search" style="font-size:24px; color:#38bdf8;"></i>
+            </div>
+            <h3 style="color:white; margin-top:0; font-weight:900;">Verifikasi Data PKM</h3>
+            <p style="font-size:14px; color:var(--text-light); margin-bottom:25px; line-height:1.5;">Apakah kendala pada mold <br><b id="pkm-nama-mold-text" style="color:var(--secondary); font-size:16px;"></b><br>ini benar-benar disebabkan oleh masalah Mold?</p>
+            <input type="hidden" id="pkm-id-tiket-verifikasi">
+            
+            <div style="display:flex; flex-direction:column; gap:12px;">
+                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(16,185,129,0.3);">
+                    <i class="fas fa-tools"></i> YA, KERJAKAN
+                </button>
+                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:15px; background:linear-gradient(135deg, #ef4444, #dc2626); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(239,68,68,0.3);">
+                    <i class="fas fa-ban"></i> BUKAN (PISAHKAN)
+                </button>
+                <button type="button" onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:var(--text-muted); cursor:pointer; margin-top:10px;">
+                    BATAL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- PERMINTAAN TRIAL MOLD                                     -->
+    <!-- ========================================================= -->
+    <div id="trial-mold-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-flask" style="margin-right:10px;"></i> Permintaan Trial Mold</h2>
+            </div>
+            
+            <div class="tab-container">
+                <button class="tab-btn tab-active" type="button" id="tab-trial-input" onclick="window.switchTabTrial('input')"><i class="fas fa-plus"></i> Buat Permintaan</button>
+                <button class="tab-btn" type="button" id="tab-trial-database" onclick="window.switchTabTrial('database')"><i class="fas fa-database"></i> Database Trial</button>
+            </div>
+
+            <div id="trial-input-area" class="dark-panel" style="display:block;">
+                <div class="form-group">
+                    <label>Tanggal Permintaan</label>
+                    <input type="date" id="trial-tgl">
+                </div>
+                <div class="form-group">
+                    <label>Nama Pemohon</label>
+                    <input type="text" id="trial-pemohon" placeholder="Nama Anda...">
+                </div>
+                <div class="form-group">
+                    <label>Nama Mold / Produk</label>
+                    <input type="text" id="trial-mold" placeholder="Nama Mold yang akan ditrial...">
+                </div>
+                <div class="form-group">
+                    <label>Alasan Trial / Catatan Khusus</label>
+                    <textarea id="trial-alasan" rows="4" placeholder="Contoh: Mold baru selesai repair..."></textarea>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanPermintaanTrial()">
+                    <i class="fas fa-paper-plane"></i> KIRIM PERMINTAAN TRIAL
+                </button>
+            </div>
+            <div id="trial-database-area" style="display:none;">
+                <div class="dark-panel">
+                    <div id="list-trial-database"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
     <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
     <!-- ========================================================= -->
     <div id="ai-dashboard-screen" class="screen">
@@ -1496,6 +1918,7 @@
             <div id="list-sub-info"></div>
         </div>
     </div>
+
     <!-- ========================================================= -->
     <!-- NOTULEN MEETING                                           -->
     <!-- ========================================================= -->
@@ -1667,364 +2090,6 @@
             </div>
         </div>
     </div>
-
-    <!-- ========================================================= -->
-    <!-- MOLD STORE (NAIK/TURUN & PRODUKSI)                        -->
-    <!-- ========================================================= -->
-    <div id="mold-store-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-warehouse" style="margin-right:10px;"></i> DIVISI MOLD STORE</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;">
-                    <i class="fas fa-calendar-check" style="color:#f59e0b;"></i> 1. Rencana Naik Mold
-                </div>
-                <div class="menu-card" onclick="window.navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-dolly" style="color:#3b82f6;"></i> 2. Laporan Persiapan Naik/Turun Mold
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-persiapan-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-dolly" style="margin-right:10px;"></i> Persiapan Naik & Turun Mold</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputNaikMold()" style="border-left-color: #8b5cf6;">
-                    <i class="fas fa-arrow-up" style="color:#8b5cf6;"></i> 1. Input Naik Mold
-                </div>
-                <div class="menu-card" onclick="window.bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-sync-alt" style="color:#3b82f6;"></i> 2. Update Mold Produksi
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-input-naik-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-arrow-up" style="margin-right:10px;"></i> Input Naik Mold</h2>
-            </div>
-            <div class="dark-panel">
-                <div class="form-group">
-                    <label>Tanggal Penaikan Mold</label>
-                    <input type="date" id="ms-naik-tgl">
-                </div>
-                <div class="form-group">
-                    <label>Penanggung Jawab</label>
-                    <input type="text" id="ms-naik-pj" value="Bapak Kiki Foreman" readonly style="font-weight:800; background:rgba(0,0,0,0.5);">
-                </div>
-                <div class="form-group" style="margin-top: 25px;">
-                    <h3 class="sub-title-box"><i class="fas fa-list" style="color:var(--secondary);"></i> List Nama Mold</h3>
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual..." style="flex:1; text-transform: uppercase; background:rgba(0,0,0,0.4);" oninput="this.value = this.value.toUpperCase()">
-                        <button type="button" onclick="window.tambahMoldManual()" style="padding: 0 20px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border-dark); border-radius: 14px; cursor: pointer;">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <ul id="list-naik-mold" class="eval-list" style="margin-bottom: 20px; border: 2px dashed var(--border-dark); padding: 15px; min-height: 80px; border-radius: 16px; background:rgba(0,0,0,0.4);"></ul>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanNaikMold()">
-                    <i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-update-mold-screen" class="screen">
-        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
-            <div class="header">
-                <h2><i class="fas fa-sync-alt" style="margin-right:10px;"></i> Update Mold Produksi</h2>
-            </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" onclick="window.bukaTabMold('proses')" id="btn-tab-proses"><i class="fas fa-cogs"></i> Proses Produksi</button>
-                <button class="tab-btn" type="button" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai"><i class="fas fa-check-circle"></i> Selesai Baik</button>
-                <button class="tab-btn" type="button" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal"><i class="fas fa-exclamation-triangle"></i> Kendala</button>
-            </div>
-            <div id="tab-proses" class="tab-content" style="display: block;">
-                <div class="dark-panel" style="border-top: 6px solid #f59e0b;">
-                    <h3 class="sub-title-box"><i class="fas fa-cogs" style="color:#f59e0b;"></i> Proses Produksi</h3>
-                    <ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-            <div id="tab-selesai" class="tab-content" style="display: none;">
-                <div class="dark-panel" style="border-top: 6px solid #10b981;">
-                    <h3 class="sub-title-box"><i class="fas fa-check-circle" style="color:#10b981;"></i> Mold Selesai Baik</h3>
-                    <ul id="kolom-selesai-baik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-            <div id="tab-gagal" class="tab-content" style="display: none;">
-                <div class="dark-panel" style="border-top: 6px solid #ef4444;">
-                    <h3 class="sub-title-box"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Gangguan / Gagal Naik</h3>
-                    <ul id="kolom-gagal-naik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- MOLD TROUBLE                                              -->
-    <!-- ========================================================= -->
-    <div id="trouble-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-exclamation-triangle" style="margin-right:10px;"></i> Divisi Mold Trouble</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaDivisiTrouble()" style="position: relative; border-left-color:#ef4444;">
-                    <i class="fas fa-exclamation-circle" style="color:#ef4444;"></i> 1. Masalah/Gagal Persiapan Mold
-                    <span class="badge-trouble-notif" style="position: absolute; right: 20px; background: #ef4444; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; display: none;">0</span>
-                </div>
-                <div class="menu-card" onclick="window.bukaPKMEltre()" style="position: relative; border-left-color: #2563eb;">
-                    <i class="fas fa-file-import" style="color:#2563eb;"></i> 2. New Data PKM Eltre Mold
-                    <span id="badge-pkm-notif" style="position: absolute; right: 20px; background: #f59e0b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 800; display: none;">0</span>
-                </div>
-                <div class="menu-card" onclick="alert('Fitur Control Progres sedang disiapkan!')" style="position: relative; border-left-color: #8b5cf6;">
-                    <i class="fas fa-chart-line" style="color:#8b5cf6;"></i> 3. Control Progres
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-trouble-screen" class="screen">
-        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
-            <div class="header">
-                <h2><i class="fas fa-tools" style="margin-right:10px;"></i> Daftar Mold Trouble</h2>
-            </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('belum')" id="btn-tab-trouble-belum"><i class="fas fa-clock"></i> Belum Update</button>
-                <button class="tab-btn tab-btn-trouble" type="button" onclick="window.bukaTabTrouble('selesai')" id="btn-tab-trouble-selesai"><i class="fas fa-check-circle"></i> Sudah Selesai</button>
-            </div>
-            <div id="tab-trouble-belum" class="tab-content-trouble" style="display: block;">
-                <ul id="list-trouble-belum" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-            <div id="tab-trouble-selesai" class="tab-content-trouble" style="display: none;">
-                <ul id="list-trouble-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL FORM UPDATE PROJECT TROUBLE -->
-    <div id="modal-form-trouble" class="security-modal">
-        <div style="background:var(--card-dark); width:100%; max-width:550px; border-radius:20px; padding:30px; max-height:90vh; overflow-y:auto; position:relative; box-shadow:0 20px 50px rgba(0,0,0,0.8); border:1px solid var(--border-dark); backdrop-filter:blur(10px);">
-            <h3 style="color:#ef4444; margin-top:0; border-bottom:2px dashed var(--border-dark); padding-bottom:15px; font-weight:900;"><i class="fas fa-clipboard-list"></i> Update Project Trouble</h3>
-            <input type="hidden" id="trouble-id-tiket">
-            <input type="hidden" id="trouble-id-produksi">
-            <input type="hidden" id="trouble-index-produksi">
-            
-            <div style="margin-bottom:15px;">
-                <label style="font-size:12px; font-weight:800; color:var(--text-muted); text-transform:uppercase;">Nama Mold</label>
-                <input type="text" id="trouble-nama-mold" readonly style="width:100%; padding:12px; background:rgba(0,0,0,0.5); border-radius:10px; font-weight:800; color:white; border:1px solid var(--border-dark);">
-            </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
-                <div>
-                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">1. Type Mold</label>
-                    <input type="text" id="tr-type" placeholder="Contoh: Injection" style="width:100%; padding:12px; border-radius:10px;">
-                </div>
-                <div>
-                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">7. Eksekutor</label>
-                    <input type="text" id="tr-eksekutor" placeholder="Nama Teknisi" style="width:100%; padding:12px; border-radius:10px;">
-                </div>
-            </div>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-bottom:15px;">
-                <div>
-                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">2. Start Penanganan</label>
-                    <input type="datetime-local" id="tr-start" style="width:100%; padding:12px; border-radius:10px;">
-                </div>
-                <div>
-                    <label style="font-size:12px; font-weight:700; color:var(--text-muted);">3. Estimasi Waktu</label>
-                    <input type="text" id="tr-estimasi" placeholder="Misal: 2 Jam" style="width:100%; padding:12px; border-radius:10px;">
-                </div>
-            </div>
-            <div style="margin-bottom:15px;">
-                <label style="font-size:12px; font-weight:700; color:var(--text-muted);">4. Finish Pengerjaan</label>
-                <input type="datetime-local" id="tr-finish" style="width:100%; padding:12px; border-radius:10px;">
-            </div>
-            <div style="margin-bottom:15px; padding:15px; background:rgba(245, 158, 11, 0.1); border-radius:12px; border:1px solid #b45309;">
-                <label style="font-size:12px; font-weight:800; color:#f59e0b; text-transform:uppercase;"><i class="fas fa-exclamation-circle"></i> 5. Masalah & Penyebab</label>
-                <input type="text" id="tr-masalah" placeholder="Masalah..." style="width:100%; padding:12px; margin-bottom:10px; border-radius:8px;">
-                <input type="text" id="tr-penyebab" placeholder="Penyebab..." style="width:100%; padding:12px; border-radius:8px;">
-            </div>
-            <div style="margin-bottom:25px;">
-                <label style="font-size:12px; font-weight:700; color:var(--text-muted);">6. Tindakan</label>
-                <textarea id="tr-tindakan" rows="3" placeholder="Langkah perbaikan..." style="width:100%; padding:12px; border-radius:10px;"></textarea>
-            </div>
-            <div style="display:flex; gap:12px;">
-                <button type="button" onclick="document.getElementById('modal-form-trouble').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
-                <button type="button" onclick="window.simpanLaporanTrouble()" style="flex:2; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;">
-                    <i class="fas fa-save"></i> SIMPAN TIKET
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================================= -->
-    <!-- PKM ELTRE APPSHEET                                        -->
-    <!-- ========================================================= -->
-    <div id="ms-pkm-eltre-screen" class="screen">
-        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
-            <div class="header">
-                <h2><i class="fas fa-file-import" style="margin-right:10px;"></i> Data PKM Eltre</h2>
-            </div>
-            <div class="tab-container" style="overflow-x: auto; white-space:nowrap; padding-bottom:5px;">
-                <button class="tab-btn-pkm tab-btn tab-active" type="button" onclick="window.bukaTabPKM('verifikasi')" id="btn-tab-pkm-verifikasi" style="min-width: 110px;">Verifikasi ELTRE</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('kerjakan')" id="btn-tab-pkm-kerjakan" style="min-width: 100px;">Dikerjakan</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('pisah')" id="btn-tab-pkm-pisah" style="min-width: 100px;">Dipisahkan</button>
-                <button class="tab-btn-pkm tab-btn" type="button" onclick="window.bukaTabPKM('selesai')" id="btn-tab-pkm-selesai" style="min-width: 80px;">Selesai</button>
-            </div>
-            <div id="tab-pkm-verifikasi" class="tab-content-pkm" style="display: block;">
-                <ul id="list-pkm-verifikasi" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-            <div id="tab-pkm-kerjakan" class="tab-content-pkm" style="display: none;">
-                <ul id="list-pkm-kerjakan" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-            <div id="tab-pkm-pisah" class="tab-content-pkm" style="display: none;">
-                <ul id="list-pkm-pisah" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-            <div id="tab-pkm-selesai" class="tab-content-pkm" style="display: none;">
-                <ul id="list-pkm-selesai" style="list-style: none; padding: 0; min-height: 300px;"></ul>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL AKSI VERIFIKASI PKM -->
-    <div id="modal-aksi-pkm" class="security-modal">
-        <div style="background:var(--card-dark); width:100%; max-width:400px; border-radius:20px; padding:30px; text-align:center; position:relative; border:1px solid var(--border-dark); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            <div style="background:rgba(37,99,235,0.2); width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 15px auto;">
-                <i class="fas fa-search" style="font-size:24px; color:#38bdf8;"></i>
-            </div>
-            <h3 style="color:white; margin-top:0; font-weight:900;">Verifikasi Data PKM</h3>
-            <p style="font-size:14px; color:var(--text-light); margin-bottom:25px; line-height:1.5;">Apakah kendala pada mold <br><b id="pkm-nama-mold-text" style="color:var(--secondary); font-size:16px;"></b><br>ini benar-benar disebabkan oleh masalah Mold?</p>
-            <input type="hidden" id="pkm-id-tiket-verifikasi">
-            
-            <div style="display:flex; flex-direction:column; gap:12px;">
-                <button type="button" onclick="window.prosesVerifikasiPKM('kerjakan')" style="width:100%; padding:15px; background:linear-gradient(135deg, #10b981, #059669); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(16,185,129,0.3);">
-                    <i class="fas fa-tools"></i> YA, KERJAKAN
-                </button>
-                <button type="button" onclick="window.prosesVerifikasiPKM('pisah')" style="width:100%; padding:15px; background:linear-gradient(135deg, #ef4444, #dc2626); border:none; border-radius:12px; font-weight:800; color:white; cursor:pointer; box-shadow:0 5px 15px rgba(239,68,68,0.3);">
-                    <i class="fas fa-ban"></i> BUKAN (PISAHKAN)
-                </button>
-                <button type="button" onclick="document.getElementById('modal-aksi-pkm').style.display='none'" style="width:100%; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:var(--text-muted); cursor:pointer; margin-top:10px;">
-                    BATAL
-                </button>
-            </div>
-        </div>
-    </div>
-    <!-- ========================================== -->
-    <!-- MODAL PREVIEW PDF SURKOM (HIGH RESOLUTION) -->
-    <!-- ========================================== -->
-    <div id="surkom-preview-modal" class="security-modal" style="z-index:99999; padding:10px;">
-        <div style="background:var(--card-dark); width:100%; max-width:800px; border-radius:15px; display:flex; flex-direction:column; height:90vh; border:1px solid #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.3);">
-            <div style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
-                <h3 style="margin:0; color:#38bdf8;"><i class="fas fa-search-plus"></i> Preview Detail Halaman <span id="surkom-preview-page-num"></span></h3>
-                <button type="button" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:transparent; border:none; color:#ef4444; font-size:24px; cursor:pointer;"><i class="fas fa-times-circle"></i></button>
-            </div>
-            
-            <div style="flex:1; overflow:auto; padding:10px; display:flex; justify-content:center; align-items:flex-start; background:#000;">
-                <div id="surkom-preview-loading" style="color:white; margin-top:20px; display:none;"><i class="fas fa-spinner fa-spin"></i> Memuat Resolusi Tinggi...</div>
-                <canvas id="surkom-preview-canvas" style="max-width:100%; height:auto; display:none;"></canvas>
-            </div>
-            
-            <div style="padding:15px; border-top:1px solid rgba(255,255,255,0.1);">
-                <button type="button" class="btn-submit" onclick="document.getElementById('surkom-preview-modal').style.display='none'" style="background:linear-gradient(135deg, #10b981, #059669);">
-                    <i class="fas fa-check"></i> TUTUP PREVIEW
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- CYBER SECURITY TERMINAL, METRICS, & ENGINE -->
-    <!-- ========================================== -->
-    <div id="cyber-security-panel" class="security-modal">
-        <div style="background:var(--card-dark); width:100%; max-width:500px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 40px rgba(16,185,129,0.2); display:flex; flex-direction:column; align-items:center;">
-            <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
-            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; text-align: center; letter-spacing: 1px;">CYBER DEFENSE SYSTEM</h2>
-            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 20px; text-align: center;">Memantau anomali data, filter virus, & koneksi Firebase 24/7.</p>
-            
-            <div class="cyber-log" id="cyber-log-container" style="width: 100%; height: 220px; background: #020617; border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; font-family: 'Courier New', Courier, monospace; color: #10b981; padding: 15px; font-size: 11px; text-align: left; overflow: hidden; position: relative;"></div>
-            
-            <button class="btn-submit" type="button" onclick="window.tutupPanelKeamanan()" style="margin-top:20px; width:100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); box-shadow:none; color:white;">
-                TUTUP PANEL KEAMANAN
-            </button>
-        </div>
-    </div>
-
-    <script>
-        // ==========================================
-        // 1. ENGINE METRIK REALTIME & SECURITY
-        // ==========================================
-        window.jalankanEngineMetrik = function() {
-            setInterval(() => {
-                let netType = "4G"; let netColor = "#10b981"; let speedVal = "--"; let speedColor = "#38bdf8"; 
-                if (navigator.connection) {
-                    const conn = navigator.connection;
-                    netType = conn.effectiveType ? conn.effectiveType.toUpperCase() : "WIFI";
-                    if (conn.downlink) {
-                        let mbps = conn.downlink;
-                        if (mbps < 1.0) { speedVal = Math.round(mbps * 1000) + " Kbps"; speedColor = "#f59e0b"; netColor = "#f59e0b"; } 
-                        else { speedVal = mbps.toFixed(1) + " Mbps"; }
-                    }
-                    if (conn.downlink < 0.5) { netColor = "#ef4444"; speedColor = "#ef4444"; netType = "POOR"; }
-                } else { netType = "WIFI/4G"; speedVal = "Optimum"; }
-                
-                let baseCpu = Math.floor(Math.random() * 12) + 5; let cpuColor = "#34d399";
-                if (netColor === "#ef4444") baseCpu += 20; 
-                if (baseCpu > 25) cpuColor = "#f59e0b";
-                
-                const elNet = document.getElementById('live-net'); const elSpeed = document.getElementById('live-speed'); const elCpu = document.getElementById('live-cpu');
-                if(elNet) { elNet.innerText = netType; elNet.style.color = netColor; }
-                if(elSpeed) { elSpeed.innerText = speedVal; elSpeed.style.color = speedColor; }
-                if(elCpu) { elCpu.innerText = baseCpu + "%"; elCpu.style.color = cpuColor; }
-            }, 2000); 
-        };
-
-        let cyberScanInterval;
-        const scanPhrases = [ "Memeriksa integritas DOM HTML...", "Ping Firebase Server Database...", "Menganalisa paket trafik data masuk...", "Filter script XSS aktif & siaga...", "Sistem Bersih. Tidak ada injeksi malware.", "Koneksi Enkripsi SSL Firestore aktif.", "Sinkronisasi Cloud sukses.", "Memblokir request tidak memiliki token otoritas..." ];
-
-        window.logKeamanan = function(pesan, tipe = "info") {
-            const logContainer = document.getElementById('cyber-log-container'); 
-            if(!logContainer) return;
-            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
-            let color = tipe === "ancaman" ? "#ef4444" : tipe === "scan" ? "#f59e0b" : "#10b981";
-            let prefix = tipe === "ancaman" ? "[BLOCKED]" : tipe === "scan" ? "[SCANNING]" : "[SECURE]";
-            logContainer.innerHTML += `<div style="color:${color}; margin-bottom:4px; line-height:1.4;">[${time}] ${prefix} ${pesan}</div>`;
-            logContainer.scrollTop = logContainer.scrollHeight; 
-            if(logContainer.childElementCount > 50) logContainer.removeChild(logContainer.firstChild);
-        };
-
-        window.bukaPanelKeamanan = function() {
-            document.getElementById('cyber-security-panel').style.display = 'flex';
-            document.getElementById('cyber-log-container').innerHTML = `<div style="color: #38bdf8; margin-bottom:4px;">[SYSTEM] Memulai protokol Firewall Firebase v3.0...</div>`;
-            cyberScanInterval = setInterval(() => {
-                const phrase = scanPhrases[Math.floor(Math.random() * scanPhrases.length)];
-                let type = "scan";
-                if(phrase.includes("Bersih") || phrase.includes("aktif") || phrase.includes("sukses")) type = "info";
-                if(phrase.includes("Memblokir")) type = "ancaman";
-                window.logKeamanan(phrase, type);
-            }, 1200); 
-        };
-
-        window.tutupPanelKeamanan = function() { document.getElementById('cyber-security-panel').style.display = 'none'; clearInterval(cyberScanInterval); };
-
-        setInterval(() => {
-            const texts = ["Cyber Security", "Memantau Trafik", "Enkripsi Aktif", "Filter XSS On"];
-            const shieldText = document.getElementById('shield-text');
-            if(shieldText) shieldText.innerText = texts[Math.floor(Math.random() * texts.length)];
-        }, 3500);
-
-        window.amankanData = function(str) {
-            if (typeof str !== 'string') return str;
-            let original = str;
-            let aman = str.replace(/<script[^>]*?>.*?<\/script>/gi, '').replace(/<iframe[^>]*?>.*?<\/iframe>/gi, '').replace(/<[\/\!]*?[^<>]*?>/gi, '').replace(/javascript:/gi, '').replace(/on\w+=/gi, '');
-            if(original !== aman) window.logKeamanan(`ANOMALI TERDETEKSI! Skrip berbahaya dihancurkan.`, "ancaman");
-            return aman;
-        };
-    </script>
-
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
     <!-- ========================================== -->
@@ -2053,8 +2118,9 @@
         window.arrayNaikMold = []; window.pkmDatabase = []; window.dataProyekWS = []; window.arrayTugasBaru = [];
         window.divisiAktif = ""; window.kategoriInfoAktif = ""; window.chartUni = null; window.chartBi = null; window.chartMulti = null;
         
-        // GLOBAL VARIABLES SURKOM BARU
+        // GLOBAL VARIABLES SURKOM BARU & ORG CHART
         window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
+        window.orgDatabase = [];
 
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
@@ -2106,6 +2172,7 @@
                 document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active-screen')); document.getElementById(idTujuan)?.classList.add('active-screen');
                 window.updateBottomNav(idTujuan); window.scrollTo(0, 0); 
                 if(idTujuan === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); 
+                if(idTujuan === 'struktur-organisasi-screen') window.ambilDataOrg(); 
             } catch (error) { console.error(error); }
         }
 
@@ -2155,18 +2222,151 @@
         }
 
         // =========================================================================
+        // STRUKTUR ORGANISASI: ENGINE & ANTI-LAG TOUCH PANNING
+        // =========================================================================
+        window.isDraggingOrg = false;
+        window.tickingOrg = false;
+        window.orgZoomScale = 1.0;
+        let startXOrg, startYOrg, scrollLeftOrg, scrollTopOrg;
+
+        window.startPanOrg = function(e) {
+            window.isDraggingOrg = true;
+            const vp = document.getElementById('org-viewport');
+            vp.style.cursor = 'grabbing';
+            let cx = e.touches ? e.touches[0].clientX : e.pageX;
+            let cy = e.touches ? e.touches[0].clientY : e.pageY;
+            startXOrg = cx - vp.offsetLeft;
+            startYOrg = cy - vp.offsetTop;
+            scrollLeftOrg = vp.scrollLeft;
+            scrollTopOrg = vp.scrollTop;
+        };
+
+        window.stopPanOrg = function() {
+            window.isDraggingOrg = false;
+            const vp = document.getElementById('org-viewport');
+            if(vp) vp.style.cursor = 'grab';
+        };
+
+        window.doPanOrg = function(e) {
+            if(!window.isDraggingOrg) return;
+            if(!window.tickingOrg) {
+                window.requestAnimationFrame(() => {
+                    const vp = document.getElementById('org-viewport');
+                    let cx = e.touches ? e.touches[0].clientX : e.pageX;
+                    let cy = e.touches ? e.touches[0].clientY : e.pageY;
+                    vp.scrollLeft = scrollLeftOrg - (cx - vp.offsetLeft - startXOrg);
+                    vp.scrollTop = scrollTopOrg - (cy - vp.offsetTop - startYOrg);
+                    window.tickingOrg = false;
+                });
+                window.tickingOrg = true;
+            }
+        };
+
+        window.zoomOrg = function(d) {
+            const wrapper = document.getElementById('org-zoom-wrapper');
+            if (!wrapper) return;
+            if (d === 0) window.orgZoomScale = 1.0;
+            else window.orgZoomScale = Math.min(Math.max(0.4, window.orgZoomScale + d), 2.0);
+            wrapper.style.transform = `scale(${window.orgZoomScale})`;
+        };
+
+        const defaultOrg = [
+            { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
+            { id: "o2", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
+            { id: "o3", level: 2, jabatan: "MAINTENANCE SECTION HEAD", nama: "HERU NUGRAHA", anggota: "" },
+            { id: "o4", level: 3, jabatan: "FOREMAN INJ 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)" },
+            { id: "o5", level: 3, jabatan: "FOREMAN INJ 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)" },
+            { id: "o6", level: 3, jabatan: "FOREMAN INJ 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)" },
+            { id: "o7", level: 3, jabatan: "MOLD STORE", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)" },
+            { id: "o8", level: 3, jabatan: "DEVELOPMENT", nama: "TARMUJI", anggota: "" },
+            { id: "o9", level: 3, jabatan: "MACHINERY MOLD", nama: "SUNARYO (SO)", anggota: "- AHMAD ROFII (PKWT)\n- ENOH (SO)" }
+        ];
+
+        window.ambilDataOrg = async function() {
+            window.toggleLoader(true, "Merakit Struktur...");
+            window.orgDatabase = [];
+            try {
+                const snap = await getDocs(collection(window.db, "struktur_organisasi"));
+                if(snap.empty) {
+                    for(let it of defaultOrg) { await setDoc(doc(window.db, "struktur_organisasi", it.id), it); window.orgDatabase.push(it); }
+                } else {
+                    snap.forEach(d => window.orgDatabase.push({id: d.id, ...d.data()}));
+                }
+                window.renderOrgSvgEngine();
+            } catch(e) { console.error(e); }
+            window.toggleLoader(false);
+        };
+
+        window.renderOrgSvgEngine = function() {
+            const tree = document.getElementById('org-tree-render'); if(!tree) return;
+            const head = window.orgDatabase.find(o => o.level === 1) || defaultOrg[0];
+            const admin = window.orgDatabase.find(o => o.jabatan.includes("ADMIN")) || defaultOrg[1];
+            const sec = window.orgDatabase.find(o => o.level === 2 && !o.jabatan.includes("ADMIN")) || defaultOrg[2];
+            const level3 = window.orgDatabase.filter(o => o.level === 3);
+
+            let editCls = window.isOrgUnlocked ? "editable" : "";
+            let clickEvt = (id) => window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${id}')"` : "";
+
+            let html = `<ul><li>`;
+            
+            // DEPT HEAD
+            html += `<div class="org-box ${editCls}" ${clickEvt(head.id)}><div class="org-box-header">${head.jabatan}</div><div class="org-box-body">${head.nama}</div></div>`;
+            
+            // TRUNK & ADMIN
+            html += `<div class="trunk-wrapper">
+                        <div class="trunk-line"><div class="trunk-line-energy"></div></div>
+                        <div class="admin-branch"><div class="admin-branch-energy"></div></div>
+                        <div class="admin-box-wrap">
+                            <div class="org-box ${editCls}" ${clickEvt(admin.id)}>
+                                <div class="org-box-header">${admin.jabatan}</div><div class="org-box-body">${admin.nama}</div>
+                            </div>
+                        </div>
+                     </div>`;
+
+            // SECTION HEAD
+            html += `<ul><li><div class="org-box ${editCls}" ${clickEvt(sec.id)}><div class="org-box-header">${sec.jabatan}</div><div class="org-box-body">${sec.nama}</div></div><ul>`;
+
+            // FOREMAN LEVEL
+            level3.forEach(l3 => {
+                let htmlTim = l3.anggota && l3.anggota.trim() !== "" ? `<div class="org-sub-box"><div class="org-sub-energy"></div><div class="org-sub-header">TIM</div><div class="org-sub-body">${l3.anggota}</div></div>` : "";
+                html += `<li style="position:relative;">
+                            <div class="line-v"></div><div class="line-h-l"></div><div class="line-h-r"></div>
+                            <div class="org-box ${editCls}" ${clickEvt(l3.id)}><div class="org-box-header">${l3.jabatan}</div><div class="org-box-body">${l3.nama}</div></div>
+                            ${htmlTim}
+                         </li>`;
+            });
+
+            html += `</ul></li></ul></li></ul>`;
+            tree.innerHTML = html;
+
+            const btnLock = document.getElementById('btn-lock-org');
+            if(window.isOrgUnlocked) { btnLock.innerHTML = `<i class="fas fa-lock-open"></i> Selesai Edit`; btnLock.style.background = "var(--lambat)"; } 
+            else { btnLock.innerHTML = `<i class="fas fa-lock"></i> Edit`; btnLock.style.background = "rgba(0,0,0,0.3)"; }
+        };
+
+        window.bukaGembokOrg = () => { if(window.isOrgUnlocked) { window.isOrgUnlocked = false; window.renderOrgSvgEngine(); } else { document.getElementById('org-pin-modal').style.display='flex'; document.getElementById('input-pin-org').value=''; document.getElementById('msg-pin-error-org').style.display='none'; } };
+        window.verifikasiPinOrg = () => { if(document.getElementById('input-pin-org').value === "2025") { window.isOrgUnlocked = true; document.getElementById('org-pin-modal').style.display='none'; window.renderOrgSvgEngine(); } else { document.getElementById('msg-pin-error-org').style.display='block'; if(navigator.vibrate) navigator.vibrate([100]); } };
+        window.bukaEditOrg = (id) => { const d = window.orgDatabase.find(x => x.id === id); if(!d) return; document.getElementById('org-edit-id').value = id; document.getElementById('org-edit-jabatan').value = d.jabatan; document.getElementById('org-edit-nama').value = d.nama; document.getElementById('org-edit-anggota').value = d.anggota || ""; document.getElementById('org-edit-modal').style.display='flex'; };
+        window.simpanEditOrg = async () => {
+            const id = document.getElementById('org-edit-id').value;
+            const jbt = document.getElementById('org-edit-jabatan').value.toUpperCase();
+            const nm = document.getElementById('org-edit-nama').value.toUpperCase();
+            const ag = document.getElementById('org-edit-anggota').value;
+            window.toggleLoader(true, "Menyimpan...");
+            try {
+                await updateDoc(doc(window.db, "struktur_organisasi", id), { jabatan: jbt, nama: nm, anggota: ag });
+                const idx = window.orgDatabase.findIndex(o => o.id === id);
+                if(idx > -1) { window.orgDatabase[idx].jabatan = jbt; window.orgDatabase[idx].nama = nm; window.orgDatabase[idx].anggota = ag; }
+                document.getElementById('org-edit-modal').style.display='none';
+                window.renderOrgSvgEngine();
+            } catch(e){ console.error(e); }
+            window.toggleLoader(false);
+        };
+
+        // =========================================================================
         // LOGIKA SURAT KOMPONEN: FITUR ENTERPRISE (MERGE PDF, TAHUN, PREVIEW)
         // =========================================================================
-        window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null; 
-
-        // Fungsi Convert Base64 ke ArrayBuffer (Untuk Render PDF Server ke Canvas / Merge)
-        function base64ToArrayBuffer(base64) {
-            var binary_string = window.atob(base64.split(',')[1]);
-            var len = binary_string.length;
-            var bytes = new Uint8Array(len);
-            for (var i = 0; i < len; i++) bytes[i] = binary_string.charCodeAt(i);
-            return bytes.buffer;
-        }
+        function base64ToArrayBuffer(base64) { var binary_string = window.atob(base64.split(',')[1]); var len = binary_string.length; var bytes = new Uint8Array(len); for (var i = 0; i < len; i++) bytes[i] = binary_string.charCodeAt(i); return bytes.buffer; }
 
         window.prosesPDFSurkom = async function(input) {
             const file = input.files[0]; if(!file) return;
@@ -2223,7 +2423,6 @@
             } catch(e) { console.error(e); loading.innerHTML = "Gagal memuat preview resolusi tinggi."; }
         }
 
-        // SIMPAN UPLOAD PARALEL (PRO MAX) DENGAN TAG TAHUN
         window.simpanAllSurkomHasil = async function() {
             const operator = window.amankanData(document.getElementById('surkom-operator').value);
             const waktu = document.getElementById('surkom-waktu').value;
@@ -2246,10 +2445,9 @@
                     const newPdf = await PDFDocument.create(); const [copiedPage] = await newPdf.copyPages(originalPdf, [i - 1]); 
                     newPdf.addPage(copiedPage); const pdfBase64 = await newPdf.saveAsBase64({ dataUri: true });
                     
-                    // Kita simpan ke koleksi asli agar bergabung dengan data lama Bapak, tapi sekarang ditambah Label TAHUN!
                     const tugasUpload = addDoc(collection(window.db, "surat_komponen"), {
                         judul: judulFinal, operator: operator, waktuInput: waktu, 
-                        tahun: tahunInput, tglStandard: window.dapatkanTanggalLokal(), // Penanda untuk Filter Update
+                        tahun: tahunInput, tglStandard: window.dapatkanTanggalLokal(),
                         filePdfBase64: pdfBase64, halamanAsli: i, timestamp: Date.now()
                     });
                     arrayUpload.push(tugasUpload);
@@ -2263,9 +2461,6 @@
             window.toggleLoader(false);
         }
 
-        // =====================================
-        // FITUR ALL DATA (FILTER, CHECKBOX, FORWARD, UNDUH GLOBAL)
-        // =====================================
         window.bukaAllDataSurkom = async function() { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); }
 
         window.filterTabTahunSurkom = function(tahun, btnEl) {
@@ -2294,7 +2489,7 @@
         window.renderListAllSurkom = async function() {
             const container = document.getElementById('surkom-list-container');
             const keyword = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
-            const filterDate = document.getElementById('surkom-filter-date').value; // Ambil nilai filter tanggal update
+            const filterDate = document.getElementById('surkom-filter-date').value; 
             
             if(!window.surkomDatabase || window.surkomDatabase.length === 0) {
                 window.toggleLoader(true, "Mengunduh Arsip Surkom...");
@@ -2307,15 +2502,12 @@
                 window.toggleLoader(false);
             }
             
-            // Proses Filter Multi-Lapis (Kata Kunci + Tahun + Tanggal Update)
+            // FIX PENAMPILAN DATA LAMA DI TAB "ALL DATA"
             let filterData = window.surkomDatabase.filter(d => {
                 let matchKey = (d.judul || "").toLowerCase().includes(keyword) || (d.operator || "").toLowerCase().includes(keyword);
-                let matchTahun = window.surkomTahunAktif === 'ALL' ? true : (d.tahun === window.surkomTahunAktif);
+                let matchTahun = window.surkomTahunAktif === 'ALL' ? true : (d.tahun == window.surkomTahunAktif);
                 let matchDate = true;
-                if(filterDate) {
-                    // Jika ada data tglStandard, samakan. Jika data lama belum ada, anggap tidak lolos filter (agar akurat)
-                    matchDate = d.tglStandard === filterDate;
-                }
+                if(filterDate) { matchDate = d.tglStandard === filterDate; }
                 return matchKey && matchTahun && matchDate;
             });
             
@@ -2323,7 +2515,8 @@
             
             let html = "";
             filterData.forEach(d => {
-                let badgeTahun = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:6px; font-size:9px; border:1px solid rgba(245,158,11,0.5); margin-left:8px;">${d.tahun}</span>` : '';
+                // Label Data Lama bagi yang tidak punya tag tahun (khususnya untuk data Bapak yang diinput sebelum update)
+                let badgeTahun = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:6px; font-size:9px; border:1px solid rgba(245,158,11,0.5); margin-left:8px;">${d.tahun}</span>` : `<span style="background:rgba(239,68,68,0.2); color:#ef4444; padding:3px 6px; border-radius:6px; font-size:9px; border:1px solid rgba(239,68,68,0.5); margin-left:8px;">DATA LAMA</span>`;
                 let checkboxHtml = window.isModePilihSurkom ? `<input type="checkbox" class="chk-surkom-item" value="${d.id}" style="width:20px; height:20px; margin-right:15px; cursor:pointer;" onclick="event.stopPropagation()">` : '';
                 
                 html += `
@@ -2333,7 +2526,7 @@
                         <div>
                             <h3 style="margin:0 0 5px 0; color:#38bdf8; font-size:14px; display:flex; align-items:center;"><i class="fas fa-file-contract" style="margin-right:6px;"></i> ${d.judul} ${badgeTahun}</h3>
                             <p style="margin:0; font-size:11px; color:var(--text-muted); font-weight:700;">
-                                <i class="fas fa-user-tag"></i> PIC: ${d.operator} | <i class="fas fa-clock"></i> ${d.waktuInput}
+                                <i class="fas fa-user-tag"></i> PIC: ${d.operator || 'Admin'} | <i class="fas fa-clock"></i> ${d.waktuInput || d.tglStandard || '-'}
                             </p>
                         </div>
                     </div>
@@ -2345,7 +2538,6 @@
             container.innerHTML = html;
         }
 
-        // FITUR KLIK KARTU -> PREVIEW PDF RESOLUSI TINGGI
         window.bukaPreviewDariServer = async function(id) {
             const data = window.surkomDatabase.find(d => d.id === id);
             if(data && data.filePdfBase64) {
@@ -2379,78 +2571,33 @@
             let a = document.createElement("a"); a.href = data.filePdfBase64; a.download = `SURKOM_${judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
         }
 
-        // FITUR UNDUH GLOBAL & MERGE
-        window.bukaModalUnduhGlobal = function() {
-            const selected = document.querySelectorAll('.chk-surkom-item:checked');
-            if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu dengan mencentang kotaknya!");
-            document.getElementById('surkom-count-selected').innerText = selected.length;
-            document.getElementById('surkom-unduh-global-modal').style.display = 'flex';
-        }
-
+        window.bukaModalUnduhGlobal = function() { const selected = document.querySelectorAll('.chk-surkom-item:checked'); if(selected.length === 0) return alert("Pilih minimal 1 data!"); document.getElementById('surkom-count-selected').innerText = selected.length; document.getElementById('surkom-unduh-global-modal').style.display = 'flex'; }
         window.prosesUnduhGlobalSurkom = async function(tipe) {
             document.getElementById('surkom-unduh-global-modal').style.display = 'none';
-            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked');
-            const selectedIds = Array.from(selectedNodes).map(n => n.value);
-            
-            window.toggleLoader(true, tipe === 'merge' ? "Menyatukan Halaman PDF..." : "Mengunduh Massal...");
+            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked'); const selectedIds = Array.from(selectedNodes).map(n => n.value);
+            window.toggleLoader(true, tipe === 'merge' ? "Menyatukan PDF..." : "Mengunduh Massal...");
             try {
                 if(tipe === 'pisah') {
-                    for(let id of selectedIds) {
-                        const d = window.surkomDatabase.find(x => x.id === id);
-                        if(d) {
-                            let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${d.judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
-                            await new Promise(r => setTimeout(r, 600)); // Delay agar browser tidak nge-hang
-                        }
-                    }
+                    for(let id of selectedIds) { const d = window.surkomDatabase.find(x => x.id === id); if(d) { let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${d.judul.replace(/ /g, '_')}_CBI.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a); await new Promise(r => setTimeout(r, 600)); } }
                 } else if(tipe === 'merge') {
-                    const { PDFDocument } = PDFLib;
-                    const mergedPdf = await PDFDocument.create();
-                    
-                    for(let id of selectedIds) {
-                        const docObj = window.surkomDatabase.find(x => x.id === id);
-                        if(docObj && docObj.filePdfBase64) {
-                            const pdfBytes = base64ToArrayBuffer(docObj.filePdfBase64);
-                            const pdf = await PDFDocument.load(pdfBytes);
-                            const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
-                            copiedPages.forEach(page => mergedPdf.addPage(page));
-                        }
-                    }
-                    const mergedPdfFile = await mergedPdf.saveAsBase64({ dataUri: true });
-                    let a = document.createElement("a"); a.href = mergedPdfFile; a.download = `SURKOM_GABUNGAN_${Date.now()}.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                    const { PDFDocument } = PDFLib; const mergedPdf = await PDFDocument.create();
+                    for(let id of selectedIds) { const docObj = window.surkomDatabase.find(x => x.id === id); if(docObj && docObj.filePdfBase64) { const pdfBytes = base64ToArrayBuffer(docObj.filePdfBase64); const pdf = await PDFDocument.load(pdfBytes); const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices()); copiedPages.forEach(page => mergedPdf.addPage(page)); } }
+                    const mergedPdfFile = await mergedPdf.saveAsBase64({ dataUri: true }); let a = document.createElement("a"); a.href = mergedPdfFile; a.download = `SURKOM_GABUNGAN_${Date.now()}.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a);
                 }
-            } catch(e) { console.error(e); alert("Terjadi kesalahan saat memproses unduhan: " + e.message); }
-            window.toggleLoader(false);
+            } catch(e) { console.error(e); alert("Kesalahan unduhan: " + e.message); } window.toggleLoader(false);
         }
 
-        // FITUR PINDAH DATA (FORWARD) TAHUN
-        window.bukaModalForwardSurkom = function() {
-            const selected = document.querySelectorAll('.chk-surkom-item:checked');
-            if(selected.length === 0) return alert("Pilih minimal 1 data terlebih dahulu!");
-            document.getElementById('surkom-forward-modal').style.display = 'flex';
-        }
-
+        window.bukaModalForwardSurkom = function() { const selected = document.querySelectorAll('.chk-surkom-item:checked'); if(selected.length === 0) return alert("Pilih minimal 1 data!"); document.getElementById('surkom-forward-modal').style.display = 'flex'; }
         window.prosesForwardDataSurkom = async function() {
             const targetTahun = document.getElementById('surkom-forward-tahun').value;
-            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked');
-            const selectedIds = Array.from(selectedNodes).map(n => n.value);
-            
-            window.toggleLoader(true, `Memindahkan Data ke Tab ${targetTahun}...`);
+            const selectedNodes = document.querySelectorAll('.chk-surkom-item:checked'); const selectedIds = Array.from(selectedNodes).map(n => n.value);
+            window.toggleLoader(true, `Pindah ke Tab ${targetTahun}...`);
             try {
                 let promises = [];
-                for(let id of selectedIds) {
-                    promises.push(updateDoc(doc(window.db, "surat_komponen", id), { tahun: targetTahun }));
-                    let d = window.surkomDatabase.find(x => x.id === id);
-                    if(d) d.tahun = targetTahun; // Update lokal memori agar langsung muncul tanpa download ulang
-                }
-                await Promise.all(promises);
-                alert("✅ Berhasil memindahkan " + selectedIds.length + " data ke Subjudul " + targetTahun);
-                document.getElementById('surkom-forward-modal').style.display = 'none';
-                window.toggleModePilihSurkom(); // Matikan mode pilih
-                window.renderListAllSurkom(); // Render ulang daftar
-            } catch(e) { console.error(e); alert("Gagal memindahkan data ke database."); }
-            window.toggleLoader(false);
+                for(let id of selectedIds) { promises.push(updateDoc(doc(window.db, "surat_komponen", id), { tahun: targetTahun })); let d = window.surkomDatabase.find(x => x.id === id); if(d) d.tahun = targetTahun; }
+                await Promise.all(promises); alert("✅ Berhasil dipindahkan!"); document.getElementById('surkom-forward-modal').style.display = 'none'; window.toggleModePilihSurkom(); window.renderListAllSurkom();
+            } catch(e) { console.error(e); alert("Gagal memindahkan."); } window.toggleLoader(false);
         }
-
 
         // =========================================================================
         // ADM MOLD LOGIC (KINERJA HARIAN & GOSOK MOLD)
