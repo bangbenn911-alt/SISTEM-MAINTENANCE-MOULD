@@ -218,7 +218,7 @@
         /* --- EFEK SIRKUIT NEON TERSINKRONISASI (STRUKTUR ORG) --- */
         /* ======================================================== */
         
-        .org-canvas { display: flex; flex-direction: column; align-items: center; padding: 40px 0 60px 0; width: 100%; min-width: 1400px; position: relative;}
+        .org-canvas { display: inline-flex; flex-direction: column; align-items: center; position: relative; width: 100%; min-width: max-content; padding: 20px 40px 60px 40px; }
         
         /* Layar Transparan untuk area Scroll */
         .org-panel-transparent { background: rgba(4, 13, 26, 0.4) !important; backdrop-filter: blur(8px); border: 1px solid rgba(56, 189, 248, 0.3) !important; box-shadow: inset 0 0 20px rgba(56, 189, 248, 0.1), 0 10px 30px rgba(0,0,0,0.8); }
@@ -234,42 +234,41 @@
         @keyframes flowVSync { 0% { top: -100%; opacity: 1; } 15% { top: 100%; opacity: 1; } 16% { top: 100%; opacity: 0; } 100% { top: 100%; opacity: 0; } }
         @keyframes flowHSync { 0% { transform: scaleX(0); opacity: 1; } 15% { transform: scaleX(1); opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
 
-        /* Konfigurasi Kotak Tabel Normal (Gelap/Mati) dan Animasi Berdenyut Saat Dihantam Aliran */
+        /* Konfigurasi Kotak Tabel Normal (Solid/Tanpa Blur untuk Performa Anti-Lag) */
         .org-box-neon { 
-            background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; position: relative; z-index: 5; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 150px; border-radius: 8px; backdrop-filter: blur(10px); overflow: hidden; transition: transform 0.2s ease;
+            background: rgba(15, 23, 42, 0.98); border: 1px solid #1e293b; position: relative; z-index: 5; display: flex; flex-direction: column; text-align: center; margin: 0 auto; min-width: 150px; border-radius: 8px; overflow: hidden; transition: transform 0.2s ease, border-color 0.2s ease;
             animation: circuitBoxHit 4s infinite var(--delay, 0s);
+            will-change: transform, box-shadow;
         }
-        .org-box-neon.editable:hover { border-color: #10b981; transform: scale(1.05); cursor: pointer;}
+        .org-box-neon.editable:hover { border-color: #10b981; transform: scale(1.05); }
+        .org-box-neon.editable { cursor: pointer; pointer-events: auto !important; }
         
-        .org-head-neon { background: rgba(0, 0, 0, 0.5); color: #94a3b8; font-size: 10px; font-weight: 900; padding: 10px 6px; text-transform: uppercase; border-bottom: 1px solid #1e293b; letter-spacing: 0.5px; transition: 0.3s;}
+        .org-head-neon { background: rgba(0, 0, 0, 0.7); color: #94a3b8; font-size: 10px; font-weight: 900; padding: 10px 6px; text-transform: uppercase; border-bottom: 1px solid #1e293b; letter-spacing: 0.5px; transition: 0.3s;}
         .org-body-neon { padding: 14px 10px; color: #64748b; font-size: 12px; font-weight: 800; text-transform: uppercase; min-height: 25px; display:flex; justify-content:center; align-items:center; transition: 0.3s;}
         
         /* Keyframes untuk Kotak Menyala Tersinkronisasi */
         @keyframes circuitBoxHit {
-            0% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
-            5% { border-color: #38bdf8; box-shadow: 0 0 25px #38bdf8, inset 0 0 15px rgba(56,189,248,0.5); background: rgba(15, 23, 42, 0.95); }
-            15% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
-            100% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.8); }
+            0% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.98); }
+            5% { border-color: #38bdf8; box-shadow: 0 0 15px #38bdf8, inset 0 0 10px rgba(56,189,248,0.5); background: rgba(15, 23, 42, 1); }
+            15% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.98); }
+            100% { border-color: #1e293b; box-shadow: none; background: rgba(15, 23, 42, 0.98); }
         }
 
-        /* Saat Kotak Menyala, Text Di Dalamnya Ikut Terang */
-        .org-box-neon:has(~ .line-v-circuit), /* Trigger trick (handled mathematically in JS) */
-        .org-box-neon { /* Will be controlled by CSS variables */ }
-
-        .org-sub-neon { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; margin-top: 15px; position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 8px; backdrop-filter: blur(10px); animation: circuitBoxHit 4s infinite var(--delay, 0s); }
-        .org-sub-head-neon { background: rgba(0,0,0,0.5); color: #94a3b8; font-size: 9px; font-weight: 900; padding: 8px; border-bottom: 1px solid #1e293b; text-align: center; }
+        .org-sub-neon { background: rgba(15, 23, 42, 0.98); border: 1px solid #1e293b; margin-top: 15px; position: relative; display: flex; flex-direction: column; z-index: 5; margin-left: auto; margin-right: auto; border-radius: 8px; animation: circuitBoxHit 4s infinite var(--delay, 0s); will-change: box-shadow; }
+        .org-sub-head-neon { background: rgba(0,0,0,0.7); color: #94a3b8; font-size: 9px; font-weight: 900; padding: 8px; border-bottom: 1px solid #1e293b; text-align: center; }
         .org-sub-body-neon { padding: 12px; color: #475569; font-size: 10px; font-weight: 700; white-space: pre-line; line-height: 1.6; text-align: left; }
 
-        .group-container-neon { border: 1px dashed rgba(56, 189, 248, 0.2); background: rgba(0,0,0,0.3); padding: 35px 10px 15px 10px; position: relative; margin: 0 8px; border-radius: 12px; animation: groupHit 4s infinite var(--delay, 0s); }
-        .group-header-label-neon { position: absolute; top: 0; left: 0; width: 100%; background: rgba(15,23,42,0.8); color: #64748b; font-size: 10px; font-weight: 900; padding: 8px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #1e293b; box-sizing: border-box; border-top-left-radius: 12px; border-top-right-radius: 12px;}
+        .group-container-neon { border: 1px dashed rgba(56, 189, 248, 0.2); background: rgba(0,0,0,0.4); padding: 35px 10px 15px 10px; position: relative; margin: 0 8px; border-radius: 12px; animation: groupHit 4s infinite var(--delay, 0s); }
+        .group-header-label-neon { position: absolute; top: 0; left: 0; width: 100%; background: rgba(15,23,42,0.9); color: #64748b; font-size: 10px; font-weight: 900; padding: 8px 0; text-align: center; text-transform: uppercase; border-bottom: 1px solid #1e293b; box-sizing: border-box; border-top-left-radius: 12px; border-top-right-radius: 12px;}
 
-        @keyframes groupHit { 0%, 15%, 100% { border-color: rgba(56, 189, 248, 0.2); box-shadow:none; } 5% { border-color: #38bdf8; box-shadow: inset 0 0 20px rgba(56,189,248,0.2); } }
+        @keyframes groupHit { 0%, 15%, 100% { border-color: rgba(56, 189, 248, 0.2); box-shadow:none; } 5% { border-color: #38bdf8; box-shadow: inset 0 0 15px rgba(56,189,248,0.2); } }
 
-        .org-row { display: flex; justify-content: space-between; position: relative; width: 100%;}
+        .org-row { display: flex; position: relative; width: 100%;}
         .org-col { display: flex; flex-direction: column; align-items: center; position: relative; }
         
-        /* Smooth Zoom Wrapper */
-        #org-zoom-wrapper { transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; touch-action: none;}
+        /* Smooth Zoom Wrapper & Panning Bounds Fix */
+        #org-viewport { text-align: center; }
+        #org-zoom-wrapper { display: inline-block; transform-origin: top center; transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; touch-action: none;}
     </style>
 </head>
 <body>
@@ -487,6 +486,11 @@
             
             <div class="dark-panel org-panel-transparent" style="padding:15px; position: relative; height: 75vh; overflow: hidden; display: flex; flex-direction: column;">
                 
+                <!-- PATOKAN JUDUL (FIXED POSITION AT TOP OF PANEL) -->
+                <div style="width: 100%; text-align: center; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); padding: 8px; font-size: 12px; font-weight: 900; color: #e0f2fe; text-shadow: 0 0 8px #38bdf8; border-radius: 8px; margin-bottom: 10px; z-index: 100; text-transform: uppercase;">
+                    STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA
+                </div>
+
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 10px; z-index: 50; position: relative;">
                     <p id="teks-info-org" style="color:#e0f2fe; font-size:11px; margin:0; background:rgba(15,23,42,0.8); padding:8px 12px; border-radius:8px; border:1px solid #38bdf8; font-weight:800; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); backdrop-filter:blur(5px);"><i class="fas fa-arrows-alt"></i> Gunakan Dua Jari (Pinch) untuk Zoom & Geser</p>
                     
@@ -498,9 +502,10 @@
                 </div>
                 
                 <!-- Viewport Panning & Pinch-to-Zoom Anti-Lag -->
-                <div id="org-viewport" style="flex:1; overflow:hidden; cursor:grab; position:relative; background: transparent; touch-action: none;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
+                <div id="org-viewport" style="flex:1; overflow:auto; cursor:grab; position:relative; background: transparent; touch-action: none; text-align: center; white-space: nowrap;" onmousedown="window.startPanOrg(event)" onmouseleave="window.stopPanOrg()" onmouseup="window.stopPanOrg()" onmousemove="window.doPanOrg(event)" ontouchstart="window.startPanOrg(event)" ontouchend="window.stopPanOrg()" ontouchcancel="window.stopPanOrg()" ontouchmove="window.doPanOrg(event)">
                     
-                    <div id="org-zoom-wrapper" style="transform-origin: center center; padding: 40px; display:flex; justify-content:center; align-items:center; min-width: 100%; min-height: 100%;">
+                    <!-- Inline-Block Wrapper to fix pan bounding issue -->
+                    <div id="org-zoom-wrapper">
                         
                         <!-- RENDER GRID JS AKAN MASUK KE SINI -->
                         <div id="org-tree-render" class="org-canvas">
@@ -1031,152 +1036,6 @@
     </div>
 
     <!-- ========================================================= -->
-    <!-- DIVISI ADM MOLD (KINERJA HARIAN & GOSOK MOLD)             -->
-    <!-- ========================================================= -->
-    <div id="adm-mold-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-user-tie" style="margin-right:10px;"></i> Divisi ADM Mold</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.navigasi('adm-form-harian-screen')" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-edit" style="color:#3b82f6;"></i> 1. Input Kinerja Harian
-                </div>
-                <div class="menu-card" onclick="window.navigasi('adm-gosok-mold-screen')" style="border-left-color: #f59e0b;">
-                    <i class="fas fa-spray-can" style="color:#f59e0b;"></i> 2. Input Gosok / Polishing
-                </div>
-                <div class="menu-card" onclick="window.bukaDatabaseADM()" style="border-left-color: #10b981;">
-                    <i class="fas fa-database" style="color:#10b981;"></i> 3. Database Kinerja ADM
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- FORM GOSOK / POLISHING MOLD -->
-    <div id="adm-gosok-mold-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header" style="background: linear-gradient(135deg, #b45309, #f59e0b) !important;">
-                <h2><i class="fas fa-spray-can" style="margin-right:10px;"></i> Form Gosok / Polishing</h2>
-            </div>
-            <div class="dark-panel">
-                <div class="form-group">
-                    <label>Tanggal & Shift</label>
-                    <div style="display:flex; gap:10px;">
-                        <input type="date" id="adm-gosok-tgl" style="flex:2;">
-                        <select id="adm-gosok-shift" style="flex:1;">
-                            <option value="1">Shift 1</option>
-                            <option value="2">Shift 2</option>
-                            <option value="3">Shift 3</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Nama PIC (Operator)</label>
-                    <input type="text" id="adm-gosok-pic" placeholder="Nama Operator..." style="text-transform:uppercase;">
-                </div>
-                <div class="form-group">
-                    <label>Nama Mold</label>
-                    <input type="text" id="adm-gosok-mold" placeholder="Contoh: MOLD CHAIR 101..." style="text-transform:uppercase;">
-                </div>
-                <div class="form-group">
-                    <label>Bagian Mold yang Digosok (Bisa Pilih Banyak)</label>
-                    <div class="chk-grid" style="background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px solid rgba(245, 158, 11, 0.4);">
-                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Cavity" style="width:15px; height:15px;"> Area Cavity</label>
-                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Core" style="width:15px; height:15px;"> Area Core</label>
-                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Slider" style="width:15px; height:15px;"> Area Slider</label>
-                        <label style="color:white; font-size:13px; text-transform:none;"><input type="checkbox" class="chk-gosok" value="Insert Part" style="width:15px; height:15px;"> Insert Part</label>
-                    </div>
-                </div>
-                <div class="form-group" style="display:flex; gap:10px;">
-                    <div style="flex:1;">
-                        <label>Jam Mulai</label>
-                        <input type="time" id="adm-gosok-start">
-                    </div>
-                    <div style="flex:1;">
-                        <label>Jam Selesai</label>
-                        <input type="time" id="adm-gosok-finish">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Keterangan / Kondisi Karat</label>
-                    <textarea id="adm-gosok-ket" rows="3" placeholder="Misal: Karat cukup tebal di bagian pinggir cavity..."></textarea>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanGosokMold()" style="background:linear-gradient(135deg, #f59e0b, #d97706); box-shadow:0 5px 15px rgba(245, 158, 11, 0.3);">
-                    <i class="fas fa-save"></i> SIMPAN DATA GOSOK
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- FORM KINERJA HARIAN (UMUM) -->
-    <div id="adm-form-harian-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-edit" style="margin-right:10px;"></i> Input Kinerja Harian</h2>
-            </div>
-            <div class="dark-panel">
-                <div class="form-group">
-                    <label>Tanggal & Shift</label>
-                    <div style="display:flex; gap:10px;">
-                        <input type="date" id="adm-harian-tgl" style="flex:2;">
-                        <select id="adm-harian-shift" style="flex:1;">
-                            <option value="1">Shift 1</option>
-                            <option value="2">Shift 2</option>
-                            <option value="3">Shift 3</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Nama PIC (Operator)</label>
-                    <input type="text" id="adm-harian-pic" placeholder="Nama Operator..." style="text-transform:uppercase;">
-                </div>
-                <div class="form-group">
-                    <label>Jenis Aktivitas Pekerjaan</label>
-                    <select id="adm-harian-jenis">
-                        <option value="Cek & Pembersihan Mold">Cek & Pembersihan Mold</option>
-                        <option value="Pembersihan Jalur Air">Pembersihan Jalur Air</option>
-                        <option value="Setting / Bongkar Pasang Mold">Setting / Bongkar Pasang Mold</option>
-                        <option value="Ganti Sparepart">Ganti Sparepart</option>
-                        <option value="Lainnya">Lain-lain (Tulis di Keterangan)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Keterangan Detail</label>
-                    <textarea id="adm-harian-ket" rows="4" placeholder="Deskripsikan secara rinci apa yang dikerjakan..."></textarea>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanAdmHarian()">
-                    <i class="fas fa-save"></i> SIMPAN KINERJA
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- DATABASE KINERJA ADM -->
-    <div id="adm-view-data-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important;">
-                <h2><i class="fas fa-database" style="margin-right:10px;"></i> Database Kinerja ADM</h2>
-            </div>
-            <div class="dark-panel">
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <select id="adm-filter-tipe" style="flex:1;">
-                        <option value="Semua">Semua Tipe Pekerjaan</option>
-                        <option value="GOSOK MOLD">Khusus Gosok Mold</option>
-                        <option value="KINERJA HARIAN">Khusus Kinerja Harian</option>
-                    </select>
-                    <input type="date" id="adm-filter-tgl" style="flex:1;" onchange="window.renderListAdm()">
-                </div>
-                <button class="btn-submit" type="button" onclick="window.renderListAdm()" style="padding:12px; margin-bottom:20px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none;">
-                    <i class="fas fa-search"></i> FILTER DATA
-                </button>
-                
-                <div id="list-adm-harian">
-                    <p style="text-align:center; color:gray; font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Menyiapkan data...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ========================================================= -->
     <!-- WORKSHOP DIVISI                                           -->
     <!-- ========================================================= -->
     <div id="divisi-screen" class="screen">
@@ -1365,7 +1224,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- MOLD TROUBLE                                              -->
     <!-- ========================================================= -->
@@ -2130,9 +1988,9 @@
             { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
             { id: "o2", level: 2, jabatan: "ADMIN", nama: "BENNY F", anggota: "" },
             { id: "o3", level: 2, jabatan: "MAINTENANCE, REPAIR INJECTION & MOLD STORE SECTION.HEAD", nama: "HERU NUGRAHA", anggota: "" },
-            { id: "o4", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
-            { id: "o5", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
-            { id: "o6", level: 3, jabatan: "FOREMAN GROUP<br>INJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
+            { id: "o4", level: 3, jabatan: "FOREMAN GROUP\nINJECTION 1", nama: "INDRA", anggota: "- SUPRIYANTO (SO)\n- APRILIAN (PKWT)\n- IWAN (PKWT)\n- HERU (PKWT)" },
+            { id: "o5", level: 3, jabatan: "FOREMAN GROUP\nINJECTION 2", nama: "DENI.R", anggota: "- KOMARUDIN (SO)\n- EDI.R (SO)\n- TAMSIL (PKWT)\n- RAFLY (PKWT)" },
+            { id: "o6", level: 3, jabatan: "FOREMAN GROUP\nINJECTION 3", nama: "KIKI", anggota: "- ROHIDI (SO)\n- ANDRIAN (PKWT)\n- GUNAWAN (OS)\n- SUKARYA (PKWT)" },
             { id: "o7", level: 3, jabatan: "MOLD STORE FOREMAN", nama: "KIKI", anggota: "- UHDI (SO)\n- WARSITO (SO)\n- NANANG (KARTAP)\n- SUPRIYATNA (PKWT)\n- HERMAN (PKWT)\n- MUSTOPA (PKWT)\n- ENDING (SO)\n- FIRDI (PKWT)\n- DASLAM (PKWT)" },
             { id: "o8", level: 3, jabatan: "DEVELOPMENT FOREMAN", nama: "TARMUJI", anggota: "- SUNARYO (SO)\n- AHMAD ROFII (PKWT)\n- ENOH (SO)\n- WAWAN S (SO)\n- ARIS (PKWT)\n- BAYU (PKWT)" },
             { id: "o9", level: 3, jabatan: "MACHINERY MOLD FOREMAN", nama: "SUNARYO (SO)", anggota: "HARDCODE_UI" }
@@ -2148,7 +2006,7 @@
             } catch(e) { console.error(e); }
         };
 
-        // --- PENYESUAIAN RENDER ENGINE DENGAN CSS VAR DELAY UNTUK SINKRONISASI CAHAYA ---
+        // --- PENYESUAIAN RENDER ENGINE (FIXED ADMIN BOX, FIXED TITLE, EDIT KLIK) ---
         window.renderOrgSvgEngine = function() {
             const tree = document.getElementById('org-tree-render'); if(!tree) return;
             const h = window.orgDatabase.find(o => o.id === "o1") || defaultOrg[0];
@@ -2165,24 +2023,21 @@
             let ck = (id) => window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${id}')"` : "";
 
             tree.innerHTML = `
-                <!-- BORDER BANNER JUDUL -->
-                <div style="position:absolute; top: -10px; width: 100%; text-align: center; background: rgba(56, 189, 248, 0.2); border: 1px solid rgba(56, 189, 248, 0.5); padding: 8px; font-size: 14px; font-weight: 900; color: #e0f2fe; text-shadow: 0 0 8px #38bdf8; border-radius: 8px; backdrop-filter: blur(5px);">STRUKTUR ORGANISASI DEPARTEMENT MAINTENANCE MOULD PT. CAHAYA BUANA INTITAMA</div>
-
                 <!-- L1: DEPT HEAD -->
                 <div class="org-col">
                     <div class="org-box-neon ${ec}" style="--delay: 0s;" ${ck(h.id)}>
-                        <div class="org-head-neon" style="font-size: 13px; padding: 12px;">${h.jabatan}</div>
+                        <div class="org-head-neon" style="font-size: 13px; padding: 12px;">${h.jabatan.replace(/\n/g, '<br>')}</div>
                         <div class="org-body-neon">${h.nama}</div>
                     </div>
                     
-                    <!-- L2: LINE TO ADMIN & SEC HEAD -->
-                    <div class="line-v-circuit" style="height: 30px; position:relative; --delay: 0.2s;">
-                        <div style="position:absolute; top:50%; right:1px; width:150px; height:3px; background:#0f172a;">
-                            <div class="flow-line-h-left-circuit" style="width:100%; top:-1px; --delay: 0.4s;"></div>
+                    <!-- L2: LINE TO ADMIN & SEC HEAD (Admin Placement Fix) -->
+                    <div class="line-v-circuit" style="height: 40px; position:relative; --delay: 0.2s;">
+                        <div style="position:absolute; top:50%; right:1px; width:60px; height:3px; background:#0f172a; z-index:1;">
+                            <div class="line-h-circuit" style="width:100%; top:-1px; --delay: 0.4s;"></div>
                         </div>
-                        <div style="position:absolute; top:50%; right:150px; transform:translateY(-50%);">
-                            <div class="org-box-neon ${ec}" style="width:130px; --delay: 0.6s;" ${ck(adm.id)}>
-                                <div class="org-head-neon">${adm.jabatan}</div>
+                        <div style="position:absolute; top:50%; right:60px; transform:translateY(-50%); z-index:10;">
+                            <div class="org-box-neon ${ec}" style="width:140px; --delay: 0.6s;" ${ck(adm.id)}>
+                                <div class="org-head-neon">${adm.jabatan.replace(/\n/g, '<br>')}</div>
                                 <div class="org-body-neon">${adm.nama}</div>
                             </div>
                         </div>
@@ -2190,7 +2045,7 @@
                     
                     <!-- L2: SEC HEAD BOX -->
                     <div class="org-box-neon ${ec}" style="width: 320px; --delay: 0.8s;" ${ck(sec.id)}>
-                        <div class="org-head-neon">${sec.jabatan}</div>
+                        <div class="org-head-neon">${sec.jabatan.replace(/\n/g, '<br>')}</div>
                         <div class="org-body-neon">${sec.nama}</div>
                     </div>
                     <div class="line-v-circuit" style="height: 30px; --delay: 1.0s;"></div>
@@ -2207,7 +2062,7 @@
                                 <div class="org-row" style="gap: 15px; margin-top:20px;">
                                     <div class="org-col">
                                         <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f1.id)}>
-                                            <div class="org-head-neon">${f1.jabatan}</div>
+                                            <div class="org-head-neon">${f1.jabatan.replace(/\n/g, '<br>')}</div>
                                             <div class="org-body-neon">${f1.nama}</div>
                                         </div>
                                         <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
@@ -2217,7 +2072,7 @@
                                     </div>
                                     <div class="org-col">
                                         <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f2.id)}>
-                                            <div class="org-head-neon">${f2.jabatan}</div>
+                                            <div class="org-head-neon">${f2.jabatan.replace(/\n/g, '<br>')}</div>
                                             <div class="org-body-neon">${f2.nama}</div>
                                         </div>
                                         <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
@@ -2227,7 +2082,7 @@
                                     </div>
                                     <div class="org-col">
                                         <div class="org-box-neon ${ec}" style="width: 135px; --delay: 1.8s;" ${ck(f3.id)}>
-                                            <div class="org-head-neon">${f3.jabatan}</div>
+                                            <div class="org-head-neon">${f3.jabatan.replace(/\n/g, '<br>')}</div>
                                             <div class="org-body-neon">${f3.nama}</div>
                                         </div>
                                         <div class="org-sub-neon" style="width: 135px; --delay: 2.0s;">
@@ -2243,7 +2098,7 @@
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
                             <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
                             <div class="org-box-neon ${ec}" style="width: 160px; --delay: 1.6s;" ${ck(mS.id)}>
-                                <div class="org-head-neon">${mS.jabatan}</div>
+                                <div class="org-head-neon">${mS.jabatan.replace(/\n/g, '<br>')}</div>
                                 <div class="org-body-neon">${mS.nama}</div>
                             </div>
                             <div class="org-sub-neon" style="width: 150px; --delay: 1.8s;">
@@ -2256,7 +2111,7 @@
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
                             <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
                             <div class="org-box-neon ${ec}" style="width: 160px; --delay: 1.6s;" ${ck(dev.id)}>
-                                <div class="org-head-neon">${dev.jabatan}</div>
+                                <div class="org-head-neon">${dev.jabatan.replace(/\n/g, '<br>')}</div>
                                 <div class="org-body-neon">${dev.nama}</div>
                             </div>
                             <div class="org-sub-neon" style="width: 150px; --delay: 1.8s;">
