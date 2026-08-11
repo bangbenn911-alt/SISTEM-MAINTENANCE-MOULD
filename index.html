@@ -505,7 +505,7 @@
                         </div>
                     </div>
                     
-                    <!-- Viewport Panning & Pinch-to-Zoom (Diperbaiki CSS & JS-nya) -->
+                    <!-- Viewport Panning & Pinch-to-Zoom -->
                     <div id="org-viewport">
                         <div id="org-zoom-wrapper">
                             <!-- RENDER GRID JS AKAN MASUK KE SINI -->
@@ -563,7 +563,7 @@
             </div>
         </div>
     <!-- ========================================================= -->
-    <!-- PROFIL & SUB MENU SCREEN                                  -->
+    <!-- IDE CENTER SCREEN                                         -->
     <!-- ========================================================= -->
     <div id="ide-center-screen" class="screen">
         <div class="content-wrapper">
@@ -604,6 +604,9 @@
         </div>
     </div>
 
+    <!-- ========================================================= -->
+    <!-- INBOX (PENGUMUMAN) SCREEN                                 -->
+    <!-- ========================================================= -->
     <div id="inbox-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -628,6 +631,9 @@
         </div>
     </div>
 
+    <!-- ========================================================= -->
+    <!-- PROFIL SCREEN                                             -->
+    <!-- ========================================================= -->
     <div id="profil-screen" class="screen">
         <div class="content-wrapper" style="padding: 15px;">
             
@@ -648,6 +654,7 @@
                 <input type="text" class="profil-search-input" placeholder="Search">
             </div>
 
+            <!-- MENU STRUKTUR ORGANISASI -->
             <div class="profil-list-item" onclick="window.navigasi('struktur-organisasi-screen')" style="border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.15);">
                 <div class="profil-item-icon"><i class="fas fa-sitemap" style="color:#10b981;"></i></div>
                 <div class="profil-item-text">
@@ -1085,102 +1092,9 @@
         </div>
     </div>
 
-    <!-- MOLD STORE (NAIK/TURUN & PRODUKSI) -->
-    <div id="mold-store-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-warehouse" style="margin-right:10px;"></i> DIVISI MOLD STORE</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="alert('Fitur Rencana Naik Mold Sedang Disiapkan')" style="border-left-color: #f59e0b;">
-                    <i class="fas fa-calendar-check" style="color:#f59e0b;"></i> 1. Rencana Naik Mold
-                </div>
-                <div class="menu-card" onclick="window.navigasi('ms-persiapan-menu-screen')" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-dolly" style="color:#3b82f6;"></i> 2. Laporan Persiapan Naik/Turun Mold
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-persiapan-menu-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-dolly" style="margin-right:10px;"></i> Persiapan Naik & Turun Mold</h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.bukaInputNaikMold()" style="border-left-color: #8b5cf6;">
-                    <i class="fas fa-arrow-up" style="color:#8b5cf6;"></i> 1. Input Naik Mold
-                </div>
-                <div class="menu-card" onclick="window.bukaUpdateMoldProduksi()" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-sync-alt" style="color:#3b82f6;"></i> 2. Update Mold Produksi
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-input-naik-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-arrow-up" style="margin-right:10px;"></i> Input Naik Mold</h2>
-            </div>
-            <div class="dark-panel">
-                <div class="form-group">
-                    <label>Tanggal Penaikan Mold</label>
-                    <input type="date" id="ms-naik-tgl">
-                </div>
-                <div class="form-group">
-                    <label>Penanggung Jawab</label>
-                    <input type="text" id="ms-naik-pj" value="Bapak Kiki Foreman" readonly style="font-weight:800; background:rgba(0,0,0,0.5);">
-                </div>
-                <div class="form-group" style="margin-top: 25px;">
-                    <h3 class="sub-title-box"><i class="fas fa-list" style="color:var(--secondary);"></i> List Nama Mold</h3>
-                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="ms-naik-input-manual" placeholder="Ketik manual..." style="flex:1; text-transform: uppercase; background:rgba(0,0,0,0.4);" oninput="this.value = this.value.toUpperCase()">
-                        <button type="button" onclick="window.tambahMoldManual()" style="padding: 0 20px; background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--border-dark); border-radius: 14px; cursor: pointer;">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-                    <ul id="list-naik-mold" class="eval-list" style="margin-bottom: 20px; border: 2px dashed var(--border-dark); padding: 15px; min-height: 80px; border-radius: 16px; background:rgba(0,0,0,0.4);"></ul>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanNaikMold()">
-                    <i class="fas fa-save"></i> SIMPAN DATA NAIK MOLD
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <div id="ms-update-mold-screen" class="screen">
-        <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
-            <div class="header">
-                <h2><i class="fas fa-sync-alt" style="margin-right:10px;"></i> Update Mold Produksi</h2>
-            </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" onclick="window.bukaTabMold('proses')" id="btn-tab-proses"><i class="fas fa-cogs"></i> Proses Produksi</button>
-                <button class="tab-btn" type="button" onclick="window.bukaTabMold('selesai')" id="btn-tab-selesai"><i class="fas fa-check-circle"></i> Selesai Baik</button>
-                <button class="tab-btn" type="button" onclick="window.bukaTabMold('gagal')" id="btn-tab-gagal"><i class="fas fa-exclamation-triangle"></i> Kendala</button>
-            </div>
-            <div id="tab-proses" class="tab-content" style="display: block;">
-                <div class="dark-panel" style="border-top: 6px solid #f59e0b;">
-                    <h3 class="sub-title-box"><i class="fas fa-cogs" style="color:#f59e0b;"></i> Proses Produksi</h3>
-                    <ul id="kolom-proses-produksi" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-            <div id="tab-selesai" class="tab-content" style="display: none;">
-                <div class="dark-panel" style="border-top: 6px solid #10b981;">
-                    <h3 class="sub-title-box"><i class="fas fa-check-circle" style="color:#10b981;"></i> Mold Selesai Baik</h3>
-                    <ul id="kolom-selesai-baik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-            <div id="tab-gagal" class="tab-content" style="display: none;">
-                <div class="dark-panel" style="border-top: 6px solid #ef4444;">
-                    <h3 class="sub-title-box"><i class="fas fa-exclamation-triangle" style="color:#ef4444;"></i> Gangguan / Gagal Naik</h3>
-                    <ul id="kolom-gagal-naik" style="list-style: none; padding: 0; min-height: 400px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 15px; border:1px solid var(--border-dark);"></ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- MOLD TROUBLE -->
+    <!-- ========================================================= -->
+    <!-- MOLD TROUBLE                                              -->
+    <!-- ========================================================= -->
     <div id="trouble-menu-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1274,7 +1188,9 @@
         </div>
     </div>
 
-    <!-- PKM ELTRE APPSHEET -->
+    <!-- ========================================================= -->
+    <!-- PKM ELTRE APPSHEET                                        -->
+    <!-- ========================================================= -->
     <div id="ms-pkm-eltre-screen" class="screen">
         <div class="content-wrapper" style="max-width: 800px; margin: 0 auto;">
             <div class="header">
@@ -1325,7 +1241,9 @@
         </div>
     </div>
 
-    <!-- PERMINTAAN TRIAL MOLD -->
+    <!-- ========================================================= -->
+    <!-- PERMINTAAN TRIAL MOLD                                     -->
+    <!-- ========================================================= -->
     <div id="trial-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1366,7 +1284,9 @@
         </div>
     </div>
 
-    <!-- AI EXECUTIVE DASHBOARD SCREEN -->
+    <!-- ========================================================= -->
+    <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
+    <!-- ========================================================= -->
     <div id="ai-dashboard-screen" class="screen">
         <div class="content-wrapper-wide">
             <div class="header" style="background:linear-gradient(135deg, #0f172a, #1e1b4b) !important; border:1px solid #f43f5e;">
@@ -1437,7 +1357,9 @@
         </div>
     </div>
 
-    <!-- MENU LAPORAN MASALAH / INFO MOLD -->
+    <!-- ========================================================= -->
+    <!-- MENU LAPORAN MASALAH / INFO MOLD                          -->
+    <!-- ========================================================= -->
     <div id="informasi-mold-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1499,7 +1421,9 @@
         </div>
     </div>
 
-    <!-- NOTULEN MEETING -->
+    <!-- ========================================================= -->
+    <!-- NOTULEN MEETING                                           -->
+    <!-- ========================================================= -->
     <div id="notulen-menu-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1609,7 +1533,9 @@
         </div>
     </div>
 
-    <!-- JADWAL BESAR -->
+    <!-- ========================================================= -->
+    <!-- JADWAL BESAR                                              -->
+    <!-- ========================================================= -->
     <div id="jadwal-besar-menu-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1667,7 +1593,9 @@
         </div>
     </div>
 
-    <!-- PREVIEW PDF SURKOM -->
+    <!-- ========================================== -->
+    <!-- MODAL PREVIEW PDF SURKOM (HIGH RESOLUTION) -->
+    <!-- ========================================== -->
     <div id="surkom-preview-modal" class="security-modal" style="z-index:99999; padding:10px;">
         <div style="background:var(--card-dark); width:100%; max-width:800px; border-radius:15px; display:flex; flex-direction:column; height:90vh; border:1px solid #38bdf8; box-shadow: 0 0 30px rgba(56,189,248,0.3);">
             <div style="padding:15px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
@@ -1688,7 +1616,9 @@
         </div>
     </div>
 
-    <!-- CYBER SECURITY TERMINAL -->
+    <!-- ========================================== -->
+    <!-- CYBER SECURITY TERMINAL                    -->
+    <!-- ========================================== -->
     <div id="cyber-security-panel" class="security-modal" style="z-index: 9999999 !important;">
         <div style="background:var(--card-dark); width:100%; max-width:500px; border-radius:20px; padding:25px; border:1px solid #10b981; box-shadow: 0 0 40px rgba(16,185,129,0.2); display:flex; flex-direction:column; align-items:center;">
             <i class="fas fa-shield-virus shield-active" style="font-size: 55px; margin-bottom: 15px;"></i>
@@ -1702,6 +1632,9 @@
             </button>
         </div>
     </div>
+    <!-- ========================================== -->
+    <!-- SCRIPT LOGIKA APLIKASI & ENGINE            -->
+    <!-- ========================================== -->
     <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
@@ -1855,12 +1788,12 @@
     </script>
 
     <!-- ========================================== -->
-    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
+    <!-- SCRIPT FIREBASE & FIREBASE LOGIC           -->
     <!-- ========================================== -->
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, query } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, query } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDiQxWJSEsA0YkTcGCeqftJ8KaApYD873Q",
@@ -2306,26 +2239,31 @@
         window.switchTabIde = (t) => { document.getElementById('tab-ide-input').classList.remove('tab-active'); document.getElementById('tab-ide-masuk').classList.remove('tab-active'); document.getElementById('ide-input-area').style.display='none'; document.getElementById('ide-masuk-area').style.display='none'; document.getElementById(`tab-ide-${t}`).classList.add('tab-active'); document.getElementById(`ide-${t}-area`).style.display='block'; if(t==='masuk') window.muatDataIde(); };
         window.muatDataIde = async () => { const c = document.getElementById('list-ide-masuk'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"ide_saran_box"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.nama}</h4><p style="font-size:11px;color:gray;">${d.waktu}</p><p>${d.uraian}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
-        // God Mode (SYNTAX ERROR FIXED)
+        // God Mode (SYNTAX ERROR FULLY FIXED)
         window.gantiTabGodMode = (el, kol) => { document.querySelectorAll('.god-mode-tabs .gm-tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); window.gmKoleksiAktif = kol; window.muatDataGodMode(kol); };
         window.muatDataGodMode = async (kol) => { const c = document.getElementById('gm-log-container'); c.innerHTML="<div style='text-align:center; padding:30px;'><i class='fas fa-spinner fa-spin fa-2x'></i></div>"; window.gmDataAktif=[]; try { const snap=await getDocs(query(collection(window.db,kol))); snap.forEach(d=>window.gmDataAktif.push({id:d.id,...d.data()})); window.gmDataAktif.sort((a,b)=>b.timestamp-a.timestamp); if(window.gmDataAktif.length===0) return c.innerHTML=`<p style="text-align:center;">Database ${kol} kosong.</p>`; let h=""; window.gmDataAktif.forEach(d=>{ h+=`<div class="gm-data-card">`; for(let k in d) { if(k==='id') continue; let v=d[k]; if(k==='filePdfBase64'||k==='foto') v="[ENKRIPSI FILE BASE64]"; else if(typeof v==='object') v=JSON.stringify(v); if(String(v).length>50) v=String(v).substring(0,50)+"..."; h+=`<div class="gm-data-row"><div class="gm-data-key">${k}</div><div class="gm-data-val">${v}</div></div>`; } h+=`<button class="btn-gm-edit" onclick="window.bukaEditorDinamisGM('${d.id}')">Edit Record</button></div>`; }); c.innerHTML=h; } catch(e){ c.innerHTML=`<p>Error: ${e.message}</p>`; } };
         
         window.bukaEditorDinamisGM = (id) => { 
-            const d=window.gmDataAktif.find(x=>x.id===id); 
-            if(!d) return; 
-            document.getElementById('gm-edit-id').value=id; 
-            document.getElementById('gm-edit-koleksi').value=window.gmKoleksiAktif; 
-            let h=""; 
+            const d = window.gmDataAktif.find(x => x.id === id); 
+            if (!d) return; 
+            document.getElementById('gm-edit-id').value = id; 
+            document.getElementById('gm-edit-koleksi').value = window.gmKoleksiAktif; 
+            let h = ""; 
             for(let k in d) { 
-                if(k==='id') continue; 
-                let v=d[k]; 
-                let r=(k==='timestamp'||k==='filePdfBase64'||k==='foto')?"readonly style='background:#000;'":""; 
-                let t=typeof v==='object'?'textarea':'input'; 
-                let vv=typeof v==='object'?JSON.stringify(v,null,2):v; 
-                h+=`<div class="form-group"><label style="color:#a855f7;">${k}</label><${t} id="gm-in-${k}" value='${vv}' ${r}>${t==='textarea'?vv+'</textarea>':''}</div>`; 
+                if(k === 'id') continue; 
+                let v = d[k]; 
+                let r = (k === 'timestamp' || k === 'filePdfBase64' || k === 'foto') ? "readonly style='background:#000;'" : ""; 
+                
+                if (typeof v === 'object') {
+                    let vv = JSON.stringify(v, null, 2);
+                    h += `<div class="form-group"><label style="color:#a855f7;">${k}</label><textarea id="gm-in-${k}" ${r} rows="4">${vv}</textarea></div>`;
+                } else {
+                    let safeV = String(v).replace(/'/g, "&#39;");
+                    h += `<div class="form-group"><label style="color:#a855f7;">${k}</label><input type="text" id="gm-in-${k}" value='${safeV}' ${r}></div>`;
+                }
             } 
-            document.getElementById('dynamic-editor-body').innerHTML=h; 
-            document.getElementById('god-mode-editor-modal').style.display='flex'; 
+            document.getElementById('dynamic-editor-body').innerHTML = h; 
+            document.getElementById('god-mode-editor-modal').style.display = 'flex'; 
         };
         
         window.tutupModalEditorGM = () => document.getElementById('god-mode-editor-modal').style.display='none';
