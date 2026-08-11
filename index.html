@@ -1851,6 +1851,7 @@
 
             // Touch events for Pinch-to-Zoom & Pan
             vp.addEventListener('touchstart', (e) => {
+                if (e.target.closest('.editable')) return; // Abaikan pan jika menyentuh box edit
                 if (e.touches.length === 2) {
                     initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
                     initialScale = window.orgZoomScale;
@@ -1891,9 +1892,23 @@
             });
 
             // Mouse events for Desktop
-            window.startPanOrg = (e) => { if(e.touches) return; window.isDraggingOrg = true; vp.style.cursor = 'grabbing'; startXOrg = e.pageX - vp.offsetLeft; startYOrg = e.pageY - vp.offsetTop; scrollLeftOrg = vp.scrollLeft; scrollTopOrg = vp.scrollTop; };
+            window.startPanOrg = (e) => { 
+                if(e.touches || e.target.closest('.editable')) return; 
+                window.isDraggingOrg = true; 
+                vp.style.cursor = 'grabbing'; 
+                startXOrg = e.pageX - vp.offsetLeft; 
+                startYOrg = e.pageY - vp.offsetTop; 
+                scrollLeftOrg = vp.scrollLeft; 
+                scrollTopOrg = vp.scrollTop; 
+            };
             window.stopPanOrg = () => { window.isDraggingOrg = false; vp.style.cursor = 'grab'; };
-            window.doPanOrg = (e) => { if(!window.isDraggingOrg || e.touches) return; requestAnimationFrame(() => { vp.scrollLeft = scrollLeftOrg - (e.pageX - vp.offsetLeft - startXOrg); vp.scrollTop = scrollTopOrg - (e.pageY - vp.offsetTop - startYOrg); }); };
+            window.doPanOrg = (e) => { 
+                if(!window.isDraggingOrg || e.touches) return; 
+                requestAnimationFrame(() => { 
+                    vp.scrollLeft = scrollLeftOrg - (e.pageX - vp.offsetLeft - startXOrg); 
+                    vp.scrollTop = scrollTopOrg - (e.pageY - vp.offsetTop - startYOrg); 
+                }); 
+            };
         });
 
         window.zoomOrg = (d) => { 
@@ -1916,12 +1931,10 @@
                 vp.scrollTo({ left: scrollX, behavior: 'smooth' });
             }
         };
-    </script>
 
-    <!-- ========================================== -->
-    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
-    <!-- ========================================== -->
-    <script type="module">
+        // ==========================================
+        // SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    
+        // ==========================================
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, query } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
@@ -1982,7 +1995,7 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('trial-mold-screen'); window.switchTabTrial('input'); };
 
         // ---------------------------------------------------------
-        // 3. STRUKTUR ORGANISASI (SYNC DELAY ENGINE)
+        // 3. STRUKTUR ORGANISASI (ADMIN BENNY F DIPINDAH KE COL-3 TENGAH)
         // ---------------------------------------------------------
         const defaultOrg = [
             { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
@@ -2006,7 +2019,6 @@
             } catch(e) { console.error(e); }
         };
 
-        // --- PENYESUAIAN RENDER ENGINE (FIXED ADMIN BOX, FIXED TITLE, EDIT KLIK) ---
         window.renderOrgSvgEngine = function() {
             const tree = document.getElementById('org-tree-render'); if(!tree) return;
             const h = window.orgDatabase.find(o => o.id === "o1") || defaultOrg[0];
@@ -2020,7 +2032,8 @@
             const mac = window.orgDatabase.find(o => o.id === "o9") || defaultOrg[8];
 
             let ec = window.isOrgUnlocked ? "editable" : "";
-            let ck = (id) => window.isOrgUnlocked ? `onclick="window.bukaEditOrg('${id}')"` : "";
+            // stopPropagation() memperbaiki bug klik edit tabrakan dengan fungsi panning
+            let ck = (id) => window.isOrgUnlocked ? `onclick="event.stopPropagation(); window.bukaEditOrg('${id}')"` : "";
 
             tree.innerHTML = `
                 <!-- L1: DEPT HEAD -->
@@ -2030,28 +2043,16 @@
                         <div class="org-body-neon">${h.nama}</div>
                     </div>
                     
-                    <!-- L2: LINE TO ADMIN & SEC HEAD (Admin Placement Fix) -->
-                    <div class="line-v-circuit" style="height: 40px; position:relative; --delay: 0.2s;">
-                        <div style="position:absolute; top:50%; right:1px; width:60px; height:3px; background:#0f172a; z-index:1;">
-                            <div class="line-h-circuit" style="width:100%; top:-1px; --delay: 0.4s;"></div>
-                        </div>
-                        <div style="position:absolute; top:50%; right:60px; transform:translateY(-50%); z-index:10;">
-                            <div class="org-box-neon ${ec}" style="width:140px; --delay: 0.6s;" ${ck(adm.id)}>
-                                <div class="org-head-neon">${adm.jabatan.replace(/\n/g, '<br>')}</div>
-                                <div class="org-body-neon">${adm.nama}</div>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <!-- L2: SEC HEAD BOX -->
-                    <div class="org-box-neon ${ec}" style="width: 320px; --delay: 0.8s;" ${ck(sec.id)}>
+                    <div class="line-v-circuit" style="height: 30px; --delay: 0.6s;"></div>
+                    <div class="org-box-neon ${ec}" style="width: 350px; --delay: 0.8s;" ${ck(sec.id)}>
                         <div class="org-head-neon">${sec.jabatan.replace(/\n/g, '<br>')}</div>
                         <div class="org-body-neon">${sec.nama}</div>
                     </div>
                     <div class="line-v-circuit" style="height: 30px; --delay: 1.0s;"></div>
                     
-                    <!-- L3: BRANCHING HORIZONTAL UTAMA BAWAH -->
-                    <div class="org-row" style="width: 1400px;">
+                    <!-- L3: BRANCHING HORIZONTAL UTAMA BAWAH (DIPERLEBAR 1600px UNTUK 5 KOLOM) -->
+                    <div class="org-row" style="width: 1600px;">
                         <div class="line-h-circuit" style="width: 100%; position: absolute; top: 0; --delay: 1.2s;"></div>
                         
                         <!-- COL 1: CONTROL PRODUKSI INJECTION -->
@@ -2107,7 +2108,17 @@
                             </div>
                         </div>
 
-                        <!-- COL 3: DEVELOPMENT FOREMAN -->
+                        <!-- COL 3: ADMIN (BENNY F) -->
+                        <div class="org-col" style="flex: 1; padding-top: 20px;">
+                            <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
+                            <div class="org-box-neon ${ec}" style="width: 160px; border-color: #3b82f6; box-shadow: 0 0 15px rgba(59,130,246,0.3); --delay: 1.6s;" ${ck(adm.id)}>
+                                <div class="org-head-neon" style="color: #60a5fa;">${adm.jabatan.replace(/\n/g, '<br>')}</div>
+                                <div class="org-body-neon" style="color: #e0f2fe;">${adm.nama}</div>
+                            </div>
+                            ${adm.anggota ? `<div class="org-sub-neon" style="width: 150px; --delay: 1.8s;"><div class="org-sub-head-neon">ANGGOTA</div><div class="org-sub-body-neon">${adm.anggota}</div></div>` : ''}
+                        </div>
+
+                        <!-- COL 4: DEVELOPMENT FOREMAN -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
                             <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
                             <div class="org-box-neon ${ec}" style="width: 160px; --delay: 1.6s;" ${ck(dev.id)}>
@@ -2120,7 +2131,7 @@
                             </div>
                         </div>
 
-                        <!-- COL 4: MACHINERY MOLD FOREMAN -->
+                        <!-- COL 5: MACHINERY MOLD FOREMAN -->
                         <div class="org-col" style="flex: 1.8; padding-top: 20px;">
                             <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
                             <div class="group-container-neon" style="display:flex; flex-direction:column; align-items:center; --delay: 1.6s;">
