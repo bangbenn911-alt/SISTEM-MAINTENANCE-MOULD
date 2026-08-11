@@ -1764,7 +1764,7 @@
             </button>
         </div>
     </div>
-    <script>
+   <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
         // ==========================================
@@ -1931,10 +1931,12 @@
                 vp.scrollTo({ left: scrollX, behavior: 'smooth' });
             }
         };
+    </script>
 
-        // ==========================================
-        // SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    
-        // ==========================================
+    <!-- ========================================== -->
+    <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
+    <!-- ========================================== -->
+    <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, setDoc, query } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
