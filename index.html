@@ -269,6 +269,35 @@
         /* Smooth Zoom Wrapper & Panning Bounds Fix */
         #org-viewport { text-align: center; }
         #org-zoom-wrapper { display: inline-block; transform-origin: top center; transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: transform; touch-action: none;}
+
+        /* ======================================================== */
+        /* --- CSS KHUSUS EXPORT NOTULEN (JPG & PDF) --- */
+        /* ======================================================== */
+        .export-mode {
+            width: 1000px !important;
+            padding: 40px !important;
+            background: #0f172a !important;
+        }
+        .export-mode .notulen-grid-container {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 20px !important;
+        }
+        .export-mode .notulen-table {
+            width: 100% !important;
+            margin-bottom: 30px !important;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #notul-export-wrapper, #notul-export-wrapper * { visibility: visible; }
+            #notul-export-wrapper { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white !important; color: black !important;}
+            #notul-export-wrapper h2, #notul-export-wrapper p, #notul-export-wrapper h3, #notul-export-wrapper td, #notul-export-wrapper th { color: black !important; }
+            .notulen-grid-container { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 15px !important; }
+            .poin-card { break-inside: avoid; border-color: #ccc !important; box-shadow: none !important; color: black !important; background: transparent !important;}
+            .poin-card label { color: black !important; }
+            .notul-detail-wrapper { background: white !important; border: none !important;}
+        }
     </style>
 </head>
 <body>
@@ -282,7 +311,6 @@
         <div class="aurora-blob blob-3"></div>
         <div class="aurora-blob blob-4"></div>
     </div>
-
     <!-- ========================================================= -->
     <!-- LOADER OVERLAY                                            -->
     <!-- ========================================================= -->
@@ -744,7 +772,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- SURAT KOMPONEN (SURKOM) MENU & SCREENS                    -->
     <!-- ========================================================= -->
@@ -1224,6 +1251,7 @@
             </div>
         </div>
     </div>
+    
     <!-- ========================================================= -->
     <!-- MOLD TROUBLE                                              -->
     <!-- ========================================================= -->
@@ -1415,7 +1443,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
     <!-- ========================================================= -->
@@ -1653,11 +1680,12 @@
             <div class="header">
                 <h2><i class="fas fa-search" style="margin-right:10px;"></i> Detail & Evaluasi Notulen</h2>
             </div>
-            <div class="export-row">
+            <!-- TAHAP 4: PENGGANTIAN TARGET FUNGSI CETAK KHUSUS NOTULEN PDF -->
+            <div class="export-row" style="display:flex; gap:12px; margin-bottom:20px;">
                 <button class="btn-submit" type="button" onclick="window.downloadNotulenJPG()" style="flex:1; padding:14px; background:linear-gradient(135deg, #f59e0b, #d97706);">
                     <i class="fas fa-image"></i> Download JPG
                 </button>
-                <button class="btn-submit" type="button" onclick="window.cetakPDFUniversal()" style="flex:1; padding:14px; background:linear-gradient(135deg, #db2777, #be185d);">
+                <button class="btn-submit" type="button" onclick="window.cetakPDFNotulen()" style="flex:1; padding:14px; background:linear-gradient(135deg, #db2777, #be185d);">
                     <i class="fas fa-file-pdf"></i> Download PDF
                 </button>
             </div>
@@ -2319,10 +2347,12 @@
             } catch(e){} 
         };
         
+        // --- MODIFIKASI TAHAP 5: Pembungkus Grid Khusus Notulen ---
         window.bukaDetailNotulen = (id) => { 
             const d=window.notulenDatabase.find(x=>x.id===id); if(!d) return; 
             let hp=d.peserta?d.peserta.map(x=>`• ${x}`).join('<br>'):'-'; 
-            let hd = ``; 
+            
+            let hd = `<div id="notulen-grid-wrapper" class="notulen-grid-container">`; 
             if(d.deskripsiData) {
                 d.deskripsiData.forEach(x => { 
                     let chk = x.done ? "checked" : ""; 
@@ -2333,9 +2363,10 @@
                            </div>`; 
                 });
             } 
+            hd += `</div>`;
             
             let h = `
-            <div class="notul-detail-wrapper">
+            <div class="notul-detail-wrapper" id="notul-export-wrapper">
                 <div class="notul-detail-header">
                     <h2>NOTULEN & EVALUASI<br>MEETING</h2>
                     <p>PT. CAHAYA BUANA INTITAMA</p>
@@ -2363,7 +2394,40 @@
             }
         };
 
-        window.downloadNotulenJPG = () => window.cetakGambarUniversal('report-notulen-content', 'Notulen_Meeting');
+        // --- MODIFIKASI TAHAP 5: Logika Download JPG Notulen Dilebarkan (2 Kolom) ---
+        window.downloadNotulenJPG = () => {
+            const wrapper = document.getElementById('notul-export-wrapper');
+            if(wrapper) { wrapper.classList.add('export-mode'); } // Paksa layout CSS khusus menyala
+            window.scrollTo(0, 0); 
+            window.toggleLoader(true, "Mencetak JPG..."); 
+            
+            setTimeout(() => { 
+                html2canvas(document.getElementById('notul-export-wrapper'), { 
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: "#0f172a", // Sesuai warna background dark-mode
+                    windowWidth: 1080 // Paksa lebar internal rendering menjadi PC/Landscape
+                }).then(canvas => { 
+                    let link = document.createElement('a'); 
+                    link.download = `Notulen_Meeting_${Date.now()}.jpg`; 
+                    link.href = canvas.toDataURL('image/jpeg', 0.9); 
+                    link.click(); 
+                    if(wrapper) { wrapper.classList.remove('export-mode'); } // Kembalikan ke mode mobile
+                    window.toggleLoader(false); 
+                }).catch(e => { 
+                    alert("Gagal cetak gambar."); 
+                    if(wrapper) { wrapper.classList.remove('export-mode'); }
+                    window.toggleLoader(false); 
+                }); 
+            }, 600); // Waktu tunggu sedikit lebih lama agar Grid CSS selesai di-render
+        };
+
+        // --- MODIFIKASI TAHAP 5: Logika Download PDF (Otomatis ditangkap oleh @media print) ---
+        window.cetakPDFNotulen = () => {
+            // Kita sudah mendesain @media print secara khusus di CSS pada Tahap 1. 
+            // Jadi pemanggilan print() biasa akan langsung masuk ke grid 2 kolom (Kertas A4).
+            window.print();
+        };
 
         // Jadwal Besar
         window.simpanJadwalBesar = async () => { const f = document.getElementById('jb-foto'); if(f.files.length===0) return alert("Pilih file!"); window.toggleLoader(true); try { let b64 = await window.compressImage(f.files[0],1600,1600,0.7); await addDoc(collection(window.db,"jadwal_besar"),{fileBase64:b64,timestamp:Date.now()}); alert("Disimpan!"); window.bukaViewJadwal(); } catch(e){} window.toggleLoader(false); };
