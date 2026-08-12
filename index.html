@@ -499,7 +499,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- STRUKTUR ORGANISASI SCREEN (LIVE CIRCUIT HOLOGRAPHIC)     -->
     <!-- ========================================================= -->
@@ -590,6 +589,7 @@
             </div>
         </div>
     </div>
+    
     <!-- ========================================================= -->
     <!-- IDE CENTER SCREEN                                         -->
     <!-- ========================================================= -->
@@ -701,13 +701,14 @@
                 <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
             </div>
 
-            <div class="profil-list-item" onclick="alert('Membuka Arsip & Dokumentasi...')">
-                <div class="profil-item-icon"><i class="fas fa-folder-open"></i></div>
+            <!-- MENU ARSIP & DOKUMENTASI (BARU) -->
+            <div class="profil-list-item" onclick="window.navigasi('arsip-dokumentasi-menu-screen')" style="border: 1px solid rgba(139, 92, 246, 0.4); background: rgba(139, 92, 246, 0.15);">
+                <div class="profil-item-icon"><i class="fas fa-folder-open" style="color:#a855f7;"></i></div>
                 <div class="profil-item-text">
-                    <div class="profil-item-title">Arsip & Dokumentasi</div>
-                    <div class="profil-item-sub">Riwayat data pemeliharaan</div>
+                    <div class="profil-item-title" style="color:#a855f7;">Arsip & Dokumentasi</div>
+                    <div class="profil-item-sub">Surat Masuk, Keluar, NP/BPB, dll</div>
                 </div>
-                <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#a855f7;"></i></div>
             </div>
 
             <div class="profil-list-item" onclick="window.bukaSubInfo('DATA PREVENTIF TAHUNAN MOLD')">
@@ -769,6 +770,206 @@
             <div class="processor-core" onclick="window.bukaPinGodMode()">
                 <div class="processor-circuit"></div>
                 <i class="fas fa-microchip"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ARSIP & DOKUMENTASI MENU & SCREENS (FITUR BARU)           -->
+    <!-- ========================================================= -->
+    
+    <!-- MENU UTAMA ARSIP -->
+    <div id="arsip-dokumentasi-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #4f46e5, #3730a3) !important;">
+                <h2><i class="fas fa-folder-open" style="margin-right:10px;"></i> ARSIP & DOKUMENTASI</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('surat-masuk-menu-screen')" style="border-left-color: #10b981;">
+                    <i class="fas fa-envelope-open-text" style="color:#10b981;"></i> 1. Surat Masuk
+                </div>
+                <div class="menu-card" onclick="window.navigasi('surat-keluar-menu-screen')" style="border-left-color: #f59e0b;">
+                    <i class="fas fa-paper-plane" style="color:#f59e0b;"></i> 2. Surat Keluar
+                </div>
+                <div class="menu-card" onclick="alert('Fitur NP/BPB akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
+                    <i class="fas fa-file-invoice" style="color:#94a3b8;"></i> 3. NP/BPB
+                </div>
+                <div class="menu-card" onclick="alert('Fitur Instruksi Kerja (IK) akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
+                    <i class="fas fa-clipboard-check" style="color:#94a3b8;"></i> 4. Instruksi Kerja (IK)
+                </div>
+                <div class="menu-card" onclick="alert('Fitur SOP akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
+                    <i class="fas fa-book" style="color:#94a3b8;"></i> 5. Standar Operasional Kerja (SOP)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SURAT MASUK SCREENS                                       -->
+    <!-- ========================================================= -->
+    <div id="surat-masuk-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #059669, #047857) !important;">
+                <h2><i class="fas fa-envelope-open-text" style="margin-right:10px;"></i> SURAT MASUK</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('sm-input-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-file-upload" style="color:#38bdf8;"></i> 1. Input Surat Masuk
+                </div>
+                <div class="menu-card" onclick="window.bukaDataSuratMasuk()" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-database" style="color:#8b5cf6;"></i> 2. Data Surat Masuk
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT SURAT MASUK -->
+    <div id="sm-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-file-upload" style="margin-right:10px;"></i> Input Surat Masuk</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Nama / Judul Surat Masuk</label>
+                    <input type="text" id="sm-judul" placeholder="Contoh: Surat Edaran K3..." style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Surat Masuk</label>
+                    <input type="date" id="sm-tanggal">
+                </div>
+                <div class="form-group">
+                    <label>Upload File PDF (Auto Compress)</label>
+                    <div class="file-upload-zone" onclick="document.getElementById('sm-file-pdf').click()">
+                        <i class="fas fa-file-pdf fa-3x" style="color:#10b981; margin-bottom:10px; display:block;"></i>
+                        <span id="sm-file-label" style="font-weight:700; font-size:14px; color:white;">Klik untuk pilih file PDF</span>
+                        <p style="font-size:11px; color:var(--text-muted); margin:5px 0 0 0;">Ukurannya akan dikompres agar cepat namun tetap terbaca.</p>
+                    </div>
+                    <input type="file" id="sm-file-pdf" accept="application/pdf" style="display:none;" onchange="window.handleFileSelectArsip(this, 'sm-file-label')">
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanSuratMasuk()" style="background:linear-gradient(135deg, #10b981, #059669); margin-top:20px; box-shadow:0 8px 20px rgba(16,185,129,0.3);">
+                    <i class="fas fa-save"></i> SIMPAN SURAT MASUK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA SURAT MASUK -->
+    <div id="sm-data-screen" class="screen">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background: linear-gradient(135deg, #059669, #047857) !important;">
+                <h2><i class="fas fa-database" style="margin-right:10px;"></i> DATA SURAT MASUK</h2>
+            </div>
+            <div class="dark-panel" style="padding: 20px;">
+                <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+                    <input type="text" id="sm-search-key" placeholder="Cari Nama Surat..." style="flex:2; min-width:150px;" oninput="window.renderListSuratMasuk()">
+                    <select id="sm-filter-tahun" style="flex:1; min-width:100px; color:#10b981; font-weight:800;" onchange="window.renderListSuratMasuk()">
+                        <option value="ALL">Semua Tahun</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div id="sm-list-container"><p style="text-align:center; color:var(--text-muted); margin-top:20px;"><i class="fas fa-spinner fa-spin"></i> Memuat data Surat Masuk...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SURAT KELUAR SCREENS                                      -->
+    <!-- ========================================================= -->
+    <div id="surat-keluar-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #d97706, #b45309) !important;">
+                <h2><i class="fas fa-paper-plane" style="margin-right:10px;"></i> SURAT KELUAR</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('sk-input-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-file-upload" style="color:#38bdf8;"></i> 1. Input Surat Keluar
+                </div>
+                <div class="menu-card" onclick="window.bukaDataSuratKeluar()" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-database" style="color:#8b5cf6;"></i> 2. Data Surat Keluar
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT SURAT KELUAR -->
+    <div id="sk-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-file-upload" style="margin-right:10px;"></i> Input Surat Keluar</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Nama / Judul Surat Keluar</label>
+                    <input type="text" id="sk-judul" placeholder="Contoh: Permohonan Barang..." style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Surat Keluar</label>
+                    <input type="date" id="sk-tanggal">
+                </div>
+                <div class="form-group">
+                    <label>Upload File PDF (Auto Compress)</label>
+                    <div class="file-upload-zone" onclick="document.getElementById('sk-file-pdf').click()" style="border-color: #f59e0b; background: rgba(245, 158, 11, 0.05);">
+                        <i class="fas fa-file-pdf fa-3x" style="color:#f59e0b; margin-bottom:10px; display:block;"></i>
+                        <span id="sk-file-label" style="font-weight:700; font-size:14px; color:white;">Klik untuk pilih file PDF</span>
+                        <p style="font-size:11px; color:var(--text-muted); margin:5px 0 0 0;">Ukurannya akan dikompres agar cepat namun tetap terbaca.</p>
+                    </div>
+                    <input type="file" id="sk-file-pdf" accept="application/pdf" style="display:none;" onchange="window.handleFileSelectArsip(this, 'sk-file-label')">
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanSuratKeluar()" style="background:linear-gradient(135deg, #f59e0b, #d97706); margin-top:20px; box-shadow:0 8px 20px rgba(245, 158, 11, 0.3);">
+                    <i class="fas fa-save"></i> SIMPAN SURAT KELUAR
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA SURAT KELUAR -->
+    <div id="sk-data-screen" class="screen">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background: linear-gradient(135deg, #d97706, #b45309) !important;">
+                <h2><i class="fas fa-database" style="margin-right:10px;"></i> DATA SURAT KELUAR</h2>
+            </div>
+            <div class="dark-panel" style="padding: 20px;">
+                <div style="display:flex; gap:10px; margin-bottom:15px; flex-wrap:wrap;">
+                    <input type="text" id="sk-search-key" placeholder="Cari Nama Surat..." style="flex:2; min-width:150px;" oninput="window.renderListSuratKeluar()">
+                    <select id="sk-filter-tahun" style="flex:1; min-width:100px; color:#f59e0b; font-weight:800;" onchange="window.renderListSuratKeluar()">
+                        <option value="ALL">Semua Tahun</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                    </select>
+                </div>
+                <div id="sk-list-container"><p style="text-align:center; color:var(--text-muted); margin-top:20px;"><i class="fas fa-spinner fa-spin"></i> Memuat data Surat Keluar...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- PDF VIEWER MODAL FULLSCREEN (UNTUK SURAT MASUK/KELUAR)    -->
+    <!-- ========================================================= -->
+    <div id="arsip-pdf-modal" class="security-modal" style="z-index:9999999 !important; padding:0;">
+        <div style="background:var(--card-dark); width:100%; height:100%; display:flex; flex-direction:column; backdrop-filter:blur(20px);">
+            <!-- Modal Header -->
+            <div style="padding:15px 20px; border-bottom:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; background: rgba(15,23,42,0.95); box-shadow: 0 5px 15px rgba(0,0,0,0.5);">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <button type="button" onclick="document.getElementById('arsip-pdf-modal').style.display='none'" style="background:transparent; border:none; color:#94a3b8; font-size:20px; cursor:pointer; padding:0;"><i class="fas fa-arrow-left"></i></button>
+                    <h3 style="margin:0; color:white; font-size:15px; text-transform:uppercase; letter-spacing:0.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:250px;"><i class="fas fa-file-pdf" style="color:#ef4444;"></i> <span id="arsip-viewer-title">Dokumen</span></h3>
+                </div>
+            </div>
+            
+            <!-- Canvas Container -->
+            <div style="flex:1; overflow:auto; display:flex; justify-content:center; align-items:flex-start; background:#040d1a; padding:15px;">
+                <div id="arsip-viewer-loading" style="color:var(--secondary); margin-top:40vh; text-align:center;"><i class="fas fa-circle-notch fa-spin fa-3x"></i><br><br><span style="font-weight:700; letter-spacing:1px;">MEMUAT DOKUMEN...</span></div>
+                <canvas id="arsip-viewer-canvas" style="max-width:100%; height:auto; display:none; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,0.8);"></canvas>
+            </div>
+            
+            <!-- Modal Footer Controls -->
+            <div style="padding:15px 20px; background: rgba(15,23,42,0.95); border-top:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+                <button type="button" id="arsip-btn-prev" class="btn-submit" onclick="window.arsipPrevPage()" style="width:auto; padding:10px 20px; background:rgba(255,255,255,0.1); box-shadow:none;"><i class="fas fa-chevron-left"></i> PREV</button>
+                <span id="arsip-page-info" style="color:var(--secondary); font-weight:900; font-size:14px; letter-spacing:2px;">1 / 1</span>
+                <button type="button" id="arsip-btn-next" class="btn-submit" onclick="window.arsipNextPage()" style="width:auto; padding:10px 20px; background:rgba(255,255,255,0.1); box-shadow:none;">NEXT <i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </div>
@@ -1579,7 +1780,6 @@
             <div id="list-sub-info"></div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- NOTULEN MEETING                                           -->
     <!-- ========================================================= -->
@@ -1680,7 +1880,6 @@
             <div class="header">
                 <h2><i class="fas fa-search" style="margin-right:10px;"></i> Detail & Evaluasi Notulen</h2>
             </div>
-            <!-- TAHAP 4: PENGGANTIAN TARGET FUNGSI CETAK KHUSUS NOTULEN PDF -->
             <div class="export-row" style="display:flex; gap:12px; margin-bottom:20px;">
                 <button class="btn-submit" type="button" onclick="window.downloadNotulenJPG()" style="flex:1; padding:14px; background:linear-gradient(135deg, #f59e0b, #d97706);">
                     <i class="fas fa-image"></i> Download JPG
@@ -1792,6 +1991,7 @@
             </button>
         </div>
     </div>
+
    <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
@@ -1960,7 +2160,6 @@
             }
         };
     </script>
-
     <!-- ========================================== -->
     <!-- SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    -->
     <!-- ========================================== -->
@@ -1988,6 +2187,10 @@
         window.pkmDatabase = []; window.dataProyekWS = []; window.arrayTugasBaru = [];
         window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
         window.orgDatabase = [];
+        
+        // VARIABEL BARU UNTUK ARSIP & DOKUMENTASI
+        window.smDatabase = []; // Data Surat Masuk
+        window.skDatabase = []; // Data Surat Keluar
         
         // Setup PDF.js
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -2025,7 +2228,244 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('trial-mold-screen'); window.switchTabTrial('input'); };
 
         // ---------------------------------------------------------
-        // 3. STRUKTUR ORGANISASI (ADMIN BENNY F DIPINDAH KE COL-3 TENGAH)
+        // FUNGSI BARU: ARSIP & DOKUMENTASI (KOMPRESI AJAIB & VIEWER)
+        // ---------------------------------------------------------
+        
+        function base64ToArrayBuffer(b64) { 
+            let bs = window.atob(b64.split(',')[1]); 
+            let len = bs.length; 
+            let bytes = new Uint8Array(len); 
+            for(let i=0; i<len; i++) bytes[i] = bs.charCodeAt(i); 
+            return bytes.buffer; 
+        }
+
+        // Engine Kompresi PDF Client-Side (Cepat & Tetap Terbaca)
+        window.kompresPDFAjaib = async function(file) {
+            const ab = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+            const { PDFDocument } = PDFLib;
+            const newPdf = await PDFDocument.create();
+            
+            for(let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const vp = page.getViewport({ scale: 1.5 }); // Skala 1.5 agar teks tetap tajam
+                const canvas = document.createElement('canvas');
+                canvas.width = vp.width;
+                canvas.height = vp.height;
+                const ctx = canvas.getContext('2d');
+                await page.render({ canvasContext: ctx, viewport: vp }).promise;
+                
+                // Konversi canvas ke JPEG kualitas 60% (Sangat meringankan size)
+                const imgB64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
+                const imgBytes = Uint8Array.from(atob(imgB64), c => c.charCodeAt(0));
+                
+                const jpgImage = await newPdf.embedJpg(imgBytes);
+                const newPage = newPdf.addPage([vp.width, vp.height]);
+                newPage.drawImage(jpgImage, { x: 0, y: 0, width: vp.width, height: vp.height });
+            }
+            return await newPdf.saveAsBase64({ dataUri: true });
+        };
+
+        window.handleFileSelectArsip = function(input, labelId) {
+            const label = document.getElementById(labelId);
+            if(input.files && input.files.length > 0) {
+                label.innerText = input.files[0].name;
+                label.style.color = "#10b981";
+            } else {
+                label.innerText = "Klik untuk pilih file PDF";
+                label.style.color = "white";
+            }
+        };
+
+        // --- Logika Surat Masuk ---
+        window.simpanSuratMasuk = async function() {
+            const jd = window.amankanData(document.getElementById('sm-judul').value);
+            const tg = document.getElementById('sm-tanggal').value;
+            const fileInput = document.getElementById('sm-file-pdf');
+            
+            if(!jd || !tg || fileInput.files.length === 0) return alert("Lengkapi judul, tanggal, dan file PDF!");
+            window.toggleLoader(true, "Mengkompresi & Menyimpan PDF...");
+            
+            try {
+                let thn = tg.split('-')[0];
+                let b64 = await window.kompresPDFAjaib(fileInput.files[0]);
+                await addDoc(collection(window.db, "surat_masuk"), { 
+                    judul: jd.toUpperCase(), 
+                    tanggal: tg, 
+                    tahun: thn,
+                    filePdfBase64: b64, 
+                    timestamp: Date.now() 
+                });
+                alert("Surat Masuk Berhasil Disimpan!");
+                document.getElementById('sm-judul').value = "";
+                document.getElementById('sm-tanggal').value = "";
+                window.handleFileSelectArsip({files:[]}, 'sm-file-label'); // reset label
+                window.bukaDataSuratMasuk();
+            } catch(e) { alert("Gagal menyimpan: " + e.message); }
+            window.toggleLoader(false);
+        };
+
+        window.bukaDataSuratMasuk = async () => { window.navigasi('sm-data-screen'); await window.renderListSuratMasuk(true); };
+        window.renderListSuratMasuk = async function(forceFetch = false) {
+            const c = document.getElementById('sm-list-container');
+            const kw = window.amankanData((document.getElementById('sm-search-key').value || "").toLowerCase());
+            const ft = document.getElementById('sm-filter-tahun').value;
+            
+            if(forceFetch || window.smDatabase.length === 0) {
+                if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
+                window.smDatabase = [];
+                try {
+                    const snap = await getDocs(query(collection(window.db, "surat_masuk")));
+                    snap.forEach(d => window.smDatabase.push({id: d.id, ...d.data()}));
+                    window.smDatabase.sort((a,b) => b.timestamp - a.timestamp);
+                } catch(e){}
+                if(!forceFetch) window.toggleLoader(false);
+            }
+            
+            let data = window.smDatabase.filter(d => {
+                let mKw = (d.judul || "").toLowerCase().includes(kw);
+                let mTh = (ft === 'ALL') ? true : (d.tahun == ft);
+                return mKw && mTh;
+            });
+            
+            if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Masuk ditemukan.</p>`;
+            
+            let h = "";
+            data.forEach(d => {
+                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#10b981;" onclick="window.bukaViewerArsip('SM', '${d.id}')">
+                        <div>
+                            <h4 style="margin:0 0 5px 0; color:#10b981;">${d.judul}</h4>
+                            <p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color:var(--text-muted);"></i>
+                      </div>`;
+            });
+            c.innerHTML = h;
+        };
+
+        // --- Logika Surat Keluar ---
+        window.simpanSuratKeluar = async function() {
+            const jd = window.amankanData(document.getElementById('sk-judul').value);
+            const tg = document.getElementById('sk-tanggal').value;
+            const fileInput = document.getElementById('sk-file-pdf');
+            
+            if(!jd || !tg || fileInput.files.length === 0) return alert("Lengkapi judul, tanggal, dan file PDF!");
+            window.toggleLoader(true, "Mengkompresi & Menyimpan PDF...");
+            
+            try {
+                let thn = tg.split('-')[0];
+                let b64 = await window.kompresPDFAjaib(fileInput.files[0]);
+                await addDoc(collection(window.db, "surat_keluar"), { 
+                    judul: jd.toUpperCase(), 
+                    tanggal: tg, 
+                    tahun: thn,
+                    filePdfBase64: b64, 
+                    timestamp: Date.now() 
+                });
+                alert("Surat Keluar Berhasil Disimpan!");
+                document.getElementById('sk-judul').value = "";
+                document.getElementById('sk-tanggal').value = "";
+                window.handleFileSelectArsip({files:[]}, 'sk-file-label'); // reset label
+                window.bukaDataSuratKeluar();
+            } catch(e) { alert("Gagal menyimpan: " + e.message); }
+            window.toggleLoader(false);
+        };
+
+        window.bukaDataSuratKeluar = async () => { window.navigasi('sk-data-screen'); await window.renderListSuratKeluar(true); };
+        window.renderListSuratKeluar = async function(forceFetch = false) {
+            const c = document.getElementById('sk-list-container');
+            const kw = window.amankanData((document.getElementById('sk-search-key').value || "").toLowerCase());
+            const ft = document.getElementById('sk-filter-tahun').value;
+            
+            if(forceFetch || window.skDatabase.length === 0) {
+                if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
+                window.skDatabase = [];
+                try {
+                    const snap = await getDocs(query(collection(window.db, "surat_keluar")));
+                    snap.forEach(d => window.skDatabase.push({id: d.id, ...d.data()}));
+                    window.skDatabase.sort((a,b) => b.timestamp - a.timestamp);
+                } catch(e){}
+                if(!forceFetch) window.toggleLoader(false);
+            }
+            
+            let data = window.skDatabase.filter(d => {
+                let mKw = (d.judul || "").toLowerCase().includes(kw);
+                let mTh = (ft === 'ALL') ? true : (d.tahun == ft);
+                return mKw && mTh;
+            });
+            
+            if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Keluar ditemukan.</p>`;
+            
+            let h = "";
+            data.forEach(d => {
+                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#f59e0b;" onclick="window.bukaViewerArsip('SK', '${d.id}')">
+                        <div>
+                            <h4 style="margin:0 0 5px 0; color:#f59e0b;">${d.judul}</h4>
+                            <p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p>
+                        </div>
+                        <i class="fas fa-chevron-right" style="color:var(--text-muted);"></i>
+                      </div>`;
+            });
+            c.innerHTML = h;
+        };
+
+        // --- Logika Fullscreen PDF Viewer ---
+        window.arsipPdfDocObj = null;
+        window.arsipCurrentPage = 1;
+
+        window.bukaViewerArsip = async function(tipe, id) {
+            let db = tipe === 'SM' ? window.smDatabase : window.skDatabase;
+            let d = db.find(x => x.id === id);
+            if(!d || !d.filePdfBase64) return alert("Dokumen tidak valid.");
+            
+            document.getElementById('arsip-pdf-modal').style.display = 'flex';
+            document.getElementById('arsip-viewer-title').innerText = d.judul;
+            document.getElementById('arsip-viewer-canvas').style.display = 'none';
+            document.getElementById('arsip-viewer-loading').style.display = 'block';
+            
+            try {
+                let pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
+                window.arsipPdfDocObj = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+                window.arsipCurrentPage = 1;
+                await window.arsipRenderPage(1);
+            } catch(e) {
+                alert("Gagal memuat PDF.");
+                document.getElementById('arsip-pdf-modal').style.display = 'none';
+            }
+        };
+
+        window.arsipRenderPage = async function(num) {
+            document.getElementById('arsip-viewer-loading').style.display = 'block';
+            document.getElementById('arsip-viewer-canvas').style.display = 'none';
+            
+            const page = await window.arsipPdfDocObj.getPage(num);
+            const vp = page.getViewport({ scale: 1.2 }); // Responsif untuk HP
+            const cvs = document.getElementById('arsip-viewer-canvas');
+            const ctx = cvs.getContext('2d');
+            cvs.width = vp.width;
+            cvs.height = vp.height;
+            
+            await page.render({ canvasContext: ctx, viewport: vp }).promise;
+            
+            document.getElementById('arsip-page-info').innerText = `${num} / ${window.arsipPdfDocObj.numPages}`;
+            document.getElementById('arsip-viewer-loading').style.display = 'none';
+            cvs.style.display = 'block';
+        };
+
+        window.arsipPrevPage = () => {
+            if(window.arsipCurrentPage <= 1) return;
+            window.arsipCurrentPage--;
+            window.arsipRenderPage(window.arsipCurrentPage);
+        };
+
+        window.arsipNextPage = () => {
+            if(window.arsipCurrentPage >= window.arsipPdfDocObj.numPages) return;
+            window.arsipCurrentPage++;
+            window.arsipRenderPage(window.arsipCurrentPage);
+        };
+
+        // ---------------------------------------------------------
+        // STRUKTUR ORGANISASI (ADMIN BENNY F DIPINDAH KE COL-3 TENGAH)
         // ---------------------------------------------------------
         const defaultOrg = [
             { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
@@ -2062,7 +2502,6 @@
             const mac = window.orgDatabase.find(o => o.id === "o9") || defaultOrg[8];
 
             let ec = window.isOrgUnlocked ? "editable" : "";
-            // stopPropagation() memperbaiki bug klik edit tabrakan dengan fungsi panning
             let ck = (id) => window.isOrgUnlocked ? `onclick="event.stopPropagation(); window.bukaEditOrg('${id}')"` : "";
 
             tree.innerHTML = `
@@ -2081,7 +2520,7 @@
                     </div>
                     <div class="line-v-circuit" style="height: 30px; --delay: 1.0s;"></div>
                     
-                    <!-- L3: BRANCHING HORIZONTAL UTAMA BAWAH (DIPERLEBAR 1600px UNTUK 5 KOLOM) -->
+                    <!-- L3: BRANCHING HORIZONTAL UTAMA BAWAH -->
                     <div class="org-row" style="width: 1600px;">
                         <div class="line-h-circuit" style="width: 100%; position: absolute; top: 0; --delay: 1.2s;"></div>
                         
@@ -2213,10 +2652,9 @@
         window.simpanEditOrg = async () => { const id = document.getElementById('org-edit-id').value; const jbt = document.getElementById('org-edit-jabatan').value.toUpperCase(); const nm = document.getElementById('org-edit-nama').value.toUpperCase(); const ag = document.getElementById('org-edit-anggota').value; window.toggleLoader(true, "Menyimpan..."); try { await updateDoc(doc(window.db, "struktur_organisasi", id), { jabatan: jbt, nama: nm, anggota: ag }); document.getElementById('org-edit-modal').style.display='none'; await window.ambilDataOrg(); } catch(e){} window.toggleLoader(false); };
 
         // ---------------------------------------------------------
-        // 4. SURAT KOMPONEN (BEBAS FILTER DATA LAMA)
+        // LOGIKA SURAT KOMPONEN (SURKOM)
         // ---------------------------------------------------------
         window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null;
-        function base64ToArrayBuffer(b64) { let bs = window.atob(b64.split(',')[1]); let len = bs.length; let bytes = new Uint8Array(len); for(let i=0; i<len; i++) bytes[i] = bs.charCodeAt(i); return bytes.buffer; }
         
         window.prosesPDFSurkom = async function(inp) {
             const f = inp.files[0]; if(!f) return; window.toggleLoader(true, "Memecah PDF...");
@@ -2260,8 +2698,6 @@
                 window.toggleLoader(true, "Mengambil Arsip..."); window.surkomDatabase = [];
                 try { const snap = await getDocs(query(collection(window.db, "surat_komponen"))); snap.forEach(d => window.surkomDatabase.push({id: d.id, ...d.data()})); window.surkomDatabase.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch(e){} window.toggleLoader(false);
             }
-            
-            // LOGIKA FILTER TAHUN
             let data = window.surkomDatabase.filter(d => {
                 let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw);
                 let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif);
@@ -2283,7 +2719,7 @@
         window.prosesForwardDataSurkom = async () => { const th = document.getElementById('surkom-forward-tahun').value; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true); try { let p=[]; for(let id of sel) { p.push(updateDoc(doc(window.db,"surat_komponen",id),{tahun:th})); let d = window.surkomDatabase.find(x=>x.id===id); if(d) d.tahun=th; } await Promise.all(p); alert("Berhasil dipindah!"); document.getElementById('surkom-forward-modal').style.display='none'; window.toggleModePilihSurkom(); window.renderListAllSurkom(); } catch(e){} window.toggleLoader(false); };
 
         // ---------------------------------------------------------
-        // 5. WORKSHOP, ADM MOLD, TRIAL, TROUBLE, NOTULEN, GOD MODE
+        // LOGIKA DIVISI & MODUL LAINNYA
         // ---------------------------------------------------------
         
         // Workshop
@@ -2329,7 +2765,7 @@
         window.simpanPermintaanTrial = async () => { const t = document.getElementById('trial-tgl').value, p = window.amankanData(document.getElementById('trial-pemohon').value), m = window.amankanData(document.getElementById('trial-mold').value), a = window.amankanData(document.getElementById('trial-alasan').value); if(!t||!p||!m) return alert("Isi Form!"); window.toggleLoader(true); try { await addDoc(collection(window.db,"permintaan_trial"),{tanggal:t, pemohon:p.toUpperCase(), namaMold:m.toUpperCase(), alasan:a, status:"Menunggu Jadwal", timestamp:Date.now()}); alert("Terkirim!"); window.switchTabTrial('database'); } catch(e){} window.toggleLoader(false); };
         window.renderTrialDatabase = async () => { const c = document.getElementById('list-trial-database'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"permintaan_trial"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.namaMold}</h4><p>Pemohon: ${d.pemohon} | Status: ${d.status}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
-        // PERBAIKAN LOGIKA NOTULEN MEETING
+        // Notulen Meeting
         window.aiRapihkanNotulen = () => { let t = document.getElementById('notul-deskripsi').value; if(!t) return; window.toggleLoader(true,"AI Merapihkan..."); setTimeout(()=>{ document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); window.toggleLoader(false); }, 1000); };
         window.simpanNotulen = async () => { const j = document.getElementById('notul-jenis').value, d = window.amankanData(document.getElementById('notul-deskripsi').value), w = document.getElementById('notul-waktu-display').value, f = document.getElementById('notul-foto'); if(!d) return alert("Isi deskripsi!"); let p=[]; document.querySelectorAll('.chk-hadir:checked').forEach(c=>p.push(c.value)); if(p.length===0) p.push("Tidak ada peserta"); let arrD = d.split('\n').filter(x=>x.trim().length>0).map((tx,i)=>({id:i, teks:tx.replace(/^•\s*/,''), done:false})); window.toggleLoader(true); let b64=""; if(f.files.length>0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); try { await addDoc(collection(window.db,"notulen_meeting"), {jenisMeeting:j, waktuRecord:w, deskripsiData:arrD, peserta:p, foto:b64, timestamp:Date.now()}); alert("Disimpan!"); window.navigasi('notulen-menu-screen'); } catch(e){} window.toggleLoader(false); };
         window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-content').forEach(e=>e.style.display='none'); document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(b=>b.classList.remove('tab-active')); if(j==='MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display='block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); } else if(j==='MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display='block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); } else { document.getElementById('list-notulen-lapangan').style.display='block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); } };
@@ -2347,7 +2783,6 @@
             } catch(e){} 
         };
         
-        // --- MODIFIKASI TAHAP 5: Pembungkus Grid Khusus Notulen ---
         window.bukaDetailNotulen = (id) => { 
             const d=window.notulenDatabase.find(x=>x.id===id); if(!d) return; 
             let hp=d.peserta?d.peserta.map(x=>`• ${x}`).join('<br>'):'-'; 
@@ -2394,40 +2829,30 @@
             }
         };
 
-        // --- MODIFIKASI TAHAP 5: Logika Download JPG Notulen Dilebarkan (2 Kolom) ---
         window.downloadNotulenJPG = () => {
             const wrapper = document.getElementById('notul-export-wrapper');
-            if(wrapper) { wrapper.classList.add('export-mode'); } // Paksa layout CSS khusus menyala
+            if(wrapper) { wrapper.classList.add('export-mode'); } 
             window.scrollTo(0, 0); 
             window.toggleLoader(true, "Mencetak JPG..."); 
             
             setTimeout(() => { 
                 html2canvas(document.getElementById('notul-export-wrapper'), { 
-                    scale: 2, 
-                    useCORS: true, 
-                    backgroundColor: "#0f172a", // Sesuai warna background dark-mode
-                    windowWidth: 1080 // Paksa lebar internal rendering menjadi PC/Landscape
+                    scale: 2, useCORS: true, backgroundColor: "#0f172a", windowWidth: 1080 
                 }).then(canvas => { 
                     let link = document.createElement('a'); 
                     link.download = `Notulen_Meeting_${Date.now()}.jpg`; 
                     link.href = canvas.toDataURL('image/jpeg', 0.9); 
                     link.click(); 
-                    if(wrapper) { wrapper.classList.remove('export-mode'); } // Kembalikan ke mode mobile
+                    if(wrapper) { wrapper.classList.remove('export-mode'); }
                     window.toggleLoader(false); 
                 }).catch(e => { 
                     alert("Gagal cetak gambar."); 
                     if(wrapper) { wrapper.classList.remove('export-mode'); }
                     window.toggleLoader(false); 
                 }); 
-            }, 600); // Waktu tunggu sedikit lebih lama agar Grid CSS selesai di-render
+            }, 600); 
         };
-
-        // --- MODIFIKASI TAHAP 5: Logika Download PDF (Otomatis ditangkap oleh @media print) ---
-        window.cetakPDFNotulen = () => {
-            // Kita sudah mendesain @media print secara khusus di CSS pada Tahap 1. 
-            // Jadi pemanggilan print() biasa akan langsung masuk ke grid 2 kolom (Kertas A4).
-            window.print();
-        };
+        window.cetakPDFNotulen = () => window.print();
 
         // Jadwal Besar
         window.simpanJadwalBesar = async () => { const f = document.getElementById('jb-foto'); if(f.files.length===0) return alert("Pilih file!"); window.toggleLoader(true); try { let b64 = await window.compressImage(f.files[0],1600,1600,0.7); await addDoc(collection(window.db,"jadwal_besar"),{fileBase64:b64,timestamp:Date.now()}); alert("Disimpan!"); window.bukaViewJadwal(); } catch(e){} window.toggleLoader(false); };
