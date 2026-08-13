@@ -141,11 +141,11 @@
         
         .notul-detail-wrapper { background: #0f172a; padding: 25px 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
         .notul-detail-header { text-align: center; margin-bottom: 25px; }
-        .notul-detail-header h2 { color: white; margin: 0; font-size: 20px; font-weight: 900; letter-spacing: 0.5px;}
-        .notul-detail-header p { color: #38bdf8; font-weight: 800; margin: 5px 0 0 0; font-size: 14px; }
+        .notul-detail-header h2 { color: white; margin: 0; font-size: 22px; font-weight: 900; letter-spacing: 1px;}
+        .notul-detail-header p { color: #38bdf8; font-weight: 800; margin: 5px 0 0 0; font-size: 15px; }
         
         .notulen-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; background: rgba(15,23,42,0.8); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
-        .notulen-table th, .notulen-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; color: white; vertical-align: top;}
+        .notulen-table th, .notulen-table td { padding: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; color: white; vertical-align: middle;}
         .notulen-table th { color: #38bdf8; text-align: left; width: 35%; font-weight: 800; border-right: 1px solid rgba(255,255,255,0.05);}
         .notulen-table td { font-weight: 500; line-height: 1.5; }
         
@@ -276,16 +276,63 @@
         .export-mode {
             width: 1000px !important;
             padding: 40px !important;
-            background: #0f172a !important;
+            background: #ffffff !important; /* MEMAKSA BACKGROUND PUTIH SOLID */
+            color: #000000 !important;
         }
+        
+        .export-mode #notul-export-wrapper, .export-mode * {
+            background: #ffffff !important; 
+            color: #000000 !important; /* MEMAKSA FONT MENJADI HITAM */
+            border-color: #cccccc !important;
+        }
+        
+        /* Menghilangkan shadow dan elemen neon saat dicetak */
+        .export-mode .notulen-table th, .export-mode .notulen-table td {
+            border-color: #dddddd !important;
+            color: #000000 !important;
+        }
+        .export-mode .poin-card {
+            border-left: 6px solid #555555 !important; /* Mengubah warna neon kuning/hijau menjadi abu gelap profesional */
+            box-shadow: none !important;
+        }
+        .export-mode .poin-card label {
+            color: #000000 !important;
+            font-weight: 700 !important;
+        }
+
         .export-mode .notulen-grid-container {
             display: grid !important;
             grid-template-columns: 1fr 1fr !important;
             gap: 20px !important;
         }
+        
         .export-mode .notulen-table {
             width: 100% !important;
             margin-bottom: 30px !important;
+        }
+
+        /* GRID KEHADIRAN (MENYAMPING) */
+        .notul-attendee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .notul-attendee-item {
+            background: rgba(255,255,255,0.05);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: inherit;
+        }
+        
+        /* STYLING INPUT MANUAL PESERTA (UI) */
+        .manual-attendee-tag {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(56,189,248,0.15); border: 1px solid #38bdf8;
+            padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: bold; margin: 5px;
+            color: #e0f2fe;
         }
 
         @media print {
@@ -293,10 +340,14 @@
             #notul-export-wrapper, #notul-export-wrapper * { visibility: visible; }
             #notul-export-wrapper { position: absolute; left: 0; top: 0; width: 100%; padding: 20px; background: white !important; color: black !important;}
             #notul-export-wrapper h2, #notul-export-wrapper p, #notul-export-wrapper h3, #notul-export-wrapper td, #notul-export-wrapper th { color: black !important; }
+            
+            /* Penyesuaian khusus Print PDF */
+            .notul-attendee-item { border: 1px solid #cccccc !important; background: #f9f9f9 !important; }
             .notulen-grid-container { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 15px !important; }
-            .poin-card { break-inside: avoid; border-color: #ccc !important; box-shadow: none !important; color: black !important; background: transparent !important;}
+            .poin-card { break-inside: avoid; border-left: 6px solid #555555 !important; box-shadow: none !important; color: black !important; background: transparent !important;}
             .poin-card label { color: black !important; }
             .notul-detail-wrapper { background: white !important; border: none !important;}
+            .notulen-table th, .notulen-table td { border-color: #dddddd !important; }
         }
     </style>
 </head>
@@ -1070,7 +1121,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- GOD MODE: PIN MODAL & CENTRAL LOG SCREEN                  -->
     <!-- ========================================================= -->
@@ -1781,7 +1831,7 @@
         </div>
     </div>
     <!-- ========================================================= -->
-    <!-- NOTULEN MEETING                                           -->
+    <!-- NOTULEN MEETING (DIPERBARUI: FITUR INPUT MANUAL & REALTIME) -->
     <!-- ========================================================= -->
     <div id="notulen-menu-screen" class="screen">
         <div class="content-wrapper">
@@ -1814,8 +1864,8 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Waktu Pencatatan</label>
-                    <input type="text" id="notul-waktu-display" disabled style="color:var(--secondary); background:rgba(0,0,0,0.5);">
+                    <label>Waktu Pencatatan (Otomatis & Real-time)</label>
+                    <input type="text" id="notul-waktu-display" disabled style="color:var(--cepat); background:rgba(0,0,0,0.5); font-weight:800; text-align:center;">
                 </div>
                 <div class="form-group">
                     <label>Deskripsi (Catatan Mentah)</label>
@@ -1826,6 +1876,7 @@
                 </div>
                 <div class="form-group" style="margin-top:25px;">
                     <h3 class="sub-title-box"><i class="fas fa-users" style="color:var(--secondary);"></i> Kehadiran Tim</h3>
+                    
                     <div class="chk-grid" style="background: rgba(0,0,0,0.4); border:1px solid var(--border-dark); padding:15px; border-radius:12px;">
                         <label><input type="checkbox" value="DeptHead. Bpk Edi" class="chk-hadir"> DeptHead. Bpk Edi</label>
                         <label><input type="checkbox" value="SecHead. Bpk Heru" class="chk-hadir"> SecHead. Bpk Heru</label>
@@ -1837,7 +1888,21 @@
                         <label><input type="checkbox" value="SO Bpk Eko" class="chk-hadir"> SO Bpk Eko</label>
                         <label><input type="checkbox" value="ADM Benny" class="chk-hadir"> ADM Benny</label>
                     </div>
+
+                    <!-- PENAMBAHAN PESERTA MANUAL (TIDAK MERUSAK SISTEM) -->
+                    <div style="margin-top: 15px; background: rgba(56, 189, 248, 0.1); padding: 15px; border-radius: 12px; border: 1px dashed #38bdf8;">
+                        <label style="color: #38bdf8; font-size: 11px; margin-bottom:10px;"><i class="fas fa-user-plus"></i> Tambah Peserta Manual (Luar Daftar)</label>
+                        <div style="display: flex; gap: 8px; margin-bottom: 10px;">
+                            <input type="text" id="notul-peserta-manual" placeholder="Contoh: Bpk Surya (Tamu)" style="flex: 1; padding: 12px; font-size: 13px; background: rgba(0,0,0,0.6); border-color:#38bdf8;">
+                            <button type="button" onclick="window.tambahPesertaManualNotul()" class="btn-submit" style="width: auto; padding: 12px 20px; background: linear-gradient(135deg, #0284c7, #38bdf8); box-shadow:none;">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                        <!-- Container untuk daftar badge orang tambahan -->
+                        <div id="list-peserta-manual-container" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+                    </div>
                 </div>
+                
                 <div class="form-group" style="margin-top:25px;">
                     <label>Foto Dokumentasi</label>
                     <label for="notul-foto" class="btn-camera" style="background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); padding:15px; display:block; text-align:center; border-radius:12px; color:white; cursor:pointer;">
@@ -1846,7 +1911,7 @@
                     <input type="file" id="notul-foto" class="input-file-hidden" accept="image/*" capture="camera" onchange="window.cekFoto(this, 'status-notul-foto')" style="display:none;">
                     <span id="status-notul-foto" class="file-status" style="display:block; margin-top:10px; font-size:12px; font-weight:bold;"></span>
                 </div>
-                <button class="btn-submit" type="button" onclick="window.simpanNotulen()" style="margin-top:20px;">
+                <button class="btn-submit" type="button" onclick="window.simpanNotulen()" style="margin-top:20px; background:linear-gradient(135deg, #10b981, #059669);">
                     <i class="fas fa-save"></i> SIMPAN NOTULEN
                 </button>
             </div>
@@ -1875,6 +1940,7 @@
         </div>
     </div>
 
+    <!-- HASIL NOTULEN (DIPERBARUI) -->
     <div id="detail-notulen-screen" class="screen">
         <div class="content-wrapper">
             <div class="header">
@@ -1991,12 +2057,12 @@
             </button>
         </div>
     </div>
-
    <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
         // ==========================================
         window.jalankanEngineMetrik = function() {
+            // Metrik HUD
             setInterval(() => {
                 let netType = "4G"; let netColor = "#10b981"; let speedVal = "--"; let speedColor = "#38bdf8"; 
                 if (navigator.connection) {
@@ -2019,6 +2085,17 @@
                 if(elSpeed) { elSpeed.innerText = speedVal; elSpeed.style.color = speedColor; }
                 if(elCpu) { elCpu.innerText = baseCpu + "%"; elCpu.style.color = cpuColor; }
             }, 2000); 
+
+            // ============================================================
+            // PEMBARUAN: JAM REAL-TIME KHUSUS FORM INPUT NOTULEN
+            // ============================================================
+            setInterval(() => {
+                const elWaktuNotul = document.getElementById('notul-waktu-display');
+                if (elWaktuNotul) {
+                    const now = new Date();
+                    elWaktuNotul.value = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
+                }
+            }, 1000);
         };
 
         let cyberScanInterval;
@@ -2079,7 +2156,7 @@
 
             // Touch events for Pinch-to-Zoom & Pan
             vp.addEventListener('touchstart', (e) => {
-                if (e.target.closest('.editable')) return; // Abaikan pan jika menyentuh box edit
+                if (e.target.closest('.editable')) return; 
                 if (e.touches.length === 2) {
                     initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
                     initialScale = window.orgZoomScale;
@@ -2144,7 +2221,7 @@
             if(d === 0) {
                 window.orgZoomScale = 1.0; 
                 wp.style.transform = `scale(1.0)`;
-                setTimeout(() => { window.centerOrgView(); }, 150); // Auto center saat reset
+                setTimeout(() => { window.centerOrgView(); }, 150); 
             } else {
                 window.orgZoomScale = Math.min(Math.max(0.4, window.orgZoomScale + d), 2.5); 
                 wp.style.transform = `scale(${window.orgZoomScale})`; 
@@ -2189,8 +2266,13 @@
         window.orgDatabase = [];
         
         // VARIABEL BARU UNTUK ARSIP & DOKUMENTASI
-        window.smDatabase = []; // Data Surat Masuk
-        window.skDatabase = []; // Data Surat Keluar
+        window.smDatabase = []; 
+        window.skDatabase = []; 
+
+        // ============================================================
+        // PEMBARUAN: VARIABEL ARRAY KHUSUS PESERTA MANUAL NOTULEN
+        // ============================================================
+        window.pesertaManualNotulen = []; 
         
         // Setup PDF.js
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -2228,7 +2310,7 @@
         window.bukaMenuPermintaanTrial = function() { window.navigasi('trial-mold-screen'); window.switchTabTrial('input'); };
 
         // ---------------------------------------------------------
-        // FUNGSI BARU: ARSIP & DOKUMENTASI (KOMPRESI AJAIB & VIEWER)
+        // FUNGSI ARSIP & DOKUMENTASI (KOMPRESI AJAIB & VIEWER)
         // ---------------------------------------------------------
         
         function base64ToArrayBuffer(b64) { 
@@ -2239,7 +2321,6 @@
             return bytes.buffer; 
         }
 
-        // Engine Kompresi PDF Client-Side (Cepat & Tetap Terbaca)
         window.kompresPDFAjaib = async function(file) {
             const ab = await file.arrayBuffer();
             const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
@@ -2248,14 +2329,13 @@
             
             for(let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
-                const vp = page.getViewport({ scale: 1.5 }); // Skala 1.5 agar teks tetap tajam
+                const vp = page.getViewport({ scale: 1.5 }); 
                 const canvas = document.createElement('canvas');
                 canvas.width = vp.width;
                 canvas.height = vp.height;
                 const ctx = canvas.getContext('2d');
                 await page.render({ canvasContext: ctx, viewport: vp }).promise;
                 
-                // Konversi canvas ke JPEG kualitas 60% (Sangat meringankan size)
                 const imgB64 = canvas.toDataURL('image/jpeg', 0.6).split(',')[1];
                 const imgBytes = Uint8Array.from(atob(imgB64), c => c.charCodeAt(0));
                 
@@ -2299,7 +2379,7 @@
                 alert("Surat Masuk Berhasil Disimpan!");
                 document.getElementById('sm-judul').value = "";
                 document.getElementById('sm-tanggal').value = "";
-                window.handleFileSelectArsip({files:[]}, 'sm-file-label'); // reset label
+                window.handleFileSelectArsip({files:[]}, 'sm-file-label'); 
                 window.bukaDataSuratMasuk();
             } catch(e) { alert("Gagal menyimpan: " + e.message); }
             window.toggleLoader(false);
@@ -2365,7 +2445,7 @@
                 alert("Surat Keluar Berhasil Disimpan!");
                 document.getElementById('sk-judul').value = "";
                 document.getElementById('sk-tanggal').value = "";
-                window.handleFileSelectArsip({files:[]}, 'sk-file-label'); // reset label
+                window.handleFileSelectArsip({files:[]}, 'sk-file-label'); 
                 window.bukaDataSuratKeluar();
             } catch(e) { alert("Gagal menyimpan: " + e.message); }
             window.toggleLoader(false);
@@ -2439,7 +2519,7 @@
             document.getElementById('arsip-viewer-canvas').style.display = 'none';
             
             const page = await window.arsipPdfDocObj.getPage(num);
-            const vp = page.getViewport({ scale: 1.2 }); // Responsif untuk HP
+            const vp = page.getViewport({ scale: 1.2 }); 
             const cvs = document.getElementById('arsip-viewer-canvas');
             const ctx = cvs.getContext('2d');
             cvs.width = vp.width;
@@ -2465,7 +2545,7 @@
         };
 
         // ---------------------------------------------------------
-        // STRUKTUR ORGANISASI (ADMIN BENNY F DIPINDAH KE COL-3 TENGAH)
+        // STRUKTUR ORGANISASI 
         // ---------------------------------------------------------
         const defaultOrg = [
             { id: "o1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", anggota: "" },
@@ -2717,7 +2797,6 @@
         window.prosesUnduhGlobalSurkom = async (t) => { document.getElementById('surkom-unduh-global-modal').style.display='none'; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true, t==='merge'?"Menyatukan PDF...":"Mengunduh..."); try { if(t==='pisah') { for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { let a=document.createElement("a"); a.href=d.filePdfBase64; a.download=`SURKOM_${d.judul}.pdf`; a.click(); await new Promise(r=>setTimeout(r,600)); } } } else { const { PDFDocument } = PDFLib; const mPdf = await PDFDocument.create(); for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { const p = await PDFDocument.load(base64ToArrayBuffer(d.filePdfBase64)); const cp = await mPdf.copyPages(p, p.getPageIndices()); cp.forEach(pg=>mPdf.addPage(pg)); } } const mF = await mPdf.saveAsBase64({ dataUri: true }); let a=document.createElement("a"); a.href=mF; a.download=`SURKOM_MERGE.pdf`; a.click(); } } catch(e){} window.toggleLoader(false); };
         window.bukaModalForwardSurkom = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-forward-modal').style.display='flex'; };
         window.prosesForwardDataSurkom = async () => { const th = document.getElementById('surkom-forward-tahun').value; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true); try { let p=[]; for(let id of sel) { p.push(updateDoc(doc(window.db,"surat_komponen",id),{tahun:th})); let d = window.surkomDatabase.find(x=>x.id===id); if(d) d.tahun=th; } await Promise.all(p); alert("Berhasil dipindah!"); document.getElementById('surkom-forward-modal').style.display='none'; window.toggleModePilihSurkom(); window.renderListAllSurkom(); } catch(e){} window.toggleLoader(false); };
-
         // ---------------------------------------------------------
         // LOGIKA DIVISI & MODUL LAINNYA
         // ---------------------------------------------------------
@@ -2765,9 +2844,102 @@
         window.simpanPermintaanTrial = async () => { const t = document.getElementById('trial-tgl').value, p = window.amankanData(document.getElementById('trial-pemohon').value), m = window.amankanData(document.getElementById('trial-mold').value), a = window.amankanData(document.getElementById('trial-alasan').value); if(!t||!p||!m) return alert("Isi Form!"); window.toggleLoader(true); try { await addDoc(collection(window.db,"permintaan_trial"),{tanggal:t, pemohon:p.toUpperCase(), namaMold:m.toUpperCase(), alasan:a, status:"Menunggu Jadwal", timestamp:Date.now()}); alert("Terkirim!"); window.switchTabTrial('database'); } catch(e){} window.toggleLoader(false); };
         window.renderTrialDatabase = async () => { const c = document.getElementById('list-trial-database'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"permintaan_trial"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.namaMold}</h4><p>Pemohon: ${d.pemohon} | Status: ${d.status}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
-        // Notulen Meeting
-        window.aiRapihkanNotulen = () => { let t = document.getElementById('notul-deskripsi').value; if(!t) return; window.toggleLoader(true,"AI Merapihkan..."); setTimeout(()=>{ document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); window.toggleLoader(false); }, 1000); };
-        window.simpanNotulen = async () => { const j = document.getElementById('notul-jenis').value, d = window.amankanData(document.getElementById('notul-deskripsi').value), w = document.getElementById('notul-waktu-display').value, f = document.getElementById('notul-foto'); if(!d) return alert("Isi deskripsi!"); let p=[]; document.querySelectorAll('.chk-hadir:checked').forEach(c=>p.push(c.value)); if(p.length===0) p.push("Tidak ada peserta"); let arrD = d.split('\n').filter(x=>x.trim().length>0).map((tx,i)=>({id:i, teks:tx.replace(/^•\s*/,''), done:false})); window.toggleLoader(true); let b64=""; if(f.files.length>0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); try { await addDoc(collection(window.db,"notulen_meeting"), {jenisMeeting:j, waktuRecord:w, deskripsiData:arrD, peserta:p, foto:b64, timestamp:Date.now()}); alert("Disimpan!"); window.navigasi('notulen-menu-screen'); } catch(e){} window.toggleLoader(false); };
+        // =========================================================================================
+        // LOGIKA NOTULEN MEETING (DIPERBARUI)
+        // =========================================================================================
+        
+        // 1. Fitur Tambah Peserta Manual (Luar Daftar)
+        window.tambahPesertaManualNotul = function() {
+            const inp = document.getElementById('notul-peserta-manual');
+            const val = inp.value.trim();
+            if(!val) return;
+            window.pesertaManualNotulen.push(val);
+            inp.value = "";
+            window.renderPesertaManualNotul();
+        };
+
+        // 2. Fitur Hapus Peserta Manual
+        window.hapusPesertaManualNotul = function(idx) {
+            window.pesertaManualNotulen.splice(idx, 1);
+            window.renderPesertaManualNotul();
+        };
+
+        // 3. Render tag UI Peserta Manual
+        window.renderPesertaManualNotul = function() {
+            const container = document.getElementById('list-peserta-manual-container');
+            let h = "";
+            window.pesertaManualNotulen.forEach((p, idx) => {
+                h += `<div class="manual-attendee-tag">
+                        <span>${p}</span>
+                        <i class="fas fa-times-circle" style="cursor:pointer; color:#ef4444;" onclick="window.hapusPesertaManualNotul(${idx})"></i>
+                      </div>`;
+            });
+            container.innerHTML = h;
+        };
+
+        // 4. AI Rapihkan Notulen
+        window.aiRapihkanNotulen = () => { 
+            let t = document.getElementById('notul-deskripsi').value; 
+            if(!t) return; 
+            window.toggleLoader(true,"AI Merapihkan Format..."); 
+            setTimeout(()=>{ 
+                document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); 
+                window.toggleLoader(false); 
+            }, 1000); 
+        };
+
+        // 5. Simpan Keseluruhan Notulen
+        window.simpanNotulen = async () => { 
+            const j = document.getElementById('notul-jenis').value; 
+            const d = window.amankanData(document.getElementById('notul-deskripsi').value); 
+            const w = document.getElementById('notul-waktu-display').value; 
+            const f = document.getElementById('notul-foto'); 
+            
+            if(!d) return alert("Isi deskripsi evaluasi/pembahasan terlebih dahulu!"); 
+            
+            // a. Ambil peserta dari daftar centang (Checkbox)
+            let p = []; 
+            document.querySelectorAll('.chk-hadir:checked').forEach(c => p.push(c.value)); 
+            
+            // b. GABUNGKAN dengan daftar peserta Manual yang baru
+            if (window.pesertaManualNotulen.length > 0) {
+                p = p.concat(window.pesertaManualNotulen);
+            }
+
+            if(p.length === 0) p.push("Tidak ada data kehadiran."); 
+            
+            // Mapping deskripsi ke objek array terstruktur
+            let arrD = d.split('\n').filter(x => x.trim().length > 0).map((tx, i) => ({id: i, teks: tx.replace(/^•\s*/,''), done: false})); 
+            
+            window.toggleLoader(true, "Menyimpan Dokumen..."); 
+            let b64 = ""; 
+            if(f.files.length > 0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); 
+            
+            try { 
+                await addDoc(collection(window.db,"notulen_meeting"), {
+                    jenisMeeting: j, 
+                    waktuRecord: w, 
+                    deskripsiData: arrD, 
+                    peserta: p, 
+                    foto: b64, 
+                    timestamp: Date.now()
+                }); 
+                alert("Notulen Meeting Berhasil Disimpan!"); 
+                
+                // RESET Form Input
+                document.getElementById('notul-deskripsi').value = "";
+                document.querySelectorAll('.chk-hadir:checked').forEach(c => c.checked = false);
+                window.pesertaManualNotulen = [];
+                window.renderPesertaManualNotul();
+                if(f) f.value = "";
+                if(document.getElementById('status-notul-foto')) document.getElementById('status-notul-foto').innerHTML = "";
+
+                window.navigasi('notulen-menu-screen'); 
+            } catch(e) { console.error(e); alert("Gagal menyimpan ke database."); } 
+            
+            window.toggleLoader(false); 
+        };
+
         window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-content').forEach(e=>e.style.display='none'); document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(b=>b.classList.remove('tab-active')); if(j==='MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display='block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); } else if(j==='MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display='block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); } else { document.getElementById('list-notulen-lapangan').style.display='block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); } };
         
         window.bukaHasilNotulen = async () => { 
@@ -2783,10 +2955,23 @@
             } catch(e){} 
         };
         
+        // 6. TAMPILAN DETAIL & EXPORT (BACKGROUND PUTIH & GRID MENYAMPING)
         window.bukaDetailNotulen = (id) => { 
-            const d=window.notulenDatabase.find(x=>x.id===id); if(!d) return; 
-            let hp=d.peserta?d.peserta.map(x=>`• ${x}`).join('<br>'):'-'; 
+            const d = window.notulenDatabase.find(x => x.id === id); if(!d) return; 
             
+            // a. Kehadiran Menjadi GRID Menyamping
+            let hp = '';
+            if (d.peserta && d.peserta.length > 0) {
+                hp = `<div class="notul-attendee-grid">`;
+                d.peserta.forEach(x => {
+                    hp += `<div class="notul-attendee-item"><i class="fas fa-check" style="color:#10b981; margin-right:5px;"></i> ${x}</div>`;
+                });
+                hp += `</div>`;
+            } else {
+                hp = '-';
+            }
+            
+            // b. Evaluasi & Poin Tindakan
             let hd = `<div id="notulen-grid-wrapper" class="notulen-grid-container">`; 
             if(d.deskripsiData) {
                 d.deskripsiData.forEach(x => { 
@@ -2800,25 +2985,44 @@
             } 
             hd += `</div>`;
             
+            // c. Struktur Header Baru & Penggabungan Elemen
             let h = `
             <div class="notul-detail-wrapper" id="notul-export-wrapper">
                 <div class="notul-detail-header">
-                    <h2>NOTULEN & EVALUASI<br>MEETING</h2>
-                    <p>PT. CAHAYA BUANA INTITAMA</p>
+                    <h2 style="font-weight:900; letter-spacing:1px; margin-bottom:5px; font-size:24px;">NOTULEN MAINTENANCE MOULD</h2>
+                    <p style="color:#38bdf8; font-weight:800; margin:0; font-size:16px;">PT. CAHAYA BUANA INTITAMA</p>
                 </div>
-                <table class="notulen-table">
-                    <tr><th>Jenis Meeting</th><td><strong>${d.jenisMeeting}</strong></td></tr>
-                    <tr><th>Waktu Record</th><td>${d.waktuRecord}</td></tr>
-                    <tr><th>Kehadiran Tim</th><td>${hp}</td></tr>
+                
+                <table class="notulen-table" style="margin-bottom:20px;">
+                    <tr>
+                        <th style="width: 30%; border-right: 1px solid rgba(255,255,255,0.1);">Info Laporan</th>
+                        <td style="font-weight:800; color:#38bdf8; vertical-align: middle;">
+                            <span style="background:rgba(56,189,248,0.1); padding:6px 10px; border-radius:6px; border:1px solid #38bdf8; display:inline-block; margin-bottom:8px;">${d.jenisMeeting}</span><br>
+                            <span style="font-size:12px; color:#cbd5e1; font-weight:600;"><i class="fas fa-clock"></i> ${d.waktuRecord}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="border-right: 1px solid rgba(255,255,255,0.1);">Daftar Kehadiran</th>
+                        <td>${hp}</td>
+                    </tr>
                 </table>
-                <h3 class="sub-title-box" style="background:rgba(255,255,255,0.05); border:none;"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>
+                
+                <h3 class="sub-title-box" style="background:rgba(255,255,255,0.05); border:none; margin-bottom:15px;"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>
                 ${hd}
             `; 
             
-            if(d.foto) h+=`<div style="margin-top:20px; text-align:center; background:rgba(0,0,0,0.4); padding:15px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);"><strong style="color:#38bdf8; font-size:14px; letter-spacing:1px; display:block; margin-bottom:10px;">FOTO DOKUMENTASI</strong><img src="${d.foto}" style="max-width:100%; border-radius:10px;"></div>`; 
+            // d. Gambar Dokumentasi lebih rapi & proporsional
+            if(d.foto) {
+                h += `
+                <div style="margin-top:20px; text-align:center; padding:15px; border-radius:12px; border:1px dashed rgba(255,255,255,0.2); break-inside: avoid;">
+                    <strong style="color:#38bdf8; font-size:13px; letter-spacing:1px; display:block; margin-bottom:10px;">FOTO DOKUMENTASI</strong>
+                    <img src="${d.foto}" style="max-height: 350px; width: auto; max-width: 100%; object-fit: contain; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.5);">
+                </div>`; 
+            }
             
             h += `</div>`; 
-            document.getElementById('report-notulen-content').innerHTML = h; window.navigasi('detail-notulen-screen'); 
+            document.getElementById('report-notulen-content').innerHTML = h; 
+            window.navigasi('detail-notulen-screen'); 
         };
         
         window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) {
@@ -2829,19 +3033,23 @@
             }
         };
 
+        // Engine Unduh Otomatis Validasi Background Putih
         window.downloadNotulenJPG = () => {
             const wrapper = document.getElementById('notul-export-wrapper');
             if(wrapper) { wrapper.classList.add('export-mode'); } 
             window.scrollTo(0, 0); 
-            window.toggleLoader(true, "Mencetak JPG..."); 
+            window.toggleLoader(true, "Mencetak Laporan Profesional..."); 
             
             setTimeout(() => { 
                 html2canvas(document.getElementById('notul-export-wrapper'), { 
-                    scale: 2, useCORS: true, backgroundColor: "#0f172a", windowWidth: 1080 
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: "#ffffff", // Memaksa background kanvas putih bersih 
+                    windowWidth: 1000 
                 }).then(canvas => { 
                     let link = document.createElement('a'); 
-                    link.download = `Notulen_Meeting_${Date.now()}.jpg`; 
-                    link.href = canvas.toDataURL('image/jpeg', 0.9); 
+                    link.download = `Notulen_${Date.now()}.jpg`; 
+                    link.href = canvas.toDataURL('image/jpeg', 0.95); 
                     link.click(); 
                     if(wrapper) { wrapper.classList.remove('export-mode'); }
                     window.toggleLoader(false); 
@@ -2852,7 +3060,16 @@
                 }); 
             }, 600); 
         };
-        window.cetakPDFNotulen = () => window.print();
+
+        window.cetakPDFNotulen = () => {
+            const wrapper = document.getElementById('notul-export-wrapper');
+            if(wrapper) { wrapper.classList.add('export-mode'); } 
+            window.print();
+            // Menghilangkan mode putih jika dialog print dibatalkan
+            setTimeout(() => {
+                if(wrapper) { wrapper.classList.remove('export-mode'); }
+            }, 1500); 
+        };
 
         // Jadwal Besar
         window.simpanJadwalBesar = async () => { const f = document.getElementById('jb-foto'); if(f.files.length===0) return alert("Pilih file!"); window.toggleLoader(true); try { let b64 = await window.compressImage(f.files[0],1600,1600,0.7); await addDoc(collection(window.db,"jadwal_besar"),{fileBase64:b64,timestamp:Date.now()}); alert("Disimpan!"); window.bukaViewJadwal(); } catch(e){} window.toggleLoader(false); };
