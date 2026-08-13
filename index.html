@@ -276,13 +276,13 @@
         .export-mode {
             width: 1000px !important;
             padding: 40px !important;
-            background: #ffffff !important; /* MEMAKSA BACKGROUND PUTIH SOLID */
+            background: #ffffff !important; 
             color: #000000 !important;
         }
         
         .export-mode #notul-export-wrapper, .export-mode * {
             background: #ffffff !important; 
-            color: #000000 !important; /* MEMAKSA FONT MENJADI HITAM */
+            color: #000000 !important; 
             border-color: #cccccc !important;
         }
         
@@ -292,7 +292,7 @@
             color: #000000 !important;
         }
         .export-mode .poin-card {
-            border-left: 6px solid #555555 !important; /* Mengubah warna neon kuning/hijau menjadi abu gelap profesional */
+            border-left: 6px solid #555555 !important; 
             box-shadow: none !important;
         }
         .export-mode .poin-card label {
@@ -349,10 +349,27 @@
             .notul-detail-wrapper { background: white !important; border: none !important;}
             .notulen-table th, .notulen-table td { border-color: #dddddd !important; }
         }
+
+        /* ======================================================== */
+        /* --- CSS TIM & PERSONEL --- */
+        /* ======================================================== */
+        .personel-table-wrapper { overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border-dark); background: rgba(15,23,42,0.8); box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .personel-table { width: 100%; border-collapse: collapse; color: white; font-size: 12px; min-width: 600px; }
+        .personel-table th { background: rgba(0,0,0,0.7); color: #38bdf8; padding: 14px; text-align: left; font-weight: 900; border-bottom: 2px solid var(--border-dark); text-transform: uppercase; letter-spacing: 1px; }
+        .personel-table td { padding: 14px; border-bottom: 1px dashed rgba(255,255,255,0.1); font-weight: 700; vertical-align: middle; }
+        .personel-table tr:last-child td { border-bottom: none; }
+        .personel-table tbody tr:hover { background: rgba(56, 189, 248, 0.1); }
+        .badge-status { padding: 6px 12px; border-radius: 8px; font-size: 10px; font-weight: 900; letter-spacing: 0.5px; display: inline-block; text-align: center; min-width: 70px; text-transform: uppercase; }
+        .badge-pkwt { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid #ef4444; box-shadow: 0 0 10px rgba(239, 68, 68, 0.2); }
+        .badge-tetap { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+        .badge-so { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid #f59e0b; box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); }
+        .badge-os { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border: 1px solid #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.2); }
+        .badge-foreman { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
+        .btn-edit-personel { background: rgba(15, 23, 42, 0.8); border: 1px solid #38bdf8; color: #38bdf8; padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 11px; font-weight: 900; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-edit-personel:hover { background: #38bdf8; color: #040d1a; box-shadow: 0 0 15px #38bdf8; transform: scale(1.05); }
     </style>
 </head>
 <body>
-
     <!-- ========================================================= -->
     <!-- ELEMEN AURORA NEON GEMINI                                 -->
     <!-- ========================================================= -->
@@ -743,13 +760,13 @@
                 <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#10b981;"></i></div>
             </div>
 
-            <div class="profil-list-item" onclick="window.bukaSubInfo('JADWAL KERJA KARYAWAN')">
-                <div class="profil-item-icon"><i class="fas fa-users"></i></div>
+            <div class="profil-list-item" onclick="window.bukaMenuPersonel()">
+                <div class="profil-item-icon"><i class="fas fa-users" style="color:#38bdf8;"></i></div>
                 <div class="profil-item-text">
-                    <div class="profil-item-title">Tim & Personel</div>
-                    <div class="profil-item-sub">Daftar karyawan dan kontak</div>
+                    <div class="profil-item-title" style="color:#38bdf8;">Tim & Personel</div>
+                    <div class="profil-item-sub">Daftar karyawan dan hierarki tabel</div>
                 </div>
-                <div class="profil-item-arrow"><i class="fas fa-chevron-right"></i></div>
+                <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#38bdf8;"></i></div>
             </div>
 
             <!-- MENU ARSIP & DOKUMENTASI (BARU) -->
@@ -821,6 +838,87 @@
             <div class="processor-core" onclick="window.bukaPinGodMode()">
                 <div class="processor-circuit"></div>
                 <i class="fas fa-microchip"></i>
+            </div>
+        </div>
+    </div>
+    <!-- ========================================================= -->
+    <!-- TIM & PERSONEL SCREEN (FITUR BARU)                        -->
+    <!-- ========================================================= -->
+    <div id="tim-personel-screen" class="screen">
+        <div class="content-wrapper-wide" style="padding: 15px;">
+            <div class="header" style="background: linear-gradient(135deg, rgba(56,189,248,0.5), rgba(2,132,199,0.5)) !important; display:flex; justify-content:space-between; align-items:center; margin-bottom: 15px; border: 1px solid #38bdf8; backdrop-filter: blur(10px);">
+                <h2 style="margin:0; color: white; text-shadow: 0 0 10px #38bdf8;"><i class="fas fa-users" style="margin-right:10px; color: #bae6fd;"></i> TIM & PERSONEL</h2>
+                <button id="btn-gembok-personel" class="btn-submit" onclick="window.bukaGembokPersonel()" style="width: auto; padding: 10px 15px; background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fcd34d; font-size: 11px; box-shadow: 0 0 10px rgba(245, 158, 11, 0.3); border-radius: 8px;">
+                    <i class="fas fa-lock"></i> EDIT DATA (PIN)
+                </button>
+            </div>
+            
+            <div class="dark-panel" style="padding:20px;">
+                <p style="color:var(--text-muted); font-size:12px; margin-bottom:15px; font-weight:600;"><i class="fas fa-info-circle"></i> Tabel terstruktur berdasarkan hierarki posisi jabatan. Gunakan PIN untuk membuka akses edit manual dan sinkronisasi Cloud.</p>
+                <div class="personel-table-wrapper">
+                    <table class="personel-table">
+                        <thead>
+                            <tr>
+                                <th>Posisi / Jabatan</th>
+                                <th>Nama Lengkap</th>
+                                <th style="text-align:center;">Status Pegawai</th>
+                                <th style="text-align:center;">Otoritas Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-personel-table">
+                            <!-- Dirender secara dinamis oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PIN PERSONEL -->
+    <div id="personel-pin-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:350px; border-radius:20px; padding:30px; text-align:center; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245, 158, 11, 0.4); backdrop-filter:blur(15px);">
+            <i class="fas fa-lock" style="font-size: 50px; color: #fbbf24; margin-bottom: 15px; text-shadow: 0 0 15px rgba(245, 158, 11, 0.8);"></i>
+            <h2 style="color: white; margin: 0 0 5px 0; font-weight: 900; letter-spacing: 1px;">OTORISASI AKSES</h2>
+            <p style="color: #94a3b8; font-size: 12px; margin-bottom: 25px;">Masukkan Kode PIN Sistem (2025).</p>
+            <input type="password" id="input-pin-personel" class="pin-input-box" placeholder="••••" maxlength="4" style="border-color: #f59e0b; color: #fbbf24; box-shadow: 0 0 15px rgba(245,158,11,0.2);">
+            <p id="msg-pin-error-personel" style="color: #ef4444; font-size: 12px; font-weight: bold; margin-top: 10px; display: none;">Akses Ditolak. Kode PIN Salah!</p>
+            <div style="display:flex; gap:10px; margin-top:25px;">
+                <button type="button" class="btn-submit" onclick="document.getElementById('personel-pin-modal').style.display='none'; document.getElementById('input-pin-personel').value='';" style="flex:1; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); box-shadow:none; color:var(--text-muted);">BATAL</button>
+                <button type="button" class="btn-submit" onclick="window.verifikasiPinPersonel()" style="flex:2; background: linear-gradient(135deg, #b45309, #f59e0b); box-shadow: 0 5px 15px rgba(245,158,11,0.4);"><i class="fas fa-unlock"></i> BUKA SISTEM</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT DATA PERSONEL -->
+    <div id="personel-edit-modal" class="security-modal" style="z-index: 9999999 !important;">
+        <div style="background:var(--card-dark); width:100%; max-width:450px; border-radius:20px; padding:25px; border:1px solid #38bdf8; box-shadow: 0 0 40px rgba(56, 189, 248, 0.3); backdrop-filter:blur(15px);">
+            <h3 style="color:#38bdf8; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-user-edit"></i> UPDATE DATA PERSONEL
+            </h3>
+            <input type="hidden" id="edit-personel-id">
+            <div class="form-group">
+                <label style="color: #38bdf8;">Jabatan / Posisi</label>
+                <input type="text" id="edit-personel-jabatan" style="background: rgba(0,0,0,0.5); font-size: 13px;">
+            </div>
+            <div class="form-group">
+                <label style="color: #38bdf8;">Nama Lengkap</label>
+                <input type="text" id="edit-personel-nama" style="background: rgba(0,0,0,0.5); font-size: 13px;">
+            </div>
+            <div class="form-group">
+                <label style="color: #38bdf8;">Status Pegawai</label>
+                <select id="edit-personel-status" style="background: rgba(0,0,0,0.5); color: white; font-weight:800;">
+                    <option value="TETAP">TETAP (KARTAP)</option>
+                    <option value="PKWT">PKWT</option>
+                    <option value="SO">SO (Staff Operator)</option>
+                    <option value="OS">OS (Outsourcing)</option>
+                    <option value="FOREMAN">FOREMAN</option>
+                </select>
+            </div>
+            <div style="display:flex; gap:12px; margin-top:25px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
+                <button type="button" onclick="document.getElementById('personel-edit-modal').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanEditPersonel()" style="flex:2; padding:15px; background:linear-gradient(135deg, #0284c7, #38bdf8); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer; box-shadow: 0 5px 15px rgba(56,189,248,0.4);">
+                    <i class="fas fa-save"></i> SIMPAN OTOMATIS
+                </button>
             </div>
         </div>
     </div>
@@ -1312,7 +1410,6 @@
             </div>
         </div>
     </div>
-
     <!-- ========================================================= -->
     <!-- WORKSHOP DIVISI                                           -->
     <!-- ========================================================= -->
@@ -2057,6 +2154,7 @@
             </button>
         </div>
     </div>
+    
    <script>
         // ==========================================
         // 1. ENGINE METRIK REALTIME & SECURITY
@@ -2264,15 +2362,12 @@
         window.pkmDatabase = []; window.dataProyekWS = []; window.arrayTugasBaru = [];
         window.surkomDatabase = []; window.surkomTahunAktif = 'ALL'; window.isModePilihSurkom = false;
         window.orgDatabase = [];
-        
-        // VARIABEL BARU UNTUK ARSIP & DOKUMENTASI
         window.smDatabase = []; 
         window.skDatabase = []; 
-
-        // ============================================================
-        // PEMBARUAN: VARIABEL ARRAY KHUSUS PESERTA MANUAL NOTULEN
-        // ============================================================
         window.pesertaManualNotulen = []; 
+
+        // VARIABEL BARU TIM & PERSONEL
+        window.personelDatabase = []; window.isPersonelUnlocked = false; 
         
         // Setup PDF.js
         const pdfjsLib = window['pdfjs-dist/build/pdf'];
@@ -2357,30 +2452,19 @@
             }
         };
 
-        // --- Logika Surat Masuk ---
         window.simpanSuratMasuk = async function() {
             const jd = window.amankanData(document.getElementById('sm-judul').value);
             const tg = document.getElementById('sm-tanggal').value;
             const fileInput = document.getElementById('sm-file-pdf');
-            
             if(!jd || !tg || fileInput.files.length === 0) return alert("Lengkapi judul, tanggal, dan file PDF!");
             window.toggleLoader(true, "Mengkompresi & Menyimpan PDF...");
-            
             try {
                 let thn = tg.split('-')[0];
                 let b64 = await window.kompresPDFAjaib(fileInput.files[0]);
-                await addDoc(collection(window.db, "surat_masuk"), { 
-                    judul: jd.toUpperCase(), 
-                    tanggal: tg, 
-                    tahun: thn,
-                    filePdfBase64: b64, 
-                    timestamp: Date.now() 
-                });
+                await addDoc(collection(window.db, "surat_masuk"), { judul: jd.toUpperCase(), tanggal: tg, tahun: thn, filePdfBase64: b64, timestamp: Date.now() });
                 alert("Surat Masuk Berhasil Disimpan!");
-                document.getElementById('sm-judul').value = "";
-                document.getElementById('sm-tanggal').value = "";
-                window.handleFileSelectArsip({files:[]}, 'sm-file-label'); 
-                window.bukaDataSuratMasuk();
+                document.getElementById('sm-judul').value = ""; document.getElementById('sm-tanggal').value = "";
+                window.handleFileSelectArsip({files:[]}, 'sm-file-label'); window.bukaDataSuratMasuk();
             } catch(e) { alert("Gagal menyimpan: " + e.message); }
             window.toggleLoader(false);
         };
@@ -2390,7 +2474,6 @@
             const c = document.getElementById('sm-list-container');
             const kw = window.amankanData((document.getElementById('sm-search-key').value || "").toLowerCase());
             const ft = document.getElementById('sm-filter-tahun').value;
-            
             if(forceFetch || window.smDatabase.length === 0) {
                 if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
                 window.smDatabase = [];
@@ -2401,52 +2484,28 @@
                 } catch(e){}
                 if(!forceFetch) window.toggleLoader(false);
             }
-            
-            let data = window.smDatabase.filter(d => {
-                let mKw = (d.judul || "").toLowerCase().includes(kw);
-                let mTh = (ft === 'ALL') ? true : (d.tahun == ft);
-                return mKw && mTh;
-            });
-            
+            let data = window.smDatabase.filter(d => { return ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)); });
             if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Masuk ditemukan.</p>`;
-            
             let h = "";
             data.forEach(d => {
-                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#10b981;" onclick="window.bukaViewerArsip('SM', '${d.id}')">
-                        <div>
-                            <h4 style="margin:0 0 5px 0; color:#10b981;">${d.judul}</h4>
-                            <p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p>
-                        </div>
-                        <i class="fas fa-chevron-right" style="color:var(--text-muted);"></i>
-                      </div>`;
+                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#10b981;" onclick="window.bukaViewerArsip('SM', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#10b981;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
             });
             c.innerHTML = h;
         };
 
-        // --- Logika Surat Keluar ---
         window.simpanSuratKeluar = async function() {
             const jd = window.amankanData(document.getElementById('sk-judul').value);
             const tg = document.getElementById('sk-tanggal').value;
             const fileInput = document.getElementById('sk-file-pdf');
-            
             if(!jd || !tg || fileInput.files.length === 0) return alert("Lengkapi judul, tanggal, dan file PDF!");
             window.toggleLoader(true, "Mengkompresi & Menyimpan PDF...");
-            
             try {
                 let thn = tg.split('-')[0];
                 let b64 = await window.kompresPDFAjaib(fileInput.files[0]);
-                await addDoc(collection(window.db, "surat_keluar"), { 
-                    judul: jd.toUpperCase(), 
-                    tanggal: tg, 
-                    tahun: thn,
-                    filePdfBase64: b64, 
-                    timestamp: Date.now() 
-                });
+                await addDoc(collection(window.db, "surat_keluar"), { judul: jd.toUpperCase(), tanggal: tg, tahun: thn, filePdfBase64: b64, timestamp: Date.now() });
                 alert("Surat Keluar Berhasil Disimpan!");
-                document.getElementById('sk-judul').value = "";
-                document.getElementById('sk-tanggal').value = "";
-                window.handleFileSelectArsip({files:[]}, 'sk-file-label'); 
-                window.bukaDataSuratKeluar();
+                document.getElementById('sk-judul').value = ""; document.getElementById('sk-tanggal').value = "";
+                window.handleFileSelectArsip({files:[]}, 'sk-file-label'); window.bukaDataSuratKeluar();
             } catch(e) { alert("Gagal menyimpan: " + e.message); }
             window.toggleLoader(false);
         };
@@ -2456,7 +2515,6 @@
             const c = document.getElementById('sk-list-container');
             const kw = window.amankanData((document.getElementById('sk-search-key').value || "").toLowerCase());
             const ft = document.getElementById('sk-filter-tahun').value;
-            
             if(forceFetch || window.skDatabase.length === 0) {
                 if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
                 window.skDatabase = [];
@@ -2467,82 +2525,45 @@
                 } catch(e){}
                 if(!forceFetch) window.toggleLoader(false);
             }
-            
-            let data = window.skDatabase.filter(d => {
-                let mKw = (d.judul || "").toLowerCase().includes(kw);
-                let mTh = (ft === 'ALL') ? true : (d.tahun == ft);
-                return mKw && mTh;
-            });
-            
+            let data = window.skDatabase.filter(d => { return ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)); });
             if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Keluar ditemukan.</p>`;
-            
             let h = "";
             data.forEach(d => {
-                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#f59e0b;" onclick="window.bukaViewerArsip('SK', '${d.id}')">
-                        <div>
-                            <h4 style="margin:0 0 5px 0; color:#f59e0b;">${d.judul}</h4>
-                            <p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p>
-                        </div>
-                        <i class="fas fa-chevron-right" style="color:var(--text-muted);"></i>
-                      </div>`;
+                h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#f59e0b;" onclick="window.bukaViewerArsip('SK', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#f59e0b;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
             });
             c.innerHTML = h;
         };
 
-        // --- Logika Fullscreen PDF Viewer ---
-        window.arsipPdfDocObj = null;
-        window.arsipCurrentPage = 1;
-
+        window.arsipPdfDocObj = null; window.arsipCurrentPage = 1;
         window.bukaViewerArsip = async function(tipe, id) {
             let db = tipe === 'SM' ? window.smDatabase : window.skDatabase;
             let d = db.find(x => x.id === id);
             if(!d || !d.filePdfBase64) return alert("Dokumen tidak valid.");
-            
             document.getElementById('arsip-pdf-modal').style.display = 'flex';
             document.getElementById('arsip-viewer-title').innerText = d.judul;
             document.getElementById('arsip-viewer-canvas').style.display = 'none';
             document.getElementById('arsip-viewer-loading').style.display = 'block';
-            
             try {
                 let pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
                 window.arsipPdfDocObj = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
                 window.arsipCurrentPage = 1;
                 await window.arsipRenderPage(1);
-            } catch(e) {
-                alert("Gagal memuat PDF.");
-                document.getElementById('arsip-pdf-modal').style.display = 'none';
-            }
+            } catch(e) { alert("Gagal memuat PDF."); document.getElementById('arsip-pdf-modal').style.display = 'none'; }
         };
 
         window.arsipRenderPage = async function(num) {
-            document.getElementById('arsip-viewer-loading').style.display = 'block';
-            document.getElementById('arsip-viewer-canvas').style.display = 'none';
-            
+            document.getElementById('arsip-viewer-loading').style.display = 'block'; document.getElementById('arsip-viewer-canvas').style.display = 'none';
             const page = await window.arsipPdfDocObj.getPage(num);
             const vp = page.getViewport({ scale: 1.2 }); 
-            const cvs = document.getElementById('arsip-viewer-canvas');
-            const ctx = cvs.getContext('2d');
-            cvs.width = vp.width;
-            cvs.height = vp.height;
-            
+            const cvs = document.getElementById('arsip-viewer-canvas'); const ctx = cvs.getContext('2d');
+            cvs.width = vp.width; cvs.height = vp.height;
             await page.render({ canvasContext: ctx, viewport: vp }).promise;
-            
             document.getElementById('arsip-page-info').innerText = `${num} / ${window.arsipPdfDocObj.numPages}`;
-            document.getElementById('arsip-viewer-loading').style.display = 'none';
-            cvs.style.display = 'block';
+            document.getElementById('arsip-viewer-loading').style.display = 'none'; cvs.style.display = 'block';
         };
 
-        window.arsipPrevPage = () => {
-            if(window.arsipCurrentPage <= 1) return;
-            window.arsipCurrentPage--;
-            window.arsipRenderPage(window.arsipCurrentPage);
-        };
-
-        window.arsipNextPage = () => {
-            if(window.arsipCurrentPage >= window.arsipPdfDocObj.numPages) return;
-            window.arsipCurrentPage++;
-            window.arsipRenderPage(window.arsipCurrentPage);
-        };
+        window.arsipPrevPage = () => { if(window.arsipCurrentPage <= 1) return; window.arsipCurrentPage--; window.arsipRenderPage(window.arsipCurrentPage); };
+        window.arsipNextPage = () => { if(window.arsipCurrentPage >= window.arsipPdfDocObj.numPages) return; window.arsipCurrentPage++; window.arsipRenderPage(window.arsipCurrentPage); };
 
         // ---------------------------------------------------------
         // STRUKTUR ORGANISASI 
@@ -2657,7 +2678,7 @@
                             </div>
                         </div>
 
-                        <!-- COL 3: ADMIN (BENNY F) -->
+                        <!-- COL 3: ADMIN -->
                         <div class="org-col" style="flex: 1; padding-top: 20px;">
                             <div class="line-v-circuit" style="height: 20px; position: absolute; top: 0; --delay: 1.4s;"></div>
                             <div class="org-box-neon ${ec}" style="width: 160px; border-color: #3b82f6; box-shadow: 0 0 15px rgba(59,130,246,0.3); --delay: 1.6s;" ${ck(adm.id)}>
@@ -2732,10 +2753,9 @@
         window.simpanEditOrg = async () => { const id = document.getElementById('org-edit-id').value; const jbt = document.getElementById('org-edit-jabatan').value.toUpperCase(); const nm = document.getElementById('org-edit-nama').value.toUpperCase(); const ag = document.getElementById('org-edit-anggota').value; window.toggleLoader(true, "Menyimpan..."); try { await updateDoc(doc(window.db, "struktur_organisasi", id), { jabatan: jbt, nama: nm, anggota: ag }); document.getElementById('org-edit-modal').style.display='none'; await window.ambilDataOrg(); } catch(e){} window.toggleLoader(false); };
 
         // ---------------------------------------------------------
-        // LOGIKA SURAT KOMPONEN (SURKOM)
+        // SURAT KOMPONEN (SURKOM)
         // ---------------------------------------------------------
         window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null;
-        
         window.prosesPDFSurkom = async function(inp) {
             const f = inp.files[0]; if(!f) return; window.toggleLoader(true, "Memecah PDF...");
             try {
@@ -2750,9 +2770,7 @@
                 }
             } catch(e) { alert("Error PDF: " + e.message); } window.toggleLoader(false);
         };
-
         window.bukaPreviewSurkom = async function(pNum) { const mod = document.getElementById('surkom-preview-modal'); const cvs = document.getElementById('surkom-preview-canvas'); const l = document.getElementById('surkom-preview-loading'); mod.style.display='flex'; cvs.style.display='none'; l.style.display='block'; document.getElementById('surkom-preview-page-num').innerText = pNum; try { const page = await window.surkomPdfDocObj.getPage(pNum); const vp = page.getViewport({ scale: 1.5 }); const ctx = cvs.getContext('2d'); cvs.height = vp.height; cvs.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise; l.style.display='none'; cvs.style.display='block'; } catch(e) {} };
-        
         window.simpanAllSurkomHasil = async function() {
             const op = window.amankanData(document.getElementById('surkom-operator').value); const th = document.getElementById('surkom-tahun-input').value;
             if(!op) return alert("Isi nama PIC!"); window.toggleLoader(true, "Menyimpan Data...");
@@ -2767,22 +2785,16 @@
                 await Promise.all(arr); alert("Berhasil disimpan!"); window.bukaAllDataSurkom();
             } catch(e) {} window.toggleLoader(false);
         };
-
         window.bukaAllDataSurkom = async () => { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); };
         window.filterTabTahunSurkom = (th, btn) => { document.querySelectorAll('#surkom-tabs-tahun .gm-tab').forEach(b => b.classList.remove('active')); btn.classList.add('active'); window.surkomTahunAktif = th; window.renderListAllSurkom(); };
         window.toggleModePilihSurkom = () => { window.isModePilihSurkom = !window.isModePilihSurkom; const btn = document.getElementById('btn-mode-pilih-surkom'); const actions = document.getElementById('surkom-action-buttons'); if(window.isModePilihSurkom) { btn.style.background = "linear-gradient(135deg, #10b981, #059669)"; btn.style.borderColor = "#10b981"; actions.style.display = 'flex'; } else { btn.style.background = "rgba(255,255,255,0.1)"; btn.style.borderColor = "var(--border-dark)"; actions.style.display = 'none'; } window.renderListAllSurkom(); };
-
         window.renderListAllSurkom = async function() {
             const c = document.getElementById('surkom-list-container'); const kw = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
             if(!window.surkomDatabase || window.surkomDatabase.length === 0) {
                 window.toggleLoader(true, "Mengambil Arsip..."); window.surkomDatabase = [];
                 try { const snap = await getDocs(query(collection(window.db, "surat_komponen"))); snap.forEach(d => window.surkomDatabase.push({id: d.id, ...d.data()})); window.surkomDatabase.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch(e){} window.toggleLoader(false);
             }
-            let data = window.surkomDatabase.filter(d => {
-                let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw);
-                let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif);
-                return mKw && mTh;
-            });
+            let data = window.surkomDatabase.filter(d => { let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw); let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif); return mKw && mTh; });
             if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; border:1px dashed var(--border-dark); border-radius:10px;">Tidak ada arsip ditemukan.</p>`;
             let h = ""; data.forEach(d => {
                 let tagTh = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">${d.tahun}</span>` : `<span style="background:rgba(239,68,68,0.2); color:#ef4444; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">DATA LAMA</span>`;
@@ -2790,18 +2802,16 @@
                 h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:var(--cepat);" onclick="window.bukaPreviewDariServer('${d.id}')"><div style="flex:1; display:flex; align-items:center;">${checkboxHtml}<div><h4 style="margin:0 0 5px 0; color:var(--secondary);">${d.judul} ${tagTh}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">PIC: ${d.operator || 'Admin'} | ${d.waktuInput || '-'}</p></div></div><button type="button" onclick="event.stopPropagation(); window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:var(--cepat); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;"><i class="fas fa-download"></i></button></div>`;
             }); c.innerHTML = h;
         };
-        
         window.bukaPreviewDariServer = async function(id) { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { window.toggleLoader(true); try { const pdfBytes = base64ToArrayBuffer(d.filePdfBase64); const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise; const page = await pdf.getPage(1); const vp = page.getViewport({ scale: 1.5 }); const modal = document.getElementById('surkom-preview-modal'); const canvas = document.getElementById('surkom-preview-canvas'); const loading = document.getElementById('surkom-preview-loading'); modal.style.display='flex'; canvas.style.display='none'; loading.style.display='block'; document.getElementById('surkom-preview-page-num').innerText = d.judul; const ctx = canvas.getContext('2d'); canvas.height = vp.height; canvas.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise; loading.style.display='none'; canvas.style.display='block'; } catch(e){} window.toggleLoader(false); } };
         window.unduhPDFSurkom = (id, jd) => { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${jd}.pdf`; a.click(); } };
         window.bukaModalUnduhGlobal = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-count-selected').innerText = sel.length; document.getElementById('surkom-unduh-global-modal').style.display='flex'; };
         window.prosesUnduhGlobalSurkom = async (t) => { document.getElementById('surkom-unduh-global-modal').style.display='none'; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true, t==='merge'?"Menyatukan PDF...":"Mengunduh..."); try { if(t==='pisah') { for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { let a=document.createElement("a"); a.href=d.filePdfBase64; a.download=`SURKOM_${d.judul}.pdf`; a.click(); await new Promise(r=>setTimeout(r,600)); } } } else { const { PDFDocument } = PDFLib; const mPdf = await PDFDocument.create(); for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { const p = await PDFDocument.load(base64ToArrayBuffer(d.filePdfBase64)); const cp = await mPdf.copyPages(p, p.getPageIndices()); cp.forEach(pg=>mPdf.addPage(pg)); } } const mF = await mPdf.saveAsBase64({ dataUri: true }); let a=document.createElement("a"); a.href=mF; a.download=`SURKOM_MERGE.pdf`; a.click(); } } catch(e){} window.toggleLoader(false); };
         window.bukaModalForwardSurkom = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-forward-modal').style.display='flex'; };
         window.prosesForwardDataSurkom = async () => { const th = document.getElementById('surkom-forward-tahun').value; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true); try { let p=[]; for(let id of sel) { p.push(updateDoc(doc(window.db,"surat_komponen",id),{tahun:th})); let d = window.surkomDatabase.find(x=>x.id===id); if(d) d.tahun=th; } await Promise.all(p); alert("Berhasil dipindah!"); document.getElementById('surkom-forward-modal').style.display='none'; window.toggleModePilihSurkom(); window.renderListAllSurkom(); } catch(e){} window.toggleLoader(false); };
+
         // ---------------------------------------------------------
-        // LOGIKA DIVISI & MODUL LAINNYA
+        // DIVISI LAIN (WORKSHOP, ADM, DLL)
         // ---------------------------------------------------------
-        
-        // Workshop
         window.inisialisasiFormWS = () => { document.getElementById('ws-np-nama').value=""; document.getElementById('ws-rencana-kerja-container').innerHTML=""; window.arrayTugasBaru=[]; window.tambahTugasUtamaWS(); };
         window.tambahTugasUtamaWS = () => { const idT = window.arrayTugasBaru.length; window.arrayTugasBaru.push({ namaTugas: "BUBUT", subTasks: [] }); const h = `<div class="dark-panel" style="padding:15px; margin-bottom:10px;"><select onchange="window.arrayTugasBaru[${idT}].namaTugas=this.value" style="margin-bottom:10px;"><option value="BUBUT">BUBUT</option><option value="MILLING">MILLING</option><option value="CNC">CNC</option><option value="ASSEMBLY">ASSEMBLY</option></select><div id="ws-sub-con-${idT}"></div><button type="button" class="btn-submit" style="background:transparent; border:1px dashed var(--secondary); color:var(--secondary); padding:8px; font-size:11px;" onclick="window.tambahSubTaskWS(${idT})"><i class="fas fa-plus"></i> Rincian</button></div>`; document.getElementById('ws-rencana-kerja-container').insertAdjacentHTML('beforeend', h); };
         window.tambahSubTaskWS = (idT) => { const idS = window.arrayTugasBaru[idT].subTasks.length; window.arrayTugasBaru[idT].subTasks.push({ namaSub: "", estimasiJam: 0, actualDurasi: 0, status: "Belum Selesai" }); const h = `<div style="display:flex; gap:8px; margin-bottom:8px;"><input type="text" placeholder="Rincian..." onchange="window.arrayTugasBaru[${idT}].subTasks[${idS}].namaSub=this.value" style="flex:2;"><input type="number" placeholder="Jam" onchange="window.arrayTugasBaru[${idT}].subTasks[${idS}].estimasiJam=parseFloat(this.value); window.kalkulasiTotalWaktuWS();" style="flex:1;"></div>`; document.getElementById(`ws-sub-con-${idT}`).insertAdjacentHTML('beforeend', h); };
@@ -2820,274 +2830,238 @@
         window.switchTabProgressWS = (t) => { document.getElementById('ws-prog-view-data').style.display = t==='data'?'block':'none'; document.getElementById('ws-prog-report-data').style.display = t==='report'?'block':'none'; if(t==='data') { let h=""; window.dataProyekWS.forEach(d => { let act=0; d.tasks.forEach(ts=>ts.subTasks.forEach(s=>act+=(s.actualDurasi||0))); let ach = Math.round((d.estJam>0?act/d.estJam:0)*100); h+=`<div class="progress-card"><h3>${d.namaProyek}</h3><p>Est: ${d.estJam} Jam | Act: ${act.toFixed(1)} Jam | ACH: ${ach}%</p></div>`; }); document.getElementById('list-ws-progress').innerHTML = h || "<p>Kosong</p>"; } else { let h=""; window.dataProyekWS.forEach(d=> { h+=`<label><input type="checkbox" class="chk-ai-ws" value="${d.id}"> ${d.namaProyek}</label><br>`; }); document.getElementById('list-ws-report-checkbox').innerHTML = h; } };
         window.generateAIReport = () => alert("AI Executive Report Berhasil Dibuat.");
 
-        // ADM Mold
         window.simpanGosokMold = async () => { const t = document.getElementById('adm-gosok-tgl').value, s = document.getElementById('adm-gosok-shift').value, p = window.amankanData(document.getElementById('adm-gosok-pic').value), m = window.amankanData(document.getElementById('adm-gosok-mold').value), st = document.getElementById('adm-gosok-start').value, fn = document.getElementById('adm-gosok-finish').value, k = window.amankanData(document.getElementById('adm-gosok-ket').value); let a=[]; document.querySelectorAll('.chk-gosok:checked').forEach(e=>a.push(e.value)); if(!t||!p||!m||a.length===0) return alert("Lengkapi data!"); window.toggleLoader(true); try { await addDoc(collection(window.db, "adm_harian"), {tipe:"GOSOK MOLD", tanggal:t, shift:s, pic:p.toUpperCase(), namaMold:m.toUpperCase(), areaGosok:a, jamMulai:st, jamSelesai:fn, keterangan:k, timestamp:Date.now()}); alert("Tersimpan!"); window.navigasi('adm-mold-menu-screen'); } catch(e){} window.toggleLoader(false); };
         window.simpanAdmHarian = async () => { const t = document.getElementById('adm-harian-tgl').value, s = document.getElementById('adm-harian-shift').value, p = window.amankanData(document.getElementById('adm-harian-pic').value), j = document.getElementById('adm-harian-jenis').value, k = window.amankanData(document.getElementById('adm-harian-ket').value); if(!t||!p||!k) return alert("Lengkapi!"); window.toggleLoader(true); try { await addDoc(collection(window.db, "adm_harian"), {tipe:"KINERJA HARIAN", tanggal:t, shift:s, pic:p.toUpperCase(), jenis:j, keterangan:k, timestamp:Date.now()}); alert("Tersimpan!"); window.navigasi('adm-mold-menu-screen'); } catch(e){} window.toggleLoader(false); };
         window.bukaDatabaseADM = async () => { window.navigasi('adm-view-data-screen'); window.renderListAdm(); };
         window.renderListAdm = async () => { const c = document.getElementById('list-adm-harian'), ft = document.getElementById('adm-filter-tipe').value; c.innerHTML = "<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db, "adm_harian"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); if(ft!=="Semua") arr=arr.filter(x=>x.tipe===ft); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card" style="border-left-color:${d.tipe==='GOSOK MOLD'?'#f59e0b':'#3b82f6'};"><h4>${d.tipe} - ${d.pic}</h4><p>${d.tanggal} | ${d.tipe==='GOSOK MOLD'?d.namaMold:d.jenis}</p></div>`; }); c.innerHTML = h||"<p>Kosong</p>"; } catch(e){} };
 
-        // PKM Eltre
         window.bukaPKMEltre = async () => { window.navigasi('ms-pkm-eltre-screen'); window.bukaTabPKM('verifikasi'); await window.muatDataPKMEltre(); };
         window.bukaTabPKM = (t) => { document.querySelectorAll('.tab-btn-pkm').forEach(b=>b.classList.remove('tab-active')); document.querySelectorAll('.tab-content-pkm').forEach(c=>c.style.display='none'); document.getElementById(`btn-tab-pkm-${t}`).classList.add('tab-active'); document.getElementById(`tab-pkm-${t}`).style.display='block'; };
         window.muatDataPKMEltre = async () => { window.pkmDatabase=[]; try { const snap=await getDocs(query(collection(window.db,"pkm_eltre"))); snap.forEach(d=>window.pkmDatabase.push({id:d.id,...d.data()})); let hV="", hK="", hP="", hS="", n=0; window.pkmDatabase.forEach(d=>{ let c=`<div class="progress-card"><h4>${d.namaMold||'-'}</h4><p>${d.kendala||'-'}</p></div>`; let st = d.status||'Verifikasi'; if(st==='Verifikasi'){n++; hV+=`<div onclick="window.formVerifikasiPKM('${d.id}')" style="cursor:pointer;">${c}</div>`;} else if(st==='Dikerjakan') hK+=c; else if(st==='Dipisahkan') hP+=c; else hS+=c; }); const cV=document.getElementById('list-pkm-verifikasi'); if(cV) cV.innerHTML=hV||"<p>Kosong</p>"; const cK=document.getElementById('list-pkm-kerjakan'); if(cK) cK.innerHTML=hK||"<p>Kosong</p>"; const cP=document.getElementById('list-pkm-pisah'); if(cP) cP.innerHTML=hP||"<p>Kosong</p>"; const cS=document.getElementById('list-pkm-selesai'); if(cS) cS.innerHTML=hS||"<p>Kosong</p>"; const b=document.getElementById('badge-pkm-notif'); if(b) { b.innerText=n; b.style.display=n>0?'block':'none'; } } catch(e){} };
         window.formVerifikasiPKM = (id) => { const d=window.pkmDatabase.find(x=>x.id===id); if(d) { document.getElementById('pkm-id-tiket-verifikasi').value=id; document.getElementById('pkm-nama-mold-text').innerText=d.namaMold; document.getElementById('modal-aksi-pkm').style.display='flex'; } };
         window.prosesVerifikasiPKM = async (a) => { const id = document.getElementById('pkm-id-tiket-verifikasi').value; let s = a==='kerjakan'?'Dikerjakan':'Dipisahkan'; window.toggleLoader(true); try{ await updateDoc(doc(window.db,"pkm_eltre",id),{status:s}); document.getElementById('modal-aksi-pkm').style.display='none'; await window.muatDataPKMEltre(); window.bukaTabPKM(a==='kerjakan'?'kerjakan':'pisah'); } catch(e){} window.toggleLoader(false); };
 
-        // Masalah Lapangan / Sub Info
         window.bukaSubInfo = async function(kategori) { window.kategoriInfoAktif = kategori; const jsi = document.getElementById('judul-sub-info'); if(jsi) jsi.innerText = kategori; window.navigasi('sub-info-screen'); await window.ambilDataInfoServer(); }
         window.ambilDataInfoServer = async function() { window.toggleLoader(true, "Mengunduh Info..."); window.infoDatabase = []; try { const snap = await getDocs(query(collection(window.db, "informasi_mold"))); snap.forEach((doc) => { if(doc.data().kategori === window.kategoriInfoAktif) window.infoDatabase.push({ id: doc.id, ...doc.data() }); }); window.infoDatabase.sort((a, b) => b.timestamp - a.timestamp); } catch (e) {} window.toggleLoader(false); window.renderInfoList(); }
         window.simpanInfoData = async function() { const nama = window.amankanData(document.getElementById('info-nama').value); const ket = window.amankanData(document.getElementById('info-ket').value); const tgl = document.getElementById('info-tgl').value; const user = window.amankanData(document.getElementById('info-user').value); if(!nama || !tgl) return alert("Isi form!"); window.toggleLoader(true); try { await addDoc(collection(window.db, "informasi_mold"), { kategori: window.kategoriInfoAktif || "INBOX_LAPANGAN", namaKegiatan: nama, keterangan: ket, tanggal: tgl, pembuat: user || "Admin", timestamp: Date.now() }); alert("Tersimpan!"); document.getElementById('info-nama').value=""; document.getElementById('info-ket').value=""; await window.ambilDataInfoServer(); } catch (e) {} window.toggleLoader(false); }
         window.renderInfoList = function() { const c = document.getElementById('list-sub-info'); if(!c) return; if(window.infoDatabase.length===0) return c.innerHTML=`<p>Kosong</p>`; let h=""; window.infoDatabase.forEach(d=>{ h+=`<div class="progress-card"><h3>${d.namaKegiatan}</h3><p>${d.keterangan}</p><p style="font-size:10px; color:gray;">${d.tanggal} | ${d.pembuat}</p></div>`; }); c.innerHTML=h; }
 
-        // Trial Mold
         window.switchTabTrial = (t) => { document.getElementById('trial-input-area').style.display = t==='input'?'block':'none'; document.getElementById('trial-database-area').style.display = t==='database'?'block':'none'; if(t==='database') window.renderTrialDatabase(); };
         window.simpanPermintaanTrial = async () => { const t = document.getElementById('trial-tgl').value, p = window.amankanData(document.getElementById('trial-pemohon').value), m = window.amankanData(document.getElementById('trial-mold').value), a = window.amankanData(document.getElementById('trial-alasan').value); if(!t||!p||!m) return alert("Isi Form!"); window.toggleLoader(true); try { await addDoc(collection(window.db,"permintaan_trial"),{tanggal:t, pemohon:p.toUpperCase(), namaMold:m.toUpperCase(), alasan:a, status:"Menunggu Jadwal", timestamp:Date.now()}); alert("Terkirim!"); window.switchTabTrial('database'); } catch(e){} window.toggleLoader(false); };
         window.renderTrialDatabase = async () => { const c = document.getElementById('list-trial-database'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"permintaan_trial"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.namaMold}</h4><p>Pemohon: ${d.pemohon} | Status: ${d.status}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
         // =========================================================================================
+        // LOGIKA TIM & PERSONEL (AUTOSAVE FIREBASE)
+        // =========================================================================================
+        window.bukaMenuPersonel = async () => {
+            window.navigasi('tim-personel-screen');
+            await window.ambilDataPersonel();
+        };
+
+        window.ambilDataPersonel = async () => {
+            const c = document.getElementById('list-personel-table');
+            c.innerHTML = "<tr><td colspan='4' style='text-align:center; padding: 25px;'><i class='fas fa-spinner fa-spin fa-2x' style='color:#38bdf8; margin-bottom:10px;'></i><br>Membaca Database Karyawan...</td></tr>";
+            window.personelDatabase = [];
+            
+            try {
+                const snap = await getDocs(query(collection(window.db, "tim_personel")));
+                if (snap.empty) {
+                    const defaults = [
+                        { id: "tp1", level: 1, jabatan: "DEPT. HEAD", nama: "EDI JUNAEDI", status: "TETAP" },
+                        { id: "tp2", level: 2, jabatan: "SECTION HEAD", nama: "HERU NUGRAHA", status: "TETAP" },
+                        { id: "tp3", level: 2, jabatan: "ADMIN", nama: "BENNY FIRMANSYAH", status: "TETAP" },
+                        { id: "tp4", level: 3, jabatan: "FOREMAN INJ 1", nama: "INDRA", status: "FOREMAN" },
+                        { id: "tp5", level: 4, jabatan: "OPR INJ 1", nama: "SUPRIYANTO", status: "SO" },
+                        { id: "tp6", level: 4, jabatan: "OPR INJ 1", nama: "APRILIAN", status: "PKWT" },
+                        { id: "tp7", level: 4, jabatan: "OPR INJ 1", nama: "IWAN", status: "PKWT" },
+                        { id: "tp8", level: 4, jabatan: "OPR INJ 1", nama: "HERU", status: "PKWT" },
+                        { id: "tp9", level: 3, jabatan: "FOREMAN INJ 2", nama: "DENI.R", status: "FOREMAN" },
+                        { id: "tp10", level: 4, jabatan: "OPR INJ 2", nama: "KOMARUDIN", status: "SO" },
+                        { id: "tp11", level: 4, jabatan: "OPR INJ 2", nama: "EDI.R", status: "SO" },
+                        { id: "tp12", level: 4, jabatan: "OPR INJ 2", nama: "TAMSIL", status: "PKWT" },
+                        { id: "tp13", level: 4, jabatan: "OPR INJ 2", nama: "RAFLY", status: "PKWT" },
+                        { id: "tp14", level: 3, jabatan: "FOREMAN INJ 3 & STORE", nama: "KIKI", status: "FOREMAN" },
+                        { id: "tp15", level: 4, jabatan: "OPR INJ 3", nama: "ROHIDI", status: "SO" },
+                        { id: "tp16", level: 4, jabatan: "OPR INJ 3", nama: "ANDRIAN", status: "PKWT" },
+                        { id: "tp17", level: 4, jabatan: "OPR INJ 3", nama: "GUNAWAN", status: "OS" },
+                        { id: "tp18", level: 4, jabatan: "OPR INJ 3", nama: "SUKARYA", status: "PKWT" },
+                        { id: "tp19", level: 4, jabatan: "MOLD STORE", nama: "UHDI", status: "SO" },
+                        { id: "tp20", level: 4, jabatan: "MOLD STORE", nama: "WARSITO", status: "SO" },
+                        { id: "tp21", level: 4, jabatan: "MOLD STORE", nama: "NANANG", status: "TETAP" },
+                        { id: "tp22", level: 4, jabatan: "MOLD STORE", nama: "SUPRIYATNA", status: "PKWT" },
+                        { id: "tp23", level: 4, jabatan: "MOLD STORE", nama: "HERMAN", status: "PKWT" },
+                        { id: "tp24", level: 4, jabatan: "MOLD STORE", nama: "MUSTOPA", status: "PKWT" },
+                        { id: "tp25", level: 4, jabatan: "MOLD STORE", nama: "ENDING", status: "SO" },
+                        { id: "tp26", level: 4, jabatan: "MOLD STORE", nama: "FIRDI", status: "PKWT" },
+                        { id: "tp27", level: 4, jabatan: "MOLD STORE", nama: "DASLAM", status: "PKWT" },
+                        { id: "tp28", level: 3, jabatan: "DEV FOREMAN", nama: "TARMUJI", status: "FOREMAN" },
+                        { id: "tp29", level: 4, jabatan: "OPR DEV", nama: "SUNARYO", status: "SO" },
+                        { id: "tp30", level: 4, jabatan: "OPR DEV", nama: "AHMAD ROFII", status: "PKWT" },
+                        { id: "tp31", level: 4, jabatan: "OPR DEV", nama: "ENOH", status: "SO" },
+                        { id: "tp32", level: 4, jabatan: "OPR DEV", nama: "WAWAN S", status: "SO" },
+                        { id: "tp33", level: 4, jabatan: "OPR DEV", nama: "ARIS", status: "PKWT" },
+                        { id: "tp34", level: 4, jabatan: "OPR DEV", nama: "BAYU", status: "PKWT" },
+                        { id: "tp35", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "TOPIK H", status: "SO" },
+                        { id: "tp36", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "AGI G", status: "SO" },
+                        { id: "tp37", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "ZAENUDIN", status: "PKWT" },
+                        { id: "tp38", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "RIDWAN", status: "PKWT" },
+                        { id: "tp39", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "ARUL", status: "OS" },
+                        { id: "tp40", level: 4, jabatan: "CNC MILLING & ROUTER", nama: "YUSRIL MAHENDRA", status: "PKWT" },
+                        { id: "tp41", level: 4, jabatan: "EDM", nama: "AJI.S", status: "SO" },
+                        { id: "tp42", level: 4, jabatan: "EDM", nama: "RANDY P", status: "PKWT" },
+                        { id: "tp43", level: 4, jabatan: "EDM", nama: "BANDANI", status: "PKWT" },
+                        { id: "tp44", level: 4, jabatan: "EDM", nama: "MUHAMMAD RICI RIFAI", status: "OS" },
+                        { id: "tp45", level: 4, jabatan: "MILLING", nama: "EKO M", status: "SO" },
+                        { id: "tp46", level: 4, jabatan: "MILLING", nama: "A HAERUDIN", status: "SO" },
+                        { id: "tp47", level: 4, jabatan: "MILLING", nama: "LALAN Q", status: "SO" },
+                        { id: "tp48", level: 4, jabatan: "MILLING", nama: "INDRAWAN", status: "PKWT" },
+                        { id: "tp49", level: 4, jabatan: "BUBUT", nama: "SUMARDI", status: "SO" },
+                        { id: "tp50", level: 4, jabatan: "BUBUT", nama: "WAWAN", status: "SO" },
+                        { id: "tp51", level: 4, jabatan: "BUBUT", nama: "ADE NOVIANDANA", status: "PKWT" }
+                    ];
+                    for(let item of defaults) {
+                        await setDoc(doc(window.db, "tim_personel", item.id), item);
+                        window.personelDatabase.push(item);
+                    }
+                } else {
+                    snap.forEach(d => window.personelDatabase.push({id: d.id, ...d.data()}));
+                }
+                
+                window.personelDatabase.sort((a, b) => (a.level || 99) - (b.level || 99));
+                window.renderPersonelTable();
+            } catch(e) { 
+                c.innerHTML = `<tr><td colspan='4' style='text-align:center; color:#ef4444;'>Error Database: ${e.message}</td></tr>`; 
+            }
+        };
+
+        window.renderPersonelTable = () => {
+            const c = document.getElementById('list-personel-table');
+            let h = "";
+            window.personelDatabase.forEach(d => {
+                let badgeClass = "badge-tetap";
+                let st = (d.status || "").toUpperCase();
+                
+                if (st === "PKWT") badgeClass = "badge-pkwt";
+                else if (st === "SO") badgeClass = "badge-so";
+                else if (st === "OS") badgeClass = "badge-os";
+                else if (st === "FOREMAN") badgeClass = "badge-foreman";
+
+                let btnEdit = window.isPersonelUnlocked 
+                    ? `<button class="btn-edit-personel" onclick="window.bukaModalEditPersonel('${d.id}')"><i class="fas fa-edit"></i> EDIT</button>` 
+                    : `<div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:6px 12px; border-radius:8px; display:inline-block;"><i class="fas fa-lock" style="color:#64748b; font-size:12px;"></i></div>`;
+
+                let garisKiri = window.isPersonelUnlocked ? "border-left: 4px solid #10b981;" : "border-left: 4px solid transparent;";
+
+                h += `<tr style="transition:0.3s; ${garisKiri}">
+                        <td>${d.jabatan}</td>
+                        <td style="color:#38bdf8;">${d.nama}</td>
+                        <td style="text-align:center;"><span class="badge-status ${badgeClass}">${st}</span></td>
+                        <td style="text-align:center;">${btnEdit}</td>
+                      </tr>`;
+            });
+            c.innerHTML = h;
+        };
+
+        window.bukaGembokPersonel = () => {
+            document.getElementById('personel-pin-modal').style.display = 'flex';
+            document.getElementById('input-pin-personel').value = '';
+            document.getElementById('msg-pin-error-personel').style.display = 'none';
+        };
+
+        window.verifikasiPinPersonel = () => {
+            if(document.getElementById('input-pin-personel').value === "2025") {
+                window.isPersonelUnlocked = true;
+                document.getElementById('personel-pin-modal').style.display = 'none';
+                window.renderPersonelTable(); 
+                document.getElementById('btn-gembok-personel').style.display = 'none';
+            } else {
+                document.getElementById('msg-pin-error-personel').style.display = 'block';
+            }
+        };
+
+        window.bukaModalEditPersonel = (id) => {
+            const d = window.personelDatabase.find(x => x.id === id);
+            if(!d) return;
+            document.getElementById('edit-personel-id').value = id;
+            document.getElementById('edit-personel-jabatan').value = d.jabatan;
+            document.getElementById('edit-personel-nama').value = d.nama;
+            
+            const selectSt = document.getElementById('edit-personel-status');
+            let matched = false;
+            for(let i=0; i<selectSt.options.length; i++) {
+                if(selectSt.options[i].value === d.status) { selectSt.selectedIndex = i; matched = true; break; }
+            }
+            if(!matched) selectSt.selectedIndex = 0; 
+            
+            document.getElementById('personel-edit-modal').style.display = 'flex';
+        };
+
+        window.simpanEditPersonel = async () => {
+            const id = document.getElementById('edit-personel-id').value;
+            const jbt = document.getElementById('edit-personel-jabatan').value.toUpperCase();
+            const nm = document.getElementById('edit-personel-nama').value.toUpperCase();
+            const st = document.getElementById('edit-personel-status').value.toUpperCase();
+            
+            window.toggleLoader(true, "Menyinkronkan ke Firebase...");
+            try {
+                await updateDoc(doc(window.db, "tim_personel", id), { jabatan: jbt, nama: nm, status: st });
+                document.getElementById('personel-edit-modal').style.display = 'none';
+                await window.ambilDataPersonel();
+            } catch(e) { 
+                alert("Gagal update data! Pastikan koneksi internet stabil."); 
+            }
+            window.toggleLoader(false);
+        };
+
+        // =========================================================================================
         // LOGIKA NOTULEN MEETING (DIPERBARUI)
         // =========================================================================================
+        window.tambahPesertaManualNotul = function() { const inp = document.getElementById('notul-peserta-manual'); const val = inp.value.trim(); if(!val) return; window.pesertaManualNotulen.push(val); inp.value = ""; window.renderPesertaManualNotul(); };
+        window.hapusPesertaManualNotul = function(idx) { window.pesertaManualNotulen.splice(idx, 1); window.renderPesertaManualNotul(); };
+        window.renderPesertaManualNotul = function() { const container = document.getElementById('list-peserta-manual-container'); let h = ""; window.pesertaManualNotulen.forEach((p, idx) => { h += `<div class="manual-attendee-tag"><span>${p}</span><i class="fas fa-times-circle" style="cursor:pointer; color:#ef4444;" onclick="window.hapusPesertaManualNotul(${idx})"></i></div>`; }); container.innerHTML = h; };
+        window.aiRapihkanNotulen = () => { let t = document.getElementById('notul-deskripsi').value; if(!t) return; window.toggleLoader(true,"AI Merapihkan Format..."); setTimeout(()=>{ document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); window.toggleLoader(false); }, 1000); };
         
-        // 1. Fitur Tambah Peserta Manual (Luar Daftar)
-        window.tambahPesertaManualNotul = function() {
-            const inp = document.getElementById('notul-peserta-manual');
-            const val = inp.value.trim();
-            if(!val) return;
-            window.pesertaManualNotulen.push(val);
-            inp.value = "";
-            window.renderPesertaManualNotul();
-        };
-
-        // 2. Fitur Hapus Peserta Manual
-        window.hapusPesertaManualNotul = function(idx) {
-            window.pesertaManualNotulen.splice(idx, 1);
-            window.renderPesertaManualNotul();
-        };
-
-        // 3. Render tag UI Peserta Manual
-        window.renderPesertaManualNotul = function() {
-            const container = document.getElementById('list-peserta-manual-container');
-            let h = "";
-            window.pesertaManualNotulen.forEach((p, idx) => {
-                h += `<div class="manual-attendee-tag">
-                        <span>${p}</span>
-                        <i class="fas fa-times-circle" style="cursor:pointer; color:#ef4444;" onclick="window.hapusPesertaManualNotul(${idx})"></i>
-                      </div>`;
-            });
-            container.innerHTML = h;
-        };
-
-        // 4. AI Rapihkan Notulen
-        window.aiRapihkanNotulen = () => { 
-            let t = document.getElementById('notul-deskripsi').value; 
-            if(!t) return; 
-            window.toggleLoader(true,"AI Merapihkan Format..."); 
-            setTimeout(()=>{ 
-                document.getElementById('notul-deskripsi').value = t.split(/\n|\.\s/).filter(x=>x.trim().length>2).map(x=>"• "+x.trim()).join("\n\n"); 
-                window.toggleLoader(false); 
-            }, 1000); 
-        };
-
-        // 5. Simpan Keseluruhan Notulen
         window.simpanNotulen = async () => { 
-            const j = document.getElementById('notul-jenis').value; 
-            const d = window.amankanData(document.getElementById('notul-deskripsi').value); 
-            const w = document.getElementById('notul-waktu-display').value; 
-            const f = document.getElementById('notul-foto'); 
-            
+            const j = document.getElementById('notul-jenis').value; const d = window.amankanData(document.getElementById('notul-deskripsi').value); const w = document.getElementById('notul-waktu-display').value; const f = document.getElementById('notul-foto'); 
             if(!d) return alert("Isi deskripsi evaluasi/pembahasan terlebih dahulu!"); 
-            
-            // a. Ambil peserta dari daftar centang (Checkbox)
-            let p = []; 
-            document.querySelectorAll('.chk-hadir:checked').forEach(c => p.push(c.value)); 
-            
-            // b. GABUNGKAN dengan daftar peserta Manual yang baru
-            if (window.pesertaManualNotulen.length > 0) {
-                p = p.concat(window.pesertaManualNotulen);
-            }
-
+            let p = []; document.querySelectorAll('.chk-hadir:checked').forEach(c => p.push(c.value)); 
+            if (window.pesertaManualNotulen.length > 0) { p = p.concat(window.pesertaManualNotulen); }
             if(p.length === 0) p.push("Tidak ada data kehadiran."); 
-            
-            // Mapping deskripsi ke objek array terstruktur
             let arrD = d.split('\n').filter(x => x.trim().length > 0).map((tx, i) => ({id: i, teks: tx.replace(/^•\s*/,''), done: false})); 
-            
-            window.toggleLoader(true, "Menyimpan Dokumen..."); 
-            let b64 = ""; 
-            if(f.files.length > 0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); 
-            
-            try { 
-                await addDoc(collection(window.db,"notulen_meeting"), {
-                    jenisMeeting: j, 
-                    waktuRecord: w, 
-                    deskripsiData: arrD, 
-                    peserta: p, 
-                    foto: b64, 
-                    timestamp: Date.now()
-                }); 
-                alert("Notulen Meeting Berhasil Disimpan!"); 
-                
-                // RESET Form Input
-                document.getElementById('notul-deskripsi').value = "";
-                document.querySelectorAll('.chk-hadir:checked').forEach(c => c.checked = false);
-                window.pesertaManualNotulen = [];
-                window.renderPesertaManualNotul();
-                if(f) f.value = "";
-                if(document.getElementById('status-notul-foto')) document.getElementById('status-notul-foto').innerHTML = "";
-
-                window.navigasi('notulen-menu-screen'); 
-            } catch(e) { console.error(e); alert("Gagal menyimpan ke database."); } 
-            
-            window.toggleLoader(false); 
+            window.toggleLoader(true, "Menyimpan Dokumen..."); let b64 = ""; if(f.files.length > 0) b64 = await window.compressImage(f.files[0], 800, 800, 0.6); 
+            try { await addDoc(collection(window.db,"notulen_meeting"), { jenisMeeting: j, waktuRecord: w, deskripsiData: arrD, peserta: p, foto: b64, timestamp: Date.now() }); alert("Notulen Meeting Berhasil Disimpan!"); document.getElementById('notul-deskripsi').value = ""; document.querySelectorAll('.chk-hadir:checked').forEach(c => c.checked = false); window.pesertaManualNotulen = []; window.renderPesertaManualNotul(); if(f) f.value = ""; if(document.getElementById('status-notul-foto')) document.getElementById('status-notul-foto').innerHTML = ""; window.navigasi('notulen-menu-screen'); } catch(e) { console.error(e); alert("Gagal menyimpan ke database."); } window.toggleLoader(false); 
         };
 
         window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-content').forEach(e=>e.style.display='none'); document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(b=>b.classList.remove('tab-active')); if(j==='MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display='block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); } else if(j==='MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display='block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); } else { document.getElementById('list-notulen-lapangan').style.display='block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); } };
+        window.bukaHasilNotulen = async () => { window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); window.notulenDatabase=[]; try{ const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); let hP="",hU="",hL=""; window.notulenDatabase.forEach(d=>{ let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; if(d.jenisMeeting==='MEETING PAGI') hP+=c; else if(d.jenisMeeting==='MEETING URGENT') hU+=c; else hL+=c; }); document.getElementById('list-notulen-pagi').innerHTML=hP; document.getElementById('list-notulen-urgent').innerHTML=hU; document.getElementById('list-notulen-lapangan').innerHTML=hL; } catch(e){} };
         
-        window.bukaHasilNotulen = async () => { 
-            window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); window.notulenDatabase=[]; 
-            try{ 
-                const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); 
-                let hP="",hU="",hL=""; 
-                window.notulenDatabase.forEach(d=>{ 
-                    let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; 
-                    if(d.jenisMeeting==='MEETING PAGI') hP+=c; else if(d.jenisMeeting==='MEETING URGENT') hU+=c; else hL+=c; 
-                }); 
-                document.getElementById('list-notulen-pagi').innerHTML=hP; document.getElementById('list-notulen-urgent').innerHTML=hU; document.getElementById('list-notulen-lapangan').innerHTML=hL; 
-            } catch(e){} 
-        };
-        
-        // 6. TAMPILAN DETAIL & EXPORT (BACKGROUND PUTIH & GRID MENYAMPING)
         window.bukaDetailNotulen = (id) => { 
             const d = window.notulenDatabase.find(x => x.id === id); if(!d) return; 
-            
-            // a. Kehadiran Menjadi GRID Menyamping
-            let hp = '';
-            if (d.peserta && d.peserta.length > 0) {
-                hp = `<div class="notul-attendee-grid">`;
-                d.peserta.forEach(x => {
-                    hp += `<div class="notul-attendee-item"><i class="fas fa-check" style="color:#10b981; margin-right:5px;"></i> ${x}</div>`;
-                });
-                hp += `</div>`;
-            } else {
-                hp = '-';
-            }
-            
-            // b. Evaluasi & Poin Tindakan
-            let hd = `<div id="notulen-grid-wrapper" class="notulen-grid-container">`; 
-            if(d.deskripsiData) {
-                d.deskripsiData.forEach(x => { 
-                    let chk = x.done ? "checked" : ""; 
-                    let classDone = x.done ? "done" : ""; 
-                    hd += `<div class="poin-card ${classDone}">
-                             <input type="checkbox" id="chk-${x.id}" ${chk} onchange="window.updateCeklisNotulen('${d.id}', ${x.id}, this.checked)">
-                             <label for="chk-${x.id}">${x.teks}</label>
-                           </div>`; 
-                });
-            } 
-            hd += `</div>`;
-            
-            // c. Struktur Header Baru & Penggabungan Elemen
-            let h = `
-            <div class="notul-detail-wrapper" id="notul-export-wrapper">
-                <div class="notul-detail-header">
-                    <h2 style="font-weight:900; letter-spacing:1px; margin-bottom:5px; font-size:24px;">NOTULEN MAINTENANCE MOULD</h2>
-                    <p style="color:#38bdf8; font-weight:800; margin:0; font-size:16px;">PT. CAHAYA BUANA INTITAMA</p>
-                </div>
-                
-                <table class="notulen-table" style="margin-bottom:20px;">
-                    <tr>
-                        <th style="width: 30%; border-right: 1px solid rgba(255,255,255,0.1);">Info Laporan</th>
-                        <td style="font-weight:800; color:#38bdf8; vertical-align: middle;">
-                            <span style="background:rgba(56,189,248,0.1); padding:6px 10px; border-radius:6px; border:1px solid #38bdf8; display:inline-block; margin-bottom:8px;">${d.jenisMeeting}</span><br>
-                            <span style="font-size:12px; color:#cbd5e1; font-weight:600;"><i class="fas fa-clock"></i> ${d.waktuRecord}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="border-right: 1px solid rgba(255,255,255,0.1);">Daftar Kehadiran</th>
-                        <td>${hp}</td>
-                    </tr>
-                </table>
-                
-                <h3 class="sub-title-box" style="background:rgba(255,255,255,0.05); border:none; margin-bottom:15px;"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>
-                ${hd}
-            `; 
-            
-            // d. Gambar Dokumentasi lebih rapi & proporsional
-            if(d.foto) {
-                h += `
-                <div style="margin-top:20px; text-align:center; padding:15px; border-radius:12px; border:1px dashed rgba(255,255,255,0.2); break-inside: avoid;">
-                    <strong style="color:#38bdf8; font-size:13px; letter-spacing:1px; display:block; margin-bottom:10px;">FOTO DOKUMENTASI</strong>
-                    <img src="${d.foto}" style="max-height: 350px; width: auto; max-width: 100%; object-fit: contain; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.5);">
-                </div>`; 
-            }
-            
-            h += `</div>`; 
-            document.getElementById('report-notulen-content').innerHTML = h; 
-            window.navigasi('detail-notulen-screen'); 
+            let hp = ''; if (d.peserta && d.peserta.length > 0) { hp = `<div class="notul-attendee-grid">`; d.peserta.forEach(x => { hp += `<div class="notul-attendee-item"><i class="fas fa-check" style="color:#10b981; margin-right:5px;"></i> ${x}</div>`; }); hp += `</div>`; } else { hp = '-'; }
+            let hd = `<div id="notulen-grid-wrapper" class="notulen-grid-container">`; if(d.deskripsiData) { d.deskripsiData.forEach(x => { let chk = x.done ? "checked" : ""; let classDone = x.done ? "done" : ""; hd += `<div class="poin-card ${classDone}"><input type="checkbox" id="chk-${x.id}" ${chk} onchange="window.updateCeklisNotulen('${d.id}', ${x.id}, this.checked)"><label for="chk-${x.id}">${x.teks}</label></div>`; }); } hd += `</div>`;
+            let h = `<div class="notul-detail-wrapper" id="notul-export-wrapper"><div class="notul-detail-header"><h2 style="font-weight:900; letter-spacing:1px; margin-bottom:5px; font-size:24px;">NOTULEN MAINTENANCE MOULD</h2><p style="color:#38bdf8; font-weight:800; margin:0; font-size:16px;">PT. CAHAYA BUANA INTITAMA</p></div><table class="notulen-table" style="margin-bottom:20px;"><tr><th style="width: 30%; border-right: 1px solid rgba(255,255,255,0.1);">Info Laporan</th><td style="font-weight:800; color:#38bdf8; vertical-align: middle;"><span style="background:rgba(56,189,248,0.1); padding:6px 10px; border-radius:6px; border:1px solid #38bdf8; display:inline-block; margin-bottom:8px;">${d.jenisMeeting}</span><br><span style="font-size:12px; color:#cbd5e1; font-weight:600;"><i class="fas fa-clock"></i> ${d.waktuRecord}</span></td></tr><tr><th style="border-right: 1px solid rgba(255,255,255,0.1);">Daftar Kehadiran</th><td>${hp}</td></tr></table><h3 class="sub-title-box" style="background:rgba(255,255,255,0.05); border:none; margin-bottom:15px;"><i class="fas fa-list-check" style="color:var(--secondary);"></i> Poin Evaluasi & Tindakan:</h3>${hd}`; 
+            if(d.foto) { h += `<div style="margin-top:20px; text-align:center; padding:15px; border-radius:12px; border:1px dashed rgba(255,255,255,0.2); break-inside: avoid;"><strong style="color:#38bdf8; font-size:13px; letter-spacing:1px; display:block; margin-bottom:10px;">FOTO DOKUMENTASI</strong><img src="${d.foto}" style="max-height: 350px; width: auto; max-width: 100%; object-fit: contain; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.5);"></div>`; }
+            h += `</div>`; document.getElementById('report-notulen-content').innerHTML = h; window.navigasi('detail-notulen-screen'); 
         };
         
-        window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) {
-            const indexDoc = window.notulenDatabase.findIndex(n => n.id === docId);
-            if(indexDoc > -1) {
-                window.notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked;
-                try { await updateDoc(doc(window.db, "notulen_meeting", docId), { deskripsiData: window.notulenDatabase[indexDoc].deskripsiData }); window.bukaDetailNotulen(docId); } catch(e) {}
-            }
-        };
+        window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { const indexDoc = window.notulenDatabase.findIndex(n => n.id === docId); if(indexDoc > -1) { window.notulenDatabase[indexDoc].deskripsiData.find(d => d.id === indexPoin).done = isChecked; try { await updateDoc(doc(window.db, "notulen_meeting", docId), { deskripsiData: window.notulenDatabase[indexDoc].deskripsiData }); window.bukaDetailNotulen(docId); } catch(e) {} } };
 
-        // Engine Unduh Otomatis Validasi Background Putih
-        window.downloadNotulenJPG = () => {
-            const wrapper = document.getElementById('notul-export-wrapper');
-            if(wrapper) { wrapper.classList.add('export-mode'); } 
-            window.scrollTo(0, 0); 
-            window.toggleLoader(true, "Mencetak Laporan Profesional..."); 
-            
-            setTimeout(() => { 
-                html2canvas(document.getElementById('notul-export-wrapper'), { 
-                    scale: 2, 
-                    useCORS: true, 
-                    backgroundColor: "#ffffff", // Memaksa background kanvas putih bersih 
-                    windowWidth: 1000 
-                }).then(canvas => { 
-                    let link = document.createElement('a'); 
-                    link.download = `Notulen_${Date.now()}.jpg`; 
-                    link.href = canvas.toDataURL('image/jpeg', 0.95); 
-                    link.click(); 
-                    if(wrapper) { wrapper.classList.remove('export-mode'); }
-                    window.toggleLoader(false); 
-                }).catch(e => { 
-                    alert("Gagal cetak gambar."); 
-                    if(wrapper) { wrapper.classList.remove('export-mode'); }
-                    window.toggleLoader(false); 
-                }); 
-            }, 600); 
-        };
+        window.downloadNotulenJPG = () => { const wrapper = document.getElementById('notul-export-wrapper'); if(wrapper) { wrapper.classList.add('export-mode'); } window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak Laporan Profesional..."); setTimeout(() => { html2canvas(document.getElementById('notul-export-wrapper'), { scale: 2, useCORS: true, backgroundColor: "#ffffff", windowWidth: 1000 }).then(canvas => { let link = document.createElement('a'); link.download = `Notulen_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.95); link.click(); if(wrapper) { wrapper.classList.remove('export-mode'); } window.toggleLoader(false); }).catch(e => { alert("Gagal cetak gambar."); if(wrapper) { wrapper.classList.remove('export-mode'); } window.toggleLoader(false); }); }, 600); };
+        window.cetakPDFNotulen = () => { const wrapper = document.getElementById('notul-export-wrapper'); if(wrapper) { wrapper.classList.add('export-mode'); } window.print(); setTimeout(() => { if(wrapper) { wrapper.classList.remove('export-mode'); } }, 1500); };
 
-        window.cetakPDFNotulen = () => {
-            const wrapper = document.getElementById('notul-export-wrapper');
-            if(wrapper) { wrapper.classList.add('export-mode'); } 
-            window.print();
-            // Menghilangkan mode putih jika dialog print dibatalkan
-            setTimeout(() => {
-                if(wrapper) { wrapper.classList.remove('export-mode'); }
-            }, 1500); 
-        };
-
-        // Jadwal Besar
         window.simpanJadwalBesar = async () => { const f = document.getElementById('jb-foto'); if(f.files.length===0) return alert("Pilih file!"); window.toggleLoader(true); try { let b64 = await window.compressImage(f.files[0],1600,1600,0.7); await addDoc(collection(window.db,"jadwal_besar"),{fileBase64:b64,timestamp:Date.now()}); alert("Disimpan!"); window.bukaViewJadwal(); } catch(e){} window.toggleLoader(false); };
         window.bukaViewJadwal = async () => { window.navigasi('jadwal-besar-view-screen'); window.toggleLoader(true); try { let arr=[]; const snap=await getDocs(query(collection(window.db,"jadwal_besar"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); if(arr.length>0&&arr[0].fileBase64) document.getElementById('jb-view-container').innerHTML=`<img src="${arr[0].fileBase64}" style="max-width:100%; border-radius:10px;">`; else document.getElementById('jb-view-container').innerHTML="<p>Kosong</p>"; } catch(e){} window.toggleLoader(false); };
 
-        // Ide & Saran
         window.simpanIde = async () => { const n=window.amankanData(document.getElementById('ide-nama').value), w=document.getElementById('ide-waktu').value, u=window.amankanData(document.getElementById('ide-uraian').value); if(!n||!u) return alert("Lengkapi form!"); window.toggleLoader(true); try{ await addDoc(collection(window.db,"ide_saran_box"),{nama:n.toUpperCase(),waktu:w,uraian:u,timestamp:Date.now()}); alert("Terkirim!"); document.getElementById('ide-nama').value=""; document.getElementById('ide-uraian').value=""; window.switchTabIde('masuk'); } catch(e){} window.toggleLoader(false); };
         window.switchTabIde = (t) => { document.getElementById('tab-ide-input').classList.remove('tab-active'); document.getElementById('tab-ide-masuk').classList.remove('tab-active'); document.getElementById('ide-input-area').style.display='none'; document.getElementById('ide-masuk-area').style.display='none'; document.getElementById(`tab-ide-${t}`).classList.add('tab-active'); document.getElementById(`ide-${t}-area`).style.display='block'; if(t==='masuk') window.muatDataIde(); };
         window.muatDataIde = async () => { const c = document.getElementById('list-ide-masuk'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"ide_saran_box"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.nama}</h4><p style="font-size:11px;color:gray;">${d.waktu}</p><p>${d.uraian}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
-        // God Mode
         window.gantiTabGodMode = (el, kol) => { document.querySelectorAll('.god-mode-tabs .gm-tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); window.gmKoleksiAktif = kol; window.muatDataGodMode(kol); };
         window.muatDataGodMode = async (kol) => { const c = document.getElementById('gm-log-container'); c.innerHTML="<div style='text-align:center; padding:30px;'><i class='fas fa-spinner fa-spin fa-2x'></i></div>"; window.gmDataAktif=[]; try { const snap=await getDocs(query(collection(window.db,kol))); snap.forEach(d=>window.gmDataAktif.push({id:d.id,...d.data()})); window.gmDataAktif.sort((a,b)=>b.timestamp-a.timestamp); if(window.gmDataAktif.length===0) return c.innerHTML=`<p style="text-align:center;">Database ${kol} kosong.</p>`; let h=""; window.gmDataAktif.forEach(d=>{ h+=`<div class="gm-data-card">`; for(let k in d) { if(k==='id') continue; let v=d[k]; if(k==='filePdfBase64'||k==='foto') v="[ENKRIPSI FILE BASE64]"; else if(typeof v==='object') v=JSON.stringify(v); if(String(v).length>50) v=String(v).substring(0,50)+"..."; h+=`<div class="gm-data-row"><div class="gm-data-key">${k}</div><div class="gm-data-val">${v}</div></div>`; } h+=`<button class="btn-gm-edit" onclick="window.bukaEditorDinamisGM('${d.id}')">Edit Record</button></div>`; }); c.innerHTML=h; } catch(e){ c.innerHTML=`<p>Error: ${e.message}</p>`; } };
         window.bukaEditorDinamisGM = (id) => { const d=window.gmDataAktif.find(x=>x.id===id); if(!d) return; document.getElementById('gm-edit-id').value=id; document.getElementById('gm-edit-koleksi').value=window.gmKoleksiAktif; let h=""; for(let k in d) { if(k==='id') continue; let v=d[k]; let r=(k==='timestamp'||k==='filePdfBase64'||k==='foto')?"readonly style='background:#000;'":""; let t=typeof v==='object'?'textarea':'input'; let vv=typeof v==='object'?JSON.stringify(v,null,2):v; h+=`<div class="form-group"><label style="color:#a855f7;">${k}</label><${t} id="gm-in-${k}" value="${vv}" ${r}>${t==='textarea'?vv+'</textarea>':''}</div>`; } document.getElementById('dynamic-editor-body').innerHTML=h; document.getElementById('god-mode-editor-modal').style.display='flex'; };
         window.tutupModalEditorGM = () => document.getElementById('god-mode-editor-modal').style.display='none';
         window.simpanUpdateDataGM = async () => { const id=document.getElementById('gm-edit-id').value, kol=document.getElementById('gm-edit-koleksi').value; const d=window.gmDataAktif.find(x=>x.id===id); let up={}; for(let k in d) { if(k==='id'||k==='timestamp'||k==='filePdfBase64'||k==='foto') continue; const el=document.getElementById(`gm-in-${k}`); if(!el) continue; let v=el.value; if(typeof d[k]==='number') v=Number(v); else if(typeof d[k]==='object') { try { v=JSON.parse(v); } catch(e){ return alert(`Format JSON salah di ${k}`); } } up[k]=v; } window.toggleLoader(true); try { await updateDoc(doc(window.db,kol,id),up); alert("Record diupdate!"); window.tutupModalEditorGM(); window.muatDataGodMode(kol); } catch(e){} window.toggleLoader(false); };
 
-        // AI Dashboard
         window.inisialisasiDataAnalisaGlobal = async () => {
             window.toggleLoader(true, "Analisa AI Global..."); await window.ambilDataServerWS();
             let totP = window.dataProyekWS.length, totEst = 0, totAct = 0;
