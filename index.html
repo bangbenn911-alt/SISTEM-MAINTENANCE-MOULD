@@ -296,11 +296,11 @@
         .btn-edit-personel { background: rgba(15, 23, 42, 0.8); border: 1px solid #38bdf8; color: #38bdf8; padding: 8px 15px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-size: 11px; font-weight: 900; display: inline-flex; align-items: center; gap: 5px; }
         .btn-edit-personel:hover { background: #38bdf8; color: #040d1a; box-shadow: 0 0 15px #38bdf8; transform: scale(1.05); }
 
-        /* ======================================================== */
+              /* ======================================================== */
         /* --- CSS BARU: TAMPILAN NOTULEN PROFESIONAL (LIGHT) --- */
         /* ======================================================== */
         .notulen-pro-wrapper {
-            background-color: #eef2f6; /* Subtle light background */
+            background-color: #ffffff;
             color: #0f172a;
             padding: 40px;
             font-family: 'Inter', sans-serif;
@@ -308,85 +308,51 @@
             box-sizing: border-box;
             border: 1px solid #cbd5e1;
             border-radius: 12px;
+            overflow: hidden; /* Mencegah background mold keluar batas */
         }
 
-        .pro-header {
-            display: flex;
-            align-items: center;
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-            border-bottom: none; /* Removed heavy bottom border */
-        }
-        
-        .pro-logo-box {
-            width: 140px;
-            margin-right: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* WATERMARK BACKGROUND MOLD */
+        .blueprint-bg { position: absolute; z-index: 0; opacity: 0.06; pointer-events: none; }
+        .bg-top-right { top: -40px; right: -40px; width: 400px; transform: rotate(10deg); }
+        .bg-bottom-left { bottom: 100px; left: -50px; width: 350px; transform: rotate(-10deg); }
+        .pro-content { position: relative; z-index: 2; }
 
-        .pro-logo-box img {
-            width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
+        .pro-header { display: flex; align-items: center; padding-bottom: 20px; margin-bottom: 25px; }
+        .pro-logo-box { width: 100px; margin-right: 25px; display: flex; align-items: center; justify-content: center; }
+        .pro-logo-box img { width: 100%; height: auto; object-fit: contain; }
+        .pro-title-box { flex: 1; text-align: left; padding-left: 10px; }
+        .pro-title-box h1 { margin: 0; font-size: 26px; font-weight: 900; color: #0f172a; letter-spacing: 0.5px; }
+        .pro-title-box h2 { margin: 4px 0 0 0; font-size: 14px; font-weight: 700; color: #475569; }
 
-        .pro-title-box {
-            flex: 1;
-            text-align: left; /* Align to match mockup */
-            padding-left: 10px;
-        }
-        
-        .pro-title-box h1 {
-            margin: 0;
-            font-size: 26px;
-            font-weight: 900;
-            color: #0f172a;
-            letter-spacing: 0.5px;
-        }
-
-        .pro-title-box h2 {
-            margin: 4px 0 0 0;
-            font-size: 14px;
-            font-weight: 700;
-            color: #475569;
-        }
-
+        /* KOTAK INFO LAPORAN (Sesuai Referensi Gambar) */
         .pro-info-card {
-            background: #e0f2fe;
+            background: #eef6fb; /* Biru sangat muda */
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             margin-bottom: 30px;
-            border: 1px solid #bae6fd;
+            border: 1px solid #d0e3f0;
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
 
-        .pro-info-row {
+        .pro-info-top {
             display: flex;
             align-items: center;
+            border-bottom: 2px solid #d0e3f0;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
         }
 
-        .pro-info-row-date {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-top: 10px;
-            font-size: 13px;
-            font-weight: 700;
-            color: #0f172a;
-        }
-        
-        .pro-info-label {
-            font-weight: 800;
-            width: 150px;
+        .pro-info-bottom { display: flex; align-items: stretch; }
+
+        .pro-info-label-big {
+            font-weight: 900;
             font-size: 14px;
-            color: #0f172a;
+            color: #1e293b;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+            width: 200px; /* Lebar kolom kiri */
         }
 
         .pro-badge {
@@ -397,40 +363,30 @@
             font-weight: 800;
             font-size: 12px;
             display: inline-block;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
         }
 
         .pro-attendee-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 10px;
+            grid-template-columns: repeat(4, 1fr); /* 4 Kolom Kehadiran */
+            gap: 12px;
             flex: 1;
         }
 
         .pro-chip {
             background: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 8px 12px;
-            border-radius: 8px; /* Slightly squared matching mockup */
-            font-size: 12px;
-            font-weight: 700;
+            padding: 10px 12px;
+            border-radius: 8px; 
+            font-size: 11px;
+            font-weight: 800;
             color: #334155;
             display: flex;
             align-items: center;
             justify-content: space-between;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-
-        .pro-chip img {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            margin-right: 8px;
-        }
-
-        .pro-chip i.fa-check-circle {
-            color: #10b981;
-            font-size: 15px;
-        }
+        .pro-chip i.fa-check-circle { color: #10b981; font-size: 14px; }
 
         .pro-section-title {
             font-size: 15px;
@@ -442,65 +398,53 @@
             gap: 10px;
         }
 
+        /* GRID POIN EVALUASI (Sesuai Referensi Gambar) */
         .pro-eval-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
             margin-bottom: 30px;
         }
 
         .pro-eval-card {
-            background: #ffffff;
-            border-radius: 8px;
-            padding: 15px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            border: none;
+            background: linear-gradient(135deg, #f4f9fd, #ffffff);
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.05); /* Efek Timbul */
+            border: 1px solid #d0e3f0;
             display: flex;
-            gap: 15px;
-            align-items: center; /* Center aligned perfectly */
+            gap: 20px;
+            align-items: center;
         }
 
         .pro-eval-left {
-            background: #e0f2fe;
-            border-radius: 8px;
-            padding: 10px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            min-width: 35px;
+            gap: 8px;
+            min-width: 40px;
         }
 
         .pro-eval-num {
-            font-size: 20px;
+            font-size: 26px;
             font-weight: 900;
             color: #334155;
             line-height: 1;
         }
 
-        .pro-eval-icon {
-            font-size: 16px;
-            color: #0284c7;
-        }
+        .pro-eval-icon { font-size: 18px; color: #0284c7; }
 
         .pro-eval-text {
             font-size: 11px;
             font-weight: 800;
             color: #0f172a;
-            line-height: 1.5;
+            line-height: 1.6;
             text-transform: uppercase;
-            flex: 1;
             margin: 0;
         }
 
-        .pro-photo-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 40px;
-        }
-
+        .pro-photo-section { display: flex; flex-direction: column; align-items: center; margin-top: 40px; }
         .pro-photo-polaroid {
             background: #ffffff;
             padding: 12px 12px 40px 12px;
@@ -510,37 +454,17 @@
             position: relative;
             max-width: 60%;
         }
+        .pro-photo-polaroid img { width: 100%; height: auto; border-radius: 4px; display: block; }
+        .pro-photo-label { position: absolute; bottom: 12px; left: 0; width: 100%; text-align: center; font-weight: 800; font-size: 12px; color: #0f172a; }
 
-        .pro-photo-polaroid img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            display: block;
-        }
-
-        .pro-photo-label {
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-weight: 800;
-            font-size: 12px;
-            color: #0f172a;
-        }
-
-        /* Hilangkan Footer paling bawah dari mockup lama */
-        .pro-footer {
-            display: none !important;
-        }
+        .pro-footer { display: none !important; } /* Footer Hilang */
         
-        /* Fix export mode specifically for the new UI */
         .export-mode #notul-export-wrapper { background: transparent !important; padding:0 !important; width: 1000px !important;}
-        .export-mode .notulen-pro-wrapper { background-color: #eef2f6 !important; border:none !important; }
+        .export-mode .notulen-pro-wrapper { background-color: #ffffff !important; border:none !important; }
         @media print {
             body * { visibility: hidden; }
             #notul-export-wrapper, #notul-export-wrapper * { visibility: visible; }
-            #notul-export-wrapper { position: absolute; left: 0; top: 0; width: 100%; background: #eef2f6 !important; }
+            #notul-export-wrapper { position: absolute; left: 0; top: 0; width: 100%; background: #ffffff !important; }
             .pro-eval-card { break-inside: avoid; }
         }
     </style>
@@ -3206,22 +3130,22 @@
         window.bukaHasilNotulen = async () => { window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); window.notulenDatabase=[]; try{ const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); let hP="",hU="",hL=""; window.notulenDatabase.forEach(d=>{ let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; if(d.jenisMeeting==='MEETING PAGI') hP+=c; else if(d.jenisMeeting==='MEETING URGENT') hU+=c; else hL+=c; }); document.getElementById('list-notulen-pagi').innerHTML=hP; document.getElementById('list-notulen-urgent').innerHTML=hU; document.getElementById('list-notulen-lapangan').innerHTML=hL; } catch(e){} };
         
         // FUNGSI INI TELAH DI-UPGRADE SEPENUHNYA KE DESAIN PROFESIONAL
-        window.bukaDetailNotulen = (id) => { 
-            const d = window.notulenDatabase.find(x => x.id === id); if(!d) return; 
-
-            // 1. Susun Chip Kehadiran
+        window.bukaDetailNotulen = (id) => {
+            const d = window.notulenDatabase.find(x => x.id === id);
+            if (!d) return;
+            
+            // 1. Susun Chip Kehadiran (Ada Icon User)
             let hp = '';
             if (d.peserta && d.peserta.length > 0) {
                 d.peserta.forEach(x => {
-                    let encodedName = encodeURIComponent(x);
-                    hp += `<div class="pro-chip"><div style="display:flex; align-items:center;"><img src="https://ui-avatars.com/api/?name=${encodedName}&background=e2e8f0&color=0f172a&bold=true" alt="Avatar"> ${x}</div><i class="fas fa-check-circle"></i></div>`;
+                    hp += `<div class="pro-chip"><div style="display:flex; align-items:center;"><i class="fas fa-user-circle" style="color:#94a3b8; margin-right:8px; font-size:16px;"></i> ${x}</div><i class="fas fa-check-circle"></i></div>`;
                 });
             } else { hp = '<span style="font-weight:bold; color:#ef4444;">- Tidak ada data kehadiran -</span>'; }
-
-            // 2. Susun Poin Evaluasi (Format Grid 2 Kolom, Card Timbul)
+            
+            // 2. Susun Poin Evaluasi (Format Tabel Kotak 2 Kolom)
             let hd = `<div class="pro-eval-grid">`;
             const icons = ['fa-bullseye', 'fa-cog', 'fa-wrench', 'fa-tools', 'fa-tasks', 'fa-check-square'];
-            if(d.deskripsiData) {
+            if (d.deskripsiData) {
                 d.deskripsiData.forEach((x, index) => {
                     let randIcon = icons[index % icons.length];
                     hd += `
@@ -3235,10 +3159,10 @@
                 });
             }
             hd += `</div>`;
-
-            // 3. Susun Dokumentasi Visual (Format Polaroid)
+            
+            // 3. Susun Dokumentasi Visual
             let hPhoto = '';
-            if(d.foto) {
+            if (d.foto) {
                 hPhoto = `
                 <div class="pro-photo-section">
                     <h3 style="font-size:16px; font-weight:900; color:#1e293b; margin-bottom:15px; text-transform:uppercase;"><i class="fas fa-camera-retro"></i> DOKUMENTASI VISUAL</h3>
@@ -3248,8 +3172,8 @@
                     </div>
                 </div>`;
             }
-
-            // 4. Susun Footer Tanggal -> Ditarik ke atas sesuai instruksi
+            
+            // 4. Susun Waktu
             let extractedDate = "TIDAK ADA DATA";
             let extractedTime = "";
             if (d.waktuRecord) {
@@ -3257,53 +3181,65 @@
                 extractedDate = parts[0] ? parts[0].trim().toUpperCase() : d.waktuRecord;
                 extractedTime = parts[1] ? parts[1].trim() : "";
             }
-
-            // 5. Gabungkan Seluruh Kerangka UI Profesional
+            
+            // 5. Gabungkan Seluruh Kerangka UI Profesional Sesuai Referensi
             let finalHtml = `
             <div class="notulen-pro-wrapper" id="notul-export-wrapper">
                 
-                <!-- HEADER LOGO DAN JUDUL -->
-                <div class="pro-header">
-                    <div class="pro-logo-box">
-                        <img src="https://archive.org/download/wa-1786628719599/WA_1786628719599.jpeg" alt="Logo CBG">
-                    </div>
-                    <div class="pro-title-box">
-                        <h1>NOTULEN MAINTENANCE MOULD</h1>
-                        <h2>PT. CAHAYA BUANA INTITAMA</h2>
-                    </div>
-                </div>
+                <!-- BACKGROUND MOLD WATERMARK -->
+                <!-- Anda bisa mengganti URL src di bawah ini dengan link gambar outline mold Anda jika ada -->
+                <img src="https://cdn-icons-png.flaticon.com/512/2855/2855581.png" class="blueprint-bg bg-top-right">
+                <img src="https://cdn-icons-png.flaticon.com/512/2855/2855581.png" class="blueprint-bg bg-bottom-left">
 
-                <!-- BLOK INFO LAPORAN & KEHADIRAN -->
-                <div class="pro-info-card">
-                    <div class="pro-info-row">
-                        <div class="pro-info-label"><i class="fas fa-calendar-alt" style="font-size:22px; color:#64748b;"></i> INFO LAPORAN</div>
-                        <div style="display:flex; flex-direction:column; gap:5px;">
-                            <div class="pro-badge" style="width: fit-content;"><i class="fas fa-clock"></i> ${d.jenisMeeting}</div>
-                            <div style="font-size: 11px; font-weight: 800; color: #334155; margin-top:3px;">
-                                TANGGAL INPUT: ${extractedDate} <span style="margin:0 5px;">|</span> WAKTU INPUT: ${extractedTime}
-                            </div>
+                <div class="pro-content">
+                    <!-- HEADER LOGO DAN JUDUL -->
+                    <div class="pro-header">
+                        <div class="pro-logo-box">
+                            <img src="https://archive.org/download/wa-1786628719599/WA_1786628719599.jpeg" alt="Logo CBG">
+                        </div>
+                        <div class="pro-title-box">
+                            <h1>NOTULEN MAINTENANCE MOULD</h1>
+                            <h2>PT. CAHAYA BUANA INTITAMA</h2>
                         </div>
                     </div>
-                    <div style="border-top:2px solid #bae6fd; margin:5px 0;"></div>
-                    <div class="pro-info-row" style="align-items:flex-start;">
-                        <div class="pro-info-label" style="margin-top:8px;">Daftar Kehadiran</div>
-                        <div class="pro-attendee-grid">${hp}</div>
+
+                    <!-- BLOK INFO LAPORAN (Kotak Biru Dibagi 2) -->
+                    <div class="pro-info-card">
+                        <!-- Bagian Atas: Info Laporan -->
+                        <div class="pro-info-top">
+                            <div class="pro-info-label-big">
+                                <i class="fas fa-calendar-alt fa-2x" style="color:#94a3b8;"></i> INFO LAPORAN
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:5px;">
+                                <div class="pro-badge" style="width: fit-content;"><i class="fas fa-clock"></i> ${d.jenisMeeting}</div>
+                                <div style="font-size: 11px; font-weight: 800; color: #334155; margin-top:3px;">
+                                    TANGGAL INPUT: ${extractedDate} <span style="margin:0 5px;">|</span> WAKTU INPUT: ${extractedTime}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Bagian Bawah: Daftar Kehadiran -->
+                        <div class="pro-info-bottom">
+                            <div class="pro-info-label-big">
+                                <i class="fas fa-clock fa-2x" style="color:#94a3b8;"></i> Daftar Kehadiran
+                            </div>
+                            <div class="pro-attendee-grid">${hp}</div>
+                        </div>
                     </div>
+
+                    <!-- BLOK POIN EVALUASI GRID -->
+                    <div class="pro-section-title">
+                        <i class="fas fa-list-check" style="color:#0284c7; font-size:20px;"></i> POIN EVALUASI & TINDAKAN
+                    </div>
+                    ${hd}
+
+                    <!-- BLOK DOKUMENTASI FOTO -->
+                    ${hPhoto}
                 </div>
-
-                <!-- BLOK POIN EVALUASI GRID -->
-                <div class="pro-section-title">
-                    <i class="fas fa-list-check" style="color:#0284c7; font-size:20px;"></i> POIN EVALUASI & TINDAKAN
-                </div>
-                ${hd}
-
-                <!-- BLOK DOKUMENTASI FOTO -->
-                ${hPhoto}
-
             </div>`;
-
-            document.getElementById('report-notulen-content').innerHTML = finalHtml; 
-            window.navigasi('detail-notulen-screen'); 
+            
+            document.getElementById('report-notulen-content').innerHTML = finalHtml;
+            window.navigasi('detail-notulen-screen');
         };
         
         // Karena UI berubah murni display statis, fungsi update ceklis dimatikan khusus untuk tampilan Pro ini agar tidak merusak visual.
