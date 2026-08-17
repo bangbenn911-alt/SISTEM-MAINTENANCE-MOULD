@@ -930,10 +930,10 @@ window.bukaDetailNotulen = (id) => {
         <img src="https://cdn-icons-png.flaticon.com/512/2855/2855581.png" class="blueprint-bg bg-top-right">
         <img src="https://cdn-icons-png.flaticon.com/512/2855/2855581.png" class="blueprint-bg bg-bottom-left">
 
-        <div class="pro-content">
+            <div class="pro-content">
             <div class="pro-header">
-                <div class="pro-logo-box">
-                    <img src="https://archive.org/download/wa-1786628719599/WA_1786628719599.jpeg" alt="Logo CBG">
+            <div class="pro-logo-box">
+            <img src="logo.jpeg" alt="Logo CBI">
                 </div>
                 <div class="pro-title-box">
                     <h1>NOTULEN MAINTENANCE MOULD</h1>
