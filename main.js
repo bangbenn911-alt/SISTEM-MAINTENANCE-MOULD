@@ -1073,10 +1073,57 @@ window.prosesHakAkses = async function(user) {
     }
 };
 
-// 3. FUNGSI LAYAR MENU SUPER ADMIN
+// 3. FUNGSI LAYAR MENU SUPER ADMIN (GRANULAR ACCESS 23 POIN)
+
+// Daftar 23 Modul Utama M-TRIX
+window.daftarModul = [
+    { key: "moldstore", nama: "1. Moldstore" },
+    { key: "repair", nama: "2. Repair" },
+    { key: "trouble", nama: "3. Trouble" },
+    { key: "workshop", nama: "4. Workshop" },
+    { key: "adm_mold", nama: "5. ADM Mold" },
+    { key: "trial", nama: "6. Permintaan Trial" },
+    { key: "notulen", nama: "7. Notulen" },
+    { key: "prog_store", nama: "8. Progres Store" },
+    { key: "prog_repair", nama: "9. Progres Repair" },
+    { key: "prog_trouble", nama: "10. Progres Trouble" },
+    { key: "prog_workshop", nama: "11. Progres Workshop" },
+    { key: "analisa", nama: "12. Analisa (AI Dashboard)" },
+    { key: "jadwal", nama: "13. Jadwal Besar" },
+    { key: "cyber", nama: "14. Cyber Security" },
+    { key: "ide", nama: "15. Ide Center" },
+    { key: "inbox", nama: "16. Inbox (Pengumuman)" },
+    { key: "struktur", nama: "17. Struktur Organisasi" },
+    { key: "personel", nama: "18. Tim Personel" },
+    { key: "arsip", nama: "19. Arsip & Dokumentasi" },
+    { key: "surkom", nama: "20. Surat Komponen" },
+    { key: "master_mold", nama: "21. Database Master Mold" },
+    { key: "rotasi", nama: "22. Rotasi Mold" },
+    { key: "preventif", nama: "23. Preventif Mold" }
+];
+
 window.bukaMenuSuperAdmin = async () => {
     window.navigasi('admin-akses-screen');
+    window.renderFormAkses();
     await window.muatDaftarAkses();
+};
+
+window.renderFormAkses = function() {
+    const c = document.getElementById('container-daftar-akses');
+    if(!c) return;
+    let h = `<div style="display:flex; font-size:10px; font-weight:900; color:var(--text-muted); border-bottom:1px solid #ef4444; padding-bottom:8px; margin-bottom:10px; position:sticky; top:0; background:rgba(15,23,42,0.95); z-index:5;">
+                <div style="flex:2.5;">NAMA MODUL / FITUR</div>
+                <div style="flex:1; text-align:center;"><i class="fas fa-eye"></i> LIHAT</div>
+                <div style="flex:1; text-align:center;"><i class="fas fa-edit"></i> INPUT</div>
+             </div>`;
+    window.daftarModul.forEach(m => {
+        h += `<div style="display:flex; align-items:center; font-size:11px; border-bottom:1px dashed rgba(255,255,255,0.1); padding:10px 0; color:white; font-weight:700;">
+                <div style="flex:2.5;">${m.nama}</div>
+                <div style="flex:1; text-align:center;"><input type="checkbox" id="chk-lihat-${m.key}" style="width:20px; height:20px; accent-color:#10b981; cursor:pointer;"></div>
+                <div style="flex:1; text-align:center;"><input type="checkbox" id="chk-input-${m.key}" style="width:20px; height:20px; accent-color:#38bdf8; cursor:pointer;"></div>
+              </div>`;
+    });
+    c.innerHTML = h;
 };
 
 window.muatDaftarAkses = async () => {
@@ -1089,63 +1136,76 @@ window.muatDaftarAkses = async () => {
         
         let h = "";
         window.daftarAksesDatabase.forEach(d => {
+            // Hitung berapa modul yang diizinkan untuk User ini
+            let totalIzin = 0;
+            window.daftarModul.forEach(m => {
+                if(d[`${m.key}_lihat`] || d[`${m.key}_input`]) totalIzin++;
+            });
+
             h += `<div class="progress-card" style="border-left-color:#ef4444; position:relative;">
                     <h4 style="margin:0 0 5px 0; color:#ef4444;"><i class="fas fa-envelope"></i> ${d.id}</h4>
-                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.6;">
-                        Mold Store: <strong style="color:${d.akses_moldstore ? '#10b981' : '#ef4444'}">${d.akses_moldstore ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
-                        Repair & Trb: <strong style="color:${d.akses_repair ? '#10b981' : '#ef4444'}">${d.akses_repair ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
-                        Workshop: <strong style="color:${d.akses_workshop ? '#10b981' : '#ef4444'}">${d.akses_workshop ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
-                        Arsip & Srt: <strong style="color:${d.akses_arsip ? '#10b981' : '#ef4444'}">${d.akses_arsip ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
-                        Dashboard AI: <strong style="color:${d.akses_analisa ? '#10b981' : '#ef4444'}">${d.akses_analisa ? 'DIizinkan' : 'DIBLOKIR'}</strong>
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:0;">
+                        Memiliki akses terperinci pada <strong style="color:white;">${totalIzin} dari 23 Modul</strong>.
                     </p>
+                    <div style="display:flex; gap:10px; margin-top:12px;">
+                        <button onclick="window.editHakAkses('${d.id}')" style="background:rgba(56,189,248,0.2); border:1px solid #38bdf8; border-radius:8px; padding:6px 15px; color:#bae6fd; cursor:pointer; font-size:11px; font-weight:800;"><i class="fas fa-edit"></i> Edit Akses</button>
+                    </div>
                     <button onclick="window.hapusHakAkses('${d.id}')" style="position:absolute; right:15px; top:15px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; border-radius:8px; padding:8px; color:#fca5a5; cursor:pointer;"><i class="fas fa-trash"></i></button>
                   </div>`;
         });
         c.innerHTML = h || "<p style='text-align:center; color:var(--text-muted);'>Belum ada Karyawan yang diatur hak aksesnya.</p>";
     } catch(e) {
-        c.innerHTML = `<p style="color:red; text-align:center;">Gagal membaca database: Firebase Rules mungkin memblokir Anda, atau tabel belum ada.</p>`;
+        c.innerHTML = `<p style="color:red; text-align:center;">Gagal membaca database.</p>`;
     }
+};
+
+window.editHakAkses = function(email) {
+    const d = window.daftarAksesDatabase.find(x => x.id === email);
+    if(!d) return;
+    document.getElementById('admin-email-user').value = email;
+    // Otomatis mencentang sesuai data dari database
+    window.daftarModul.forEach(m => {
+        document.getElementById(`chk-lihat-${m.key}`).checked = d[`${m.key}_lihat`] === true;
+        document.getElementById(`chk-input-${m.key}`).checked = d[`${m.key}_input`] === true;
+    });
+    // Scroll layar ke atas
+    document.getElementById('admin-akses-screen').scrollIntoView({behavior: 'smooth'});
 };
 
 window.simpanHakAkses = async () => {
     const email = document.getElementById('admin-email-user').value.toLowerCase().trim();
     if(!email) return alert("Masukkan email karyawan terlebih dahulu!");
     
+    // Tarik semua status centang dari 23 modul
+    let accessData = { timestamp: Date.now() };
+    window.daftarModul.forEach(m => {
+        accessData[`${m.key}_lihat`] = document.getElementById(`chk-lihat-${m.key}`).checked;
+        accessData[`${m.key}_input`] = document.getElementById(`chk-input-${m.key}`).checked;
+    });
+
     window.toggleLoader(true, "Menulis ke Buku Akses Database...");
     try {
-        // Kita menggunakan Email sebagai ID Dokumen agar mudah dilacak oleh Firebase Rules
-        await setDoc(doc(window.db, "users_access", email), {
-            akses_moldstore: document.getElementById('chk-akses-moldstore').checked,
-            akses_repair: document.getElementById('chk-akses-repair').checked,
-            akses_workshop: document.getElementById('chk-akses-workshop').checked,
-            akses_arsip: document.getElementById('chk-akses-arsip').checked,
-            akses_analisa: document.getElementById('chk-akses-analisa').checked,
-            timestamp: Date.now()
-        });
+        await setDoc(doc(window.db, "users_access", email), accessData);
         alert("Buku Akses berhasil diperbarui untuk " + email);
         
+        // Reset formulir
         document.getElementById('admin-email-user').value = "";
-        document.getElementById('chk-akses-moldstore').checked = false;
-        document.getElementById('chk-akses-repair').checked = false;
-        document.getElementById('chk-akses-workshop').checked = false;
-        document.getElementById('chk-akses-arsip').checked = false;
-        document.getElementById('chk-akses-analisa').checked = false;
+        window.daftarModul.forEach(m => {
+            document.getElementById(`chk-lihat-${m.key}`).checked = false;
+            document.getElementById(`chk-input-${m.key}`).checked = false;
+        });
         
         await window.muatDaftarAkses();
-    } catch(e) {
-        alert("Gagal menyimpan data: " + e.message);
-    }
+    } catch(e) { alert("Gagal menyimpan data: " + e.message); }
     window.toggleLoader(false);
 };
 
 window.hapusHakAkses = async (email) => {
-    if(!confirm(`CABUT HAK AKSES? \nEmail ${email} akan dilarang mengakses sistem yang digembok.`)) return;
+    if(!confirm(`CABUT HAK AKSES? \nEmail ${email} akan dilarang mengakses seluruh sistem.`)) return;
     window.toggleLoader(true, "Menghapus dari Buku Akses...");
     try {
         await deleteDoc(doc(window.db, "users_access", email));
         await window.muatDaftarAkses();
-    } catch(e) { 
-        alert("Gagal menghapus!"); 
-    }
+    } catch(e) { alert("Gagal menghapus!"); }
     window.toggleLoader(false);
 };
