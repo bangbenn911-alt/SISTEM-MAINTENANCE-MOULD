@@ -393,6 +393,16 @@
                 <i class="fas fa-search" style="color:var(--text-muted);"></i>
                 <input type="text" class="profil-search-input" placeholder="Search">
             </div>
+            
+            <!-- TOMBOL KHUSUS SUPER ADMIN (Tersembunyi secara default) -->
+            <div id="btn-menu-superadmin" class="profil-list-item" onclick="window.bukaMenuSuperAdmin()" style="display:none; border: 1px solid rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.15);">
+                <div class="profil-item-icon"><i class="fas fa-user-shield" style="color:#ef4444;"></i></div>
+                <div class="profil-item-text">
+                    <div class="profil-item-title" style="color:#ef4444;">Super Admin (Akses Kontrol)</div>
+                    <div class="profil-item-sub">Atur Hak Akses Karyawan & Firebase</div>
+                </div>
+                <div class="profil-item-arrow"><i class="fas fa-chevron-right" style="color:#ef4444;"></i></div>
+            </div>
 
             <!-- MENU STRUKTUR ORGANISASI -->
             <div class="profil-list-item" onclick="window.navigasi('struktur-organisasi-screen')" style="border: 1px solid rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.15);">
@@ -1796,6 +1806,43 @@
         </div>
     </div>
     
+        <!-- ========================================================= -->
+    <!-- SUPER ADMIN: MANAJEMEN HAK AKSES SCREEN                   -->
+    <!-- ========================================================= -->
+    <div id="admin-akses-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #7f1d1d, #991b1b) !important; border: 1px solid #ef4444;">
+                <h2 style="color:#fca5a5;"><i class="fas fa-user-shield" style="margin-right:10px;"></i> MANAJEMEN HAK AKSES</h2>
+            </div>
+            
+            <div class="dark-panel">
+                <h3 class="sub-title-box"><i class="fas fa-user-plus" style="color:#ef4444;"></i> Daftarkan Hak Akses Email</h3>
+                <div class="form-group">
+                    <label>Email Karyawan (Google)</label>
+                    <input type="email" id="admin-email-user" placeholder="contoh@gmail.com" style="text-transform:lowercase; border-color:#ef4444;">
+                </div>
+                
+                <label style="color:#ef4444; font-size:12px; margin-top:15px; display:block; font-weight:900;"><i class="fas fa-check-square"></i> Beri Izin Akses Divisi (Centang):</label>
+                <div class="chk-grid" style="background: rgba(0,0,0,0.4); border:1px dashed #ef4444; padding:15px; border-radius:12px; margin-bottom: 20px;">
+                    <label><input type="checkbox" id="chk-akses-moldstore" class="chk-hadir"> Divisi Mold Store</label>
+                    <label><input type="checkbox" id="chk-akses-repair" class="chk-hadir"> Divisi Repair & Trouble</label>
+                    <label><input type="checkbox" id="chk-akses-workshop" class="chk-hadir"> Divisi Workshop</label>
+                    <label><input type="checkbox" id="chk-akses-arsip" class="chk-hadir"> Arsip & Surat Komponen</label>
+                    <label><input type="checkbox" id="chk-akses-analisa" class="chk-hadir"> Executive AI Dashboard</label>
+                </div>
+                
+                <button class="btn-submit" type="button" onclick="window.simpanHakAkses()" style="background:linear-gradient(135deg, #ef4444, #dc2626); box-shadow:0 8px 20px rgba(239,68,68,0.3);">
+                    <i class="fas fa-save"></i> SIMPAN BUKU AKSES
+                </button>
+            </div>
+            
+            <div class="dark-panel" style="padding-top:10px;">
+                <h3 style="color:#f8fafc; font-size:14px; border-bottom:1px dashed var(--border-dark); padding-bottom:10px;"><i class="fas fa-users" style="color:#ef4444;"></i> Daftar Pengguna Terdaftar</h3>
+                <div id="list-user-akses"><p style="text-align:center; color:var(--text-muted);">Memuat data database...</p></div>
+            </div>
+        </div>
+    </div>
+
     <!-- KONEKSI KE FILE JAVASCRIPT YANG BARU -->
     <script type="module" src="main.js"></script>
 
