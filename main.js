@@ -1252,41 +1252,40 @@ if (!window.navigasiAsli) {
 }
 
 window.navigasi = function(idLayarTujuan) {
-    // PETA KEAMANAN: Cocokkan ID <div class="screen"> di HTML Anda dengan Kunci Modul
-    // CATATAN: Ubah teks sebelah kiri sesuai dengan ID Layar asli di HTML Anda!
-    const petaLayar = {
-        'moldstore-screen': 'moldstore',
-        'repair-screen': 'repair',
-        'trouble-screen': 'trouble',
-        'workshop-screen': 'workshop',
-        'admmold-screen': 'adm_mold',
-        'trial-screen': 'trial',
-        'notulen-screen': 'notulen',
-        'analisa-screen': 'analisa',
-        'jadwal-screen': 'jadwal',
-        'cyber-screen': 'cyber',
-        'ide-screen': 'ide',
-        'inbox-screen': 'inbox',
-        'struktur-screen': 'struktur',
-        'personel-screen': 'personel',
-        'arsip-screen': 'arsip',
-        'suratkomponen-screen': 'surkom',
-        'mastermold-screen': 'master_mold',
-        'rotasi-screen': 'rotasi',
-        'preventif-screen': 'preventif'
-    };
+    // SATPAM PINTAR: Cek kata kunci di nama layar tujuan
+    let modulYgDicek = null;
+    const idLayar = idLayarTujuan.toLowerCase();
+    
+    if (idLayar.includes('moldstore')) modulYgDicek = 'moldstore';
+    else if (idLayar.includes('repair')) modulYgDicek = 'repair';
+    else if (idLayar.includes('trouble')) modulYgDicek = 'trouble';
+    else if (idLayar.includes('workshop')) modulYgDicek = 'workshop';
+    else if (idLayar.includes('adm')) modulYgDicek = 'adm_mold';
+    else if (idLayar.includes('trial')) modulYgDicek = 'trial';
+    else if (idLayar.includes('notulen')) modulYgDicek = 'notulen';
+    else if (idLayar.includes('analisa')) modulYgDicek = 'analisa';
+    else if (idLayar.includes('jadwal')) modulYgDicek = 'jadwal';
+    else if (idLayar.includes('cyber')) modulYgDicek = 'cyber';
+    else if (idLayar.includes('ide')) modulYgDicek = 'ide';
+    else if (idLayar.includes('inbox')) modulYgDicek = 'inbox';
+    else if (idLayar.includes('struktur')) modulYgDicek = 'struktur';
+    else if (idLayar.includes('personel')) modulYgDicek = 'personel';
+    else if (idLayar.includes('arsip')) modulYgDicek = 'arsip';
+    else if (idLayar.includes('surat')) modulYgDicek = 'surkom';
+    else if (idLayar.includes('master')) modulYgDicek = 'master_mold';
+    else if (idLayar.includes('rotasi')) modulYgDicek = 'rotasi';
+    else if (idLayar.includes('preventif')) modulYgDicek = 'preventif';
 
-    const modulYgDicek = petaLayar[idLayarTujuan];
-
-    // Jika layar tujuan ada di dalam daftar yang dikunci...
+    // Jika kata kunci ditemukan (berarti dia mencoba masuk ke zona rahasia)
     if (modulYgDicek) {
-        // Cek apakah karyawan ini punya izin 'lihat'
+        // Tanya ke fungsi cekAkses, apakah dia punya izin 'lihat'?
         const bolehMasuk = window.cekAkses(modulYgDicek, 'lihat');
         if (!bolehMasuk) {
-            return; // BATALKAN NAVIGASI! Layar tetap diam, tidak ada error.
+            return; // BATALKAN NAVIGASI! Layar diam saja.
         }
     }
 
-    // Jika aman (atau menu umum seperti home-screen / profil), lanjutkan navigasi!
+    // Jika aman (misal ke Profil atau Home), biarkan lewat!
     window.navigasiAsli(idLayarTujuan);
 };
+
