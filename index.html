@@ -1822,15 +1822,11 @@
                     <input type="email" id="admin-email-user" placeholder="contoh@gmail.com" style="text-transform:lowercase; border-color:#ef4444;">
                 </div>
                 
-                <label style="color:#ef4444; font-size:12px; margin-top:15px; display:block; font-weight:900;"><i class="fas fa-check-square"></i> Beri Izin Akses Divisi (Centang):</label>
-                <div class="chk-grid" style="background: rgba(0,0,0,0.4); border:1px dashed #ef4444; padding:15px; border-radius:12px; margin-bottom: 20px;">
-                    <label><input type="checkbox" id="chk-akses-moldstore" class="chk-hadir"> Divisi Mold Store</label>
-                    <label><input type="checkbox" id="chk-akses-repair" class="chk-hadir"> Divisi Repair & Trouble</label>
-                    <label><input type="checkbox" id="chk-akses-workshop" class="chk-hadir"> Divisi Workshop</label>
-                    <label><input type="checkbox" id="chk-akses-arsip" class="chk-hadir"> Arsip & Surat Komponen</label>
-                    <label><input type="checkbox" id="chk-akses-analisa" class="chk-hadir"> Executive AI Dashboard</label>
+                                <label style="color:#ef4444; font-size:12px; margin-top:15px; display:block; font-weight:900;"><i class="fas fa-check-square"></i> Atur Hak Akses (Lihat / Input):</label>
+                <div style="background: rgba(0,0,0,0.4); border:1px dashed #ef4444; padding:10px 15px; border-radius:12px; margin-bottom: 20px; max-height:350px; overflow-y:auto;" id="container-daftar-akses">
+                    <!-- Tabel 23 Poin akan dirender otomatis oleh JavaScript di sini -->
                 </div>
-                
+
                 <button class="btn-submit" type="button" onclick="window.simpanHakAkses()" style="background:linear-gradient(135deg, #ef4444, #dc2626); box-shadow:0 8px 20px rgba(239,68,68,0.3);">
                     <i class="fas fa-save"></i> SIMPAN BUKU AKSES
                 </button>
