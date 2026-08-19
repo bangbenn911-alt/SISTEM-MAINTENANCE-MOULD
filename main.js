@@ -1018,7 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => { setTimeout(window.muatData
 // =======================================================================
 
 // 1. Tentukan Email Anda Sebagai Pemegang Kunci Tertinggi (Pisahkan dengan koma jika lebih dari 1)
-window.superAdminEmails = ['bangbenn911@gmail.com', 'email.bos@gmail.com']; 
+window.superAdminEmails = ['fbenny947@gmail.com', 'email.bos@gmail.com']; 
 
 // 2. TIMPA FUNGSI LOGIN: Mencegat proses login untuk mengecek wajah/email pengguna
 window.masukBerandaCepat = async function() {
