@@ -1252,40 +1252,65 @@ if (!window.navigasiAsli) {
 }
 
 window.navigasi = function(idLayarTujuan) {
-    // SATPAM PINTAR: Cek kata kunci di nama layar tujuan
+    if (!idLayarTujuan) return;
+    const id = idLayarTujuan.toLowerCase();
     let modulYgDicek = null;
-    const idLayar = idLayarTujuan.toLowerCase();
-    
-    if (idLayar.includes('moldstore')) modulYgDicek = 'moldstore';
-    else if (idLayar.includes('repair')) modulYgDicek = 'repair';
-    else if (idLayar.includes('trouble')) modulYgDicek = 'trouble';
-    else if (idLayar.includes('workshop')) modulYgDicek = 'workshop';
-    else if (idLayar.includes('adm')) modulYgDicek = 'adm_mold';
-    else if (idLayar.includes('trial')) modulYgDicek = 'trial';
-    else if (idLayar.includes('notulen')) modulYgDicek = 'notulen';
-    else if (idLayar.includes('analisa')) modulYgDicek = 'analisa';
-    else if (idLayar.includes('jadwal')) modulYgDicek = 'jadwal';
-    else if (idLayar.includes('cyber')) modulYgDicek = 'cyber';
-    else if (idLayar.includes('ide')) modulYgDicek = 'ide';
-    else if (idLayar.includes('inbox')) modulYgDicek = 'inbox';
-    else if (idLayar.includes('struktur')) modulYgDicek = 'struktur';
-    else if (idLayar.includes('personel')) modulYgDicek = 'personel';
-    else if (idLayar.includes('arsip')) modulYgDicek = 'arsip';
-    else if (idLayar.includes('surat')) modulYgDicek = 'surkom';
-    else if (idLayar.includes('master')) modulYgDicek = 'master_mold';
-    else if (idLayar.includes('rotasi')) modulYgDicek = 'rotasi';
-    else if (idLayar.includes('preventif')) modulYgDicek = 'preventif';
 
-    // Jika kata kunci ditemukan (berarti dia mencoba masuk ke zona rahasia)
-    if (modulYgDicek) {
-        // Tanya ke fungsi cekAkses, apakah dia punya izin 'lihat'?
-        const bolehMasuk = window.cekAkses(modulYgDicek, 'lihat');
-        if (!bolehMasuk) {
-            return; // BATALKAN NAVIGASI! Layar diam saja.
+    // 1. KAMUS PINTAR: Daftar variasi nama ID layar di HTML Anda
+    // Satpam akan memblokir jika nama layar mengandung salah satu kata di bawah ini:
+    const petaBlokir = {
+        'moldstore': ['moldstore', 'mold-store', 'rencana-naik', 'persiapan'],
+        'repair': ['repair'],
+        'trouble': ['trouble'],
+        'workshop': ['workshop', 'project'],
+        'adm_mold': ['adm-mold', 'adm_mold', 'admmold'],
+        'trial': ['trial'],
+        'notulen': ['notulen'],
+        'prog_store': ['prog-store', 'progres-store'],
+        'prog_repair': ['prog-repair', 'progres-repair'],
+        'prog_trouble': ['prog-trouble', 'progres-trouble'],
+        'prog_workshop': ['prog-workshop', 'progres-workshop', 'control-progres', 'progres-project'],
+        'analisa': ['analisa', 'dashboard'],
+        'jadwal': ['jadwal'],
+        'cyber': ['cyber', 'security'],
+        'ide': ['ide', 'saran'],
+        'inbox': ['inbox'],
+        'struktur': ['struktur', 'organisasi'],
+        'personel': ['personel', 'tim'],
+        'arsip': ['arsip', 'dokumentasi'],
+        'surkom': ['surkom', 'surat', 'pdf'], // Ini akan mencegat "Input Surkom (PDF)"
+        'master_mold': ['master-mold', 'master_mold', 'database'],
+        'rotasi': ['rotasi'],
+        'preventif': ['preventif']
+    };
+
+    // Proses pencarian: Cocokkan ID tujuan dengan Kamus di atas
+    for (const [keyModul, daftarKata] of Object.entries(petaBlokir)) {
+        if (daftarKata.some(kata => id.includes(kata))) {
+            modulYgDicek = keyModul;
+            break;
         }
     }
 
-    // Jika aman (misal ke Profil atau Home), biarkan lewat!
+    // 2. JIKA KETAHUAN MENUJU ZONA RAHASIA
+    if (modulYgDicek) {
+        
+        // DETEKSI OTOMATIS: Apakah dia mau "Lihat" atau mau "Input"?
+        // Jika nama layarnya mengandung kata 'input', 'new', 'update', atau 'form'
+        let tipeAkses = 'lihat';
+        if (id.includes('input') || id.includes('form') || id.includes('new') || id.includes('update') || id.includes('tambah')) {
+            tipeAkses = 'input'; // Paksa satpam untuk mengecek izin INPUT!
+        }
+
+        // Tanya ke sistem keamanan: Boleh masuk gak?
+        const bolehMasuk = window.cekAkses(modulYgDicek, tipeAkses);
+        
+        if (!bolehMasuk) {
+            // Jika tidak boleh, BATALKAN PINDAH LAYAR!
+            return; 
+        }
+    }
+
+    // 3. Jika aman, atau dia punya izin, izinkan lewat!
     window.navigasiAsli(idLayarTujuan);
 };
-
