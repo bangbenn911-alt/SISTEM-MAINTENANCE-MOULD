@@ -179,7 +179,7 @@ window.centerOrgView = () => {
 // SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -1012,3 +1012,140 @@ window.inisialisasiDataAnalisaGlobal = async () => {
 
 // Init Onload
 document.addEventListener("DOMContentLoaded", () => { setTimeout(window.muatDataPKMEltre, 1500); });
+
+// =======================================================================
+// UPGRADE TAHAP 1: SISTEM MANAJEMEN HAK AKSES (SUPER ADMIN)
+// =======================================================================
+
+// 1. Tentukan Email Anda Sebagai Pemegang Kunci Tertinggi (Pisahkan dengan koma jika lebih dari 1)
+window.superAdminEmails = ['bangbenn911@gmail.com', 'email.bos@gmail.com']; 
+
+// 2. TIMPA FUNGSI LOGIN: Mencegat proses login untuk mengecek wajah/email pengguna
+window.masukBerandaCepat = async function() {
+    if(navigator.vibrate) navigator.vibrate([50]);
+    
+    // Jika dia sudah login sebelumnya
+    if(auth.currentUser) { 
+        window.toggleLoader(true, "Verifikasi Sidik Jari Digital..."); 
+        await window.prosesHakAkses(auth.currentUser); 
+        return; 
+    }
+    
+    // Jika dia baru pertama kali login
+    try { 
+        const res = await signInWithPopup(auth, provider); 
+        window.toggleLoader(true, "Verifikasi Sidik Jari Digital..."); 
+        await window.prosesHakAkses(res.user); 
+    } catch(e) { 
+        window.toggleLoader(false); 
+        if(e.code !== 'auth/popup-closed-by-user') alert("Login Gagal."); 
+    }
+};
+
+window.prosesHakAkses = async function(user) {
+    try {
+        // Cek apakah yang login adalah Anda (Super Admin)
+        const btnAdmin = document.getElementById('btn-menu-superadmin');
+        if(window.superAdminEmails.includes(user.email.toLowerCase())) {
+            if(btnAdmin) btnAdmin.style.display = 'flex'; // Munculkan Tombol Rahasia
+            window.isSuperAdminUser = true;
+        } else {
+            if(btnAdmin) btnAdmin.style.display = 'none'; // Sembunyikan dari operator
+            window.isSuperAdminUser = false;
+        }
+
+        // Pancingan tes koneksi Firebase agar loading stabil
+        await getDocs(query(collection(window.db, "informasi_mold"))); 
+        window.toggleLoader(false);
+        
+        // Eksekusi animasi pintu terbuka masuk ke Beranda
+        const l = document.getElementById('landing-page'); 
+        if(l) l.classList.add('door-open'); 
+        setTimeout(() => { 
+            if(l) l.style.display='none'; 
+            document.getElementById('global-bottom-nav').style.display='flex'; 
+            window.navigasi('home-screen'); 
+            window.jalankanEngineMetrik(); 
+        }, 300);
+    } catch(e) {
+        window.toggleLoader(false);
+        alert("Akses ke database ditolak atau sesi tidak valid.");
+    }
+};
+
+// 3. FUNGSI LAYAR MENU SUPER ADMIN
+window.bukaMenuSuperAdmin = async () => {
+    window.navigasi('admin-akses-screen');
+    await window.muatDaftarAkses();
+};
+
+window.muatDaftarAkses = async () => {
+    const c = document.getElementById('list-user-akses');
+    c.innerHTML = "<p style='text-align:center;'><i class='fas fa-spinner fa-spin'></i> Mengunduh Buku Akses...</p>";
+    window.daftarAksesDatabase = [];
+    try {
+        const snap = await getDocs(query(collection(window.db, "users_access")));
+        snap.forEach(d => window.daftarAksesDatabase.push({id: d.id, ...d.data()}));
+        
+        let h = "";
+        window.daftarAksesDatabase.forEach(d => {
+            h += `<div class="progress-card" style="border-left-color:#ef4444; position:relative;">
+                    <h4 style="margin:0 0 5px 0; color:#ef4444;"><i class="fas fa-envelope"></i> ${d.id}</h4>
+                    <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px; line-height:1.6;">
+                        Mold Store: <strong style="color:${d.akses_moldstore ? '#10b981' : '#ef4444'}">${d.akses_moldstore ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
+                        Repair & Trb: <strong style="color:${d.akses_repair ? '#10b981' : '#ef4444'}">${d.akses_repair ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
+                        Workshop: <strong style="color:${d.akses_workshop ? '#10b981' : '#ef4444'}">${d.akses_workshop ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
+                        Arsip & Srt: <strong style="color:${d.akses_arsip ? '#10b981' : '#ef4444'}">${d.akses_arsip ? 'DIizinkan' : 'DIBLOKIR'}</strong><br>
+                        Dashboard AI: <strong style="color:${d.akses_analisa ? '#10b981' : '#ef4444'}">${d.akses_analisa ? 'DIizinkan' : 'DIBLOKIR'}</strong>
+                    </p>
+                    <button onclick="window.hapusHakAkses('${d.id}')" style="position:absolute; right:15px; top:15px; background:rgba(239,68,68,0.2); border:1px solid #ef4444; border-radius:8px; padding:8px; color:#fca5a5; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                  </div>`;
+        });
+        c.innerHTML = h || "<p style='text-align:center; color:var(--text-muted);'>Belum ada Karyawan yang diatur hak aksesnya.</p>";
+    } catch(e) {
+        c.innerHTML = `<p style="color:red; text-align:center;">Gagal membaca database: Firebase Rules mungkin memblokir Anda, atau tabel belum ada.</p>`;
+    }
+};
+
+window.simpanHakAkses = async () => {
+    const email = document.getElementById('admin-email-user').value.toLowerCase().trim();
+    if(!email) return alert("Masukkan email karyawan terlebih dahulu!");
+    
+    window.toggleLoader(true, "Menulis ke Buku Akses Database...");
+    try {
+        // Kita menggunakan Email sebagai ID Dokumen agar mudah dilacak oleh Firebase Rules
+        await setDoc(doc(window.db, "users_access", email), {
+            akses_moldstore: document.getElementById('chk-akses-moldstore').checked,
+            akses_repair: document.getElementById('chk-akses-repair').checked,
+            akses_workshop: document.getElementById('chk-akses-workshop').checked,
+            akses_arsip: document.getElementById('chk-akses-arsip').checked,
+            akses_analisa: document.getElementById('chk-akses-analisa').checked,
+            timestamp: Date.now()
+        });
+        alert("Buku Akses berhasil diperbarui untuk " + email);
+        
+        document.getElementById('admin-email-user').value = "";
+        document.getElementById('chk-akses-moldstore').checked = false;
+        document.getElementById('chk-akses-repair').checked = false;
+        document.getElementById('chk-akses-workshop').checked = false;
+        document.getElementById('chk-akses-arsip').checked = false;
+        document.getElementById('chk-akses-analisa').checked = false;
+        
+        await window.muatDaftarAkses();
+    } catch(e) {
+        alert("Gagal menyimpan data: " + e.message);
+    }
+    window.toggleLoader(false);
+};
+
+window.hapusHakAkses = async (email) => {
+    if(!confirm(`CABUT HAK AKSES? \nEmail ${email} akan dilarang mengakses sistem yang digembok.`)) return;
+    window.toggleLoader(true, "Menghapus dari Buku Akses...");
+    try {
+        await deleteDoc(doc(window.db, "users_access", email));
+        await window.muatDaftarAkses();
+    } catch(e) { 
+        alert("Gagal menghapus!"); 
+    }
+    window.toggleLoader(false);
+};
