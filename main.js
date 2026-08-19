@@ -179,7 +179,7 @@ window.centerOrgView = () => {
 // SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -1044,18 +1044,29 @@ window.masukBerandaCepat = async function() {
 
 window.prosesHakAkses = async function(user) {
     try {
-        // Cek apakah yang login adalah Anda (Super Admin)
         const btnAdmin = document.getElementById('btn-menu-superadmin');
-        if(window.superAdminEmails.includes(user.email.toLowerCase())) {
-            if(btnAdmin) btnAdmin.style.display = 'flex'; // Munculkan Tombol Rahasia
+        const emailUser = user.email.toLowerCase();
+
+        // Cek apakah yang login adalah Anda (Super Admin)
+        if(window.superAdminEmails.includes(emailUser)) {
+            if(btnAdmin) btnAdmin.style.display = 'flex'; 
             window.isSuperAdminUser = true;
+            window.hakAksesUser = "SUPER"; // Super Admin kebal semua aturan
         } else {
-            if(btnAdmin) btnAdmin.style.display = 'none'; // Sembunyikan dari operator
+            if(btnAdmin) btnAdmin.style.display = 'none'; 
             window.isSuperAdminUser = false;
+
+            // MENGUNDUH BUKU AKSES KARYAWAN DARI DATABASE
+            const docRef = doc(window.db, "users_access", emailUser);
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                window.hakAksesUser = docSnap.data(); // Simpan izinnya di memori HP
+            } else {
+                window.hakAksesUser = null; // Karyawan belum didaftarkan sama sekali
+            }
         }
 
-        // Pancingan tes koneksi Firebase agar loading stabil
-        await getDocs(query(collection(window.db, "informasi_mold"))); 
         window.toggleLoader(false);
         
         // Eksekusi animasi pintu terbuka masuk ke Beranda
@@ -1069,9 +1080,10 @@ window.prosesHakAkses = async function(user) {
         }, 300);
     } catch(e) {
         window.toggleLoader(false);
-        alert("Akses ke database ditolak atau sesi tidak valid.");
+        alert("Akses ke database ditolak atau koneksi terputus.");
     }
 };
+
 
 // 3. FUNGSI LAYAR MENU SUPER ADMIN (GRANULAR ACCESS 23 POIN)
 
@@ -1208,4 +1220,73 @@ window.hapusHakAkses = async (email) => {
         await window.muatDaftarAkses();
     } catch(e) { alert("Gagal menghapus!"); }
     window.toggleLoader(false);
+};
+// =======================================================================
+// UPGRADE TAHAP 2: SISTEM PENCEGAT (INTERCEPTOR) NAVIGASI & INPUT
+// =======================================================================
+
+// 1. Fungsi Utama Pengecek Hak Akses (Digunakan untuk Lihat & Input)
+window.cekAkses = function(modulKey, tipeAkses = 'lihat') {
+    // Jika Super Admin, langsung buka pintu!
+    if (window.isSuperAdminUser) return true;
+
+    // Jika karyawan tidak ada di Buku Akses database
+    if (!window.hakAksesUser) {
+        alert("Maaf, Anda belum didaftarkan di sistem. Anda tidak diberi akses untuk ini.");
+        return false;
+    }
+
+    // Cek centangan (misal: moldstore_lihat)
+    const izinkan = window.hakAksesUser[`${modulKey}_${tipeAkses}`];
+    if (izinkan === true) {
+        return true;
+    } else {
+        alert("Maaf, Anda tidak diberi akses untuk ini.");
+        return false;
+    }
+};
+
+// 2. Teknik "Monkey Patching" (Menimpa navigasi tanpa merusak aslinya)
+if (!window.navigasiAsli) {
+    window.navigasiAsli = window.navigasi;
+}
+
+window.navigasi = function(idLayarTujuan) {
+    // PETA KEAMANAN: Cocokkan ID <div class="screen"> di HTML Anda dengan Kunci Modul
+    // CATATAN: Ubah teks sebelah kiri sesuai dengan ID Layar asli di HTML Anda!
+    const petaLayar = {
+        'moldstore-screen': 'moldstore',
+        'repair-screen': 'repair',
+        'trouble-screen': 'trouble',
+        'workshop-screen': 'workshop',
+        'admmold-screen': 'adm_mold',
+        'trial-screen': 'trial',
+        'notulen-screen': 'notulen',
+        'analisa-screen': 'analisa',
+        'jadwal-screen': 'jadwal',
+        'cyber-screen': 'cyber',
+        'ide-screen': 'ide',
+        'inbox-screen': 'inbox',
+        'struktur-screen': 'struktur',
+        'personel-screen': 'personel',
+        'arsip-screen': 'arsip',
+        'suratkomponen-screen': 'surkom',
+        'mastermold-screen': 'master_mold',
+        'rotasi-screen': 'rotasi',
+        'preventif-screen': 'preventif'
+    };
+
+    const modulYgDicek = petaLayar[idLayarTujuan];
+
+    // Jika layar tujuan ada di dalam daftar yang dikunci...
+    if (modulYgDicek) {
+        // Cek apakah karyawan ini punya izin 'lihat'
+        const bolehMasuk = window.cekAkses(modulYgDicek, 'lihat');
+        if (!bolehMasuk) {
+            return; // BATALKAN NAVIGASI! Layar tetap diam, tidak ada error.
+        }
+    }
+
+    // Jika aman (atau menu umum seperti home-screen / profil), lanjutkan navigasi!
+    window.navigasiAsli(idLayarTujuan);
 };
