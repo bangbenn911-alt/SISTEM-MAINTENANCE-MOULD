@@ -556,3 +556,60 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     background: white; 
     margin: 0 auto;
 }
+/* ========================================================= */
+/* UPGRADE VISUAL: KARTU ANALYTICS ESTETIK & PROFESIONAL */
+/* ========================================================= */
+
+/* 1. Class Gaya Neon Global */
+.neon-glow {
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8)) drop-shadow(0 0 20px rgba(56, 189, 248, 0.4));
+}
+
+.neon-green-glow {
+    filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.6)) drop-shadow(0 0 16px rgba(16, 185, 129, 0.3));
+}
+
+.neon-text-glow {
+    text-shadow: 0 0 8px rgba(224, 242, 254, 0.8), 0 0 16px rgba(56, 189, 248, 0.4);
+}
+
+/* 2. Gaya Jejak Sirkuit Latar Belakang (B di gambar contoh) */
+.circuit-line-static {
+    fill: none;
+    stroke: rgba(56, 189, 248, 0.25); /* Cyan Transparan */
+    stroke-width: 1;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 5px rgba(56, 189, 248, 0.3)); /* Cahaya Sirkuit Halus */
+}
+
+/* 3. Gaya Kilatan Petir Neon (D di gambar contoh) */
+.lightning-flash {
+    fill: none;
+    stroke: #ffffff; /* Putih Inti */
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 0 10px #ffffff) drop-shadow(0 0 20px #38bdf8); /* Cahaya Petir Intens */
+}
+
+/* 4. Gaya Garis Grafik Kompleks (G di gambar contoh) */
+.chart-line-static {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Penanda Node & Label Teks (seperti 'M16') */
+.chart-node-label {
+    fill: #f8fafc;
+    font-size: 10px;
+    font-weight: 800;
+    text-shadow: 0 0 5px #e0f2fe;
+}
+
+/* 5. Teks Judul Analytics */
+.card-analytics-pro .card-title-bottom {
+    /* (Tetap gunakan gaya yang sudah ada, hanya tambahkan class 'neon-text-glow' nanti di HTML) */
+}

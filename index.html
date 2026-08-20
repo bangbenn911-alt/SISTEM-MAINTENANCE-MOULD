@@ -109,33 +109,69 @@
             <div class="hero-dashboard">
                 <div class="hero-left">
                   <!-- KARTU ANALYTICS ANIMASI (BERGERAK) -->
-<div class="card-analytics-pro" onclick="window.navigasi('ai-dashboard-screen')">
+<div class="card-analytics-pro neon-glow" onclick="window.navigasi('ai-dashboard-screen')">
     
-    <!-- Area Gelombang & Cahaya -->
-    <div class="anim-wave-container">
-        <svg viewBox="0 0 200 50" preserveAspectRatio="none" style="width: 100%; height: 100%;">
-            <!-- Efek Gradient di bawah gelombang -->
-            <path fill="rgba(56, 189, 248, 0.15)" d="M0,25 C25,5 25,45 50,25 C75,5 75,45 100,25 C125,5 125,45 150,25 C175,5 175,45 200,25 L200,50 L0,50 Z"></path>
+    <!-- Wadah Latar Belakang & Grafik SVG -->
+    <div class="anim-wave-container" style="padding: 10px;">
+        <svg viewBox="0 0 300 150" preserveAspectRatio="none" style="width: 100%; height: 100%;">
             
-            <!-- Gelombang Bayangan (Biru Kehijauan) -->
-            <path class="neon-line-slow" fill="none" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1" d="M0,30 C25,10 25,50 50,30 C75,10 75,50 100,30 C125,10 125,50 150,30 C175,10 175,50 200,30"></path>
+            <!-- A. GRAFIK GARIS KOMPLEKS (STATIC) - Cyan, Emas, Ungu -->
+            <!-- Grafik simulasian multi-warna dengan node & label simulasian -->
             
-            <!-- Gelombang Utama (Neon Biru Terang) -->
-            <path class="neon-line" fill="none" stroke="#38bdf8" stroke-width="2" d="M0,25 C25,5 25,45 50,25 C75,5 75,45 100,25 C125,5 125,45 150,25 C175,5 175,45 200,25"></path>
+            <!-- Gradient Area Filling Halus di bawah grafik utama -->
+            <defs>
+                <linearGradient id="cyanGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:rgba(56, 189, 248, 0.15);" />
+                    <stop offset="100%" style="stop-color:rgba(56, 189, 248, 0);" />
+                </linearGradient>
+            </defs>
+            <path fill="url(#cyanGradient)" d="M0,75 C25,55 25,95 50,75 C75,55 75,95 100,75 C125,55 125,95 150,75 C175,55 175,95 200,75 C225,55 225,95 250,75 C275,55 275,95 300,75 L300,150 L0,150 Z"></path>
+            
+            <!-- Garis Ungu (Mati) -->
+            <path class="chart-line-static" stroke="#a78bfa" d="M0,85 C25,65 25,105 50,85 C75,65 75,105 100,85 C125,65 125,105 150,85 C175,65 175,105 200,85 C225,65 225,105 250,85 C275,65 275,105 300,85"></path>
+            
+            <!-- Garis Emas (Mati) -->
+            <path class="chart-line-static" stroke="#fbbf24" d="M0,80 C25,60 25,100 50,80 C75,60 75,100 100,80 C125,60 125,100 150,80 C175,60 175,100 200,80 C225,60 225,100 250,80 C275,60 275,100 300,80"></path>
+            
+            <!-- Garis Utama Cyan (Neon) -->
+            <path class="chart-line-static neon-glow" stroke="#38bdf8" d="M0,75 C25,55 25,95 50,75 C75,55 75,95 100,75 C125,55 125,95 150,75 C175,55 175,95 200,75 C225,55 225,95 250,75 C275,55 275,95 300,75"></path>
+            
+            <!-- Penanda Node & Label Teks (Statis) - seperti 'M16', 'B13', dll. -->
+            <circle class="neon-green-glow" cx="12%" cy="65%" r="3" fill="#ffffff" stroke="#10b981" stroke-width="1.5"></circle>
+            <text class="chart-node-label" x="15%" y="62%">A15</text>
+            
+            <circle cx="37%" cy="85%" r="3" fill="#ffffff" stroke="#fbbf24" stroke-width="1.5"></circle>
+            <text class="chart-node-label" x="40%" y="82%">B13</text>
+            
+            <circle class="neon-green-glow" cx="62%" cy="65%" r="3" fill="#ffffff" stroke="#10b981" stroke-width="1.5"></circle>
+            <text class="chart-node-label" x="65%" y="62%">G17</text>
+            
+            <circle cx="87%" cy="85%" r="3" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"></circle>
+            <text class="chart-node-label" x="90%" y="82%">C13</text>
+
+            <!-- B. JEJAK SIRKUIT LATAR BELAKANG (STATIC) -->
+            <g class="circuit-line-static">
+                <path d="M0,30 v10 l5,5 v50 h20 l5,-5 h80 v10" />
+                <path d="M50,0 v15 l-5,5 v10 l5,5 v5" />
+                <path d="M150,20 l10,10 v20 l-10,10 h-30" />
+                <path d="M250,130 v-15 l-5,-5 v-20 l5,-5 h40 l5,5" />
+            </g>
+
+            <!-- D. KILATAN PETIR NEON (STATIC) - seperti di pintu -->
+            <!-- Kilatan simulasian menempel statis di sekitar grafik -->
+            <path class="lightning-flash" d="M15,45 l5,-10 l8,15 l10,-10 l-5,25 l12,-5"></path>
+            <path class="lightning-flash" d="M210,105 l-10,-20 l15,10 l5,-25 l12,15 l5,-10"></path>
+
         </svg>
 
-        <!-- Titik Cahaya Kelap-Kelip (Menempel di gelombang) -->
-        <div class="glowing-node" style="top: 25%; left: 12%;"></div>
-        <div class="glowing-node" style="top: 50%; left: 37%; animation-delay: 0.5s;"></div>
-        <div class="glowing-node" style="top: 25%; left: 62%; animation-delay: 1.2s;"></div>
-        <div class="glowing-node" style="top: 50%; left: 87%; animation-delay: 0.8s;"></div>
     </div>
 
-    <!-- Teks Judul -->
-    <div class="card-title-bottom">
+    <!-- Teks Judul (Tetap) -->
+    <div class="card-title-bottom neon-text-glow">
         <i class="fas fa-chart-line" style="color: #38bdf8;"></i> Analytics
     </div>
 </div>
+
                     <div class="glass-card jadwal" onclick="window.navigasi('jadwal-besar-menu-screen')">
                         <i class="fas fa-calendar-alt" style="font-size:16px;"></i> Jadwal
                     </div>
