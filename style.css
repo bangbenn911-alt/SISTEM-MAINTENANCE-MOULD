@@ -458,8 +458,8 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 16px;
-    height: 120px; 
-    width: 150%;
+    height: 90px; 
+    width: 130%;
     overflow: hidden; 
     cursor: pointer;
     box-shadow: 0 8px 25px -5px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56, 189, 248, 0.05);
