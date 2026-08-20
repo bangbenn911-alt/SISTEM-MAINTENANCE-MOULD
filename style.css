@@ -620,7 +620,7 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     fill: none;
     stroke-width: 3; 
     stroke-linecap: round;
-    stroke-dasharray: 40 200; /* Total panjang adalah 40 + 200 = 240 */
+    stroke-dasharray: 20 700; /* Total panjang adalah 40 + 200 = 240 */
     animation: flowCircuit 3s linear infinite;
     will-change: stroke-dashoffset; 
     transform: translateZ(0); 
@@ -628,6 +628,6 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 
 @keyframes flowCircuit {
     /* HARUS 240! Jika kurang dari ini, animasinya akan patah/melompat */
-    0% { stroke-dashoffset: 240; } 
+    0% { stroke-dashoffset: 720; } 
     100% { stroke-dashoffset: 0; }
 }
