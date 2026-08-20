@@ -449,3 +449,89 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     #notul-export-wrapper { position: absolute; left: 0; top: 0; width: 100%; background: #ffffff !important; }
     .pro-eval-card { break-inside: avoid; }
 }
+/* ========================================================= */
+/* UPGRADE TAMPILAN: KARTU ANALYTICS ANIMASI NEON (CYBERPUNK)*/
+/* ========================================================= */
+
+.card-analytics-pro {
+    position: relative;
+    background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    border-radius: 16px;
+    height: 140px; 
+    width: 100%;
+    overflow: hidden; 
+    cursor: pointer;
+    box-shadow: 0 8px 25px -5px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56, 189, 248, 0.05);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
+    transition: all 0.2s ease;
+    margin-bottom: 15px; 
+}
+
+.card-analytics-pro:active {
+    transform: scale(0.95);
+    border-color: rgba(56, 189, 248, 0.8);
+}
+
+/* Animasi Gelombang Bergerak */
+.anim-wave-container {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 200%; 
+    height: 80%;
+    z-index: 1;
+    animation: slideWave 5s linear infinite; 
+}
+
+.neon-line {
+    filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.8)) drop-shadow(0 0 12px rgba(56, 189, 248, 0.4));
+}
+
+.neon-line-slow {
+    animation: pulseLine 3s ease-in-out infinite;
+}
+
+@keyframes slideWave {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+@keyframes pulseLine {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; stroke-width: 2; }
+}
+
+/* Animasi Titik Cahaya */
+.glowing-node {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #ffffff;
+    border-radius: 50%;
+    z-index: 2;
+    box-shadow: 0 0 10px #e0f2fe, 0 0 20px #38bdf8, 0 0 30px #38bdf8;
+    animation: pulseNode 2s infinite alternate;
+}
+
+@keyframes pulseNode {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.6); opacity: 1; }
+}
+
+/* Teks Judul Analytics */
+.card-title-bottom {
+    position: relative;
+    z-index: 3;
+    color: #f8fafc;
+    font-size: 15px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.9);
+    letter-spacing: 0.5px;
+}

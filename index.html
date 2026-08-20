@@ -108,14 +108,34 @@
 
             <div class="hero-dashboard">
                 <div class="hero-left">
-                    <div class="glass-card analytics" onclick="window.navigasi('ai-dashboard-screen')">
-                        <svg viewBox="0 0 100 40" style="position:absolute; top:10px; width:90%; opacity:0.8;">
-                            <path d="M0 20 Q 20 5, 40 20 T 80 20 T 100 5" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
-                        <div style="margin-top:25px; font-weight:800; font-size:14px; z-index:2; display:flex; align-items:center; gap:8px;">
-                            <i class="fas fa-chart-line"></i> Analytics
-                        </div>
-                    </div>
+                  <!-- KARTU ANALYTICS ANIMASI (BERGERAK) -->
+<div class="card-analytics-pro" onclick="window.navigasi('ai-dashboard-screen')">
+    
+    <!-- Area Gelombang & Cahaya -->
+    <div class="anim-wave-container">
+        <svg viewBox="0 0 200 50" preserveAspectRatio="none" style="width: 100%; height: 100%;">
+            <!-- Efek Gradient di bawah gelombang -->
+            <path fill="rgba(56, 189, 248, 0.15)" d="M0,25 C25,5 25,45 50,25 C75,5 75,45 100,25 C125,5 125,45 150,25 C175,5 175,45 200,25 L200,50 L0,50 Z"></path>
+            
+            <!-- Gelombang Bayangan (Biru Kehijauan) -->
+            <path class="neon-line-slow" fill="none" stroke="rgba(16, 185, 129, 0.5)" stroke-width="1" d="M0,30 C25,10 25,50 50,30 C75,10 75,50 100,30 C125,10 125,50 150,30 C175,10 175,50 200,30"></path>
+            
+            <!-- Gelombang Utama (Neon Biru Terang) -->
+            <path class="neon-line" fill="none" stroke="#38bdf8" stroke-width="2" d="M0,25 C25,5 25,45 50,25 C75,5 75,45 100,25 C125,5 125,45 150,25 C175,5 175,45 200,25"></path>
+        </svg>
+
+        <!-- Titik Cahaya Kelap-Kelip (Menempel di gelombang) -->
+        <div class="glowing-node" style="top: 25%; left: 12%;"></div>
+        <div class="glowing-node" style="top: 50%; left: 37%; animation-delay: 0.5s;"></div>
+        <div class="glowing-node" style="top: 25%; left: 62%; animation-delay: 1.2s;"></div>
+        <div class="glowing-node" style="top: 50%; left: 87%; animation-delay: 0.8s;"></div>
+    </div>
+
+    <!-- Teks Judul -->
+    <div class="card-title-bottom">
+        <i class="fas fa-chart-line" style="color: #38bdf8;"></i> Analytics
+    </div>
+</div>
                     <div class="glass-card jadwal" onclick="window.navigasi('jadwal-besar-menu-screen')">
                         <i class="fas fa-calendar-alt" style="font-size:16px;"></i> Jadwal
                     </div>
