@@ -459,7 +459,7 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     border: 1px solid rgba(56, 189, 248, 0.3);
     border-radius: 16px;
     height: 120px; 
-    width: 70%;
+    width: 80%;
     overflow: hidden; 
     cursor: pointer;
     box-shadow: 0 8px 25px -5px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56, 189, 248, 0.05);
@@ -481,8 +481,8 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     position: absolute;
     bottom: 10px;
     left: 0;
-    width: 200%; 
-    height: 80%;
+    width: 180%; 
+    height: 100%;
     z-index: 1;
     animation: slideWave 5s linear infinite; 
 }
