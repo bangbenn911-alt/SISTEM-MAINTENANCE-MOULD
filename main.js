@@ -907,10 +907,12 @@ window.bukaDetailNotulen = (id) => {
     if (d.foto) {
         hPhoto = `
         <div class="pro-photo-section">
-            <h3 style="font-size:16px; font-weight:900; color:#1e293b; margin-bottom:15px; text-transform:uppercase;"><i class="fas fa-camera-retro"></i> DOKUMENTASI VISUAL</h3>
+            <h3 style="font-size:16px; font-weight:900; color:#1e293b; margin-bottom:15px; text-transform:uppercase;"><i class="fas fa-camera-retro"></i> DOKUMENTASI
+            </h3>
             <div class="pro-photo-polaroid">
                 <img src="${d.foto}" alt="Dokumentasi Rapat">
-                <div class="pro-photo-label">FOTO DOKUMENTASI RAPAT</div>
+                <div class="pro-photo-label">
+                </div>
             </div>
         </div>`;
     }
