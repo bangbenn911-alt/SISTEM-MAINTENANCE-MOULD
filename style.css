@@ -608,7 +608,7 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 .card-analytics-pro .card-title-bottom {
     /* (Tetap gunakan gaya yang sudah ada, hanya tambahkan class 'neon-text-glow' nanti di HTML) */
 }
-/* --- CSS EFEK SIRKUIT HALUS --- */
+/* --- CSS EFEK SIRKUIT HALUS (VERSI OPTIMASI RINGAN) --- */
 .line-circuit {
     fill: none;
     stroke-width: 2;
@@ -618,14 +618,16 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 
 .line-glow {
     fill: none;
-    stroke-width: 2;
+    stroke-width: 3; 
     stroke-linecap: round;
-    stroke-dasharray: 40 200; 
+    stroke-dasharray: 40 200; /* Total panjang adalah 40 + 200 = 240 */
     animation: flowCircuit 3s linear infinite;
-    filter: drop-shadow(0 0 5px var(--glow-color));
+    will-change: stroke-dashoffset; 
+    transform: translateZ(0); 
 }
 
 @keyframes flowCircuit {
-    0% { stroke-dashoffset: 200; }
+    /* HARUS 240! Jika kurang dari ini, animasinya akan patah/melompat */
+    0% { stroke-dashoffset: 240; } 
     100% { stroke-dashoffset: 0; }
 }
