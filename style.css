@@ -210,10 +210,15 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 .line-h-circuit { position: relative; height: 3px; background: #0f172a; z-index: 1; overflow: hidden; border-radius: 2px;}
 
 /* Animasi Cahaya Bergerak di dalam Garis */
-.line-v-circuit::after { content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 0%, #38bdf8 80%, #ffffff 100%); animation: flowVSync 4s infinite linear var(--delay, 0s); box-shadow: 0 0 10px #38bdf8; }
+.line-v-circuit::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 0%, #38bdf8 80%, #ffffff 100%); animation: flowVSync 4s infinite linear var(--delay, 0s); box-shadow: 0 0 10px #38bdf8; will-change: transform, opacity; }
 .line-h-circuit::after { content: ''; position: absolute; left: 0%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 0%, #38bdf8 40%, #ffffff 50%, #38bdf8 60%, transparent 100%); animation: flowHSync 4s infinite linear var(--delay, 0s); box-shadow: 0 0 10px #38bdf8; }
 
-@keyframes flowVSync { 0% { top: -100%; opacity: 1; } 15% { top: 100%; opacity: 1; } 16% { top: 100%; opacity: 0; } 100% { top: 100%; opacity: 0; } }
+@keyframes flowVSync { 
+    0% { transform: translateY(-100%); opacity: 1; } 
+    15% { transform: translateY(100%); opacity: 1; } 
+    16% { transform: translateY(100%); opacity: 0; } 
+    100% { transform: translateY(100%); opacity: 0; } 
+}
 @keyframes flowHSync { 0% { transform: scaleX(0); opacity: 1; } 15% { transform: scaleX(1); opacity: 1; } 16% { opacity: 0; } 100% { opacity: 0; } }
 
 /* Konfigurasi Kotak Tabel Normal (Solid/Tanpa Blur untuk Performa Anti-Lag) */

@@ -1,6 +1,9 @@
 const CACHE_NAME = 'mtrix-cache-v14';
 const ASSETS = [
-  '/', // Caches file utama HTML Anda (ganti dengan nama file html Anda jika bukan di root, misal '/index.html')
+  '/', 
+  './index.html',
+  './style.css',
+  './main.js',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
