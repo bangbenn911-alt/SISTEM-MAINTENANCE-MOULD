@@ -628,11 +628,11 @@
                 <div class="menu-card" onclick="window.navigasi('npbpb-menu-screen')" style="border-left-color: #8b5cf6;">
                     <i class="fas fa-file-invoice" style="color:#8b5cf6;"></i> 3. NP/BPB
                 </div>
-                <div class="menu-card" onclick="alert('Fitur Instruksi Kerja (IK) akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
-                    <i class="fas fa-clipboard-check" style="color:#94a3b8;"></i> 4. Instruksi Kerja (IK)
+                                <div class="menu-card" onclick="window.navigasi('ik-menu-screen')" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-clipboard-check" style="color:#8b5cf6;"></i> 4. Instruksi Kerja (IK)
                 </div>
-                <div class="menu-card" onclick="alert('Fitur SOP akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
-                    <i class="fas fa-book" style="color:#94a3b8;"></i> 5. Standar Operasional Kerja (SOP)
+                <div class="menu-card" onclick="window.navigasi('sop-menu-screen')" style="border-left-color: #ec4899;">
+                    <i class="fas fa-book" style="color:#ec4899;"></i> 5. Standar Operasional Kerja (SOP)
                 </div>
             </div>
         </div>
@@ -2052,6 +2052,140 @@
                 <div id="loading-np-master" style="text-align:center; padding:20px; color:var(--text-muted); display:none;">
                     <i class="fas fa-spinner fa-spin fa-2x"></i><br>Sinkronisasi Data Akuntansi...
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODUL: INSTRUKSI KERJA (IK)                               -->
+    <!-- ========================================================= -->
+    <div id="ik-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;">
+                <h2><i class="fas fa-clipboard-check" style="margin-right:10px;"></i> INSTRUKSI KERJA (IK)</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('ik-input-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-file-upload" style="color:#38bdf8;"></i> 1. Input Data IK (PDF Splitter)
+                </div>
+                <div class="menu-card" onclick="window.navigasi('ik-history-screen'); window.renderHistory_Doc('ik', true);" style="border-left-color: #10b981;">
+                    <i class="fas fa-history" style="color:#10b981;"></i> 2. History Data IK
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT IK -->
+    <div id="ik-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-file-upload" style="margin-right:10px;"></i> Input Instruksi Kerja</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Tanggal & Waktu Input</label>
+                    <input type="text" id="ik-waktu" readonly style="font-weight:800; color:var(--cepat); background: rgba(0,0,0,0.5); text-align:center;">
+                </div>
+                <div class="form-group">
+                    <label>Nama Pengupload</label>
+                    <input type="text" id="ik-uploader" placeholder="Nama Anda..." style="font-weight:700;">
+                </div>
+                <div class="form-group">
+                    <label>Upload File PDF IK (Bisa Multi-Halaman)</label>
+                    <div class="file-upload-zone" onclick="document.getElementById('ik-file-pdf').click()">
+                        <i class="fas fa-file-pdf fa-3x" style="color:#8b5cf6; margin-bottom:10px; display:block;"></i>
+                        <span style="font-weight:700; font-size:14px; color:white;">Klik untuk pilih file PDF</span>
+                    </div>
+                    <input type="file" id="ik-file-pdf" accept="application/pdf" style="display:none;" onchange="window.prosesPDF_Doc(this, 'ik')">
+                </div>
+            </div>
+
+            <div id="ik-split-area" style="display:none;">
+                <h3 class="sub-title-box"><i class="fas fa-layer-group" style="color:#8b5cf6;"></i> Pemecahan PDF (<span id="ik-total-halaman">0</span> Hal)</h3>
+                <div id="ik-split-container"></div>
+                <button class="btn-submit" type="button" onclick="window.simpanAll_Doc('ik')" style="background:linear-gradient(135deg, #8b5cf6, #6d28d9); margin-top:20px;">
+                    <i class="fas fa-save"></i> SIMPAN SEMUA IK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY IK -->
+    <div id="ik-history-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #7c3aed, #5b21b6) !important;">
+                <h2><i class="fas fa-history" style="margin-right:10px;"></i> History Instruksi Kerja</h2>
+            </div>
+            <div class="dark-panel" style="padding: 20px;">
+                <input type="text" id="ik-search-key" placeholder="Pencarian Judul IK..." style="width:100%; margin-bottom:20px; text-transform:uppercase;" oninput="window.renderHistory_Doc('ik')">
+                <div id="list-ik-history"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODUL: STANDAR OPERASIONAL KERJA (SOP)                    -->
+    <!-- ========================================================= -->
+    <div id="sop-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #be185d, #831843) !important;">
+                <h2><i class="fas fa-book" style="margin-right:10px;"></i> STANDAR OPERASIONAL (SOP)</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('sop-input-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-file-upload" style="color:#38bdf8;"></i> 1. Input Data SOP (PDF Splitter)
+                </div>
+                <div class="menu-card" onclick="window.navigasi('sop-history-screen'); window.renderHistory_Doc('sop', true);" style="border-left-color: #10b981;">
+                    <i class="fas fa-history" style="color:#10b981;"></i> 2. History Data SOP
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INPUT SOP -->
+    <div id="sop-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-file-upload" style="margin-right:10px;"></i> Input Standar Operasional</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Tanggal & Waktu Input</label>
+                    <input type="text" id="sop-waktu" readonly style="font-weight:800; color:var(--cepat); background: rgba(0,0,0,0.5); text-align:center;">
+                </div>
+                <div class="form-group">
+                    <label>Nama Pengupload</label>
+                    <input type="text" id="sop-uploader" placeholder="Nama Anda..." style="font-weight:700;">
+                </div>
+                <div class="form-group">
+                    <label>Upload File PDF SOP (Bisa Multi-Halaman)</label>
+                    <div class="file-upload-zone" style="border-color:#ec4899;" onclick="document.getElementById('sop-file-pdf').click()">
+                        <i class="fas fa-file-pdf fa-3x" style="color:#ec4899; margin-bottom:10px; display:block;"></i>
+                        <span style="font-weight:700; font-size:14px; color:white;">Klik untuk pilih file PDF</span>
+                    </div>
+                    <input type="file" id="sop-file-pdf" accept="application/pdf" style="display:none;" onchange="window.prosesPDF_Doc(this, 'sop')">
+                </div>
+            </div>
+
+            <div id="sop-split-area" style="display:none;">
+                <h3 class="sub-title-box"><i class="fas fa-layer-group" style="color:#ec4899;"></i> Pemecahan PDF (<span id="sop-total-halaman">0</span> Hal)</h3>
+                <div id="sop-split-container"></div>
+                <button class="btn-submit" type="button" onclick="window.simpanAll_Doc('sop')" style="background:linear-gradient(135deg, #db2777, #9d174d); margin-top:20px;">
+                    <i class="fas fa-save"></i> SIMPAN SEMUA SOP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HISTORY SOP -->
+    <div id="sop-history-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #be185d, #831843) !important;">
+                <h2><i class="fas fa-history" style="margin-right:10px;"></i> History Standar Operasional</h2>
+            </div>
+            <div class="dark-panel" style="padding: 20px;">
+                <input type="text" id="sop-search-key" placeholder="Pencarian Judul SOP..." style="width:100%; margin-bottom:20px; text-transform:uppercase; border-color:#ec4899;" oninput="window.renderHistory_Doc('sop')">
+                <div id="list-sop-history"></div>
             </div>
         </div>
     </div>

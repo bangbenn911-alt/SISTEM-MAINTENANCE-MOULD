@@ -1279,7 +1279,7 @@ window.navigasi = function(idLayarTujuan) {
         'inbox': ['inbox'],
         'struktur': ['struktur', 'organisasi'],
         'personel': ['personel', 'tim'],
-        'arsip': ['arsip', 'dokumentasi','npbpb','np-'],
+        'arsip': ['arsip', 'dokumentasi','npbpb','np-','ik-','sop-'],
         'surkom': ['surkom', 'surat', 'pdf'], // Ini akan mencegat "Input Surkom (PDF)"
         'master_mold': ['master-mold', 'master_mold', 'database'],
         'rotasi': ['rotasi'],
@@ -1322,13 +1322,224 @@ window.navigasi = function(idLayarTujuan) {
     // 3. Jika aman, atau dia punya izin, izinkan lewat!
     window.navigasiAsli(idLayarTujuan);
 
-    // 4. GARBAGE COLLECTION (Optimasi RAM HP)
-    // Menghapus beban file PDF raksasa dari memori jika user keluar dari area Arsip / Surkom
-    if (!id.includes('surkom') && !id.includes('sm-') && !id.includes('sk-') && !id.includes('arsip')) {
+       // 4. GARBAGE COLLECTION (Optimasi RAM HP)
+    if (!id.includes('surkom') && !id.includes('sm-') && !id.includes('sk-') && !id.includes('arsip') && !id.includes('ik-') && !id.includes('sop-')) {
         window.surkomPdfDocObj = null;
         window.surkomOriginalPdfBytes = null;
         window.arsipPdfDocObj = null;
+        if(window.modulPdfData) {
+            window.modulPdfData.ik.bytes = null; window.modulPdfData.ik.doc = null;
+            window.modulPdfData.sop.bytes = null; window.modulPdfData.sop.doc = null;
+        }
     }
+};
+
+// =========================================================================================
+// MODUL ARSIP: ENGINE UNIVERSAL UNTUK IK & SOP (PDF SPLITTER + HISTORY)
+// =========================================================================================
+
+// Jam Real-time Otomatis untuk IK & SOP
+setInterval(() => {
+    const now = new Date();
+    const strWaktu = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
+    if(document.getElementById('ik-waktu')) document.getElementById('ik-waktu').value = strWaktu;
+    if(document.getElementById('sop-waktu')) document.getElementById('sop-waktu').value = strWaktu;
+}, 1000);
+
+// Variabel Global Data
+window.modulPdfData = {
+    ik: { bytes: null, count: 0, doc: null, collection: 'instruksi_kerja' },
+    sop: { bytes: null, count: 0, doc: null, collection: 'standar_operasional' }
+};
+window.historyDatabase = { ik: [], sop: [] };
+
+// 1. ENGINE MEMECAH PDF (SPLITTER)
+window.prosesPDF_Doc = async function(inp, prefix) {
+    const f = inp.files[0]; if(!f) return;
+    window.toggleLoader(true, "Memecah PDF...");
+    try {
+        const ab = await f.arrayBuffer();
+        window.modulPdfData[prefix].bytes = ab;
+        const pdf = await pdfjsLib.getDocument({ data: ab }).promise;
+        window.modulPdfData[prefix].doc = pdf;
+        window.modulPdfData[prefix].count = pdf.numPages;
+
+        document.getElementById(`${prefix}-split-area`).style.display = 'block';
+        document.getElementById(`${prefix}-total-halaman`).innerText = pdf.numPages;
+        let c = document.getElementById(`${prefix}-split-container`);
+        c.innerHTML = "";
+
+        for(let i=1; i<=pdf.numPages; i++) {
+            const page = await pdf.getPage(i);
+            const vp = page.getViewport({ scale: 0.6 });
+            let d = document.createElement('div');
+            d.className = "pdf-split-card";
+            d.id = `${prefix}-card-${i}`;
+            d.innerHTML = `
+                <div onclick="document.getElementById('${prefix}-card-${i}').remove();" style="position:absolute; top:-10px; right:-10px; background:var(--lambat); color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 0 10px rgba(239,68,68,0.5);"><i class="fas fa-times"></i></div>
+                <div style="display:flex; gap:15px; align-items:center;">
+                    <div style="cursor:pointer; text-align:center;" onclick="window.bukaPreviewDoc('${prefix}', ${i})">
+                        <canvas id="${prefix}-canvas-${i}" style="width:70px; border-radius:6px; border:2px solid var(--secondary); background:white;"></canvas>
+                        <div style="font-size:9px; margin-top:5px; color:var(--secondary); font-weight:800;"><i class="fas fa-search-plus"></i> LIHAT</div>
+                    </div>
+                    <div style="flex:1;">
+                        <input type="text" id="${prefix}-judul-${i}" placeholder="Masukkan Judul Dokumen (Hal ${i})..." style="text-transform:uppercase;">
+                    </div>
+                </div>`;
+            c.appendChild(d);
+            const canvas = document.getElementById(`${prefix}-canvas-${i}`);
+            const ctx = canvas.getContext('2d');
+            canvas.height = vp.height; canvas.width = vp.width;
+            await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        }
+    } catch(e) { alert("Error Membaca PDF: " + e.message); }
+    window.toggleLoader(false);
+};
+
+// 2. ENGINE PREVIEW PDF SEBELUM DINAMAI
+window.bukaPreviewDoc = async function(prefix, pNum) {
+    const mod = document.getElementById('surkom-preview-modal'); // Kita pinjam modal Surkom
+    const cvs = document.getElementById('surkom-preview-canvas');
+    const l = document.getElementById('surkom-preview-loading');
+    mod.style.display='flex'; cvs.style.display='none'; l.style.display='block';
+    document.getElementById('surkom-preview-page-num').innerText = pNum;
+    try {
+        const page = await window.modulPdfData[prefix].doc.getPage(pNum);
+        const vp = page.getViewport({ scale: 1.5 });
+        const ctx = cvs.getContext('2d');
+        cvs.height = vp.height; cvs.width = vp.width;
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        l.style.display='none'; cvs.style.display='block';
+    } catch(e) {}
+};
+
+// 3. ENGINE SIMPAN SEMUA POTONGAN PDF
+window.simpanAll_Doc = async function(prefix) {
+    const uploader = window.amankanData(document.getElementById(`${prefix}-uploader`).value);
+    const waktu = document.getElementById(`${prefix}-waktu`).value;
+    if(!uploader) return alert("Mohon isi Nama Pengupload!");
+    window.toggleLoader(true, "Menyimpan Data ke Server...");
+    try {
+        const { PDFDocument } = PDFLib;
+        const orig = await PDFDocument.load(window.modulPdfData[prefix].bytes);
+        let arr = [];
+        for(let i=1; i<=window.modulPdfData[prefix].count; i++) {
+            let inp = document.getElementById(`${prefix}-judul-${i}`);
+            if(!inp || !inp.value.trim()) continue; // Abaikan jika judul kosong / sudah dihapus
+            
+            let newPdf = await PDFDocument.create();
+            let [pg] = await newPdf.copyPages(orig, [i-1]);
+            newPdf.addPage(pg);
+            let b64 = await newPdf.saveAsBase64({ dataUri: true });
+            
+            arr.push(addDoc(collection(window.db, window.modulPdfData[prefix].collection), {
+                judul: inp.value.trim().toUpperCase(),
+                uploader: uploader.toUpperCase(),
+                waktuInput: waktu,
+                filePdfBase64: b64,
+                timestamp: Date.now()
+            }));
+        }
+        await Promise.all(arr);
+        alert(`Seluruh dokumen ${prefix.toUpperCase()} berhasil disimpan!`);
+        window.navigasi(`${prefix}-history-screen`);
+        await window.renderHistory_Doc(prefix, true);
+    } catch(e) { alert("Gagal Menyimpan: " + e.message); }
+    window.toggleLoader(false);
+};
+
+// 4. ENGINE TAMPILKAN HISTORY (PROFESIONAL CARD)
+window.renderHistory_Doc = async function(prefix, forceFetch = false) {
+    const c = document.getElementById(`list-${prefix}-history`);
+    const kw = window.amankanData((document.getElementById(`${prefix}-search-key`)?.value || "").toLowerCase());
+    
+    if(forceFetch || window.historyDatabase[prefix].length === 0) {
+        window.toggleLoader(true, "Memuat Data dari Cloud...");
+        window.historyDatabase[prefix] = [];
+        try {
+            const snap = await getDocs(query(collection(window.db, window.modulPdfData[prefix].collection)));
+            snap.forEach(d => window.historyDatabase[prefix].push({id: d.id, ...d.data()}));
+            window.historyDatabase[prefix].sort((a,b) => b.timestamp - a.timestamp);
+        } catch(e){}
+        window.toggleLoader(false);
+    }
+
+    let data = window.historyDatabase[prefix].filter(d => (d.judul || "").toLowerCase().includes(kw));
+    if(data.length === 0) {
+        c.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; border:1px dashed var(--border-dark); border-radius:10px;">Tidak ada dokumen yang ditemukan.</p>`;
+        return;
+    }
+
+    let h = "";
+    const iconColor = prefix === 'ik' ? '#8b5cf6' : '#ec4899';
+    data.forEach(d => {
+        h += `
+        <div class="progress-card" style="border-left-color:${iconColor}; margin-bottom:15px; background:rgba(15,23,42,0.8);">
+            <h4 style="margin:0 0 8px 0; color:${iconColor}; font-size:15px;">${d.judul}</h4>
+            <p style="margin:0 0 15px 0; font-size:11px; color:var(--text-muted);"><i class="fas fa-clock"></i> ${d.waktuInput} <br><i class="fas fa-user-tie" style="margin-top:5px;"></i> Upload Oleh: <span style="color:white; font-weight:bold;">${d.uploader}</span></p>
+            
+            <div style="display:flex; gap:10px; border-top:1px dashed rgba(255,255,255,0.1); padding-top:12px;">
+                <button onclick="window.bukaViewerHistory('${prefix}', '${d.id}')" style="flex:1; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.2); color:white; padding:10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; transition:0.2s;"><i class="fas fa-eye" style="color:#38bdf8;"></i> Lihat Dokumen</button>
+                <button onclick="window.unduhFileHistory('${prefix}', '${d.id}', 'pdf')" style="flex:1; background:linear-gradient(135deg, #10b981, #059669); border:none; color:white; padding:10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(16,185,129,0.3);"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+                <button onclick="window.unduhFileHistory('${prefix}', '${d.id}', 'jpg')" style="flex:1; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:white; padding:10px; border-radius:8px; font-size:11px; font-weight:800; cursor:pointer; box-shadow:0 4px 10px rgba(245,158,11,0.3);"><i class="fas fa-image"></i> Unduh JPG</button>
+            </div>
+        </div>`;
+    });
+    c.innerHTML = h;
+};
+
+// 5. ENGINE UNDUH DOKUMEN (KONVERSI PDF KE JPG)
+window.unduhFileHistory = async function(prefix, id, type) {
+    const d = window.historyDatabase[prefix].find(x => x.id === id);
+    if(!d || !d.filePdfBase64) return;
+    
+    const namaFile = `${prefix.toUpperCase()}_${d.judul}`;
+    
+    if(type === 'pdf') {
+        let a = document.createElement("a");
+        a.href = d.filePdfBase64;
+        a.download = namaFile + ".pdf";
+        a.click();
+    } else {
+        window.toggleLoader(true, "Mengekstrak JPG Resolusi Tinggi...");
+        try {
+            const pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
+            const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+            const page = await pdf.getPage(1);
+            const vp = page.getViewport({ scale: 2.5 }); // Skala besar agar JPG tidak pecah/blur
+            const cvs = document.createElement('canvas');
+            cvs.width = vp.width; cvs.height = vp.height;
+            const ctx = cvs.getContext('2d');
+            
+            // Beri background putih (karena PDF bawaan aslinya transparan)
+            ctx.fillStyle = "white";
+            ctx.fillRect(0, 0, cvs.width, cvs.height);
+            
+            await page.render({ canvasContext: ctx, viewport: vp }).promise;
+            
+            let link = document.createElement('a');
+            link.download = namaFile + '.jpg';
+            link.href = cvs.toDataURL('image/jpeg', 0.95);
+            link.click();
+        } catch(e) { alert("Gagal mengekstrak JPG."); }
+        window.toggleLoader(false);
+    }
+};
+
+// 6. ENGINE VIEWER PDF UNIVERSAL
+window.bukaViewerHistory = async function(prefix, id) {
+    const d = window.historyDatabase[prefix].find(x => x.id === id);
+    if(!d || !d.filePdfBase64) return;
+    document.getElementById('arsip-pdf-modal').style.display = 'flex';
+    document.getElementById('arsip-viewer-title').innerText = d.judul;
+    document.getElementById('arsip-viewer-canvas').style.display = 'none';
+    document.getElementById('arsip-viewer-loading').style.display = 'block';
+    try {
+        let pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
+        window.arsipPdfDocObj = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+        window.arsipCurrentPage = 1;
+        await window.arsipRenderPage(1);
+    } catch(e) { alert("Gagal memuat PDF."); document.getElementById('arsip-pdf-modal').style.display='none'; }
 };
 
 // =========================================================================================
