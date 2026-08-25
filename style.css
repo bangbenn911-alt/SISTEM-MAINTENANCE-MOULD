@@ -660,3 +660,53 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 
 .btn-update-bpb { background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; color: #fcd34d; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.2s; white-space: nowrap; }
 .btn-update-bpb:hover { background: #f59e0b; color: white; box-shadow: 0 0 10px rgba(245,158,11,0.5); }
+
+/* ======================================================== */
+/* --- EFEK CAHAYA BERGERAK KELILING (PROFIL ANTI-LAG) --- */
+/* ======================================================== */
+.profil-list-item {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+/* Garis Sorotan Cahaya Halus yang Berputar */
+.profil-list-item::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(transparent, var(--glow-color, #38bdf8), transparent 30%);
+    animation: rotateBorder 6s linear infinite;
+    z-index: -2;
+    opacity: 0.45;
+    will-change: transform;
+}
+
+/* Masking Dalam Kotak agar Tetap Bersih */
+.profil-list-item::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    background: inherit;
+    border-radius: 13px;
+    z-index: -1;
+}
+
+@keyframes rotateBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Variasi Warna Sorotan Tiap Kartu */
+.glow-border-red { --glow-color: #ef4444; }
+.glow-border-emerald { --glow-color: #10b981; }
+.glow-border-cyan { --glow-color: #38bdf8; }
+.glow-border-purple { --glow-color: #a855f7; }
+.glow-border-rose { --glow-color: #f43f5e; }
+.glow-border-amber { --glow-color: #f59e0b; }
+.glow-border-indigo { --glow-color: #6366f1; }
+.glow-border-teal { --glow-color: #14b8a6; }
+.glow-border-blue { --glow-color: #60a5fa; }
