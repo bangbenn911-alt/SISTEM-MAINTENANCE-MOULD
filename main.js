@@ -179,7 +179,7 @@ window.centerOrgView = () => {
 // SCRIPT FIREBASE & LOGIKA APLIKASI UTAMA    
 // ==========================================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import { getFirestore, enableIndexedDbPersistence, collection, addDoc, getDocs, doc, updateDoc, setDoc, query, deleteDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -986,7 +986,48 @@ window.simpanJadwalBesar = async () => { const f = document.getElementById('jb-f
 window.bukaViewJadwal = async () => { window.navigasi('jadwal-besar-view-screen'); window.toggleLoader(true); try { let arr=[]; const snap=await getDocs(query(collection(window.db,"jadwal_besar"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); if(arr.length>0&&arr[0].fileBase64) document.getElementById('jb-view-container').innerHTML=`<img src="${arr[0].fileBase64}" style="max-width:100%; border-radius:10px;">`; else document.getElementById('jb-view-container').innerHTML="<p>Kosong</p>"; } catch(e){} window.toggleLoader(false); };
 
 window.simpanIde = async () => { const n=window.amankanData(document.getElementById('ide-nama').value), w=document.getElementById('ide-waktu').value, u=window.amankanData(document.getElementById('ide-uraian').value); if(!n||!u) return alert("Lengkapi form!"); window.toggleLoader(true); try{ await addDoc(collection(window.db,"ide_saran_box"),{nama:n.toUpperCase(),waktu:w,uraian:u,timestamp:Date.now()}); alert("Terkirim!"); document.getElementById('ide-nama').value=""; document.getElementById('ide-uraian').value=""; window.switchTabIde('masuk'); } catch(e){} window.toggleLoader(false); };
-window.switchTabIde = (t) => { document.getElementById('tab-ide-input').classList.remove('tab-active'); document.getElementById('tab-ide-masuk').classList.remove('tab-active'); document.getElementById('ide-input-area').style.display='none'; document.getElementById('ide-masuk-area').style.display='none'; document.getElementById(`tab-ide-${t}`).classList.add('tab-active'); document.getElementById(`ide-${t}-area`).style.display='block'; if(t==='masuk') window.muatDataIde(); };
+window.switchTabIde = (t) => { 
+    document.getElementById('tab-ide-input').classList.remove('tab-active'); 
+    document.getElementById('tab-ide-masuk').classList.remove('tab-active'); 
+    document.getElementById('ide-input-area').style.display='none'; 
+    document.getElementById('ide-masuk-area').style.display='none'; 
+    document.getElementById(`tab-ide-${t}`).classList.add('tab-active'); 
+    document.getElementById(`ide-${t}-area`).style.display='block'; 
+    
+    if(t === 'masuk') {
+        window.muatDataIde();
+        // Logika mematikan notif lonceng saat Kotak Masuk dibaca
+        if(window.currentIdeCount !== undefined) {
+            localStorage.setItem('lastIdeCount', window.currentIdeCount);
+            const dot = document.getElementById('bell-notif-dot');
+            if(dot) dot.style.display = 'none'; // Matikan titik oren
+        }
+    } 
+};
+
+// ==========================================
+// ENGINE LISTENER NOTIFIKASI REAL-TIME
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        const dot = document.getElementById('bell-notif-dot');
+        if(!dot) return;
+        
+        // Memantau Database Ide Center secara Live (Real-Time)
+        onSnapshot(collection(window.db, "ide_saran_box"), (snapshot) => {
+            let totalDoc = snapshot.size;
+            let lastViewed = parseInt(localStorage.getItem('lastIdeCount') || '0');
+            
+            // Jika ada ide baru yang belum pernah dibaca, NYALAKAN LONCENG!
+            if (totalDoc > lastViewed) {
+                dot.style.display = 'block'; 
+            } else {
+                dot.style.display = 'none';
+            }
+            window.currentIdeCount = totalDoc; // Simpan ke memori sementara
+        });
+    }, 2000); // Mulai memantau 2 detik setelah aplikasi terbuka
+});
 window.muatDataIde = async () => { const c = document.getElementById('list-ide-masuk'); c.innerHTML="<p>Memuat...</p>"; try { let arr=[]; const snap=await getDocs(query(collection(window.db,"ide_saran_box"))); snap.forEach(d=>arr.push(d.data())); arr.sort((a,b)=>b.timestamp-a.timestamp); let h=""; arr.forEach(d=>{ h+=`<div class="progress-card"><h4>${d.nama}</h4><p style="font-size:11px;color:gray;">${d.waktu}</p><p>${d.uraian}</p></div>`; }); c.innerHTML=h||"<p>Kosong</p>"; } catch(e){} };
 
 window.gantiTabGodMode = (el, kol) => { document.querySelectorAll('.god-mode-tabs .gm-tab').forEach(t=>t.classList.remove('active')); if(el) el.classList.add('active'); window.gmKoleksiAktif = kol; window.muatDataGodMode(kol); };
@@ -1338,12 +1379,13 @@ window.navigasi = function(idLayarTujuan) {
 // MODUL ARSIP: ENGINE UNIVERSAL UNTUK IK & SOP (PDF SPLITTER + HISTORY)
 // =========================================================================================
 
-// Jam Real-time Otomatis untuk IK & SOP
+// Jam Real-time Otomatis untuk IK, SOP, dan IDE CENTER
 setInterval(() => {
     const now = new Date();
     const strWaktu = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
     if(document.getElementById('ik-waktu')) document.getElementById('ik-waktu').value = strWaktu;
     if(document.getElementById('sop-waktu')) document.getElementById('sop-waktu').value = strWaktu;
+    if(document.getElementById('ide-waktu')) document.getElementById('ide-waktu').value = strWaktu; // Waktu Ide Center Berjalan
 }, 1000);
 
 // Variabel Global Data

@@ -98,9 +98,10 @@
                 <div id="status-keamanan" onclick="window.bukaPanelKeamanan()" style="background:rgba(16,185,129,0.1); padding:6px 14px; border-radius:20px; font-size:11px; font-weight:800; border:1px solid #10b981; color:#10b981; cursor:pointer; display:flex; align-items:center; gap:6px; box-shadow: 0 0 10px rgba(16,185,129,0.3);">
                     <i class="fas fa-shield-virus shield-active"></i> <span id="shield-text">Cyber Security</span>
                 </div>
-                <div style="position:relative; background:rgba(255,255,255,0.1); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.2);">
+                                <div style="position:relative; background:rgba(255,255,255,0.1); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; border:1px solid rgba(255,255,255,0.2); cursor:pointer;" onclick="window.navigasi('ide-center-screen'); window.switchTabIde('masuk');">
                     <i class="fas fa-bell" style="font-size:18px;"></i>
-                    <div style="position:absolute; top:8px; right:8px; width:8px; height:8px; background:#38bdf8; border-radius:50%; box-shadow:0 0 8px #38bdf8; animation: pulseGlow 1s infinite alternate;"></div>
+                    <!-- Titik Notif (Awalnya tersembunyi, akan menyala merah/oranye jika ada Ide baru) -->
+                    <div id="bell-notif-dot" style="display:none; position:absolute; top:8px; right:8px; width:10px; height:10px; background:#f59e0b; border-radius:50%; box-shadow:0 0 12px #f59e0b; border:2px solid #0f172a; animation: pulseGlow 1s infinite alternate;"></div>
                 </div>
             </div>
 
