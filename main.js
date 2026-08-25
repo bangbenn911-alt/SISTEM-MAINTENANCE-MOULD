@@ -1805,3 +1805,57 @@ window.renderViewDataNP = async (forceFetch = false) => {
     });
     c.innerHTML = h;
 };
+
+// =========================================================================================
+// AI MOTIVATION AGENT ENGINE (REAL-TIME DYNAMIC QUOTES)
+// =========================================================================================
+const databaseMotivasiAI = [
+    "“Kualitas kerja terbaik bukanlah tentang seberapa cepat kita selesai, tapi seberapa teliti kita merawat setiap detail ciptaan.”",
+    "“Disiplin adalah jembatan antara impian di ruang kendali dan kenyataan di lantai produksi.”",
+    "“Kesalahan sekecil apa pun adalah guru terbaik. Evaluasi, perbaiki, dan jadilah lebih tangguh dari kemarin.”",
+    "“Mesin yang hebat butuh perawatan yang telaten. Begitu pula mental kita; jaga fokus, jaga integritas.”",
+    "“Jangan pernah meremehkan tugas harianmu. Dari baut-baut kecil yang terpasang sempurna, lahirlah sebuah karya raksasa.”",
+    "“Kesuksesan tim bukan milik individu, melainkan buah dari ketulusan saling bahu-membahu di setiap shift kerja.”",
+    "“Hari ini adalah lembaran baru. Jadikan setiap tantangan teknis sebagai batu loncatan menuju keahlian tingkat tinggi.”",
+    "“Integritas adalah melakukan hal yang benar bahkan ketika tidak ada satupun pengawas yang melihat.”",
+    "“Semangat kerja yang tulus tidak akan pernah mengkhianati hasil. Tetaplah menjadi teladan di lingkungan kerja CBI.”",
+    "“Fokus pada solusi, bukan pada rumitnya masalah. Anda memiliki kapasitas luar biasa untuk menyelesaikannya.”",
+    "“Ketenangan adalah kunci ketepatan. Tarik napas dalam, kerjakan dengan presisi, dan selesaikan dengan gemilang.”",
+    "“Setiap cetakan mold yang presisi mencerminkan karakter disiplin dan dedikasi seorang profesional sejati.”"
+];
+
+let indeksMotivasiAktif = 0;
+
+window.putarMotivasiBaru = function() {
+    const elText = document.getElementById('ai-motivation-text');
+    if(!elText) return;
+
+    // Efek Fade Out (Hilang sekejap)
+    elText.classList.add('motivasi-fade-out');
+
+    setTimeout(() => {
+        // Pilih acak atau berurutan secara elegan
+        indeksMotivasiAktif = (indeksMotivasiAktif + 1) % databaseMotivasiAI.length;
+        elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
+        
+        // Efek Fade In (Muncul kembali dengan mulus)
+        elText.classList.remove('motivasi-fade-out');
+        elText.classList.add('motivasi-fade-in');
+    }, 400);
+};
+
+// Inisialisasi Otomatis saat aplikasi dimuat & Putar otomatis setiap 12 detik
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        if(document.getElementById('ai-motivation-text')) {
+            // Acak awal agar setiap orang mendapatkan motivasi berbeda saat buka profil
+            indeksMotivasiAktif = Math.floor(Math.random() * databaseMotivasiAI.length);
+            document.getElementById('ai-motivation-text').innerText = databaseMotivasiAI[indeksMotivasiAktif];
+            
+            // Putar otomatis setiap 12 detik tanpa henti
+            setInterval(() => {
+                window.putarMotivasiBaru();
+            }, 12000);
+        }
+    }, 1500);
+});

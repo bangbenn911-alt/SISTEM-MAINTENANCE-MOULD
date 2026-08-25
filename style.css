@@ -736,3 +736,21 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     0% { opacity: 0.8; transform: scale(0.95); }
     100% { opacity: 1; transform: scale(1.1); }
 }
+/* ======================================================== */
+/* --- AI MOTIVATION AGENT ANIMATION STYLES --- */
+/* ======================================================== */
+#ai-motivation-box:active {
+    transform: scale(0.97);
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+    border-color: #a855f7;
+}
+
+.motivasi-fade-out {
+    opacity: 0 !important;
+    transform: translateY(-8px) !important;
+}
+
+.motivasi-fade-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
