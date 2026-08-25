@@ -1806,15 +1806,13 @@ window.renderViewDataNP = async (forceFetch = false) => {
     c.innerHTML = h;
 };
 
-// =========================================================================================
-// AI MOTIVATION AGENT ENGINE (REAL-TIME DYNAMIC QUOTES)
-// =========================================================================================
+// DATABASE KATA-KATA MOTIVASI PROFESIONAL
 const databaseMotivasiAI = [
-    "“Kualitas kerja terbaik bukanlah tentang seberapa cepat kita selesai, tapi seberapa teliti kita merawat setiap detail ciptaan.”",
+    "“Kualitas kerja terbaik bukanlah tentang seberapa cepat kita selesai, tapi seberapa teliti kita merawat setiap detail.”",
     "“Disiplin adalah jembatan antara impian di ruang kendali dan kenyataan di lantai produksi.”",
     "“Kesalahan sekecil apa pun adalah guru terbaik. Evaluasi, perbaiki, dan jadilah lebih tangguh dari kemarin.”",
     "“Mesin yang hebat butuh perawatan yang telaten. Begitu pula mental kita; jaga fokus, jaga integritas.”",
-    "“Jangan pernah meremehkan tugas harianmu. Dari baut-baut kecil yang terpasang sempurna, lahirlah sebuah karya raksasa.”",
+    "“Jangan pernah meremehkan tugas harianmu. Dari baut-baut kecil yang terpasang sempurna, lahirlah karya raksasa.”",
     "“Kesuksesan tim bukan milik individu, melainkan buah dari ketulusan saling bahu-membahu di setiap shift kerja.”",
     "“Hari ini adalah lembaran baru. Jadikan setiap tantangan teknis sebagai batu loncatan menuju keahlian tingkat tinggi.”",
     "“Integritas adalah melakukan hal yang benar bahkan ketika tidak ada satupun pengawas yang melihat.”",
@@ -1830,29 +1828,20 @@ window.putarMotivasiBaru = function() {
     const elText = document.getElementById('ai-motivation-text');
     if(!elText) return;
 
-    // Efek Fade Out (Hilang sekejap)
-    elText.classList.add('motivasi-fade-out');
-
-    setTimeout(() => {
-        // Pilih acak atau berurutan secara elegan
-        indeksMotivasiAktif = (indeksMotivasiAktif + 1) % databaseMotivasiAI.length;
-        elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
-        
-        // Efek Fade In (Muncul kembali dengan mulus)
-        elText.classList.remove('motivasi-fade-out');
-        elText.classList.add('motivasi-fade-in');
-    }, 400);
+    // Putar ke kalimat berikutnya secara berurutan
+    indeksMotivasiAktif = (indeksMotivasiAktif + 1) % databaseMotivasiAI.length;
+    elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
 };
 
-// Inisialisasi Otomatis saat aplikasi dimuat & Putar otomatis setiap 12 detik
+// Inisialisasi Otomatis
 document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
-        if(document.getElementById('ai-motivation-text')) {
-            // Acak awal agar setiap orang mendapatkan motivasi berbeda saat buka profil
+        const elText = document.getElementById('ai-motivation-text');
+        if(elText) {
             indeksMotivasiAktif = Math.floor(Math.random() * databaseMotivasiAI.length);
-            document.getElementById('ai-motivation-text').innerText = databaseMotivasiAI[indeksMotivasiAktif];
+            elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
             
-            // Putar otomatis setiap 12 detik tanpa henti
+            // Ganti teks otomatis setiap 12 detik seiring animasi CSS
             setInterval(() => {
                 window.putarMotivasiBaru();
             }, 12000);
