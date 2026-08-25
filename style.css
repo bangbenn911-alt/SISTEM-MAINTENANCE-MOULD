@@ -781,3 +781,24 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 #ai-motivation-box:active {
     transform: scale(0.98);
 }
+/* ======================================================== */
+/* --- TOMBOL FILTER KATEGORI (HISTORY SOP) --- */
+/* ======================================================== */
+.kategori-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    color: #cbd5e1;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.3s ease;
+}
+.kategori-btn.active {
+    background: linear-gradient(135deg, #db2777, #9d174d);
+    border-color: #ec4899;
+    color: white;
+    box-shadow: 0 4px 10px rgba(236, 72, 153, 0.3);
+}

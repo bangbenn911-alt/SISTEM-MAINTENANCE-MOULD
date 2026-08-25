@@ -1455,7 +1455,7 @@ window.bukaPreviewDoc = async function(prefix, pNum) {
     } catch(e) {}
 };
 
-// 3. ENGINE SIMPAN SEMUA POTONGAN PDF
+// 3. ENGINE SIMPAN SEMUA POTONGAN PDF (UPDATED DENGAN KATEGORI)
 window.simpanAll_Doc = async function(prefix) {
     const uploader = window.amankanData(document.getElementById(`${prefix}-uploader`).value);
     const waktu = document.getElementById(`${prefix}-waktu`).value;
@@ -1467,20 +1467,29 @@ window.simpanAll_Doc = async function(prefix) {
         let arr = [];
         for(let i=1; i<=window.modulPdfData[prefix].count; i++) {
             let inp = document.getElementById(`${prefix}-judul-${i}`);
-            if(!inp || !inp.value.trim()) continue; // Abaikan jika judul kosong / sudah dihapus
+            if(!inp || !inp.value.trim()) continue;
             
             let newPdf = await PDFDocument.create();
             let [pg] = await newPdf.copyPages(orig, [i-1]);
             newPdf.addPage(pg);
             let b64 = await newPdf.saveAsBase64({ dataUri: true });
             
-            arr.push(addDoc(collection(window.db, window.modulPdfData[prefix].collection), {
+            // Siapkan Data Paket
+            let dataPayload = {
                 judul: inp.value.trim().toUpperCase(),
                 uploader: uploader.toUpperCase(),
                 waktuInput: waktu,
                 filePdfBase64: b64,
                 timestamp: Date.now()
-            }));
+            };
+            
+            // JIKA SOP, Tambahkan Kategori!
+            if (prefix === 'sop') {
+                const kat = document.getElementById('sop-kategori');
+                if(kat) dataPayload.kategori = kat.value;
+            }
+
+            arr.push(addDoc(collection(window.db, window.modulPdfData[prefix].collection), dataPayload));
         }
         await Promise.all(arr);
         alert(`Seluruh dokumen ${prefix.toUpperCase()} berhasil disimpan!`);
@@ -1490,7 +1499,23 @@ window.simpanAll_Doc = async function(prefix) {
     window.toggleLoader(false);
 };
 
-// 4. ENGINE TAMPILKAN HISTORY (PROFESIONAL CARD)
+// VARIABEL GLOBAL UNTUK FILTER SOP
+window.currentSopFilter = 'Semua';
+
+// FUNGSI KLIK TOMBOL FILTER KATEGORI SOP
+window.filterSopKategori = function(kategori, btnEl) {
+    window.currentSopFilter = kategori;
+    
+    // Ganti warna tombol yang aktif
+    const btns = document.querySelectorAll('#sop-history-screen .kategori-btn');
+    btns.forEach(b => b.classList.remove('active'));
+    if(btnEl) btnEl.classList.add('active');
+
+    // Render ulang data history
+    window.renderHistory_Doc('sop');
+};
+
+// 4. ENGINE TAMPILKAN HISTORY (UPDATED FILTER KATEGORI)
 window.renderHistory_Doc = async function(prefix, forceFetch = false) {
     const c = document.getElementById(`list-${prefix}-history`);
     const kw = window.amankanData((document.getElementById(`${prefix}-search-key`)?.value || "").toLowerCase());
@@ -1506,7 +1531,14 @@ window.renderHistory_Doc = async function(prefix, forceFetch = false) {
         window.toggleLoader(false);
     }
 
+    // Filter berdasarkan Kata Kunci Pencarian
     let data = window.historyDatabase[prefix].filter(d => (d.judul || "").toLowerCase().includes(kw));
+    
+    // TAMBAHAN: Filter Khusus Kategori SOP
+    if (prefix === 'sop' && window.currentSopFilter !== 'Semua') {
+        data = data.filter(d => d.kategori === window.currentSopFilter);
+    }
+
     if(data.length === 0) {
         c.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; border:1px dashed var(--border-dark); border-radius:10px;">Tidak ada dokumen yang ditemukan.</p>`;
         return;
@@ -1515,9 +1547,15 @@ window.renderHistory_Doc = async function(prefix, forceFetch = false) {
     let h = "";
     const iconColor = prefix === 'ik' ? '#8b5cf6' : '#ec4899';
     data.forEach(d => {
+        // Tampilkan Label Kategori (Jika ada)
+        let badgeKategori = "";
+        if(prefix === 'sop' && d.kategori) {
+            badgeKategori = `<span style="background: rgba(236,72,153,0.15); border:1px solid rgba(236,72,153,0.5); color:#fbcfe8; padding:3px 8px; border-radius:12px; font-size:9px; margin-left:8px; vertical-align:middle;">${d.kategori}</span>`;
+        }
+
         h += `
         <div class="progress-card" style="border-left-color:${iconColor}; margin-bottom:15px; background:rgba(15,23,42,0.8);">
-            <h4 style="margin:0 0 8px 0; color:${iconColor}; font-size:15px;">${d.judul}</h4>
+            <h4 style="margin:0 0 8px 0; color:${iconColor}; font-size:15px;">${d.judul} ${badgeKategori}</h4>
             <p style="margin:0 0 15px 0; font-size:11px; color:var(--text-muted);"><i class="fas fa-clock"></i> ${d.waktuInput} <br><i class="fas fa-user-tie" style="margin-top:5px;"></i> Upload Oleh: <span style="color:white; font-weight:bold;">${d.uploader}</span></p>
             
             <div style="display:flex; gap:10px; border-top:1px dashed rgba(255,255,255,0.1); padding-top:12px;">
