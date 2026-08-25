@@ -690,7 +690,7 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     content: '';
     position: absolute;
     inset: 1.5px;
-    background: inherit;
+    background: #0f172a;
     border-radius: 13px;
     z-index: -1;
 }
