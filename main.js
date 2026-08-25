@@ -1298,10 +1298,17 @@ window.navigasi = function(idLayarTujuan) {
     if (modulYgDicek) {
         
         // DETEKSI OTOMATIS: Apakah dia mau "Lihat" atau mau "Input"?
-        // Jika nama layarnya mengandung kata 'input', 'new', 'update', atau 'form'
         let tipeAkses = 'lihat';
-        if (id.includes('input') || id.includes('form') || id.includes('new') || id.includes('update') || id.includes('tambah')) {
-            tipeAkses = 'input'; // Paksa satpam untuk mengecek izin INPUT!
+        
+        // Memecah ID menjadi kata per kata
+        const kataTerpisah = id.split('-'); 
+        const kataKunciInput = ['input', 'form', 'new', 'update', 'tambah'];
+        
+        // Cek apakah ada kata yang BENAR-BENAR SAMA
+        const isAksiInput = kataKunciInput.some(kata => kataTerpisah.includes(kata));
+        
+        if (isAksiInput) {
+            tipeAkses = 'input'; // Paksa satpam mengecek izin INPUT secara presisi!
         }
 
         // Tanya ke sistem keamanan: Boleh masuk gak?

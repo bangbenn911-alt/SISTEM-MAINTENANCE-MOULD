@@ -636,3 +636,10 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     0% { stroke-dashoffset: 930; } 
     100% { stroke-dashoffset: 0; }
 }
+/* ======================================================== */
+/* FIX: HIERARKI Z-INDEX (MENCEGAH MODAL BENTROK & LAYAR KUNCI) */
+/* ======================================================== */
+.security-modal { z-index: 99900 !important; } /* Layer Dasar Modal */
+#org-pin-modal, #personel-pin-modal, #god-mode-pin-modal { z-index: 99950 !important; } /* Modal PIN harus di atas Modal biasa */
+#cyber-security-panel { z-index: 99980 !important; } /* Panel Cyber selalu di atas Modal */
+.loader-overlay { z-index: 99999 !important; } /* Loader/Memproses adalah Raja Tertinggi */
