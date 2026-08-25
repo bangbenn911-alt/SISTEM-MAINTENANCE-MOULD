@@ -643,3 +643,20 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 #org-pin-modal, #personel-pin-modal, #god-mode-pin-modal { z-index: 99950 !important; } /* Modal PIN harus di atas Modal biasa */
 #cyber-security-panel { z-index: 99980 !important; } /* Panel Cyber selalu di atas Modal */
 .loader-overlay { z-index: 99999 !important; } /* Loader/Memproses adalah Raja Tertinggi */
+/* ======================================================== */
+/* --- ACCOUNTING TABLE STYLE (NP & BPB) --- */
+/* ======================================================== */
+.accounting-table { width: 100%; border-collapse: collapse; font-size: 12px; color: white; min-width: 700px; }
+.accounting-table th { background: rgba(15,23,42,0.9); padding: 12px; text-align: left; font-weight: 800; color: #94a3b8; text-transform: uppercase; border-bottom: 2px solid #38bdf8; white-space: nowrap; }
+.accounting-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+.accounting-table tbody tr:hover { background: rgba(255,255,255,0.05); }
+
+.master-table td { font-weight: 600; }
+.master-table .np-col { color: #38bdf8; }
+.master-table .bpb-col { color: #10b981; }
+
+.status-badge-pending { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid #f59e0b; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; display: inline-block; text-align: center; }
+.status-badge-selesai { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid #10b981; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 900; display: inline-block; text-align: center; }
+
+.btn-update-bpb { background: rgba(245,158,11,0.1); border: 1px solid #f59e0b; color: #fcd34d; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+.btn-update-bpb:hover { background: #f59e0b; color: white; box-shadow: 0 0 10px rgba(245,158,11,0.5); }

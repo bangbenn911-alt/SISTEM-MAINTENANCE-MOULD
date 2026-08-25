@@ -1279,7 +1279,7 @@ window.navigasi = function(idLayarTujuan) {
         'inbox': ['inbox'],
         'struktur': ['struktur', 'organisasi'],
         'personel': ['personel', 'tim'],
-        'arsip': ['arsip', 'dokumentasi'],
+        'arsip': ['arsip', 'dokumentasi','npbpb','np-'],
         'surkom': ['surkom', 'surat', 'pdf'], // Ini akan mencegat "Input Surkom (PDF)"
         'master_mold': ['master-mold', 'master_mold', 'database'],
         'rotasi': ['rotasi'],
@@ -1329,4 +1329,226 @@ window.navigasi = function(idLayarTujuan) {
         window.surkomOriginalPdfBytes = null;
         window.arsipPdfDocObj = null;
     }
+};
+
+// =========================================================================================
+// MODUL ARSIP: MANAJEMEN NP & BPB (ACCOUNTING STANDARD)
+// =========================================================================================
+window.npbpbDatabase = []; // RAM Cache untuk data NP/BPB
+
+// --- 1. FUNGSI SIMPAN INPUT NP (AUTO-INCREMENT BULANAN) ---
+window.simpanInputNP = async () => {
+    const noNP = window.amankanData(document.getElementById('np-nomor').value).toUpperCase();
+    const tglNP = document.getElementById('np-tanggal').value;
+    const namaBarang = window.amankanData(document.getElementById('np-nama-barang').value).toUpperCase();
+    const qty = parseInt(document.getElementById('np-jumlah').value) || 0;
+    const satuan = window.amankanData(document.getElementById('np-satuan').value).toUpperCase();
+
+    if(!noNP || !tglNP || !namaBarang || qty <= 0 || !satuan) {
+        return alert("Mohon lengkapi semua form Nota Permintaan dengan benar!");
+    }
+
+    window.toggleLoader(true, "Menganalisa Urutan Bulanan...");
+    try {
+        // Ekstrak Bulan & Tahun (Contoh: "2026-08") untuk auto-reset per bulan
+        const bulanTahun = tglNP.substring(0, 7); 
+        
+        // Cari nomor urut terakhir di bulan ini
+        let maxUrut = 0;
+        const snapCek = await getDocs(query(collection(window.db, "np_bpb")));
+        snapCek.forEach(d => {
+            const data = d.data();
+            if(data.bulanTahun === bulanTahun && data.noUrutBulan > maxUrut) {
+                maxUrut = data.noUrutBulan;
+            }
+        });
+        const urutBaru = maxUrut + 1; // Nomor urut otomatis bertambah
+
+        // Simpan ke Firestore
+        await addDoc(collection(window.db, "np_bpb"), {
+            noUrutBulan: urutBaru,
+            bulanTahun: bulanTahun,
+            noNP: noNP,
+            tglNP: tglNP,
+            namaBarang: namaBarang,
+            qty: qty,
+            satuan: satuan,
+            status: "PENDING", // Belum ada BPB
+            noBPB: "",
+            tglBPB: "",
+            timestamp: Date.now()
+        });
+
+        alert(`Sukses! Pesanan tersimpan di urutan ke-${urutBaru} untuk bulan ini.`);
+        // Kosongkan form kecuali tanggal agar cepat menginput berulang
+        document.getElementById('np-nomor').value = "";
+        document.getElementById('np-nama-barang').value = "";
+        document.getElementById('np-jumlah').value = "";
+        document.getElementById('np-satuan').value = "";
+        
+        // Kosongkan RAM agar nanti refresh otomatis
+        window.npbpbDatabase = []; 
+    } catch(e) {
+        alert("Gagal menyimpan data ke server.");
+    }
+    window.toggleLoader(false);
+};
+
+// --- 2. FUNGSI UPDATE PROGRES (PENDING BPB) ---
+window.bukaUpdateProgresNP = async () => {
+    // Set default filter ke bulan saat ini
+    const now = new Date();
+    const mth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0');
+    document.getElementById('bpb-filter-bulan').value = mth;
+    
+    window.navigasi('np-update-screen');
+    await window.renderUpdateProgresNP(true);
+};
+
+window.renderUpdateProgresNP = async (forceFetch = false) => {
+    const c = document.getElementById('list-bpb-pending');
+    const kw = window.amankanData((document.getElementById('bpb-search-key').value || "").toLowerCase());
+    const filterBulan = document.getElementById('bpb-filter-bulan').value; // format: YYYY-MM
+
+    if (forceFetch || window.npbpbDatabase.length === 0) {
+        window.npbpbDatabase = [];
+        try {
+            const snap = await getDocs(query(collection(window.db, "np_bpb")));
+            snap.forEach(d => window.npbpbDatabase.push({id: d.id, ...d.data()}));
+            // Urutkan berdasarkan waktu input terbaru
+            window.npbpbDatabase.sort((a,b) => b.timestamp - a.timestamp); 
+        } catch(e) {}
+    }
+
+    // Filter Data: Hanya yang PENDING, dan sesuai bulan/pencarian
+    let dataList = window.npbpbDatabase.filter(d => {
+        let matchStatus = d.status === "PENDING";
+        let matchKw = (d.namaBarang.toLowerCase().includes(kw) || d.noNP.toLowerCase().includes(kw));
+        let matchBulan = filterBulan ? d.bulanTahun === filterBulan : true;
+        return matchStatus && matchKw && matchBulan;
+    });
+
+    if(dataList.length === 0) {
+        c.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">Tidak ada pesanan tertunda di bulan ini.</td></tr>`;
+        return;
+    }
+
+    let h = "";
+    dataList.forEach(d => {
+        h += `<tr>
+                <td style="color:#94a3b8;">${d.tglNP}</td>
+                <td style="color:#38bdf8; font-weight:700;">${d.noNP}</td>
+                <td style="font-weight:700;">${d.namaBarang}</td>
+                <td style="text-align:center;">${d.qty} <span style="font-size:10px; color:#94a3b8;">${d.satuan}</span></td>
+                <td style="text-align:center;">
+                    <button class="btn-update-bpb" onclick="window.bukaModalUpdateBPB('${d.id}')">
+                        <i class="fas fa-edit"></i> Update
+                    </button>
+                </td>
+              </tr>`;
+    });
+    c.innerHTML = h;
+};
+
+// MODAL UPDATE BPB
+window.bukaModalUpdateBPB = (id) => {
+    const d = window.npbpbDatabase.find(x => x.id === id);
+    if(!d) return;
+    document.getElementById('modal-bpb-id').value = id;
+    document.getElementById('modal-bpb-nama').value = d.namaBarang;
+    document.getElementById('modal-bpb-qty').value = d.qty;
+    document.getElementById('modal-bpb-satuan').value = d.satuan;
+    document.getElementById('modal-bpb-nomor').value = "";
+    document.getElementById('modal-bpb-tanggal').value = "";
+    document.getElementById('npbpb-update-modal').style.display = 'flex';
+};
+
+window.simpanUpdateBPB = async () => {
+    const id = document.getElementById('modal-bpb-id').value;
+    const noBPB = window.amankanData(document.getElementById('modal-bpb-nomor').value).toUpperCase();
+    const tglBPB = document.getElementById('modal-bpb-tanggal').value;
+
+    if(!noBPB || !tglBPB) return alert("Nomor dan Tanggal BPB Wajib Diisi!");
+
+    window.toggleLoader(true, "Menyinkronkan BPB...");
+    try {
+        await updateDoc(doc(window.db, "np_bpb", id), {
+            noBPB: noBPB,
+            tglBPB: tglBPB,
+            status: "SELESAI" // Ubah status menjadi Selesai (Hijau)
+        });
+        alert("Data BPB Berhasil Diupdate!");
+        document.getElementById('npbpb-update-modal').style.display = 'none';
+        
+        // Refresh tabel
+        await window.renderUpdateProgresNP(true); 
+    } catch(e) {}
+    window.toggleLoader(false);
+};
+
+// --- 3. FUNGSI VIEW DATA PESANAN (MASTER ACCOUNTING) ---
+window.bukaViewDataNP = async () => {
+    const now = new Date();
+    const mth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, '0');
+    document.getElementById('view-np-bulan').value = mth; // Default bulan ini
+    
+    window.navigasi('np-view-screen');
+    await window.renderViewDataNP(true);
+};
+
+window.renderViewDataNP = async (forceFetch = false) => {
+    const c = document.getElementById('list-view-master-np');
+    const loading = document.getElementById('loading-np-master');
+    const kw = window.amankanData((document.getElementById('view-np-search').value || "").toLowerCase());
+    const filterBulan = document.getElementById('view-np-bulan').value;
+    const filterStatus = document.getElementById('view-np-status').value;
+
+    if (forceFetch || window.npbpbDatabase.length === 0) {
+        c.style.display = 'none'; loading.style.display = 'block';
+        window.npbpbDatabase = [];
+        try {
+            const snap = await getDocs(query(collection(window.db, "np_bpb")));
+            snap.forEach(d => window.npbpbDatabase.push({id: d.id, ...d.data()}));
+        } catch(e) {}
+        loading.style.display = 'none'; c.style.display = 'table-row-group';
+    }
+
+    // Urutkan berdasarkan "noUrutBulan" dari yang terkecil (urutan 1, 2, 3...)
+    window.npbpbDatabase.sort((a,b) => a.noUrutBulan - b.noUrutBulan);
+
+    // Proses Filtering Gabungan
+    let dataList = window.npbpbDatabase.filter(d => {
+        let matchKw = d.namaBarang.toLowerCase().includes(kw) || d.noNP.toLowerCase().includes(kw) || (d.noBPB||"").toLowerCase().includes(kw);
+        let matchBulan = filterBulan ? d.bulanTahun === filterBulan : true;
+        let matchStatus = filterStatus === "ALL" ? true : d.status === filterStatus;
+        return matchKw && matchBulan && matchStatus;
+    });
+
+    if(dataList.length === 0) {
+        c.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:20px; color:#f87171;">Data tidak ditemukan pada bulan/status ini.</td></tr>`;
+        return;
+    }
+
+    let h = "";
+    dataList.forEach(d => {
+        let isDone = d.status === "SELESAI";
+        let badge = isDone ? `<span class="status-badge-selesai">SELESAI</span>` : `<span class="status-badge-pending">PENDING</span>`;
+        let txtBpbNo = isDone ? d.noBPB : `<i class="fas fa-minus" style="color:var(--text-muted);"></i>`;
+        let txtBpbTgl = isDone ? d.tglBPB : `<i class="fas fa-minus" style="color:var(--text-muted);"></i>`;
+
+        // Baris akan berwarna agak hijau transparan jika sudah selesai
+        let rowStyle = isDone ? `background:rgba(16,185,129,0.05);` : ``;
+
+        h += `<tr style="${rowStyle}">
+                <td style="text-align:center; font-weight:900; color:#cbd5e1;">#${d.noUrutBulan}</td>
+                <td class="np-col">${d.tglNP}</td>
+                <td class="np-col">${d.noNP}</td>
+                <td>${d.namaBarang}</td>
+                <td style="text-align:center;">${d.qty} <span style="font-size:10px;">${d.satuan}</span></td>
+                <td style="text-align:center;">${badge}</td>
+                <td class="${isDone ? 'bpb-col' : ''}">${txtBpbNo}</td>
+                <td class="${isDone ? 'bpb-col' : ''}">${txtBpbTgl}</td>
+              </tr>`;
+    });
+    c.innerHTML = h;
 };

@@ -619,8 +619,8 @@
                 <div class="menu-card" onclick="window.navigasi('surat-keluar-menu-screen')" style="border-left-color: #f59e0b;">
                     <i class="fas fa-paper-plane" style="color:#f59e0b;"></i> 2. Surat Keluar
                 </div>
-                <div class="menu-card" onclick="alert('Fitur NP/BPB akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
-                    <i class="fas fa-file-invoice" style="color:#94a3b8;"></i> 3. NP/BPB
+                <div class="menu-card" onclick="window.navigasi('npbpb-menu-screen')" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-file-invoice" style="color:#8b5cf6;"></i> 3. NP/BPB
                 </div>
                 <div class="menu-card" onclick="alert('Fitur Instruksi Kerja (IK) akan dilanjutkan pada tahap pengembangan selanjutnya.')" style="border-left-color: #64748b; opacity: 0.7;">
                     <i class="fas fa-clipboard-check" style="color:#94a3b8;"></i> 4. Instruksi Kerja (IK)
@@ -1861,6 +1861,191 @@
             <div class="dark-panel" style="padding-top:10px;">
                 <h3 style="color:#f8fafc; font-size:14px; border-bottom:1px dashed var(--border-dark); padding-bottom:10px;"><i class="fas fa-users" style="color:#ef4444;"></i> Daftar Pengguna Terdaftar</h3>
                 <div id="list-user-akses"><p style="text-align:center; color:var(--text-muted);">Memuat data database...</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- NP / BPB MENU & SCREENS (FITUR BARU)                      -->
+    <!-- ========================================================= -->
+    <div id="npbpb-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #6366f1, #4338ca) !important;">
+                <h2><i class="fas fa-file-invoice" style="margin-right:10px;"></i> MANAJEMEN NP / BPB</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('np-input-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-edit" style="color:#38bdf8;"></i> 1. Input NP (Nota Permintaan)
+                </div>
+                <div class="menu-card" onclick="window.bukaUpdateProgresNP()" style="border-left-color: #f59e0b;">
+                    <i class="fas fa-sync-alt" style="color:#f59e0b;"></i> 2. Update Progres Pesanan (BPB)
+                </div>
+                <div class="menu-card" onclick="window.bukaViewDataNP()" style="border-left-color: #10b981;">
+                    <i class="fas fa-table" style="color:#10b981;"></i> 3. View Data Pesanan
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. SCREEN INPUT NP -->
+    <div id="np-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header">
+                <h2><i class="fas fa-edit" style="margin-right:10px;"></i> Input Nota Permintaan (NP)</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Nomor NP</label>
+                    <input type="text" id="np-nomor" placeholder="Contoh: NP-001/MTC/2026" style="text-transform:uppercase;">
+                </div>
+                <div class="form-group">
+                    <label>Tanggal Permintaan</label>
+                    <input type="date" id="np-tanggal">
+                </div>
+                <div class="form-group">
+                    <label>Nama Pesanan (Otomatis Kapital)</label>
+                    <input type="text" id="np-nama-barang" placeholder="Ketik nama pesanan/barang..." style="text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()">
+                </div>
+                <div class="form-group" style="display:flex; gap:15px;">
+                    <div style="flex:1;">
+                        <label>Jumlah (Angka)</label>
+                        <input type="number" id="np-jumlah" placeholder="0" min="1">
+                    </div>
+                    <div style="flex:1;">
+                        <label>Satuan (Pcs, Set, dll)</label>
+                        <input type="text" id="np-satuan" placeholder="Contoh: PCS" style="text-transform:uppercase;">
+                    </div>
+                </div>
+                <button class="btn-submit" type="button" onclick="window.simpanInputNP()" style="background:linear-gradient(135deg, #38bdf8, #0284c7); margin-top:15px; box-shadow:0 8px 20px rgba(56,189,248,0.3);">
+                    <i class="fas fa-save"></i> SIMPAN NOTA PERMINTAAN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SCREEN UPDATE PROGRES PESANAN -->
+    <div id="np-update-screen" class="screen">
+        <div class="content-wrapper-wide">
+            <div class="header" style="background: linear-gradient(135deg, #d97706, #b45309) !important;">
+                <h2><i class="fas fa-sync-alt" style="margin-right:10px;"></i> Update Progres Pesanan (BPB)</h2>
+            </div>
+            <div class="dark-panel" style="padding:20px;">
+                <p style="font-size:12px; color:var(--text-muted); font-weight:600;"><i class="fas fa-info-circle"></i> Daftar pesanan yang belum datang. Klik UPDATE jika barang sudah diterima.</p>
+                
+                <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                    <input type="text" id="bpb-search-key" placeholder="Cari Nama Pesanan / No NP..." style="flex:2; min-width:150px; text-transform:uppercase;" oninput="window.renderUpdateProgresNP()">
+                    <input type="month" id="bpb-filter-bulan" style="flex:1; min-width:130px; color:#f59e0b;" onchange="window.renderUpdateProgresNP()">
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="accounting-table">
+                        <thead>
+                            <tr>
+                                <th>Tgl NP</th>
+                                <th>No NP</th>
+                                <th>Nama Pesanan</th>
+                                <th style="text-align:center;">Qty</th>
+                                <th style="text-align:center;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-bpb-pending">
+                            <!-- Diisi oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FORM UPDATE BPB -->
+    <div id="npbpb-update-modal" class="security-modal">
+        <div style="background:var(--card-dark); width:100%; max-width:450px; border-radius:20px; padding:25px; border:1px solid #f59e0b; box-shadow: 0 0 30px rgba(245,158,11,0.3);">
+            <h3 style="color:#fcd34d; margin-top:0; border-bottom:1px dashed rgba(255,255,255,0.2); padding-bottom:15px;"><i class="fas fa-edit"></i> Input BPB (Barang Datang)</h3>
+            
+            <input type="hidden" id="modal-bpb-id">
+            <div class="form-group" style="margin-bottom:10px;">
+                <label style="color:var(--text-muted);">Nama Pesanan (Data NP)</label>
+                <input type="text" id="modal-bpb-nama" readonly style="background:rgba(0,0,0,0.6); color:#38bdf8; border-color:#38bdf8;">
+            </div>
+            <div class="form-group" style="display:flex; gap:15px; margin-bottom:15px;">
+                <div style="flex:1;">
+                    <label style="color:var(--text-muted);">Jumlah NP</label>
+                    <input type="text" id="modal-bpb-qty" readonly style="background:rgba(0,0,0,0.6); text-align:center;">
+                </div>
+                <div style="flex:1;">
+                    <label style="color:var(--text-muted);">Satuan</label>
+                    <input type="text" id="modal-bpb-satuan" readonly style="background:rgba(0,0,0,0.6); text-align:center;">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label style="color:#f59e0b;">Nomor BPB</label>
+                <input type="text" id="modal-bpb-nomor" placeholder="Contoh: BPB-099/2026" style="text-transform:uppercase; border-color:#f59e0b;">
+            </div>
+            <div class="form-group">
+                <label style="color:#f59e0b;">Tanggal BPB (Terima Barang)</label>
+                <input type="date" id="modal-bpb-tanggal">
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:20px; border-top:1px dashed rgba(255,255,255,0.2); padding-top:20px;">
+                <button type="button" onclick="document.getElementById('npbpb-update-modal').style.display='none'" style="flex:1; padding:15px; background:rgba(255,255,255,0.1); border:1px solid var(--border-dark); border-radius:12px; font-weight:800; color:white; cursor:pointer;">BATAL</button>
+                <button type="button" onclick="window.simpanUpdateBPB()" style="flex:2; padding:15px; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; border-radius:12px; font-weight:900; color:white; cursor:pointer;">
+                    <i class="fas fa-save"></i> UPDATE & SIMPAN
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. SCREEN VIEW DATA PESANAN MASTER -->
+    <div id="np-view-screen" class="screen">
+        <div class="content-wrapper-wide" style="max-width:1200px;">
+            <div class="header" style="background: linear-gradient(135deg, #059669, #047857) !important;">
+                <h2><i class="fas fa-table" style="margin-right:10px;"></i> View Master Data NP & BPB</h2>
+            </div>
+            <div class="dark-panel" style="padding:20px;">
+                
+                <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; background:rgba(0,0,0,0.3); padding:15px; border-radius:12px; border:1px solid var(--border-dark);">
+                    <div style="flex:1; min-width:150px;">
+                        <label>Pencarian Spesifik</label>
+                        <input type="text" id="view-np-search" placeholder="Cari Barang / No NP / No BPB..." style="text-transform:uppercase;" oninput="window.renderViewDataNP()">
+                    </div>
+                    <div style="flex:1; min-width:130px;">
+                        <label>Filter Bulan</label>
+                        <input type="month" id="view-np-bulan" style="color:#10b981;" onchange="window.renderViewDataNP()">
+                    </div>
+                    <div style="flex:1; min-width:130px;">
+                        <label>Filter Status</label>
+                        <select id="view-np-status" style="color:white; font-weight:bold;" onchange="window.renderViewDataNP()">
+                            <option value="ALL">SEMUA STATUS</option>
+                            <option value="PENDING">BELUM UPDATE (PENDING)</option>
+                            <option value="SELESAI">SELESAI (BPB)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div style="overflow-x:auto;">
+                    <table class="accounting-table master-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px; text-align:center;">Urut</th>
+                                <th>Tgl NP</th>
+                                <th>No NP</th>
+                                <th style="width:30%;">Nama Pesanan</th>
+                                <th style="text-align:center;">Qty</th>
+                                <th style="text-align:center;">Status</th>
+                                <th>No BPB</th>
+                                <th>Tgl BPB</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-view-master-np">
+                            <!-- Diisi oleh JS -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div id="loading-np-master" style="text-align:center; padding:20px; color:var(--text-muted); display:none;">
+                    <i class="fas fa-spinner fa-spin fa-2x"></i><br>Sinkronisasi Data Akuntansi...
+                </div>
             </div>
         </div>
     </div>
