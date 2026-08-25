@@ -1319,7 +1319,14 @@ window.navigasi = function(idLayarTujuan) {
             return; 
         }
     }
-
     // 3. Jika aman, atau dia punya izin, izinkan lewat!
     window.navigasiAsli(idLayarTujuan);
+
+    // 4. GARBAGE COLLECTION (Optimasi RAM HP)
+    // Menghapus beban file PDF raksasa dari memori jika user keluar dari area Arsip / Surkom
+    if (!id.includes('surkom') && !id.includes('sm-') && !id.includes('sk-') && !id.includes('arsip')) {
+        window.surkomPdfDocObj = null;
+        window.surkomOriginalPdfBytes = null;
+        window.arsipPdfDocObj = null;
+    }
 };
