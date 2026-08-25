@@ -737,10 +737,10 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     100% { opacity: 1; transform: scale(1.1); }
 }
 /* ======================================================== */
-/* --- KATA-KATA HARI INI: AURORA & SLIDE ANIMATION --- */
+/* --- KATA-KATA MOTIVASI: AURORA & PERFECT SLIDE --- */
 /* ======================================================== */
 
-/* Efek Berkedip Halus Memancarkan Cahaya Aurora */
+/* Pendaran Cahaya Aurora Berkedip Halus */
 @keyframes auroraGlow {
     0% {
         border-color: rgba(56, 189, 248, 0.4);
@@ -760,29 +760,22 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
     animation: auroraGlow 4s ease-in-out infinite;
 }
 
-/* Transisi Geser Teks: Masuk dari Kanan -> Diam di Tengah -> Keluar ke Kiri */
-@keyframes slideTextDynamic {
-    0% {
-        opacity: 0;
-        transform: translateX(50px);
-    }
-    15% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    85% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    100% {
-        opacity: 0;
-        transform: translateX(-50px);
-    }
-}
-
+/* Transisi Teks Super Mulus */
 .motivasi-slide {
     display: inline-block;
-    animation: slideTextDynamic 12s ease-in-out infinite;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.motivasi-slide.slide-out {
+    opacity: 0;
+    transform: translateX(-40px); /* Geser keluar ke kiri */
+}
+
+.motivasi-slide.slide-in-right {
+    opacity: 0;
+    transform: translateX(40px); /* Muncul dari kanan */
 }
 
 #ai-motivation-box:active {

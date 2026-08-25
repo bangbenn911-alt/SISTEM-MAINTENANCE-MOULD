@@ -1806,7 +1806,9 @@ window.renderViewDataNP = async (forceFetch = false) => {
     c.innerHTML = h;
 };
 
-// DATABASE KATA-KATA MOTIVASI PROFESIONAL
+// =========================================================================================
+// AI MOTIVATION AGENT ENGINE (PERFECT SYNC SLIDE - EXTENDED DATABASE)
+// =========================================================================================
 const databaseMotivasiAI = [
     "“Kualitas kerja terbaik bukanlah tentang seberapa cepat kita selesai, tapi seberapa teliti kita merawat setiap detail.”",
     "“Disiplin adalah jembatan antara impian di ruang kendali dan kenyataan di lantai produksi.”",
@@ -1819,7 +1821,15 @@ const databaseMotivasiAI = [
     "“Semangat kerja yang tulus tidak akan pernah mengkhianati hasil. Tetaplah menjadi teladan di lingkungan kerja CBI.”",
     "“Fokus pada solusi, bukan pada rumitnya masalah. Anda memiliki kapasitas luar biasa untuk menyelesaikannya.”",
     "“Ketenangan adalah kunci ketepatan. Tarik napas dalam, kerjakan dengan presisi, dan selesaikan dengan gemilang.”",
-    "“Setiap cetakan mold yang presisi mencerminkan karakter disiplin dan dedikasi seorang profesional sejati.”"
+    "“Setiap cetakan mold yang presisi mencerminkan karakter disiplin dan dedikasi seorang profesional sejati.”",
+    "“Kerja keras tidak pernah membohongi hasil. Setiap keringat yang keluar di lantai produksi adalah investasi masa depan.”",
+    "“Kekuatan sebuah tim diukur dari seberapa erat mereka saling mendukung saat menghadapi target produksi yang ketat.”",
+    "“Inovasi lahir dari keberanian untuk mencoba cara baru yang lebih efisien dan aman dalam bekerja.”",
+    "“Utamakan keselamatan dalam setiap langkah, karena hasil terbaik adalah yang dikerjakan dengan selamat dan tuntas.”",
+    "“Waktu adalah aset paling berharga. Manfaatkan setiap detik di jam kerja untuk memberikan nilai tambah terbaik.”",
+    "“Keunggulan bukanlah sebuah tindakan, melainkan sebuah kebiasaan harian yang konsisten kita jaga.”",
+    "“Jadilah orang yang solutif. Ketika orang lain melihat hambatan, tunjukkan bahwa ada jalan keluar yang cerdas.”",
+    "“Konsistensi dalam kedisiplinan kecil akan membawa kita pada pencapaian besar yang membanggakan.”"
 ];
 
 let indeksMotivasiAktif = 0;
@@ -1828,9 +1838,23 @@ window.putarMotivasiBaru = function() {
     const elText = document.getElementById('ai-motivation-text');
     if(!elText) return;
 
-    // Putar ke kalimat berikutnya secara berurutan
-    indeksMotivasiAktif = (indeksMotivasiAktif + 1) % databaseMotivasiAI.length;
-    elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
+    // 1. Geser kalimat lama ke kiri hingga hilang (Slide Out)
+    elText.classList.add('slide-out');
+
+    setTimeout(() => {
+        // 2. Ganti teks saat tidak terlihat, lalu posisikan di sebelah kanan secara instan
+        indeksMotivasiAktif = (indeksMotivasiAktif + 1) % databaseMotivasiAI.length;
+        elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
+        
+        elText.classList.remove('slide-out');
+        elText.classList.add('slide-in-right');
+
+        // 3. Geser kalimat baru mulus ke tengah
+        setTimeout(() => {
+            elText.classList.remove('slide-in-right');
+        }, 50);
+
+    }, 500); // Waktu jeda pas dengan transisi CSS
 };
 
 // Inisialisasi Otomatis
@@ -1841,10 +1865,10 @@ document.addEventListener("DOMContentLoaded", () => {
             indeksMotivasiAktif = Math.floor(Math.random() * databaseMotivasiAI.length);
             elText.innerText = databaseMotivasiAI[indeksMotivasiAktif];
             
-            // Ganti teks otomatis setiap 12 detik seiring animasi CSS
+            // Berganti otomatis setiap 9 detik dengan mulus
             setInterval(() => {
                 window.putarMotivasiBaru();
-            }, 12000);
+            }, 9000);
         }
     }, 1500);
 });
