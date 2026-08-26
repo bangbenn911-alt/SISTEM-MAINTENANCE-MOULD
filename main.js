@@ -2195,3 +2195,19 @@ window.downloadLaporanRK = function(docId) {
         window.toggleLoader(false);
     }, 1000); // Simulasi delay render agar UI rapi
 };
+// =======================================================
+// MESIN WAKTU KHUSUS RENCANA KERJA (AUTO FILL)
+// =======================================================
+setInterval(() => {
+    const elWaktu = document.getElementById('rk-waktu');
+    const elTarget = document.getElementById('rk-target');
+    
+    if(elWaktu && elTarget) {
+        const now = new Date();
+        const strWaktu = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
+        const tglSaja = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        
+        elWaktu.value = strWaktu;
+        elTarget.value = tglSaja + " (JAM 08.00 - 16.30)";
+    }
+}, 1000);
