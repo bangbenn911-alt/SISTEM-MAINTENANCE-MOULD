@@ -202,7 +202,7 @@
                         <span class="gopay-icon-text">Workshop</span>
                     </div>
                     
-                    <div class="gopay-icon-btn" onclick="window.navigasi('adm-mold-menu-screen')" style="margin-top:10px;">
+                    <div class="gopay-icon-btn" onclick="window.navigasi('adm-mold-screen')" style="margin-top:10px;">
                         <div class="gopay-icon-box"><i class="fas fa-user-tie" style="color:#c084fc;"></i></div>
                         <span class="gopay-icon-text">ADM Mold</span>
                     </div>
@@ -238,6 +238,123 @@
                         <div class="gopay-icon-box" style="background:transparent; border:1px solid rgba(52,211,153,0.3); color:#34d399;"><i class="fas fa-cogs"></i></div>
                         <span class="gopay-icon-text">Progres<br>Workshop</span>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- MODUL: ADM MOLD (DASHBOARD ADMINISTRASI)                  -->
+    <!-- ========================================================= -->
+    <div id="adm-mold-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #a855f7, #7e22ce) !important;">
+                <h2><i class="fas fa-user-tie" style="margin-right:10px;"></i> ADMINISTRASI MOLD</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('rk-menu-screen')" style="border-left-color: #38bdf8;">
+                    <i class="fas fa-clipboard-list" style="color:#38bdf8;"></i> 1. Rencana Kerja
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-server" style="color:#94a3b8;"></i> 2. Sistem Pengolah Data
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-file-alt" style="color:#94a3b8;"></i> 3. Laporan Harian
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-calendar-week" style="color:#94a3b8;"></i> 4. Laporan Mingguan
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-calendar-alt" style="color:#94a3b8;"></i> 5. Laporan Bulanan
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-vial" style="color:#94a3b8;"></i> 6. Data Trial
+                </div>
+                <div class="menu-card" onclick="alert('Tahap Pengembangan')" style="border-left-color: #94a3b8; opacity:0.6;">
+                    <i class="fas fa-toolbox" style="color:#94a3b8;"></i> 7. Data Alat Kerja
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1. SUB-MENU RENCANA KERJA -->
+    <div id="rk-menu-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;">
+                <h2><i class="fas fa-clipboard-list" style="margin-right:10px;"></i> RENCANA KERJA</h2>
+            </div>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="window.navigasi('rk-input-screen')" style="border-left-color: #10b981;">
+                    <i class="fas fa-plus-circle" style="color:#10b981;"></i> 1. Input Rencana Kerja
+                </div>
+                <div class="menu-card" onclick="window.navigasi('rk-update-screen'); window.muatUpdateRK();" style="border-left-color: #f59e0b;">
+                    <i class="fas fa-edit" style="color:#f59e0b;"></i> 2. Update Rencana Kerja
+                </div>
+                <div class="menu-card" onclick="window.navigasi('rk-view-screen'); window.muatViewRK();" style="border-left-color: #8b5cf6;">
+                    <i class="fas fa-eye" style="color:#8b5cf6;"></i> 3. View Progres Admin
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.1 INPUT RENCANA KERJA -->
+    <div id="rk-input-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #10b981, #059669) !important;">
+                <h2><i class="fas fa-plus-circle" style="margin-right:10px;"></i> Input Rencana Kerja</h2>
+            </div>
+            <div class="dark-panel">
+                <div class="form-group">
+                    <label>Nama Admin</label>
+                    <input type="text" id="rk-nama" value="BENNY FIRMANSYAH" readonly style="background:rgba(0,0,0,0.5); color:#10b981; font-weight:900; text-align:center;">
+                </div>
+                <div class="form-group">
+                    <label>Hari & Tanggal</label>
+                    <input type="text" id="rk-waktu" readonly style="background:rgba(0,0,0,0.5); color:white; font-weight:bold; text-align:center;">
+                </div>
+                <div class="form-group">
+                    <label>Target Harian</label>
+                    <input type="text" id="rk-target" readonly style="background:rgba(0,0,0,0.5); color:var(--cepat); font-weight:bold; text-align:center; font-size:11px;">
+                </div>
+                
+                <h3 style="color:#38bdf8; font-size:14px; margin:20px 0 10px; border-bottom:1px solid rgba(56,189,248,0.3); padding-bottom:5px;">Daftar Rencana Kerja</h3>
+                <div id="rk-container-list">
+                    <!-- Baris Input akan masuk ke sini -->
+                </div>
+                
+                <button type="button" class="btn-submit" onclick="window.tambahBarisRK()" style="background:rgba(255,255,255,0.1); border:1px dashed #38bdf8; color:#38bdf8; margin-bottom:15px; box-shadow:none;">
+                    <i class="fas fa-plus"></i> Tambah Rencana
+                </button>
+
+                <button type="button" class="btn-submit" onclick="window.simpanInputRK()" style="background:linear-gradient(135deg, #10b981, #059669);">
+                    <i class="fas fa-save"></i> SIMPAN RENCANA KERJA
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.2 UPDATE RENCANA KERJA -->
+    <div id="rk-update-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #f59e0b, #d97706) !important;">
+                <h2><i class="fas fa-edit" style="margin-right:10px;"></i> Update Rencana Kerja</h2>
+            </div>
+            <div id="rk-update-list-container" style="padding-bottom:80px;">
+                <!-- List Update Muncul Di Sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 1.3 VIEW PROGRES ADMIN -->
+    <div id="rk-view-screen" class="screen">
+        <div class="content-wrapper">
+            <div class="header" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9) !important;">
+                <h2><i class="fas fa-eye" style="margin-right:10px;"></i> View Progres Admin</h2>
+            </div>
+            <div class="dark-panel" style="padding:15px;">
+                <input type="text" id="rk-search-key" placeholder="Cari berdasarkan tanggal..." style="width:100%; margin-bottom:15px; border-color:#8b5cf6;" oninput="window.muatViewRK()">
+                <div id="rk-view-list-container">
+                    <!-- Data View Muncul Di Sini -->
                 </div>
             </div>
         </div>

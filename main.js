@@ -1910,3 +1910,288 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, 1500);
 });
+// =========================================================================================
+// MODUL ADM MOLD: ENGINE RENCANA KERJA (SMART TIME LIMITS)
+// =========================================================================================
+
+// --- 1. ENGINE INPUT RENCANA KERJA ---
+window.tambahBarisRK = function() {
+    const c = document.getElementById('rk-container-list');
+    const idRow = 'rk-row-' + Date.now();
+    let div = document.createElement('div');
+    div.className = 'rk-row'; div.id = idRow;
+    div.innerHTML = `
+        <input type="text" class="rk-input" placeholder="Ketik rencana kerja..." style="text-transform:uppercase;">
+        <button type="button" class="rk-del-btn" onclick="document.getElementById('${idRow}').remove()"><i class="fas fa-trash"></i></button>
+    `;
+    c.appendChild(div);
+};
+// Tambah 1 baris otomatis saat pertama buka
+document.addEventListener("DOMContentLoaded", () => setTimeout(() => window.tambahBarisRK(), 1000));
+
+window.simpanInputRK = async function() {
+    const nama = document.getElementById('rk-nama').value;
+    const waktuTgl = document.getElementById('rk-waktu').value;
+    const target = document.getElementById('rk-target').value;
+    
+    let listRencana = [];
+    document.querySelectorAll('#rk-container-list .rk-input').forEach(inp => {
+        if(inp.value.trim() !== '') {
+            listRencana.push({
+                teks: inp.value.trim().toUpperCase(),
+                isChecked: false,
+                jamSelesai: null,
+                status: 'Proses',
+                note: ''
+            });
+        }
+    });
+
+    if(listRencana.length === 0) return alert("Daftar rencana kerja tidak boleh kosong!");
+    
+    window.toggleLoader(true, "Menyimpan Rencana...");
+    try {
+        await addDoc(collection(window.db, "adm_rencana_kerja"), {
+            nama_admin: nama,
+            waktu_input: waktuTgl,
+            target_harian: target,
+            daftar_kerja: listRencana,
+            is_finalized: false, // Jika true, hilang dari menu Update
+            timestamp: Date.now()
+        });
+        alert("Rencana Kerja berhasil disimpan!");
+        document.getElementById('rk-container-list').innerHTML = '';
+        window.tambahBarisRK();
+        window.navigasi('rk-menu-screen');
+    } catch(e) { alert("Error: " + e.message); }
+    window.toggleLoader(false);
+};
+
+// --- 2. ENGINE UPDATE RENCANA KERJA ---
+window.rkAktifData = [];
+window.muatUpdateRK = async function() {
+    const c = document.getElementById('rk-update-list-container');
+    c.innerHTML = '<p style="text-align:center; color:white;">Memuat data...</p>';
+    window.rkAktifData = [];
+    
+    try {
+        const snap = await getDocs(query(collection(window.db, "adm_rencana_kerja")));
+        let h = "";
+        
+        snap.forEach(doc => {
+            const d = doc.data();
+            if(d.is_finalized) return; // Abaikan yang sudah selesai
+            
+            window.rkAktifData.push({ id: doc.id, ...d });
+            const now = new Date();
+            const jamSekarang = now.getHours() * 100 + now.getMinutes(); // Format: 1630
+            
+            h += `<div class="rk-update-card">
+                    <p style="font-size:10px; color:#f59e0b; margin:0 0 5px;">${d.target_harian}</p>
+                    <h4 style="margin:0 0 15px; color:white;"><i class="fas fa-user-tie"></i> ${d.nama_admin}</h4>`;
+            
+            d.daftar_kerja.forEach((item, index) => {
+                // PENENTUAN STATUS OTOMATIS BERBASIS WAKTU JAM 16.30
+                let statClass = 'status-proses';
+                let statText = 'PROSES';
+                let isLate = false;
+
+                if(item.isChecked) {
+                    statClass = 'status-selesai';
+                    statText = 'TEREALISASI ' + (item.jamSelesai ? `(${item.jamSelesai})` : '');
+                } else if (!item.isChecked && jamSekarang > 1630) {
+                    statClass = 'status-gagal';
+                    statText = 'GAGAL TEREALISASI';
+                    isLate = true; // Wajib isi Note
+                }
+
+                h += `<div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:8px; margin-bottom:10px; border-left:2px solid ${isLate ? '#ef4444' : (item.isChecked ? '#10b981' : '#38bdf8')};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+                            <label style="flex:1; display:flex; align-items:flex-start; gap:8px; cursor:pointer; font-size:11px; font-weight:700;">
+                                <input type="checkbox" id="rk-chk-${doc.id}-${index}" ${item.isChecked ? 'checked disabled' : ''} onchange="window.centangRK('${doc.id}', ${index}, this)" style="margin-top:3px; transform:scale(1.2);">
+                                ${item.teks}
+                            </label>
+                            <span id="rk-stat-${doc.id}-${index}" class="rk-status-badge ${statClass}">${statText}</span>
+                        </div>
+                        ${isLate && !item.isChecked ? `<input type="text" id="rk-note-${doc.id}-${index}" placeholder="WAJIB ISI NOTE PENYEBAB GAGAL (Sebelum Jam 20.00)..." value="${item.note || ''}" style="width:100%; margin-top:8px; padding:8px; font-size:10px; border:1px solid #ef4444; border-radius:6px; background:rgba(239,68,68,0.1); color:white;">` : ''}
+                      </div>`;
+            });
+
+            h += `<button onclick="window.simpanUpdateRK('${doc.id}')" style="width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); border:none; color:white; padding:12px; border-radius:8px; font-weight:bold; margin-top:10px; cursor:pointer;"><i class="fas fa-cloud-upload-alt"></i> SIMPAN PERUBAHAN</button>`;
+            h += `</div>`;
+        });
+
+        c.innerHTML = h || '<p style="text-align:center; color:#94a3b8; font-size:12px;">Semua Rencana Kerja hari ini sudah di-Update & Selesai.</p>';
+    } catch(e) {}
+};
+
+window.centangRK = function(docId, index, el) {
+    const statBadge = document.getElementById(`rk-stat-${docId}-${index}`);
+    if(el.checked) {
+        const d = new Date();
+        const strJam = d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+        statBadge.className = 'rk-status-badge status-selesai';
+        statBadge.innerText = 'TEREALISASI (' + strJam + ')';
+    } else {
+        statBadge.className = 'rk-status-badge status-proses';
+        statBadge.innerText = 'PROSES';
+    }
+};
+
+window.simpanUpdateRK = async function(docId) {
+    const dataRef = window.rkAktifData.find(x => x.id === docId);
+    if(!dataRef) return;
+    
+    let siapFinal = true;
+    const now = new Date();
+    const jamSekarang = now.getHours() * 100 + now.getMinutes();
+
+    let arrUpdate = [];
+    for(let i=0; i<dataRef.daftar_kerja.length; i++) {
+        let ori = dataRef.daftar_kerja[i];
+        let chk = document.getElementById(`rk-chk-${docId}-${i}`);
+        let nObj = { ...ori };
+
+        if(chk && chk.checked && !ori.isChecked) {
+            nObj.isChecked = true;
+            nObj.jamSelesai = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            nObj.status = 'Terealisasi';
+        } 
+        else if(!chk.checked && jamSekarang > 1630) {
+            nObj.status = 'Gagal Terealisasi';
+            let noteInp = document.getElementById(`rk-note-${docId}-${i}`);
+            if(noteInp) {
+                if(noteInp.value.trim() === '') {
+                    alert("HARAP ISI NOTE UNTUK TUGAS YANG GAGAL TEREALISASI!");
+                    return; // Gagal Simpan
+                }
+                if(jamSekarang > 2000) {
+                    alert("UPDATE DITOLAK! Waktu Pengisian Note Gagal sudah melewati batas Jam 20.00 WIB.");
+                    return;
+                }
+                nObj.note = noteInp.value.trim().toUpperCase();
+            } else {
+                siapFinal = false; // Note input belum kerender? Berarti belum disave ulang.
+            }
+        }
+        else if(!chk.checked) {
+            siapFinal = false; // Masih ada proses dan belum jam 16.30
+        }
+        arrUpdate.push(nObj);
+    }
+
+    window.toggleLoader(true, "Updating...");
+    try {
+        await updateDoc(doc(window.db, "adm_rencana_kerja", docId), {
+            daftar_kerja: arrUpdate,
+            is_finalized: siapFinal
+        });
+        alert("Update Berhasil Disimpan!");
+        window.muatUpdateRK();
+    } catch(e) { alert("Gagal update!"); }
+    window.toggleLoader(false);
+};
+
+// --- 3. ENGINE VIEW & EXPORT PROFESSIONAL ---
+window.muatViewRK = async function() {
+    const c = document.getElementById('rk-view-list-container');
+    const kw = (document.getElementById('rk-search-key')?.value || "").toLowerCase();
+    c.innerHTML = '<p style="text-align:center; color:white;">Memuat History...</p>';
+    try {
+        const snap = await getDocs(query(collection(window.db, "adm_rencana_kerja")));
+        let h = "";
+        let dataSort = [];
+        snap.forEach(doc => dataSort.push({id: doc.id, ...doc.data()}));
+        dataSort.sort((a,b) => b.timestamp - a.timestamp);
+
+        dataSort.filter(d => (d.waktu_input||"").toLowerCase().includes(kw)).forEach(d => {
+            let total = d.daftar_kerja.length;
+            let sukses = d.daftar_kerja.filter(x => x.isChecked).length;
+            
+            h += `<div class="progress-card" style="border-left-color:#8b5cf6; margin-bottom:15px;">
+                    <h4 style="margin:0 0 5px; color:#8b5cf6;">${d.waktu_input.split(' - ')[0]}</h4>
+                    <p style="font-size:10px; margin:0 0 10px; color:var(--text-muted);"><i class="fas fa-bullseye"></i> ${d.target_harian}</p>
+                    <p style="font-size:11px; margin:0 0 15px;">Progress: <strong style="color:${sukses === total ? '#10b981' : '#f59e0b'};">${sukses} / ${total} Selesai</strong></p>
+                    <button onclick="window.downloadLaporanRK('${d.id}')" style="width:100%; background:rgba(139,92,246,0.15); border:1px solid #8b5cf6; color:white; padding:10px; border-radius:6px; font-weight:800; cursor:pointer;"><i class="fas fa-file-download"></i> Download Laporan (JPG)</button>
+                  </div>`;
+        });
+        c.innerHTML = h || '<p style="text-align:center; color:#94a3b8; font-size:12px;">Tidak ada data ditemukan.</p>';
+        window.dataRKSemua = dataSort; // Cache untuk export
+    } catch(e) {}
+};
+
+// Canvas Laporan Profesional
+window.downloadLaporanRK = function(docId) {
+    const d = window.dataRKSemua.find(x => x.id === docId);
+    if(!d) return;
+
+    window.toggleLoader(true, "Mencetak Laporan...");
+    setTimeout(() => {
+        const cvs = document.createElement('canvas');
+        const ctx = cvs.getContext('2d');
+        cvs.width = 1200; cvs.height = 300 + (d.daftar_kerja.length * 80); // Tinggi dinamis
+        
+        // Background Putih
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, cvs.width, cvs.height);
+        
+        // Header (Kop Surat/Judul)
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "bold 40px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("LAPORAN RENCANA & REALISASI KERJA", cvs.width/2, 60);
+        ctx.fillStyle = "#8b5cf6";
+        ctx.font = "bold 25px Arial";
+        ctx.fillText("ADMINISTRASI MOLD - CBI", cvs.width/2, 100);
+
+        // Garis Pembatas
+        ctx.beginPath(); ctx.moveTo(50, 130); ctx.lineTo(cvs.width - 50, 130);
+        ctx.strokeStyle = "#cbd5e1"; ctx.lineWidth = 3; ctx.stroke();
+
+        // Info Identitas
+        ctx.fillStyle = "#334155";
+        ctx.textAlign = "left";
+        ctx.font = "bold 22px Arial";
+        ctx.fillText("Nama Admin : " + d.nama_admin, 60, 180);
+        ctx.fillText("Tanggal          : " + d.waktu_input.split(' - ')[0], 60, 220);
+        ctx.fillText("Target Jam    : " + d.target_harian.split(' (')[1].replace(')',''), 60, 260);
+
+        // Looping Daftar Kerja
+        let startY = 330;
+        d.daftar_kerja.forEach((item, idx) => {
+            // Kotak Item
+            ctx.fillStyle = "#f8fafc";
+            ctx.fillRect(60, startY-30, cvs.width - 120, 70);
+            ctx.strokeStyle = "#e2e8f0";
+            ctx.strokeRect(60, startY-30, cvs.width - 120, 70);
+
+            // Teks Tugas
+            ctx.fillStyle = "#0f172a";
+            ctx.font = "bold 20px Arial";
+            ctx.fillText((idx+1) + ". " + item.teks, 80, startY+15);
+
+            // Status Badge
+            ctx.textAlign = "right";
+            if(item.status === 'Terealisasi') {
+                ctx.fillStyle = "#10b981";
+                ctx.fillText("✅ TEREALISASI (" + item.jamSelesai + ")", cvs.width - 80, startY+15);
+            } else if(item.status === 'Gagal Terealisasi') {
+                ctx.fillStyle = "#ef4444";
+                ctx.fillText("❌ GAGAL: " + (item.note || "TANPA ALASAN"), cvs.width - 80, startY+15);
+            } else {
+                ctx.fillStyle = "#38bdf8";
+                ctx.fillText("⏳ PROSES", cvs.width - 80, startY+15);
+            }
+            ctx.textAlign = "left";
+            startY += 80;
+        });
+
+        // Trigger Download
+        let link = document.createElement('a');
+        link.download = `Laporan_RK_${d.nama_admin.replace(/\s/g,'_')}_${d.waktu_input.split(' - ')[0].replace(/\s/g,'')}.jpg`;
+        link.href = cvs.toDataURL('image/jpeg', 1.0);
+        link.click();
+        
+        window.toggleLoader(false);
+    }, 1000); // Simulasi delay render agar UI rapi
+};
