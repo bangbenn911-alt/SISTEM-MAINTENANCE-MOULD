@@ -844,3 +844,87 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 .status-proses { background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56,189,248,0.5); }
 .status-selesai { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid rgba(16,185,129,0.5); }
 .status-gagal { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.5); }
+/* ========================================== */
+/* ENGINE CSS 3D ISOMETRIK M-TRIX             */
+/* ========================================== */
+.iso-container {
+    width: 100%;
+    height: 250px;
+    perspective: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(15,23,42,1) 0%, rgba(2,6,23,1) 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px dashed rgba(56,189,248,0.3);
+    cursor: grab;
+    touch-action: none; /* Mencegah layar ikut ter-scroll saat memutar map */
+}
+
+.iso-plane {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(60deg) rotateZ(-45deg); /* Sudut kamera 3D */
+    transition: transform 0.1s linear;
+}
+
+.iso-floor {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 25px 25px;
+    background-color: rgba(30, 41, 59, 0.6);
+    border: 2px solid rgba(100, 116, 139, 0.5);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+    transform: translateZ(-5px);
+}
+
+.iso-machine {
+    position: absolute;
+    transform-style: preserve-3d;
+    border: 1px solid;
+    /* Trik manipulasi bayangan berlapis untuk membuat efek ketebalan 3D/Extrude */
+    box-shadow: 
+        -1px 1px 0 rgba(0,0,0,0.5), -2px 2px 0 rgba(0,0,0,0.5),
+        -3px 3px 0 rgba(0,0,0,0.5), -4px 4px 0 rgba(0,0,0,0.5),
+        -5px 5px 15px rgba(0,0,0,0.8);
+    transform: translateZ(10px); /* Ketinggian balok dari lantai */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.iso-machine:active { transform: translateZ(5px); } /* Efek tertekan */
+
+.iso-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) translateZ(1px); /* Menempel di atas balok */
+    color: white;
+    font-size: 11px;
+    font-weight: 900;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+    pointer-events: none;
+}
+
+/* Titik Marker Hologram Melayang */
+.iso-marker {
+    position: absolute;
+    top: -15px; left: 50%;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    transform: translateX(-50%) translateZ(30px); /* Melayang 30px di atas balok */
+    box-shadow: 0 0 10px currentColor;
+}
+
+.pulse-green { background: #10b981; color: #10b981; animation: pulseG 1.5s infinite; }
+.pulse-red { background: #ef4444; color: #ef4444; animation: pulseR 1.5s infinite; }
+.pulse-yellow { background: #f59e0b; color: #f59e0b; animation: pulseY 1.5s infinite; }
+
+@keyframes pulseG { 0% { box-shadow: 0 0 0 0 rgba(16,185,129,0.7); } 70% { box-shadow: 0 0 0 10px rgba(16,185,129,0); } 100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); } }
+@keyframes pulseR { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.7); } 70% { box-shadow: 0 0 0 10px rgba(239,68,68,0); } 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } }
+@keyframes pulseY { 0% { box-shadow: 0 0 0 0 rgba(245,158,11,0.7); } 70% { box-shadow: 0 0 0 10px rgba(245,158,11,0); } 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0); } }

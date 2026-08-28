@@ -2548,3 +2548,57 @@ setInterval(() => {
         elSurkom.value = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
     }
 }, 1000);
+// ==========================================
+// ENGINE PEMETAAN 3D ISOMETRIK (PROFIL SCREEN)
+// ==========================================
+let isDragging3D = false;
+let startX3D, startY3D;
+let currentRotZ = -45;
+let currentRotX = 60;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const container = document.getElementById('iso-touch-area');
+    const plane = document.getElementById('factory-3d-map');
+    if(!container || !plane) return;
+
+    // FUNGSI ROTASI DENGAN SENTUHAN (TOUCH/SWIPE)
+    container.addEventListener('touchstart', (e) => {
+        isDragging3D = true;
+        startX3D = e.touches[0].clientX;
+        startY3D = e.touches[0].clientY;
+    }, {passive: true});
+
+    container.addEventListener('touchmove', (e) => {
+        if(!isDragging3D) return;
+        
+        let deltaX = e.touches[0].clientX - startX3D;
+        let deltaY = e.touches[0].clientY - startY3D;
+        
+        // Mengubah arah rotasi mengikuti arah jari
+        let newRotZ = currentRotZ + (deltaX * 0.4);
+        let newRotX = currentRotX - (deltaY * 0.4);
+        
+        // Batasi kemiringan kamera agar peta tidak terbalik (Maksimal nunduk 80 derajat, maksimal datar 30 derajat)
+        if(newRotX > 80) newRotX = 80;
+        if(newRotX < 30) newRotX = 30;
+
+        plane.style.transform = `rotateX(${newRotX}deg) rotateZ(${newRotZ}deg)`;
+    }, {passive: true});
+
+    container.addEventListener('touchend', (e) => {
+        if(!isDragging3D) return;
+        isDragging3D = false;
+        
+        // Simpan posisi sudut terakhir saat jari dilepas
+        const transform = plane.style.transform;
+        const matchZ = transform.match(/rotateZ\(([-0-9.]+)deg\)/);
+        const matchX = transform.match(/rotateX\(([-0-9.]+)deg\)/);
+        if(matchZ) currentRotZ = parseFloat(matchZ[1]);
+        if(matchX) currentRotX = parseFloat(matchX[1]);
+    });
+});
+
+// Fungsi memanggil notifikasi saat balok mesin di-klik
+window.infoMesin3D = function(namaMesin, status, warnaCode) {
+    alert(`[ RADAR PEMETAAN 3D ]\n\nLokasi: ${namaMesin}\nStatus Terkini: ${status}`);
+};
