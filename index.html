@@ -110,7 +110,7 @@
             <div class="hero-dashboard">
                 <div class="hero-left">
                   <!-- KARTU ANALYTICS ANIMASI (BERGERAK) -->
-<div class="card-analytics-pro" onclick="window.navigasi('ai-dashboard-screen')">
+<div class="card-analytics-pro">
     
     <!-- Wadah Latar Belakang & Grafik SVG -->
     <div class="anim-wave-container" style="padding: 10px;">
@@ -142,6 +142,29 @@
         <i class="fas fa-chart-line" style="color: #38bdf8;"></i> Analytics
     </div>
 </div>
+        <!-- KARTU ANALISA AI & GRAFIK (DI BERANDA) -->
+        <div class="dark-panel" style="margin-bottom: 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="color:#38bdf8; margin:0; font-size:14px; font-weight:900;"><i class="fas fa-chart-line"></i> Ringkasan Analisa AI</h3>
+                <span style="background:rgba(56,189,248,0.2); color:#38bdf8; padding:2px 8px; border-radius:10px; font-size:9px; font-weight:bold;">LIVE STATS</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:12px;">
+                <div style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:10px; border-radius:8px; text-align:center; box-shadow: inset 0 0 10px rgba(56,189,248,0.05);">
+                    <p style="font-size:9px; color:#94a3b8; margin:0; font-weight:bold;">TOTAL PROYEK</p>
+                    <h3 id="dash-kpi-proyek" style="color:#38bdf8; margin:5px 0 0; font-size:20px;">0</h3>
+                </div>
+                <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); padding:10px; border-radius:8px; text-align:center; box-shadow: inset 0 0 10px rgba(16,185,129,0.05);">
+                    <p style="font-size:9px; color:#94a3b8; margin:0; font-weight:bold;">ACHIEVEMENT</p>
+                    <h3 id="dash-kpi-ach" style="color:#10b981; margin:5px 0 0; font-size:20px;">0%</h3>
+                </div>
+            </div>
+            
+            <div style="width:100%; height:150px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:10px;">
+                <canvas id="chartMultivariate" style="width:100%; height:100%;"></canvas>
+            </div>
+            <p style="font-size:10px; text-align:center; color:var(--text-muted); margin:0;">Disinkronkan otomatis dari database Cloud.</p>
+        </div>
 
                     <div class="glass-card jadwal" onclick="window.navigasi('jadwal-besar-menu-screen')">
                         <i class="fas fa-calendar-alt" style="font-size:16px;"></i> Jadwal
@@ -1639,75 +1662,74 @@
             </div>
         </div>
     </div>
-    <!-- ========================================================= -->
-    <!-- AI EXECUTIVE DASHBOARD SCREEN                             -->
-    <!-- ========================================================= -->
+    <!-- ========================================== -->
+    <!-- MENU ANALISA: 3D HOLOGRAPHIC MAP INDONESIA -->
+    <!-- ========================================== -->
     <div id="ai-dashboard-screen" class="screen">
-        <div class="content-wrapper-wide">
-            <div class="header" style="background:linear-gradient(135deg, #0f172a, #1e1b4b) !important; border:1px solid #f43f5e;">
-                <h2 style="color:#fda4af; margin:0;"><i class="fas fa-chart-line" style="margin-right:10px;"></i> EXECUTIVE AI DASHBOARD</h2>
+        <div class="content-wrapper" style="height: 100vh; display: flex; flex-direction: column; overflow: hidden; padding-bottom:80px;">
+            <div class="header" style="flex-shrink: 0; background: linear-gradient(135deg, #0f172a, #1e293b) !important; border-bottom: 1px solid #38bdf8;">
+                <h2><i class="fas fa-globe-asia" style="margin-right:10px; color:#38bdf8;"></i> M-TRIX Nusantara</h2>
             </div>
             
-            <div style="max-width:700px; margin:0 auto 25px auto; display: flex; gap: 12px;">
-                <button class="btn-submit" type="button" onclick="window.cetakGambarUniversal('dashboard-report-content', 'AI_Dashboard')" style="flex: 1; padding: 14px; background: linear-gradient(135deg, #f59e0b, #d97706);">
-                    <i class="fas fa-image"></i> Download Dashboard JPG
-                </button>
-                <button class="btn-submit" type="button" onclick="window.cetakPDFUniversal()" style="flex: 1; padding: 14px; background: linear-gradient(135deg, #db2777, #be185d);">
-                    <i class="fas fa-file-pdf"></i> Download PDF
-                </button>
-            </div>
-
-            <div id="dashboard-report-content" class="dark-panel">
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px;">
-                    <div style="background: rgba(15,23,42,0.6); padding: 22px; border-radius: 18px; border-top: 4px solid #3b82f6; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-left: 1px solid var(--border-dark); border-right: 1px solid var(--border-dark);">
-                        <h4 style="margin: 0 0 12px 0; font-size: 12px; color: #cbd5e1; text-transform: uppercase;"><i class="fas fa-project-diagram"></i> Total Proyek</h4>
-                        <div id="dash-kpi-proyek" style="font-size: 32px; font-weight: 900; color: #38bdf8;">0</div>
+            <div style="flex: 1; display: flex; flex-direction: column; position: relative;">
+                <!-- UI Overlay Informasi -->
+                <div style="position:absolute; top:15px; left:15px; right:15px; z-index:10; display:flex; justify-content:space-between; pointer-events:none;">
+                    <div style="background:rgba(15,23,42,0.8); border:1px solid #38bdf8; padding:8px 12px; border-radius:8px; backdrop-filter:blur(5px);">
+                        <div style="color:#38bdf8; font-size:10px; font-weight:bold;">SYSTEM NOMINAL</div>
+                        <div style="color:white; font-size:12px; font-weight:900;">ALL ZONES SECURE</div>
                     </div>
-                    <div style="background: rgba(15,23,42,0.6); padding: 22px; border-radius: 18px; border-top: 4px solid #10b981; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-left: 1px solid var(--border-dark); border-right: 1px solid var(--border-dark);">
-                        <h4 style="margin: 0 0 12px 0; font-size: 12px; color: #cbd5e1; text-transform: uppercase;"><i class="fas fa-clock"></i> Est. Jam Global</h4>
-                        <div id="dash-kpi-est" style="font-size: 32px; font-weight: 900; color: #34d399;">0</div>
-                    </div>
-                    <div style="background: rgba(15,23,42,0.6); padding: 22px; border-radius: 18px; border-top: 4px solid #f59e0b; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-left: 1px solid var(--border-dark); border-right: 1px solid var(--border-dark);">
-                        <h4 style="margin: 0 0 12px 0; font-size: 12px; color: #cbd5e1; text-transform: uppercase;"><i class="fas fa-stopwatch"></i> Actual Kerja</h4>
-                        <div id="dash-kpi-act" style="font-size: 32px; font-weight: 900; color: #fbbf24;">0</div>
-                    </div>
-                    <div style="background: rgba(15,23,42,0.6); padding: 22px; border-radius: 18px; border-top: 4px solid #8b5cf6; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-left: 1px solid var(--border-dark); border-right: 1px solid var(--border-dark);">
-                        <h4 style="margin: 0 0 12px 0; font-size: 12px; color: #cbd5e1; text-transform: uppercase;"><i class="fas fa-chart-pie"></i> ACH Rate</h4>
-                        <div id="dash-kpi-ach" style="font-size: 32px; font-weight: 900; color: #a78bfa;">0%</div>
+                    <div style="display:flex; gap:5px; flex-direction:column; align-items:flex-end;">
+                        <span style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981; padding:4px 8px; border-radius:4px; font-size:9px; font-weight:900;">3D ENGINE V2.0</span>
+                        <span style="background:rgba(245,158,11,0.2); color:#f59e0b; border:1px solid #f59e0b; padding:4px 8px; border-radius:4px; font-size:9px; font-weight:900;"><i class="fas fa-arrows-alt"></i> SWIPE TO ROTATE</span>
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
-                    <div class="dark-panel" style="margin-bottom:0; box-shadow:none;">
-                        <h3 class="sub-title-box" style="margin-bottom:20px !important;"><i class="fas fa-chart-pie" style="color:#38bdf8;"></i> Distribusi Proses</h3>
-                        <div style="position: relative; height: 280px; width: 100%;"><canvas id="chartUnivariate"></canvas></div>
-                    </div>
-                    <div class="dark-panel" style="margin-bottom:0; box-shadow:none;">
-                        <h3 class="sub-title-box" style="margin-bottom:20px !important;"><i class="fas fa-chart-bar" style="color:#10b981;"></i> Estimasi vs Actual</h3>
-                        <div style="position: relative; height: 280px; width: 100%;"><canvas id="chartBivariate"></canvas></div>
+                <!-- 3D TOUCH CANVAS -->
+                <div class="indo3d-container" id="indo3d-touch-area" style="flex: 1; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; touch-action: none;">
+                    
+                    <div class="indo3d-plane" id="indo3d-model" style="transform: rotateX(60deg) rotateZ(-15deg);">
+                        <!-- Radar Grid Dasar -->
+                        <div class="indo3d-grid-floor"></div>
+                        <div class="indo3d-radar-sweep"></div>
+
+                        <!-- PULAU SUMATERA -->
+                        <div class="indo3d-island" style="top: 15%; left: 5%; width: 28%; height: 12%; transform: translateZ(10px) rotate(-40deg);" onclick="window.bukaInfoIndo('SUMATERA', 'Distribusi Normal', '#38bdf8')">
+                            <div class="indo3d-island-body sumatera-color"></div>
+                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
+                            <span class="indo3d-text" style="transform: rotate(40deg) translateZ(20px);">SUMATERA</span>
+                        </div>
+
+                        <!-- PULAU JAWA (CBI PUSAT) -->
+                        <div class="indo3d-island" style="top: 60%; left: 25%; width: 30%; height: 10%; transform: translateZ(15px);" onclick="window.bukaInfoIndo('JAWA (CBI PUSAT)', 'Pusat Produksi Aktif', '#10b981')">
+                            <div class="indo3d-island-body jawa-color"></div>
+                            <div class="indo3d-pin pin-special"><div class="pin-dot"></div></div>
+                            <span class="indo3d-text" style="transform: translateZ(25px); color:#34d399;">JAWA (HQ)</span>
+                        </div>
+
+                        <!-- PULAU KALIMANTAN -->
+                        <div class="indo3d-island" style="top: 15%; left: 40%; width: 25%; height: 22%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('KALIMANTAN', 'Maintenance Rutin', '#f59e0b')">
+                            <div class="indo3d-island-body kalimantan-color"></div>
+                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
+                            <span class="indo3d-text" style="transform: translateZ(20px);">KALIMANTAN</span>
+                        </div>
+
+                        <!-- PULAU SULAWESI -->
+                        <div class="indo3d-island" style="top: 25%; left: 68%; width: 15%; height: 35%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('SULAWESI', 'Monitoring Standby', '#38bdf8')">
+                            <div class="indo3d-island-body sulawesi-color"></div>
+                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
+                            <span class="indo3d-text" style="transform: translateZ(20px);">SULAWESI</span>
+                        </div>
+
+                        <!-- PULAU PAPUA -->
+                        <div class="indo3d-island" style="top: 30%; left: 88%; width: 22%; height: 18%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('PAPUA', 'Logistik Aman', '#38bdf8')">
+                            <div class="indo3d-island-body papua-color"></div>
+                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
+                            <span class="indo3d-text" style="transform: translateZ(20px);">PAPUA</span>
+                        </div>
+                        
                     </div>
                 </div>
                 
-                <div class="dark-panel" style="margin-bottom:30px;">
-                    <h3 class="sub-title-box" style="margin-bottom:20px !important;"><i class="fas fa-project-diagram" style="color:#8b5cf6;"></i> Tren Estimasi vs ACH Rate</h3>
-                    <div style="position: relative; height: 350px; width: 100%;"><canvas id="chartMultivariate"></canvas></div>
-                </div>
-                
-                <h3 class="sub-title-box"><i class="fas fa-table" style="color:white;"></i> Rincian Komparasi Proyek</h3>
-                <div style="overflow-x:auto;">
-                    <table class="report-table" style="font-size:12px;">
-                        <thead>
-                            <tr>
-                                <th>Nama Proyek</th>
-                                <th style="text-align:center;">Estimasi (Jam)</th>
-                                <th style="text-align:center;">Actual (Jam)</th>
-                                <th style="text-align:center;">ACH Rate (%)</th>
-                                <th>Status Akhir</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dash-table-body"></tbody>
-                    </table>
-                </div>
             </div>
         </div>
     </div>
