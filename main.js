@@ -673,33 +673,55 @@ window.renderSurkomSplitCards = async function() {
 window.hapusCardSurkom = function(pNum) {
     document.getElementById(`surkom-card-${pNum}`).remove();
 };
-
+// Fungsi Eksekusi Tarik/Gabung Halaman (Merge Go!)
 window.prosesMergeHalaman = async function(fromNum) {
     const targetSelect = document.getElementById(`merge-target-${fromNum}`);
     const toNum = parseInt(targetSelect.value);
-    if(!toNum) return alert("Pilih nomor urut tujuan terlebih dahulu!");
     
-    window.toggleLoader(true, `Menggabungkan Halaman ${fromNum} ke Halaman ${toNum}...`);
+    if(!toNum) return alert("Pilih nomor urut tujuan terlebih dahulu!");
+    if(toNum === fromNum) return alert("Tidak bisa menggabungkan ke halaman yang sama!");
+
+    window.toggleLoader(true, `Menggabungkan Hal ${fromNum} ke Hal ${toNum}...`);
+    
     try {
         const { PDFDocument } = PDFLib;
+        
+        // 1. Buat dokumen PDF kosong baru untuk menampung hasil gabungan
         const mergedPdf = await PDFDocument.create();
+        
+        // 2. Ambil dokumen asli (sumber halaman)
         const origDoc = await PDFDocument.load(window.surkomOriginalPdfBytes);
         
-        // Tarik halaman tujuan
-        const [copiedPage1] = await mergedPdf.copyPages(origDoc, [toNum - 1]);
-        mergedPdf.addPage(copiedPage1);
+        // 3. CEK DULU: Apakah Halaman Tujuan (toNum) sudah pernah digabung sebelumnya?
+        // Jika sudah, kita gunakan file hasil gabungan sebelumnya sebagai dasar!
+        if (window.surkomCustomMergedBytes && window.surkomCustomMergedBytes[toNum]) {
+            const tempTargetDoc = await PDFDocument.load(window.surkomCustomMergedBytes[toNum]);
+            // Tarik semua halaman yang sudah ada di dokumen tujuan tersebut
+            const copiedPagesTarget = await mergedPdf.copyPages(tempTargetDoc, tempTargetDoc.getPageIndices());
+            copiedPagesTarget.forEach(p => mergedPdf.addPage(p));
+        } else {
+            // Jika belum pernah digabung, tarik halaman tujuan asli (toNum - 1)
+            const [copiedPageTarget] = await mergedPdf.copyPages(origDoc, [toNum - 1]);
+            mergedPdf.addPage(copiedPageTarget);
+        }
         
-        // Tarik halaman sumber yg mau digabung
-        const [copiedPage2] = await mergedPdf.copyPages(origDoc, [fromNum - 1]);
-        mergedPdf.addPage(copiedPage2);
+        // 4. Tarik halaman sumber yang ingin dilempar/digabung (fromNum - 1)
+        const [copiedPageSource] = await mergedPdf.copyPages(origDoc, [fromNum - 1]);
+        mergedPdf.addPage(copiedPageSource);
         
-        // Simpan bytes gabungannya
-        const mergedBytes = await mergedPdf.save();
+        // 5. Simpan file PDF hasil gabungan ini ke dalam memori sementara HP
+        const finalMergedBytes = await mergedPdf.save();
+        
+        // 6. Daftarkan di objek penyimpanan agar dipakai saat klik tombol "SIMPAN SEMUA"
         if(!window.surkomCustomMergedBytes) window.surkomCustomMergedBytes = {};
-        window.surkomCustomMergedBytes[toNum] = mergedBytes;
+        window.surkomCustomMergedBytes[toNum] = finalMergedBytes;
+
+        alert(`Sukses! Hal ${fromNum} berhasil digabungkan ke belakang Hal ${toNum}. (Abaikan Hal ${fromNum} ini)`);
         
-        alert(`Sukses! Halaman ${fromNum} berhasil digabungkan ke Halaman ${toNum}. (Abaikan Halaman ${fromNum} ini)`);
-        document.getElementById(`surkom-card-${fromNum}`).style.opacity = '0.3'; 
+        // Buat kartunya memudar dan tombol "Goo"-nya dimatikan agar tidak di-klik 2x
+        document.getElementById(`surkom-card-${fromNum}`).style.opacity = '0.3';
+        document.getElementById(`surkom-card-${fromNum}`).style.pointerEvents = 'none';
+
     } catch(e) {
         alert("Gagal menggabungkan halaman: " + e.message);
     }
@@ -722,16 +744,21 @@ window.bukaPreviewSurkom = async function(pNum) {
     } catch(e) {} 
 };
 
+// Fungsi Menyimpan ke Database (Mendukung File Gabungan)
 window.simpanAllSurkomHasil = async function() {
     const op = window.amankanData(document.getElementById('surkom-operator').value); 
     const th = document.getElementById('surkom-tahun-input').value;
-    if(!op) return alert("Isi nama Operator/Pembuat terlebih dahulu!"); 
+    const waktuSurkom = document.getElementById('surkom-waktu').value; // Mengambil jam realtime
     
-    window.toggleLoader(true, "Menyimpan Data ke Cloud...");
+    if(!op) return alert("Isi nama Operator/Pembuat terlebih dahulu!"); 
+    if(!waktuSurkom) return alert("Waktu Realtime belum memuat. Tunggu 1 detik.");
+    
+    window.toggleLoader(true, "Menyimpan Data ke Database...");
     try {
         const { PDFDocument } = PDFLib; 
         const orig = await PDFDocument.load(window.surkomOriginalPdfBytes); 
-        let arr = [];
+        let arrPromises = [];
+        
         let cards = document.querySelectorAll('.pdf-split-card');
         
         for(let card of cards) {
@@ -739,31 +766,36 @@ window.simpanAllSurkomHasil = async function() {
             let pNum = parseInt(cardId.split('-')[2]);
             let inp = document.getElementById(`surkom-judul-${pNum}`); 
             
-            // Skip jika kosong atau sudah disedot (opacity 0.3)
+            // Skip kartu ini jika input judul kosong, ATAU jika kartu ini sudah memudar (opacity 0.3) karena sudah digabungkan ke kartu lain.
             if(!inp || !inp.value.trim() || card.style.opacity === '0.3') continue; 
             
             let b64 = "";
+            // Jika Halaman ini memiliki file gabungan di memorinya, JADIKAN PDF!
             if(window.surkomCustomMergedBytes && window.surkomCustomMergedBytes[pNum]) {
                 const customPdfDoc = await PDFDocument.load(window.surkomCustomMergedBytes[pNum]);
                 b64 = await customPdfDoc.saveAsBase64({ dataUri: true });
             } else {
+                // Jika belum digabung (tetap 1 lembar)
                 let newPdf = await PDFDocument.create(); 
                 let [pg] = await newPdf.copyPages(orig, [pNum - 1]); 
                 newPdf.addPage(pg);
                 b64 = await newPdf.saveAsBase64({ dataUri: true });
             }
 
-            arr.push(addDoc(collection(window.db, "surat_komponen"), { 
+            // Push ke Firebase! (Pastikan field "waktuInput" ini ada)
+            arrPromises.push(addDoc(collection(window.db, "surat_komponen"), { 
                 judul: inp.value.trim().toUpperCase(), 
-                operator: op, 
-                tahun: th, 
+                operator: op.toUpperCase(), 
+                tahun: th,
+                waktuInput: waktuSurkom, 
                 filePdfBase64: b64, 
                 timestamp: Date.now() 
             }));
         }
         
-        await Promise.all(arr); 
-        alert("Seluruh Surkom berhasil disimpan!"); 
+        // Tunggu semua proses upload selesai
+        await Promise.all(arrPromises); 
+        alert("Semua dokumen berhasil disimpan ke Server!"); 
         window.bukaAllDataSurkom();
     } catch(e) { alert("Gagal menyimpan: " + e.message); } 
     window.toggleLoader(false);
@@ -795,46 +827,73 @@ window.prosesUnduhGlobalSurkom = async (t) => {
     
     if(sel.length === 0) return alert("Tidak ada data yang dipilih!");
 
-    window.toggleLoader(true, t === 'merge' ? "Menyatukan PDF Global..." : "Mengunduh File Beruntun..."); 
+    window.toggleLoader(true, t === 'merge' ? "Membangun PDF Gabungan..." : "Mengunduh File Beruntun..."); 
     
     try { 
         if(t === 'pisah') { 
-            // Unduh satuan satu per satu dengan jeda aman browser
+            // METODE 1: UNDUH SATU PER SATU (PISAH)
             for(let id of sel) { 
                 const d = window.surkomDatabase.find(x => x.id === id); 
                 if(d && d.filePdfBase64) { 
                     let a = document.createElement("a"); 
-                    a.href = d.filePdfBase64; 
+                    // Konversi Base64 jadi Blob URL agar tidak nge-lag di HP
+                    const byteCharacters = atob(d.filePdfBase64.split(',')[1]);
+                    const byteNumbers = new Array(byteCharacters.length);
+                    for (let i = 0; i < byteCharacters.length; i++) {
+                        byteNumbers[i] = byteCharacters.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    const blob = new Blob([byteArray], {type: 'application/pdf'});
+                    const blobUrl = URL.createObjectURL(blob);
+                    
+                    a.href = blobUrl; 
                     a.download = `SURKOM_${d.judul.replace(/\s+/g, '_')}.pdf`; 
+                    document.body.appendChild(a);
                     a.click(); 
-                    await new Promise(r => setTimeout(r, 800)); // Jeda 0.8 detik agar tidak diblokir browser
+                    document.body.removeChild(a);
+                    
+                    // Jeda aman 1 detik
+                    await new Promise(r => setTimeout(r, 1000)); 
                 } 
             } 
         } else { 
-            // Gabungkan semua file terpilih menjadi 1 PDF raksasa
+            // METODE 2: GABUNGKAN SEMUA JADI 1 FILE PDF RAKSASA
             const { PDFDocument } = PDFLib; 
             const mPdf = await PDFDocument.create(); 
             
             for(let id of sel) { 
                 const d = window.surkomDatabase.find(x => x.id === id); 
                 if(d && d.filePdfBase64) { 
-                    const p = await PDFDocument.load(base64ToArrayBuffer(d.filePdfBase64)); 
+                    // Baca byte PDF-nya
+                    const pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
+                    const p = await PDFDocument.load(pdfBytes); 
+                    
+                    // Copy semua halamannya
                     const cp = await mPdf.copyPages(p, p.getPageIndices()); 
                     cp.forEach(pg => mPdf.addPage(pg)); 
                 } 
             } 
             
+            // Generate Base64
             const mF = await mPdf.saveAsBase64({ dataUri: true }); 
             let a = document.createElement("a"); 
             a.href = mF; 
             a.download = `SURKOM_MERGE_GLOBAL_${Date.now()}.pdf`; 
+            document.body.appendChild(a);
             a.click(); 
+            document.body.removeChild(a);
         } 
+        
+        // Hilangkan centang agar rapi
+        document.querySelectorAll('.chk-surkom-item:checked').forEach(c => c.checked = false);
+        window.toggleModePilihSurkom();
+        
     } catch(e) { 
-        alert("Gagal memproses unduhan global: " + e.message); 
+        alert("Gagal memproses unduhan: " + e.message); 
     } 
     window.toggleLoader(false); 
 };
+
 window.bukaModalForwardSurkom = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-forward-modal').style.display='flex'; };
 window.prosesForwardDataSurkom = async () => { const th = document.getElementById('surkom-forward-tahun').value; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true); try { let p=[]; for(let id of sel) { p.push(updateDoc(doc(window.db,"surat_komponen",id),{tahun:th})); let d = window.surkomDatabase.find(x=>x.id===id); if(d) d.tahun=th; } await Promise.all(p); alert("Berhasil dipindah!"); document.getElementById('surkom-forward-modal').style.display='none'; window.toggleModePilihSurkom(); window.renderListAllSurkom(); } catch(e){} window.toggleLoader(false); };
 
