@@ -596,35 +596,179 @@ window.bukaEditOrg = (id) => { const d = window.orgDatabase.find(x => x.id === i
 window.simpanEditOrg = async () => { const id = document.getElementById('org-edit-id').value; const jbt = document.getElementById('org-edit-jabatan').value.toUpperCase(); const nm = document.getElementById('org-edit-nama').value.toUpperCase(); const ag = document.getElementById('org-edit-anggota').value; window.toggleLoader(true, "Menyimpan..."); try { await updateDoc(doc(window.db, "struktur_organisasi", id), { jabatan: jbt, nama: nm, anggota: ag }); document.getElementById('org-edit-modal').style.display='none'; await window.ambilDataOrg(); } catch(e){} window.toggleLoader(false); };
 
 window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null;
+window.surkomOriginalPdfBytes = null; window.surkomPageCount = 0; window.surkomPdfDocObj = null;
+window.surkomPageObjects = []; // Menyimpan objek halaman PDF mentah untuk digabung
+window.surkomCustomMergedBytes = {}; // Menyimpan hasil gabungan sementara
+
 window.prosesPDFSurkom = async function(inp) {
-    const f = inp.files[0]; if(!f) return; window.toggleLoader(true, "Memecah PDF...");
+    const f = inp.files[0]; if(!f) return; 
+    document.getElementById('surkom-file-label').innerText = f.name;
+    window.toggleLoader(true, "Memecah PDF per Halaman...");
     try {
-        const ab = await f.arrayBuffer(); window.surkomOriginalPdfBytes = ab; const pdf = await pdfjsLib.getDocument({ data: ab }).promise; window.surkomPdfDocObj = pdf; window.surkomPageCount = pdf.numPages;
-        document.getElementById('surkom-split-area').style.display = 'block'; document.getElementById('surkom-total-halaman').innerText = window.surkomPageCount;
-        let c = document.getElementById('surkom-split-container'); c.innerHTML = "";
+        const ab = await f.arrayBuffer(); 
+        window.surkomOriginalPdfBytes = ab; 
+        const pdf = await pdfjsLib.getDocument({ data: ab }).promise; 
+        window.surkomPdfDocObj = pdf; 
+        window.surkomPageCount = pdf.numPages;
+        
+        window.surkomPageObjects = [];
+        window.surkomCustomMergedBytes = {}; // Reset setiap kali upload file baru
         for(let i=1; i<=window.surkomPageCount; i++) {
-            const page = await pdf.getPage(i); const vp = page.getViewport({ scale: 0.6 });
-            let d = document.createElement('div'); d.className = "pdf-split-card"; d.id = `surkom-card-${i}`;
-            d.innerHTML = `<div onclick="document.getElementById('surkom-card-${i}').remove();" style="position:absolute; top:-10px; right:-10px; background:var(--lambat); color:#fff; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;"><i class="fas fa-times"></i></div><div style="display:flex; gap:15px; align-items:center;"><div style="cursor:pointer;" onclick="window.bukaPreviewSurkom(${i})"><canvas id="surkom-canvas-${i}" style="width:80px; border-radius:6px; border:2px solid var(--secondary);"></canvas></div><div style="flex:1;"><input type="text" id="surkom-judul-${i}" placeholder="Judul Hal ${i}..." style="text-transform:uppercase;"></div></div>`;
-            c.appendChild(d); const canvas = document.getElementById(`surkom-canvas-${i}`); const ctx = canvas.getContext('2d'); canvas.height = vp.height; canvas.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise;
+            window.surkomPageObjects.push(await pdf.getPage(i));
         }
-    } catch(e) { alert("Error PDF: " + e.message); } window.toggleLoader(false);
+        document.getElementById('surkom-split-area').style.display = 'block'; 
+        document.getElementById('surkom-total-halaman').innerText = window.surkomPageCount;
+        window.renderSurkomSplitCards();
+    } catch(e) { alert("Error PDF: " + e.message); } 
+    window.toggleLoader(false);
 };
-window.bukaPreviewSurkom = async function(pNum) { const mod = document.getElementById('surkom-preview-modal'); const cvs = document.getElementById('surkom-preview-canvas'); const l = document.getElementById('surkom-preview-loading'); mod.style.display='flex'; cvs.style.display='none'; l.style.display='block'; document.getElementById('surkom-preview-page-num').innerText = pNum; try { const page = await window.surkomPdfDocObj.getPage(pNum); const vp = page.getViewport({ scale: 1.5 }); const ctx = cvs.getContext('2d'); cvs.height = vp.height; cvs.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise; l.style.display='none'; cvs.style.display='block'; } catch(e) {} };
+
+window.renderSurkomSplitCards = async function() {
+    let c = document.getElementById('surkom-split-container'); 
+    c.innerHTML = "";
+    for(let i=0; i<window.surkomPageObjects.length; i++) {
+        let pNum = i + 1;
+        const page = window.surkomPageObjects[i];
+        const vp = page.getViewport({ scale: 0.5 });
+        
+        let d = document.createElement('div'); 
+        d.className = "pdf-split-card"; 
+        d.id = `surkom-card-${pNum}`;
+        d.style.cssText = "background:rgba(15,23,42,0.9); border:1px solid rgba(14,165,233,0.3); padding:12px; border-radius:10px; margin-bottom:12px; position:relative;";
+        
+        // Pilihan dropdown angka
+        let optionsHtml = `<option value="">-- Gabungkan ke No --</option>`;
+        for(let j=1; j<=window.surkomPageObjects.length; j++) {
+            if(j !== pNum) optionsHtml += `<option value="${j}">Ke No. ${j}</option>`;
+        }
+
+        d.innerHTML = `
+            <div onclick="window.hapusCardSurkom(${pNum})" style="position:absolute; top:-8px; right:-8px; background:#ef4444; color:#fff; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:11px;"><i class="fas fa-times"></i></div>
+            
+            <div style="display:flex; gap:12px; align-items:center;">
+                <div style="background:rgba(14,165,233,0.2); color:#38bdf8; width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:12px; flex-shrink:0;">${pNum}</div>
+                <div style="cursor:pointer;" onclick="window.bukaPreviewSurkom(${pNum})">
+                    <canvas id="surkom-canvas-${pNum}" style="width:60px; border-radius:4px; border:1px solid #0ea5e9; background:white;"></canvas>
+                </div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:8px;">
+                    <input type="text" id="surkom-judul-${pNum}" placeholder="Judul Halaman ${pNum}..." style="text-transform:uppercase; width:100%; padding:8px; font-size:11px; background:rgba(0,0,0,0.4); border:1px solid #38bdf8; color:white; border-radius:6px;">
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <select id="merge-target-${pNum}" style="background:rgba(0,0,0,0.6); color:white; border:1px solid #cbd5e1; padding:4px; border-radius:4px; font-size:10px; flex:1;">
+                            ${optionsHtml}
+                        </select>
+                        <button type="button" onclick="window.prosesMergeHalaman(${pNum})" style="background:#0ea5e9; color:white; border:none; padding:5px 10px; border-radius:4px; font-size:10px; font-weight:bold; cursor:pointer;">
+                            <i class="fas fa-paper-plane"></i> Goo
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+        c.appendChild(d);
+        const canvas = document.getElementById(`surkom-canvas-${pNum}`); 
+        const ctx = canvas.getContext('2d'); 
+        canvas.height = vp.height; canvas.width = vp.width; 
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+    }
+};
+
+window.hapusCardSurkom = function(pNum) {
+    document.getElementById(`surkom-card-${pNum}`).remove();
+};
+
+window.prosesMergeHalaman = async function(fromNum) {
+    const targetSelect = document.getElementById(`merge-target-${fromNum}`);
+    const toNum = parseInt(targetSelect.value);
+    if(!toNum) return alert("Pilih nomor urut tujuan terlebih dahulu!");
+    
+    window.toggleLoader(true, `Menggabungkan Halaman ${fromNum} ke Halaman ${toNum}...`);
+    try {
+        const { PDFDocument } = PDFLib;
+        const mergedPdf = await PDFDocument.create();
+        const origDoc = await PDFDocument.load(window.surkomOriginalPdfBytes);
+        
+        // Tarik halaman tujuan
+        const [copiedPage1] = await mergedPdf.copyPages(origDoc, [toNum - 1]);
+        mergedPdf.addPage(copiedPage1);
+        
+        // Tarik halaman sumber yg mau digabung
+        const [copiedPage2] = await mergedPdf.copyPages(origDoc, [fromNum - 1]);
+        mergedPdf.addPage(copiedPage2);
+        
+        // Simpan bytes gabungannya
+        const mergedBytes = await mergedPdf.save();
+        if(!window.surkomCustomMergedBytes) window.surkomCustomMergedBytes = {};
+        window.surkomCustomMergedBytes[toNum] = mergedBytes;
+        
+        alert(`Sukses! Halaman ${fromNum} berhasil digabungkan ke Halaman ${toNum}. (Abaikan Halaman ${fromNum} ini)`);
+        document.getElementById(`surkom-card-${fromNum}`).style.opacity = '0.3'; 
+    } catch(e) {
+        alert("Gagal menggabungkan halaman: " + e.message);
+    }
+    window.toggleLoader(false);
+};
+
+window.bukaPreviewSurkom = async function(pNum) { 
+    const mod = document.getElementById('surkom-preview-modal'); 
+    const cvs = document.getElementById('surkom-preview-canvas'); 
+    const l = document.getElementById('surkom-preview-loading'); 
+    mod.style.display='flex'; cvs.style.display='none'; l.style.display='block'; 
+    document.getElementById('surkom-preview-page-num').innerText = pNum; 
+    try { 
+        const page = await window.surkomPdfDocObj.getPage(pNum); 
+        const vp = page.getViewport({ scale: 1.5 }); 
+        const ctx = cvs.getContext('2d'); 
+        cvs.height = vp.height; cvs.width = vp.width; 
+        await page.render({ canvasContext: ctx, viewport: vp }).promise; 
+        l.style.display='none'; cvs.style.display='block'; 
+    } catch(e) {} 
+};
+
 window.simpanAllSurkomHasil = async function() {
-    const op = window.amankanData(document.getElementById('surkom-operator').value); const th = document.getElementById('surkom-tahun-input').value;
-    if(!op) return alert("Isi nama PIC!"); window.toggleLoader(true, "Menyimpan Data...");
+    const op = window.amankanData(document.getElementById('surkom-operator').value); 
+    const th = document.getElementById('surkom-tahun-input').value;
+    if(!op) return alert("Isi nama Operator/Pembuat terlebih dahulu!"); 
+    
+    window.toggleLoader(true, "Menyimpan Data ke Cloud...");
     try {
-        const { PDFDocument } = PDFLib; const orig = await PDFDocument.load(window.surkomOriginalPdfBytes); let arr = [];
-        for(let i=1; i<=window.surkomPageCount; i++) {
-            let inp = document.getElementById(`surkom-judul-${i}`); if(!inp || !inp.value.trim()) continue;
-            let newPdf = await PDFDocument.create(); let [pg] = await newPdf.copyPages(orig, [i-1]); newPdf.addPage(pg);
-            let b64 = await newPdf.saveAsBase64({ dataUri: true });
-            arr.push(addDoc(collection(window.db, "surat_komponen"), { judul: inp.value.trim().toUpperCase(), operator: op, tahun: th, filePdfBase64: b64, timestamp: Date.now() }));
+        const { PDFDocument } = PDFLib; 
+        const orig = await PDFDocument.load(window.surkomOriginalPdfBytes); 
+        let arr = [];
+        let cards = document.querySelectorAll('.pdf-split-card');
+        
+        for(let card of cards) {
+            let cardId = card.id; 
+            let pNum = parseInt(cardId.split('-')[2]);
+            let inp = document.getElementById(`surkom-judul-${pNum}`); 
+            
+            // Skip jika kosong atau sudah disedot (opacity 0.3)
+            if(!inp || !inp.value.trim() || card.style.opacity === '0.3') continue; 
+            
+            let b64 = "";
+            if(window.surkomCustomMergedBytes && window.surkomCustomMergedBytes[pNum]) {
+                const customPdfDoc = await PDFDocument.load(window.surkomCustomMergedBytes[pNum]);
+                b64 = await customPdfDoc.saveAsBase64({ dataUri: true });
+            } else {
+                let newPdf = await PDFDocument.create(); 
+                let [pg] = await newPdf.copyPages(orig, [pNum - 1]); 
+                newPdf.addPage(pg);
+                b64 = await newPdf.saveAsBase64({ dataUri: true });
+            }
+
+            arr.push(addDoc(collection(window.db, "surat_komponen"), { 
+                judul: inp.value.trim().toUpperCase(), 
+                operator: op, 
+                tahun: th, 
+                filePdfBase64: b64, 
+                timestamp: Date.now() 
+            }));
         }
-        await Promise.all(arr); alert("Berhasil disimpan!"); window.bukaAllDataSurkom();
-    } catch(e) {} window.toggleLoader(false);
+        
+        await Promise.all(arr); 
+        alert("Seluruh Surkom berhasil disimpan!"); 
+        window.bukaAllDataSurkom();
+    } catch(e) { alert("Gagal menyimpan: " + e.message); } 
+    window.toggleLoader(false);
 };
+
 window.bukaAllDataSurkom = async () => { window.navigasi('surkom-alldata-screen'); await window.renderListAllSurkom(); };
 window.filterTabTahunSurkom = (th, btn) => { document.querySelectorAll('#surkom-tabs-tahun .gm-tab').forEach(b => b.classList.remove('active')); btn.classList.add('active'); window.surkomTahunAktif = th; window.renderListAllSurkom(); };
 window.toggleModePilihSurkom = () => { window.isModePilihSurkom = !window.isModePilihSurkom; const btn = document.getElementById('btn-mode-pilih-surkom'); const actions = document.getElementById('surkom-action-buttons'); if(window.isModePilihSurkom) { btn.style.background = "linear-gradient(135deg, #10b981, #059669)"; btn.style.borderColor = "#10b981"; actions.style.display = 'flex'; } else { btn.style.background = "rgba(255,255,255,0.1)"; btn.style.borderColor = "var(--border-dark)"; actions.style.display = 'none'; } window.renderListAllSurkom(); };
@@ -645,7 +789,52 @@ window.renderListAllSurkom = async function() {
 window.bukaPreviewDariServer = async function(id) { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { window.toggleLoader(true); try { const pdfBytes = base64ToArrayBuffer(d.filePdfBase64); const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise; const page = await pdf.getPage(1); const vp = page.getViewport({ scale: 1.5 }); const modal = document.getElementById('surkom-preview-modal'); const canvas = document.getElementById('surkom-preview-canvas'); const loading = document.getElementById('surkom-preview-loading'); modal.style.display='flex'; canvas.style.display='none'; loading.style.display='block'; document.getElementById('surkom-preview-page-num').innerText = d.judul; const ctx = canvas.getContext('2d'); canvas.height = vp.height; canvas.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise; loading.style.display='none'; canvas.style.display='block'; } catch(e){} window.toggleLoader(false); } };
 window.unduhPDFSurkom = (id, jd) => { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${jd}.pdf`; a.click(); } };
 window.bukaModalUnduhGlobal = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-count-selected').innerText = sel.length; document.getElementById('surkom-unduh-global-modal').style.display='flex'; };
-window.prosesUnduhGlobalSurkom = async (t) => { document.getElementById('surkom-unduh-global-modal').style.display='none'; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true, t==='merge'?"Menyatukan PDF...":"Mengunduh..."); try { if(t==='pisah') { for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { let a=document.createElement("a"); a.href=d.filePdfBase64; a.download=`SURKOM_${d.judul}.pdf`; a.click(); await new Promise(r=>setTimeout(r,600)); } } } else { const { PDFDocument } = PDFLib; const mPdf = await PDFDocument.create(); for(let id of sel) { const d = window.surkomDatabase.find(x=>x.id===id); if(d) { const p = await PDFDocument.load(base64ToArrayBuffer(d.filePdfBase64)); const cp = await mPdf.copyPages(p, p.getPageIndices()); cp.forEach(pg=>mPdf.addPage(pg)); } } const mF = await mPdf.saveAsBase64({ dataUri: true }); let a=document.createElement("a"); a.href=mF; a.download=`SURKOM_MERGE.pdf`; a.click(); } } catch(e){} window.toggleLoader(false); };
+window.prosesUnduhGlobalSurkom = async (t) => { 
+    document.getElementById('surkom-unduh-global-modal').style.display = 'none'; 
+    const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n => n.value); 
+    
+    if(sel.length === 0) return alert("Tidak ada data yang dipilih!");
+
+    window.toggleLoader(true, t === 'merge' ? "Menyatukan PDF Global..." : "Mengunduh File Beruntun..."); 
+    
+    try { 
+        if(t === 'pisah') { 
+            // Unduh satuan satu per satu dengan jeda aman browser
+            for(let id of sel) { 
+                const d = window.surkomDatabase.find(x => x.id === id); 
+                if(d && d.filePdfBase64) { 
+                    let a = document.createElement("a"); 
+                    a.href = d.filePdfBase64; 
+                    a.download = `SURKOM_${d.judul.replace(/\s+/g, '_')}.pdf`; 
+                    a.click(); 
+                    await new Promise(r => setTimeout(r, 800)); // Jeda 0.8 detik agar tidak diblokir browser
+                } 
+            } 
+        } else { 
+            // Gabungkan semua file terpilih menjadi 1 PDF raksasa
+            const { PDFDocument } = PDFLib; 
+            const mPdf = await PDFDocument.create(); 
+            
+            for(let id of sel) { 
+                const d = window.surkomDatabase.find(x => x.id === id); 
+                if(d && d.filePdfBase64) { 
+                    const p = await PDFDocument.load(base64ToArrayBuffer(d.filePdfBase64)); 
+                    const cp = await mPdf.copyPages(p, p.getPageIndices()); 
+                    cp.forEach(pg => mPdf.addPage(pg)); 
+                } 
+            } 
+            
+            const mF = await mPdf.saveAsBase64({ dataUri: true }); 
+            let a = document.createElement("a"); 
+            a.href = mF; 
+            a.download = `SURKOM_MERGE_GLOBAL_${Date.now()}.pdf`; 
+            a.click(); 
+        } 
+    } catch(e) { 
+        alert("Gagal memproses unduhan global: " + e.message); 
+    } 
+    window.toggleLoader(false); 
+};
 window.bukaModalForwardSurkom = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-forward-modal').style.display='flex'; };
 window.prosesForwardDataSurkom = async () => { const th = document.getElementById('surkom-forward-tahun').value; const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n=>n.value); window.toggleLoader(true); try { let p=[]; for(let id of sel) { p.push(updateDoc(doc(window.db,"surat_komponen",id),{tahun:th})); let d = window.surkomDatabase.find(x=>x.id===id); if(d) d.tahun=th; } await Promise.all(p); alert("Berhasil dipindah!"); document.getElementById('surkom-forward-modal').style.display='none'; window.toggleModePilihSurkom(); window.renderListAllSurkom(); } catch(e){} window.toggleLoader(false); };
 
@@ -1385,7 +1574,9 @@ setInterval(() => {
     const strWaktu = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
     if(document.getElementById('ik-waktu')) document.getElementById('ik-waktu').value = strWaktu;
     if(document.getElementById('sop-waktu')) document.getElementById('sop-waktu').value = strWaktu;
-    if(document.getElementById('ide-waktu')) document.getElementById('ide-waktu').value = strWaktu; // Waktu Ide Center Berjalan
+    if(document.getElementById('ide-waktu')) document.getElementById('ide-waktu').value = strWaktu;
+    if(document.getElementById('surkom-waktu')) document.getElementById('surkom-waktu').value = strWaktu;
+    // Waktu Ide Center Berjalan
 }, 1000);
 
 // Variabel Global Data

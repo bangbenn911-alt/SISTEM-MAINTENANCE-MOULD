@@ -951,45 +951,46 @@
     <!-- INPUT SURKOM SCREEN -->
     <div id="surkom-input-screen" class="screen">
         <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-file-upload" style="margin-right:10px;"></i> Input Surkom (PDF Splitter)</h2>
+            <div class="header" style="background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;">
+                <h2><i class="fas fa-file-pdf" style="margin-right:10px;"></i> Input Surkom (PDF Splitter)</h2>
             </div>
-            
             <div class="dark-panel">
                 <div class="form-group">
                     <label>Tanggal & Waktu Input</label>
-                    <input type="text" id="surkom-waktu" readonly style="font-weight:800; color:var(--secondary); background: rgba(0,0,0,0.5);">
+                    <input type="text" id="surkom-waktu" readonly style="background:rgba(0,0,0,0.5); color:#38bdf8; font-weight:bold; text-align:center;">
                 </div>
                 <div class="form-group">
                     <label>Nama Operator / Pembuat</label>
-                    <input type="text" id="surkom-operator" placeholder="Masukkan nama Anda..." style="font-weight:700;">
+                    <input type="text" id="surkom-operator" placeholder="Masukkan nama Anda..." style="font-weight:700; text-transform:uppercase;">
                 </div>
-                
                 <div class="form-group">
                     <label>Tahun Dokumen (Subjudul)</label>
-                    <select id="surkom-tahun-input" style="color:#10b981; font-weight:800; border-color:rgba(16,185,129,0.5);">
-                        <option value="2026">Tahun 2026</option><option value="2025">Tahun 2025</option><option value="2024">Tahun 2024</option><option value="2023">Tahun 2023</option><option value="2022">Tahun 2022</option><option value="2021">Tahun 2021</option><option value="2020">Tahun 2020</option>
+                    <select id="surkom-tahun-input" style="width:100%; padding:14px; background:rgba(0,0,0,0.5); border:1px solid #0ea5e9; color:white; border-radius:8px; font-weight:700; outline:none;">
+                        <option value="2026">Tahun 2026</option>
+                        <option value="2025">Tahun 2025</option>
+                        <option value="2024">Tahun 2024</option>
+                        <option value="2023">Tahun 2023</option>
                     </select>
                 </div>
-
                 <div class="form-group">
                     <label>Upload File PDF (Satuan / Multi-Halaman)</label>
-                    <div class="file-upload-zone" onclick="document.getElementById('surkom-file-pdf').click()">
-                        <i class="fas fa-file-pdf fa-3x" style="color:#38bdf8; margin-bottom:10px; display:block;"></i>
-                        <span style="font-weight:700; font-size:14px; color:white;">Klik untuk pilih file PDF</span>
-                        <p style="font-size:11px; color:var(--text-muted); margin:5px 0 0 0;">File gabungan akan dibelah otomatis per halaman</p>
+                    <input type="file" id="surkom-file-input" accept="application/pdf" style="display:none;" onchange="window.prosesPDFSurkom(this)">
+                    <div onclick="document.getElementById('surkom-file-input').click()" style="border:2px dashed #0ea5e9; padding:25px; text-align:center; border-radius:12px; cursor:pointer; background:rgba(14,165,233,0.05);">
+                        <i class="fas fa-file-pdf fa-3x" style="color:#0ea5e9; margin-bottom:10px;"></i>
+                        <p style="color:white; font-weight:bold; margin:0;" id="surkom-file-label">Klik untuk pilih file PDF</p>
+                        <p style="color:var(--text-muted); font-size:11px; margin:5px 0 0;">File gabungan akan dibelah otomatis per halaman</p>
                     </div>
-                    <input type="file" id="surkom-file-pdf" accept="application/pdf" style="display:none;" onchange="window.prosesPDFSurkom(this)">
                 </div>
-            </div>
 
-            <div id="surkom-split-area" style="display:none;">
-                <h3 class="sub-title-box"><i class="fas fa-layer-group" style="color:var(--secondary);"></i> Hasil Uraian Halaman PDF (<span id="surkom-total-halaman">0</span> Halaman)</h3>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Berikan nama judul spesifik untuk masing-masing halaman sebelum disimpan ke All Data Surkom.</p>
-                <div id="surkom-split-container"></div>
-                <button class="btn-submit" type="button" onclick="window.simpanAllSurkomHasil()" style="background:linear-gradient(135deg, #10b981, #059669); margin-top:20px; box-shadow:0 8px 20px rgba(16,185,129,0.3);">
-                    <i class="fas fa-save"></i> SIMPAN SELURUH DATA SURKOM
-                </button>
+                <!-- AREA HASIL PEMECAHAN PDF & FITUR MERGE -->
+                <div id="surkom-split-area" style="display:none; margin-top:20px;">
+                    <h3 style="color:#38bdf8; font-size:13px; margin-bottom:10px;">Daftar Halaman Terbelah (<span id="surkom-total-halaman">0</span> Halaman)</h3>
+                    <div id="surkom-split-container"></div>
+                    
+                    <button type="button" class="btn-submit" onclick="window.simpanAllSurkomHasil()" style="margin-top:20px; background:linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-save"></i> SIMPAN SEMUA SURKOM
+                    </button>
+                </div>
             </div>
         </div>
     </div>
