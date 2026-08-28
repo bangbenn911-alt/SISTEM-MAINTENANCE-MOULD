@@ -2402,3 +2402,13 @@ setInterval(() => {
         elTarget.value = tglSaja + " (JAM 08.00 - 16.30)";
     }
 }, 1000);
+// ==========================================
+// MESIN WAKTU KHUSUS SURAT KOMPONEN
+// ==========================================
+setInterval(() => {
+    const elSurkom = document.getElementById('surkom-waktu');
+    if(elSurkom) {
+        const now = new Date();
+        elSurkom.value = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + " - " + now.toLocaleTimeString('id-ID', { hour12: false });
+    }
+}, 1000);
