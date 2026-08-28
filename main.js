@@ -829,7 +829,7 @@ window.bukaPreviewDariServer = async function(id) {
             const modal = document.getElementById('surkom-preview-modal');
             const origCanvas = document.getElementById('surkom-preview-canvas');
             const loading = document.getElementById('surkom-preview-loading');
-            const container = origCanvas.parentElement; // Wadah penampung
+            const container = origCanvas.parentElement; 
             
             modal.style.display = 'flex';
             origCanvas.style.display = 'none'; 
@@ -839,28 +839,30 @@ window.bukaPreviewDariServer = async function(id) {
             // Bersihkan sisa halaman dari preview sebelumnya
             document.querySelectorAll('.multi-canvas-preview').forEach(el => el.remove());
             
-            // PAKSA LAYOUT VERTIKAL AGAR TIDAK TERBELAH!
+            // --- PERBAIKAN BUG HALAMAN ATAS TERPOTONG ---
             container.style.display = 'flex';
             container.style.flexDirection = 'column';
-            container.style.alignItems = 'center';
+            // WAJIB flex-start agar halaman selalu dimulai dari ujung atas layar
+            container.style.alignItems = 'flex-start'; 
             container.style.overflowY = 'auto';
             container.style.maxHeight = '75vh';
-            container.style.gap = '15px'; // Spasi antar halaman
-            container.style.padding = '10px 0';
+            container.style.gap = '15px'; 
+            container.style.padding = '15px 0'; // Jarak aman atas bawah
             
-            // Looping gambar semua halaman
             for(let i = 1; i <= pdf.numPages; i++) {
                 const page = await pdf.getPage(i);
-                const vp = page.getViewport({ scale: 1.5 }); // Skala tajam
+                const vp = page.getViewport({ scale: 1.5 }); 
                 
                 const cvsBaru = document.createElement('canvas');
                 cvsBaru.className = 'multi-canvas-preview';
                 
-                // Mencegah canvas gepeng/terpotong
+                // Pastikan kanvas rapi di tengah tanpa merusak scroll
+                cvsBaru.style.display = 'block';
+                cvsBaru.style.margin = '0 auto'; 
                 cvsBaru.style.width = '100%';
                 cvsBaru.style.maxWidth = '100%'; 
                 cvsBaru.style.height = 'auto';
-                cvsBaru.style.flexShrink = '0'; // Kunci utama agar tidak terbelah!
+                cvsBaru.style.flexShrink = '0'; 
                 
                 cvsBaru.style.border = '2px solid #0ea5e9';
                 cvsBaru.style.borderRadius = '8px';
@@ -875,12 +877,17 @@ window.bukaPreviewDariServer = async function(id) {
             }
             
             loading.style.display = 'none';
+            
+            // PAKSA SCROLL NAIK KE PALING ATAS SETIAP KALI DIBUKA
+            container.scrollTop = 0;
+            
         } catch(e) {
             alert("Gagal memuat dokumen: " + e.message);
         }
         window.toggleLoader(false);
     }
 };
+
 window.unduhPDFSurkom = (id, jd) => { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${jd}.pdf`; a.click(); } };
 // 1. Fungsi Pembuka Pop-up (Pemicu Tombol Hijau)
 window.bukaModalUnduhGlobal = () => {
