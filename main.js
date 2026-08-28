@@ -818,25 +818,79 @@ window.renderListAllSurkom = async function() {
         h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:var(--cepat);" onclick="window.bukaPreviewDariServer('${d.id}')"><div style="flex:1; display:flex; align-items:center;">${checkboxHtml}<div><h4 style="margin:0 0 5px 0; color:var(--secondary);">${d.judul} ${tagTh}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">PIC: ${d.operator || 'Admin'} | ${d.waktuInput || '-'}</p></div></div><button type="button" onclick="event.stopPropagation(); window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:var(--cepat); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;"><i class="fas fa-download"></i></button></div>`;
     }); c.innerHTML = h;
 };
-window.bukaPreviewDariServer = async function(id) { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { window.toggleLoader(true); try { const pdfBytes = base64ToArrayBuffer(d.filePdfBase64); const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise; const page = await pdf.getPage(1); const vp = page.getViewport({ scale: 1.5 }); const modal = document.getElementById('surkom-preview-modal'); const canvas = document.getElementById('surkom-preview-canvas'); const loading = document.getElementById('surkom-preview-loading'); modal.style.display='flex'; canvas.style.display='none'; loading.style.display='block'; document.getElementById('surkom-preview-page-num').innerText = d.judul; const ctx = canvas.getContext('2d'); canvas.height = vp.height; canvas.width = vp.width; await page.render({ canvasContext: ctx, viewport: vp }).promise; loading.style.display='none'; canvas.style.display='block'; } catch(e){} window.toggleLoader(false); } };
+window.bukaPreviewDariServer = async function(id) {
+    const d = window.surkomDatabase.find(x => x.id === id);
+    if(d && d.filePdfBase64) {
+        window.toggleLoader(true, "Memuat Dokumen...");
+        try {
+            const pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
+            const pdf = await pdfjsLib.getDocument({ data: pdfBytes }).promise;
+            
+            const modal = document.getElementById('surkom-preview-modal');
+            const origCanvas = document.getElementById('surkom-preview-canvas');
+            const loading = document.getElementById('surkom-preview-loading');
+            const container = origCanvas.parentElement; // Wadah penampung canvas
+            
+            modal.style.display = 'flex';
+            origCanvas.style.display = 'none'; // Matikan canvas lama yang cuma 1 lembar
+            loading.style.display = 'block';
+            document.getElementById('surkom-preview-page-num').innerText = d.judul;
+
+            // Bersihkan sisa halaman dari preview file sebelumnya
+            document.querySelectorAll('.multi-canvas-preview').forEach(el => el.remove());
+            
+            // Buat area modal bisa di-scroll ke bawah jika halamannya banyak
+            container.style.overflowY = 'auto';
+            container.style.maxHeight = '70vh';
+            container.style.padding = '10px 0';
+            
+            // LOOPING SAKTI: Gambar semua halaman yang ada di dalam PDF!
+            for(let i = 1; i <= pdf.numPages; i++) {
+                const page = await pdf.getPage(i);
+                const vp = page.getViewport({ scale: 1.5 }); // Resolusi tajam
+                
+                // Cetak elemen canvas baru untuk setiap halamannya
+                const cvsBaru = document.createElement('canvas');
+                cvsBaru.className = 'multi-canvas-preview';
+                cvsBaru.style.width = '100%';
+                cvsBaru.style.marginBottom = '15px';
+                cvsBaru.style.border = '2px solid #0ea5e9';
+                cvsBaru.style.borderRadius = '8px';
+                cvsBaru.style.background = '#fff';
+                
+                const ctx = cvsBaru.getContext('2d');
+                cvsBaru.height = vp.height;
+                cvsBaru.width = vp.width;
+                
+                container.appendChild(cvsBaru); // Masukkan ke layar
+                await page.render({ canvasContext: ctx, viewport: vp }).promise;
+            }
+            
+            loading.style.display = 'none';
+        } catch(e) {
+            alert("Gagal memuat dokumen: " + e.message);
+        }
+        window.toggleLoader(false);
+    }
+};
+
 window.unduhPDFSurkom = (id, jd) => { const d = window.surkomDatabase.find(x => x.id === id); if(d && d.filePdfBase64) { let a = document.createElement("a"); a.href = d.filePdfBase64; a.download = `SURKOM_${jd}.pdf`; a.click(); } };
 window.bukaModalUnduhGlobal = () => { const sel = document.querySelectorAll('.chk-surkom-item:checked'); if(sel.length===0) return alert("Pilih data!"); document.getElementById('surkom-count-selected').innerText = sel.length; document.getElementById('surkom-unduh-global-modal').style.display='flex'; };
 window.prosesUnduhGlobalSurkom = async (t) => { 
     document.getElementById('surkom-unduh-global-modal').style.display = 'none'; 
     const sel = Array.from(document.querySelectorAll('.chk-surkom-item:checked')).map(n => n.value); 
     
-    if(sel.length === 0) return alert("Tidak ada data yang dipilih!");
+    if(sel.length === 0) return alert("Pilih minimal 1 data untuk diunduh!");
 
-    window.toggleLoader(true, t === 'merge' ? "Membangun PDF Gabungan..." : "Mengunduh File Beruntun..."); 
+    window.toggleLoader(true, t === 'merge' ? "Menyatukan PDF Global..." : "Mengunduh Beruntun..."); 
     
     try { 
         if(t === 'pisah') { 
-            // METODE 1: UNDUH SATU PER SATU (PISAH)
+            // METODE 1: UNDUH SATU PER SATU DENGAN AMAN
             for(let id of sel) { 
                 const d = window.surkomDatabase.find(x => x.id === id); 
                 if(d && d.filePdfBase64) { 
-                    let a = document.createElement("a"); 
-                    // Konversi Base64 jadi Blob URL agar tidak nge-lag di HP
+                    // Konversi Base64 ke File Asli (Blob) agar tidak diblokir HP
                     const byteCharacters = atob(d.filePdfBase64.split(',')[1]);
                     const byteNumbers = new Array(byteCharacters.length);
                     for (let i = 0; i < byteCharacters.length; i++) {
@@ -846,45 +900,52 @@ window.prosesUnduhGlobalSurkom = async (t) => {
                     const blob = new Blob([byteArray], {type: 'application/pdf'});
                     const blobUrl = URL.createObjectURL(blob);
                     
+                    let a = document.createElement("a"); 
                     a.href = blobUrl; 
                     a.download = `SURKOM_${d.judul.replace(/\s+/g, '_')}.pdf`; 
                     document.body.appendChild(a);
                     a.click(); 
                     document.body.removeChild(a);
                     
-                    // Jeda aman 1 detik
-                    await new Promise(r => setTimeout(r, 1000)); 
+                    // Beri jeda 1,2 detik agar tidak dianggap "Spam" oleh Browser HP
+                    await new Promise(r => setTimeout(r, 1200)); 
+                    URL.revokeObjectURL(blobUrl); // Bersihkan memori HP
                 } 
             } 
         } else { 
-            // METODE 2: GABUNGKAN SEMUA JADI 1 FILE PDF RAKSASA
+            // METODE 2: GABUNGKAN SEMUA FILE JADI 1 PDF RAKSASA
             const { PDFDocument } = PDFLib; 
             const mPdf = await PDFDocument.create(); 
             
             for(let id of sel) { 
                 const d = window.surkomDatabase.find(x => x.id === id); 
                 if(d && d.filePdfBase64) { 
-                    // Baca byte PDF-nya
                     const pdfBytes = base64ToArrayBuffer(d.filePdfBase64);
                     const p = await PDFDocument.load(pdfBytes); 
                     
-                    // Copy semua halamannya
+                    // Sikat semua halamannya, gabung ke mPdf
                     const cp = await mPdf.copyPages(p, p.getPageIndices()); 
                     cp.forEach(pg => mPdf.addPage(pg)); 
                 } 
             } 
             
-            // Generate Base64
-            const mF = await mPdf.saveAsBase64({ dataUri: true }); 
+            // Simpan hasil raksasa ke Binary Blob (Bukan teks panjang base64)
+            const mergedBytes = await mPdf.save(); 
+            const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+            const blobUrl = URL.createObjectURL(blob);
+
             let a = document.createElement("a"); 
-            a.href = mF; 
-            a.download = `SURKOM_MERGE_GLOBAL_${Date.now()}.pdf`; 
+            a.href = blobUrl; 
+            a.download = `SURKOM_GLOBAL_MERGE_${Date.now()}.pdf`; 
             document.body.appendChild(a);
             a.click(); 
             document.body.removeChild(a);
+            
+            // Bersihkan memori HP setelah 2 detik
+            setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
         } 
         
-        // Hilangkan centang agar rapi
+        // Bersihkan centangan di layar setelah selesai
         document.querySelectorAll('.chk-surkom-item:checked').forEach(c => c.checked = false);
         window.toggleModePilihSurkom();
         
