@@ -1,7 +1,7 @@
 {
   "name": "M-TRIX Nusantara",
   "short_name": "M-TRIX",
-  "start_url": "./index.html",
+  "start_url": "./index.html?v=2",
   "display": "standalone",
   "background_color": "#040d1a",
   "theme_color": "#0284c7",
