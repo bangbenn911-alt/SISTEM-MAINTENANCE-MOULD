@@ -2604,50 +2604,7 @@ window.infoMesin3D = function(namaMesin, status, warnaCode) {
 // ==========================================
 // ENGINE TOUCH KONTROL 3D INDONESIA (ANALISA)
 // ==========================================
-let dragIndo = false;
-let startIndoX, startIndoY;
-let rotIndoZ = -15; // Putaran awal
-let rotIndoX = 60;  // Kemiringan awal
 
-document.addEventListener("DOMContentLoaded", () => {
-    const area = document.getElementById('indo3d-touch-area');
-    const model = document.getElementById('indo3d-model');
-    if(!area || !model) return;
-
-    area.addEventListener('touchstart', (e) => {
-        dragIndo = true;
-        startIndoX = e.touches[0].clientX;
-        startIndoY = e.touches[0].clientY;
-    }, {passive: true});
-
-    area.addEventListener('touchmove', (e) => {
-        if(!dragIndo) return;
-        let dX = e.touches[0].clientX - startIndoX;
-        let dY = e.touches[0].clientY - startIndoY;
-        
-        let newRotZ = rotIndoZ + (dX * 0.5); // Sensitivitas geser kiri/kanan
-        let newRotX = rotIndoX - (dY * 0.5); // Sensitivitas geser atas/bawah
-        
-        // Kunci kemiringan agar tidak terbalik (30 derajat sampai 80 derajat)
-        if(newRotX > 80) newRotX = 80;
-        if(newRotX < 30) newRotX = 30;
-
-        // Gunakan requestAnimationFrame untuk render ultra-smooth di HP 60fps
-        requestAnimationFrame(() => {
-            model.style.transform = `rotateX(${newRotX}deg) rotateZ(${newRotZ}deg)`;
-        });
-    }, {passive: true});
-
-    area.addEventListener('touchend', () => {
-        if(!dragIndo) return;
-        dragIndo = false;
-        const transform = model.style.transform;
-        const matchZ = transform.match(/rotateZ\(([-0-9.]+)deg\)/);
-        const matchX = transform.match(/rotateX\(([-0-9.]+)deg\)/);
-        if(matchZ) rotIndoZ = parseFloat(matchZ[1]);
-        if(matchX) rotIndoX = parseFloat(matchX[1]);
-    });
-});
 
 window.bukaInfoIndo = function(nama, ket, stat) {
     alert(`🛰️ [ SATELIT M-TRIX ]\n\nTitik: ${nama}\nDetail: ${ket}\nStatus: ${stat}`);

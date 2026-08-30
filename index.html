@@ -1661,55 +1661,35 @@
                     </div>
                 </div>
 
-                <!-- 3D TOUCH CANVAS -->
-                <div class="indo3d-container" id="indo3d-touch-area" style="flex: 1; background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); width: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; touch-action: none;">
-                    
-                    <div class="indo3d-plane" id="indo3d-model" style="transform: rotateX(60deg) rotateZ(-15deg);">
-                        <!-- Radar Grid Dasar -->
-                        <div class="indo3d-grid-floor"></div>
-                        <div class="indo3d-radar-sweep"></div>
+<!-- PETA NUSANTARA 2D PROFESSIONAL -->
+<div class="peta-nusantara-container">
+    
+    <!-- Pastikan baris di bawah ini menggunakan nama file gambar Anda -->
+    <img src="1788077328902.png" alt="Peta Indonesia" class="peta-bg-img">
 
-                        <!-- PULAU SUMATERA -->
-                        <div class="indo3d-island" style="top: 15%; left: 5%; width: 28%; height: 12%; transform: translateZ(10px) rotate(-40deg);" onclick="window.bukaInfoIndo('SUMATERA', 'Distribusi Normal', '#38bdf8')">
-                            <div class="indo3d-island-body sumatera-color"></div>
-                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
-                            <span class="indo3d-text" style="transform: rotate(40deg) translateZ(20px);">SUMATERA</span>
-                        </div>
-
-                        <!-- PULAU JAWA (CBI PUSAT) -->
-                        <div class="indo3d-island" style="top: 60%; left: 25%; width: 30%; height: 10%; transform: translateZ(15px);" onclick="window.bukaInfoIndo('JAWA (CBI PUSAT)', 'Pusat Produksi Aktif', '#10b981')">
-                            <div class="indo3d-island-body jawa-color"></div>
-                            <div class="indo3d-pin pin-special"><div class="pin-dot"></div></div>
-                            <span class="indo3d-text" style="transform: translateZ(25px); color:#34d399;">JAWA (HQ)</span>
-                        </div>
-
-                        <!-- PULAU KALIMANTAN -->
-                        <div class="indo3d-island" style="top: 15%; left: 40%; width: 25%; height: 22%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('KALIMANTAN', 'Maintenance Rutin', '#f59e0b')">
-                            <div class="indo3d-island-body kalimantan-color"></div>
-                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
-                            <span class="indo3d-text" style="transform: translateZ(20px);">KALIMANTAN</span>
-                        </div>
-
-                        <!-- PULAU SULAWESI -->
-                        <div class="indo3d-island" style="top: 25%; left: 68%; width: 15%; height: 35%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('SULAWESI', 'Monitoring Standby', '#38bdf8')">
-                            <div class="indo3d-island-body sulawesi-color"></div>
-                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
-                            <span class="indo3d-text" style="transform: translateZ(20px);">SULAWESI</span>
-                        </div>
-
-                        <!-- PULAU PAPUA -->
-                        <div class="indo3d-island" style="top: 30%; left: 88%; width: 22%; height: 18%; transform: translateZ(10px);" onclick="window.bukaInfoIndo('PAPUA', 'Logistik Aman', '#38bdf8')">
-                            <div class="indo3d-island-body papua-color"></div>
-                            <div class="indo3d-pin"><div class="pin-dot"></div></div>
-                            <span class="indo3d-text" style="transform: translateZ(20px);">PAPUA</span>
-                        </div>
-                        
-                    </div>
-                </div>
-                
-            </div>
-        </div>
+    <!-- PIN LOKASI (Sumatera, Jawa, dst...) -->
+    <!-- Sumatera -->
+    <div class="map-pin" style="top: 35%; left: 18%;" onclick="window.bukaInfoIndo('SUMATERA', 'Distribusi Normal', '#f59e0b')">
+        <div class="pin-glow-gold"></div>
     </div>
+    <!-- Jakarta / Jawa -->
+    <div class="map-pin" style="top: 72%; left: 32%;" onclick="window.bukaInfoIndo('JAWA (CBI PUSAT)', 'Pusat Produksi Aktif', '#10b981')">
+        <div class="pin-glow-gold"></div>
+    </div>
+    <!-- Kalimantan -->
+    <div class="map-pin" style="top: 48%; left: 42%;" onclick="window.bukaInfoIndo('KALIMANTAN', 'Maintenance Rutin', '#f59e0b')">
+        <div class="pin-glow-gold"></div>
+    </div>
+    <!-- Sulawesi -->
+    <div class="map-pin" style="top: 52%; left: 60%;" onclick="window.bukaInfoIndo('SULAWESI', 'Monitoring Standby', '#f59e0b')">
+        <div class="pin-glow-gold"></div>
+    </div>
+    <!-- Papua -->
+    <div class="map-pin" style="top: 60%; left: 88%;" onclick="window.bukaInfoIndo('PAPUA', 'Logistik Aman', '#f59e0b')">
+        <div class="pin-glow-gold"></div>
+    </div>
+</div>
+
 
     <!-- ========================================================= -->
     <!-- MENU LAPORAN MASALAH / INFO MOLD                          -->

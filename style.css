@@ -1013,3 +1013,58 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 }
 .pin-special .pin-dot { background: #10b981; box-shadow: 0 0 15px #10b981; width: 14px; height: 14px; top: -14px; left: -6px; }
 @keyframes pulsePin { 100% { transform: scale(1.5); opacity: 0.5; } }
+/* ========================================== */
+/* --- CSS BARU PETA NUSANTARA 2D ELEGANT --- */
+/* ========================================== */
+.peta-nusantara-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px; /* Batas maksimal ukuran di PC */
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #f8f9fa; /* Warna dasar terang mengikuti peta */
+    border: 2px solid rgba(218, 165, 32, 0.4); /* Border emas tipis */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.peta-bg-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.map-pin {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Titik Cahaya Emas ala Radar */
+.pin-glow-gold {
+    width: 12px;
+    height: 12px;
+    background-color: #fbbf24; 
+    border-radius: 50%;
+    box-shadow: 0 0 10px #f59e0b, 0 0 20px #f59e0b;
+    animation: pulseGoldMap 1.5s infinite alternate;
+}
+
+@keyframes pulseGoldMap {
+    0% { transform: scale(0.8); opacity: 0.7; box-shadow: 0 0 10px #fbbf24; }
+    100% { transform: scale(1.6); opacity: 1; box-shadow: 0 0 25px #fbbf24, 0 0 40px rgba(245,158,11,0.8); }
+}
+
+.map-pin:active {
+    transform: translate(-50%, -50%) scale(0.7);
+}
