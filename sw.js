@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mtrix-cache-v36';
+const CACHE_NAME = 'mtrix-cache-v37';
 const ASSETS = [
   '/', 
   './index.html',
