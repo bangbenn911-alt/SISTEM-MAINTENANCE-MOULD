@@ -933,7 +933,10 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 /* ========================================== */
 .indo3d-container { perspective: 1000px; }
 .indo3d-plane {
-    width: 340px; height: 340px;
+    width: 85vw; /* Ukuran dinamis mengikuti lebar layar HP */
+    height: 85vw;
+    max-width: 500px; /* Batas maksimal jika dibuka di PC/Desktop */
+    max-height: 500px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 0.05s linear;

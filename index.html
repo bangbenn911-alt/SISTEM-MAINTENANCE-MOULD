@@ -70,9 +70,9 @@
         <div class="nav-item active" id="nav-home" onclick="window.navigasi('home-screen')">
             <i class="fas fa-home"></i><span>Beranda</span>
         </div>
-        <div class="nav-item" id="nav-analisa" onclick="window.navigasi('ai-dashboard-screen')">
-            <i class="fas fa-chart-pie"></i><span>Analisa</span>
-        </div>
+       <div class="nav-item" id="nav-analisa" onclick="window.navigasi('ai-dashboard-screen')">
+    <i class="fas fa-map-marked-alt"></i><span>Tracking</span>
+</div>
         <div class="nav-center-wrap">
             <div class="nav-center-btn" id="nav-lampu" onclick="window.navigasi('ide-center-screen')">
                 <i class="fas fa-lightbulb"></i>
@@ -142,29 +142,6 @@
         <i class="fas fa-chart-line" style="color: #38bdf8;"></i> Analytics
     </div>
 </div>
-        <!-- KARTU ANALISA AI & GRAFIK (DI BERANDA) -->
-        <div class="dark-panel" style="margin-bottom: 20px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="color:#38bdf8; margin:0; font-size:14px; font-weight:900;"><i class="fas fa-chart-line"></i> Ringkasan Analisa AI</h3>
-                <span style="background:rgba(56,189,248,0.2); color:#38bdf8; padding:2px 8px; border-radius:10px; font-size:9px; font-weight:bold;">LIVE STATS</span>
-            </div>
-
-            <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px; margin-bottom:12px;">
-                <div style="background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.3); padding:10px; border-radius:8px; text-align:center; box-shadow: inset 0 0 10px rgba(56,189,248,0.05);">
-                    <p style="font-size:9px; color:#94a3b8; margin:0; font-weight:bold;">TOTAL PROYEK</p>
-                    <h3 id="dash-kpi-proyek" style="color:#38bdf8; margin:5px 0 0; font-size:20px;">0</h3>
-                </div>
-                <div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.3); padding:10px; border-radius:8px; text-align:center; box-shadow: inset 0 0 10px rgba(16,185,129,0.05);">
-                    <p style="font-size:9px; color:#94a3b8; margin:0; font-weight:bold;">ACHIEVEMENT</p>
-                    <h3 id="dash-kpi-ach" style="color:#10b981; margin:5px 0 0; font-size:20px;">0%</h3>
-                </div>
-            </div>
-            
-            <div style="width:100%; height:150px; background:rgba(0,0,0,0.3); border-radius:8px; margin-bottom:10px;">
-                <canvas id="chartMultivariate" style="width:100%; height:100%;"></canvas>
-            </div>
-            <p style="font-size:10px; text-align:center; color:var(--text-muted); margin:0;">Disinkronkan otomatis dari database Cloud.</p>
-        </div>
 
                     <div class="glass-card jadwal" onclick="window.navigasi('jadwal-besar-menu-screen')">
                         <i class="fas fa-calendar-alt" style="font-size:16px;"></i> Jadwal

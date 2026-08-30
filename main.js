@@ -244,7 +244,6 @@ window.navigasi = function(id) {
     document.getElementById(id)?.classList.add('active-screen'); 
     window.updateBottomNav(id); 
     window.scrollTo(0, 0); 
-    if(id === 'ai-dashboard-screen') window.inisialisasiDataAnalisaGlobal(); 
     if(id === 'struktur-organisasi-screen') { window.ambilDataOrg(); setTimeout(()=>window.centerOrgView(), 500); } 
 };
 window.kembaliKeSebelumnya = function() { if(riwayatNav.length > 1) { riwayatNav.pop(); const prev = riwayatNav[riwayatNav.length-1]; document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); if(prev === 'landing-page') { const l = document.getElementById('landing-page'); if(l) { l.style.display='flex'; l.classList.remove('door-open'); } document.getElementById('global-bottom-nav').style.display='none'; } else { document.getElementById(prev)?.classList.add('active-screen'); } window.updateBottomNav(prev); window.scrollTo(0, 0); } };
