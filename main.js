@@ -239,13 +239,17 @@ function bukaPintu() { const l = document.getElementById('landing-page'); if(l) 
 
 let riwayatNav = ['landing-page'];
 window.navigasi = function(id) { 
-    if(riwayatNav[riwayatNav.length-1] !== id) { riwayatNav.push(id); history.pushState({page: id}, "", ""); } 
+    if(riwayatNav[riwayatNav.length-1] !== id) { 
+        riwayatNav.push(id); 
+        try { history.pushState({page: id}, "", ""); } catch(err) {} 
+    } 
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); 
     document.getElementById(id)?.classList.add('active-screen'); 
     window.updateBottomNav(id); 
     window.scrollTo(0, 0); 
     if(id === 'struktur-organisasi-screen') { window.ambilDataOrg(); setTimeout(()=>window.centerOrgView(), 500); } 
 };
+
 window.kembaliKeSebelumnya = function() { if(riwayatNav.length > 1) { riwayatNav.pop(); const prev = riwayatNav[riwayatNav.length-1]; document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen')); if(prev === 'landing-page') { const l = document.getElementById('landing-page'); if(l) { l.style.display='flex'; l.classList.remove('door-open'); } document.getElementById('global-bottom-nav').style.display='none'; } else { document.getElementById(prev)?.classList.add('active-screen'); } window.updateBottomNav(prev); window.scrollTo(0, 0); } };
 window.addEventListener('popstate', () => window.kembaliKeSebelumnya());
 window.updateBottomNav = function(id) { document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active')); const l = document.getElementById('nav-lampu'); if(l) l.classList.remove('active-lamp'); if(id==='home-screen') document.getElementById('nav-home')?.classList.add('active'); else if(id==='ai-dashboard-screen') document.getElementById('nav-analisa')?.classList.add('active'); else if(id==='ide-center-screen') { if(l) l.classList.add('active-lamp'); } else if(id==='inbox-screen') document.getElementById('nav-inbox')?.classList.add('active'); else if(id==='profil-screen') document.getElementById('nav-profil')?.classList.add('active'); };
@@ -1194,7 +1198,33 @@ window.simpanNotulen = async () => {
 };
 
 window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-content').forEach(e=>e.style.display='none'); document.querySelectorAll('#notulen-hasil-screen .tab-btn').forEach(b=>b.classList.remove('tab-active')); if(j==='MEETING PAGI') { document.getElementById('list-notulen-pagi').style.display='block'; document.getElementById('tab-notul-pagi').classList.add('tab-active'); } else if(j==='MEETING URGENT') { document.getElementById('list-notulen-urgent').style.display='block'; document.getElementById('tab-notul-urgent').classList.add('tab-active'); } else { document.getElementById('list-notulen-lapangan').style.display='block'; document.getElementById('tab-notul-lapangan').classList.add('tab-active'); } };
-window.bukaHasilNotulen = async () => { window.navigasi('notulen-hasil-screen'); window.switchTabNotulen('MEETING PAGI'); window.notulenDatabase=[]; try{ const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); let hP="",hU="",hL=""; window.notulenDatabase.forEach(d=>{ let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; if(d.jenisMeeting==='MEETING PAGI') hP+=c; else if(d.jenisMeeting==='MEETING URGENT') hU+=c; else hL+=c; }); document.getElementById('list-notulen-pagi').innerHTML=hP; document.getElementById('list-notulen-urgent').innerHTML=hU; document.getElementById('list-notulen-lapangan').innerHTML=hL; } catch(e){} };
+window.bukaHasilNotulen = async () => { 
+    window.navigasi('notulen-hasil-screen'); 
+    window.switchTabNotulen('MEETING PAGI'); 
+    window.notulenDatabase=[]; 
+    try{ 
+        const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); 
+        snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); 
+        window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); 
+        
+        let hP="",hU="",hL=""; 
+        window.notulenDatabase.forEach(d=>{ 
+            let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; 
+            if(d.jenisMeeting==='MEETING PAGI') hP+=c; 
+            else if(d.jenisMeeting==='MEETING URGENT') hU+=c; 
+            else hL+=c; 
+        }); 
+        
+        // FIX: Tambahkan fallback pesan KOSONG agar layar tidak blank putih
+        const msgKosong = "<p style='text-align:center; color:var(--text-muted); margin-top:30px;'><i class='fas fa-folder-open fa-2x' style='margin-bottom:10px; display:block;'></i>Belum ada data Notulen</p>";
+        
+        document.getElementById('list-notulen-pagi').innerHTML = hP || msgKosong; 
+        document.getElementById('list-notulen-urgent').innerHTML = hU || msgKosong; 
+        document.getElementById('list-notulen-lapangan').innerHTML = hL || msgKosong; 
+    } catch(e){
+        console.error("Error Notulen:", e);
+    } 
+};
 
 window.bukaDetailNotulen = (id) => {
     const d = window.notulenDatabase.find(x => x.id === id);
@@ -1412,31 +1442,32 @@ window.masukBerandaCepat = async function() {
 window.prosesHakAkses = async function(user) {
     try {
         const btnAdmin = document.getElementById('btn-menu-superadmin');
-        const emailUser = user.email.toLowerCase();
+        const emailUser = user.email ? user.email.toLowerCase() : "";
 
-        // Cek apakah yang login adalah Anda (Super Admin)
         if(window.superAdminEmails.includes(emailUser)) {
             if(btnAdmin) btnAdmin.style.display = 'flex'; 
             window.isSuperAdminUser = true;
-            window.hakAksesUser = "SUPER"; // Super Admin kebal semua aturan
+            window.hakAksesUser = "SUPER";
         } else {
             if(btnAdmin) btnAdmin.style.display = 'none'; 
             window.isSuperAdminUser = false;
+            window.hakAksesUser = null; // Default kosong
 
-            // MENGUNDUH BUKU AKSES KARYAWAN DARI DATABASE
-            const docRef = doc(window.db, "users_access", emailUser);
-            const docSnap = await getDoc(docRef);
-
-            if (docSnap.exists()) {
-                window.hakAksesUser = docSnap.data(); // Simpan izinnya di memori HP
-            } else {
-                window.hakAksesUser = null; // Karyawan belum didaftarkan sama sekali
+            // BUNGKUS TRY-CATCH KHUSUS AGAR TIDAK MEMBLOKIR LOGIN USER BIASA
+            try {
+                const docRef = doc(window.db, "users_access", emailUser);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    window.hakAksesUser = docSnap.data(); 
+                }
+            } catch (readError) {
+                console.warn("Hak akses ditolak atau kosong. User masuk sebagai Guest.", readError);
             }
         }
 
         window.toggleLoader(false);
         
-        // Eksekusi animasi pintu terbuka masuk ke Beranda
+        // Eksekusi animasi pintu masuk
         const l = document.getElementById('landing-page'); 
         if(l) l.classList.add('door-open'); 
         setTimeout(() => { 
@@ -1445,9 +1476,10 @@ window.prosesHakAkses = async function(user) {
             window.navigasi('home-screen'); 
             window.jalankanEngineMetrik(); 
         }, 300);
+
     } catch(e) {
         window.toggleLoader(false);
-        alert("Akses ke database ditolak atau koneksi terputus.");
+        alert("Gagal memproses sesi login sistem.");
     }
 };
 
