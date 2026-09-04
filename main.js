@@ -2641,3 +2641,213 @@ window.infoMesin3D = function(namaMesin, status, warnaCode) {
 window.bukaInfoIndo = function(nama, ket, stat) {
     alert(`🛰️ [ SATELIT M-TRIX ]\n\nTitik: ${nama}\nDetail: ${ket}\nStatus: ${stat}`);
 };
+
+// =========================================================================
+// ENGINE JS KHUSUS DIVISI MOLD WORKSHOP (TERINTEGRASI)
+// =========================================================================
+
+window.wsProjects = JSON.parse(localStorage.getItem('workshop_projects')) || [
+  { id: "proj-1", name: "SW LMG", status: "ongoing", hk: 17, targetJam: 542, startDate: "2026-07-25", checkpoints: [{ id: "cp-1", category: "Core", task: "Bentuk produk Core", process: "CNC", estJam: 75, actualJam: 75, progress: 100, done: true }] },
+  { id: "proj-2", name: "TUTUP ATAS LMG", status: "scheduled", hk: 19, targetJam: 491, startDate: "2026-07-28", checkpoints: [{ id: "cp-9", category: "Sleder", task: "Pemb. Sleder", process: "CNC", estJam: 60, actualJam: 50, progress: 83, done: false }] }
+];
+window.wsHistoryLogs = JSON.parse(localStorage.getItem('workshop_logs')) || [];
+window.wsActiveProjectId = null;
+
+window.showWsToast = function(message) {
+  const toast = document.getElementById('toastNotif');
+  document.getElementById('toastMsg').innerText = message;
+  toast.classList.remove('translate-x-[150%]');
+  toast.classList.add('translate-x-0');
+  setTimeout(() => { toast.classList.remove('translate-x-0'); toast.classList.add('translate-x-[150%]'); }, 3000);
+};
+
+window.saveWsState = function(logEntry = null) {
+  if (logEntry) { window.wsHistoryLogs.unshift(logEntry); localStorage.setItem('workshop_logs', JSON.stringify(window.wsHistoryLogs)); }
+  localStorage.setItem('workshop_projects', JSON.stringify(window.wsProjects));
+  window.renderWsDashboard();
+};
+
+window.toggleMobileSidebar = function() {
+  const sidebar = document.getElementById('mainSidebar');
+  const backdrop = document.getElementById('mobileSidebarBackdrop');
+  sidebar.classList.toggle('-translate-x-full');
+  backdrop.classList.toggle('hidden');
+};
+
+window.toggleWorkshopMenu = function() {
+  document.getElementById('workshopSubmenu').classList.toggle('hidden');
+  document.getElementById('workshopArrow').classList.toggle('rotate-180');
+};
+
+window.switchWsTab = function(tab) {
+  ['ongoing', 'scheduled', 'sheetView', 'historyView'].forEach(t => {
+    document.getElementById(`view-${t}`)?.classList.add('hidden');
+    const btn = document.getElementById(`tabBtn-${t}`);
+    if(btn) btn.className = "w-full text-left px-3 py-2 rounded-md text-xs transition flex items-center justify-between border-none cursor-pointer " + (t === tab ? "bg-indigo-600/20 text-indigo-300 border-l-2 border-indigo-500 font-semibold" : "text-slate-400 hover:text-white hover:bg-slate-800 bg-transparent");
+  });
+  document.getElementById(`view-${tab}`).classList.remove('hidden');
+  const titles = { ongoing: "Workshop - Sedang Berjalan", scheduled: "Workshop - Terjadwal", sheetView: "Sheet Data View", historyView: "Riwayat Aktivitas" };
+  document.getElementById('pageTitle').innerText = titles[tab];
+  window.renderWsDashboard();
+};
+
+window.switchProjectStatus = function(projId, targetStatus) {
+  const proj = window.wsProjects.find(p => p.id === projId);
+  if (!proj) return;
+  proj.status = targetStatus;
+  window.saveWsState({ id: "log-" + Date.now(), timestamp: new Date().toLocaleString(), projName: proj.name, message: `Status diubah ke ${targetStatus === 'ongoing' ? 'Sedang Berjalan' : 'Terjadwal'}.` });
+  window.showWsToast(`Status "${proj.name}" berhasil diubah!`);
+};
+
+window.renderWsDashboard = function() {
+  const ongoingC = document.getElementById('ongoingCardsContainer');
+  const scheduledC = document.getElementById('scheduledCardsContainer');
+  const sheetTbody = document.getElementById('sheetTableBody');
+  const logList = document.getElementById('historyLogList');
+  if(!ongoingC) return;
+  
+  ongoingC.innerHTML = ''; scheduledC.innerHTML = ''; sheetTbody.innerHTML = ''; logList.innerHTML = '';
+  let onCount = 0, scCount = 0;
+
+  window.wsProjects.forEach(proj => {
+    const totalCP = proj.checkpoints.length;
+    const doneCP = proj.checkpoints.filter(cp => cp.done).length;
+    const totalAct = proj.checkpoints.reduce((s, cp) => s + Number(cp.actualJam || 0), 0);
+    const avgProgress = totalCP > 0 ? Math.round(proj.checkpoints.reduce((s, cp) => s + Number(cp.progress || 0), 0) / totalCP) : 0;
+    
+    if (proj.status === 'ongoing') onCount++; else scCount++;
+
+    const statusBtn = proj.status === 'scheduled' 
+      ? `<button onclick="window.switchProjectStatus('${proj.id}', 'ongoing')" class="px-2 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded text-[10px] cursor-pointer">Mulai</button>`
+      : `<button onclick="window.switchProjectStatus('${proj.id}', 'scheduled')" class="px-2 py-1 bg-slate-100 text-slate-600 rounded text-[10px] cursor-pointer border-none">Jeda</button>`;
+
+    const card = `
+      <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col justify-between overflow-hidden">
+        <div class="p-4">
+          <div class="flex justify-between items-start mb-2">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${proj.status === 'ongoing' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${proj.status === 'ongoing' ? 'Berjalan' : 'Terjadwal'}</span>
+            <div class="flex items-center gap-1">${statusBtn}<button onclick="window.deleteWsProject('${proj.id}')" class="text-rose-500 text-xs p-1 bg-transparent border-none cursor-pointer"><i class="fa-solid fa-trash"></i></button></div>
+          </div>
+          <h3 class="font-bold text-sm m-0 text-slate-800 mb-2">${proj.name}</h3>
+          <div class="grid grid-cols-2 gap-2 text-[10px] bg-slate-50 p-2 rounded mb-3 border border-slate-100">
+            <div>Target: <strong class="text-slate-700">${proj.targetJam} Jam</strong></div>
+            <div>Aktual: <strong class="text-slate-700">${totalAct} Jam</strong></div>
+            <div>Durasi: <strong class="text-slate-700">${proj.hk} HK</strong></div>
+            <div>Checkpoints: <strong class="text-slate-700">${doneCP}/${totalCP}</strong></div>
+          </div>
+          <div class="w-full bg-slate-100 rounded-full h-1.5 overflow-hidden"><div class="h-1.5 ${avgProgress===100?'bg-emerald-500':'bg-indigo-600'}" style="width: ${avgProgress}%"></div></div>
+        </div>
+        <button onclick="window.openCheckpointsModal('${proj.id}')" class="w-full py-2 bg-indigo-600 text-white text-xs font-bold border-none cursor-pointer">Kelola Checkpoint</button>
+      </div>`;
+    
+    if (proj.status === 'ongoing') ongoingC.innerHTML += card; else scheduledC.innerHTML += card;
+
+    proj.checkpoints.forEach(cp => {
+      sheetTbody.innerHTML += `
+        <tr class="border-b border-slate-50">
+          <td class="p-2 font-bold">${proj.name}</td>
+          <td class="p-2">${cp.category}</td>
+          <td class="p-2">${cp.task}</td>
+          <td class="p-2 text-center">${cp.estJam}</td>
+          <td class="p-2 text-center font-bold">${cp.actualJam}</td>
+          <td class="p-2 text-center">${cp.progress}%</td>
+          <td class="p-2 text-center">${cp.done ? '<span class="text-emerald-600 font-bold">Selesai</span>' : 'Proses'}</td>
+          <td class="p-2 text-center"><button onclick="window.openDailyLogModal('${proj.id}','${cp.id}')" class="bg-indigo-50 text-indigo-700 px-2 py-1 rounded text-[10px] font-bold border-none cursor-pointer">Log</button></td>
+        </tr>`;
+    });
+  });
+
+  document.getElementById('badgeOngoing').innerText = onCount;
+  document.getElementById('badgeScheduled').innerText = scCount;
+  document.getElementById('badgeLogs').innerText = window.wsHistoryLogs.length;
+
+  window.wsHistoryLogs.forEach(log => {
+    logList.innerHTML += `<div class="p-2 bg-slate-50 border border-slate-100 rounded mb-2 text-xs"><div class="flex justify-between"><strong class="text-slate-800">${log.projName}</strong><span class="text-[10px] text-slate-400">${log.timestamp}</span></div><p class="m-0 mt-1 text-slate-600">${log.message}</p></div>`;
+  });
+};
+
+window.openAddProjectModal = () => document.getElementById('modalAddProject').classList.remove('hidden');
+window.closeWsModal = (id) => document.getElementById(id).classList.add('hidden');
+
+window.handleSaveProject = function(e) {
+  e.preventDefault();
+  const proj = { id: "proj-" + Date.now(), name: document.getElementById('projName').value, status: document.getElementById('projStatus').value, hk: document.getElementById('projHK').value||0, targetJam: document.getElementById('projTargetJam').value||0, startDate: document.getElementById('projStartDate').value, checkpoints: [] };
+  window.wsProjects.unshift(proj);
+  window.saveWsState({ id: "log-" + Date.now(), timestamp: new Date().toLocaleString(), projName: proj.name, message: `Proyek baru ditambahkan.` });
+  window.closeWsModal('modalAddProject'); e.target.reset(); window.switchWsTab(proj.status); window.showWsToast("Proyek berhasil ditambah!");
+};
+
+window.openCheckpointsModal = function(id) {
+  window.wsActiveProjectId = id;
+  const proj = window.wsProjects.find(p => p.id === id);
+  if(!proj) return;
+  document.getElementById('modalProjTitle').innerText = proj.name;
+  window.renderCheckpointsTable(proj);
+  document.getElementById('modalCheckpoints').classList.remove('hidden');
+};
+
+window.renderCheckpointsTable = function(proj) {
+  const tbody = document.getElementById('checkpointTableBody'); tbody.innerHTML = '';
+  proj.checkpoints.forEach(cp => {
+    tbody.innerHTML += `<tr>
+      <td class="p-2 font-bold">${cp.category}</td><td class="p-2">${cp.task}</td><td class="p-2">${cp.process}</td><td class="p-2 text-center">-</td>
+      <td class="p-2 text-center">${cp.estJam}</td>
+      <td class="p-2 text-center"><input type="number" value="${cp.actualJam}" onchange="window.updateCPActual('${cp.id}', this.value)" class="w-14 border rounded p-1 text-center bg-white text-slate-800"></td>
+      <td class="p-2 text-center font-bold">${cp.progress}%</td>
+      <td class="p-2 text-center"><button onclick="window.toggleCPStatus('${cp.id}')" class="px-2 py-1 text-[10px] rounded border-none cursor-pointer ${cp.done?'bg-emerald-100 text-emerald-800':'bg-slate-100 text-slate-600'}">${cp.done?'Selesai':'Proses'}</button></td>
+      <td class="p-2 text-center"><button onclick="window.deleteWsCheckpoint('${cp.id}')" class="text-rose-500 bg-transparent border-none cursor-pointer"><i class="fa-solid fa-trash"></i></button></td>
+    </tr>`;
+  });
+};
+
+window.handleSaveCheckpoint = function(e) {
+  e.preventDefault();
+  const proj = window.wsProjects.find(p => p.id === window.wsActiveProjectId);
+  proj.checkpoints.push({ id: "cp-"+Date.now(), category: document.getElementById('cpCategory').value, task: document.getElementById('cpTask').value, process: document.getElementById('cpProcess').value, estJam: document.getElementById('cpEst').value||0, actualJam: 0, progress: 0, done: false });
+  window.saveWsState({ id: "log-"+Date.now(), timestamp: new Date().toLocaleString(), projName: proj.name, message: `Menambah checkpoint baru.` });
+  window.renderCheckpointsTable(proj); e.target.reset(); window.showWsToast("Checkpoint ditambahkan!");
+};
+
+window.updateCPActual = function(cpId, val) {
+  const proj = window.wsProjects.find(p => p.id === window.wsActiveProjectId);
+  const cp = proj.checkpoints.find(c => c.id === cpId);
+  cp.actualJam = Number(val) || 0;
+  if(cp.estJam > 0) { cp.progress = Math.min(100, Math.round((cp.actualJam/cp.estJam)*100)); cp.done = cp.progress === 100; }
+  window.saveWsState(); window.renderCheckpointsTable(proj);
+};
+
+window.toggleCPStatus = function(cpId) {
+  const proj = window.wsProjects.find(p => p.id === window.wsActiveProjectId);
+  const cp = proj.checkpoints.find(c => c.id === cpId);
+  cp.done = !cp.done; cp.progress = cp.done ? 100 : Math.round((cp.actualJam/(cp.estJam||1))*100);
+  window.saveWsState(); window.renderCheckpointsTable(proj);
+};
+
+window.openDailyLogModal = function(projId, cpId) {
+  const proj = window.wsProjects.find(p => p.id === projId); const cp = proj.checkpoints.find(c => c.id === cpId);
+  document.getElementById('logProjId').value = projId; document.getElementById('logCPId').value = cpId;
+  document.getElementById('logTaskName').innerText = cp.task;
+  document.getElementById('modalDailyLog').classList.remove('hidden');
+};
+
+window.handleSaveDailyLog = function(e) {
+  e.preventDefault();
+  const proj = window.wsProjects.find(p => p.id === document.getElementById('logProjId').value);
+  const cp = proj.checkpoints.find(c => c.id === document.getElementById('logCPId').value);
+  cp.actualJam = (Number(cp.actualJam)||0) + Number(document.getElementById('logHours').value);
+  if(cp.estJam > 0) { cp.progress = Math.min(100, Math.round((cp.actualJam/cp.estJam)*100)); cp.done = cp.progress === 100; }
+  window.saveWsState({ id: "log-"+Date.now(), timestamp: new Date().toLocaleString(), projName: proj.name, message: `Log Harian: +${document.getElementById('logHours').value} Jam pada ${cp.task}.`});
+  window.closeWsModal('modalDailyLog'); window.showWsToast("Log Harian Disimpan!");
+};
+
+window.deleteWsProject = function(id) { if(confirm("Hapus proyek ini?")) { window.wsProjects = window.wsProjects.filter(p => p.id !== id); window.saveWsState(); } };
+window.deleteWsCheckpoint = function(id) { const proj = window.wsProjects.find(p => p.id === window.wsActiveProjectId); if(confirm("Hapus checkpoint ini?")) { proj.checkpoints = proj.checkpoints.filter(c => c.id !== id); window.saveWsState(); window.renderCheckpointsTable(proj); } };
+window.clearHistoryLogs = function() { if(confirm("Bersihkan riwayat?")) { window.wsHistoryLogs = []; window.saveWsState(); } };
+
+window.filterSheetTable = function() {
+  const q = document.getElementById('sheetSearchInput').value.toLowerCase();
+  document.querySelectorAll('#sheetTableBody tr').forEach(row => { row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none'; });
+};
+
+// Auto-Render Pertama Kali
+setTimeout(() => { window.renderWsDashboard(); }, 1000);

@@ -1068,3 +1068,16 @@ input.profil-search-input:focus { box-shadow: none !important; border: none !imp
 .map-pin:active {
     transform: translate(-50%, -50%) scale(0.7);
 }
+/* ======================================================== */
+/* --- MODUL WORKSHOP MOLD (TAILWIND ISOLATED STYLES) --- */
+/* ======================================================== */
+
+#mold-workshop-screen {
+  background-color: #f1f5f9 !important; /* Timpa background sci-fi khusus halaman ini */
+}
+#mold-workshop-screen * {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+#mold-workshop-screen .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+#mold-workshop-screen .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+#mold-workshop-screen .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }

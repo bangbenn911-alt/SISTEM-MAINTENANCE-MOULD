@@ -20,6 +20,14 @@
 
     <!-- SAMBUNGAN KE FILE CSS (TAMPILAN) -->
     <link rel="stylesheet" href="style.css">
+      <!-- TAILWIND CSS UNTUK WORKSHOP (TANPA MERUSAK CSS GLOBAL) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      corePlugins: { preflight: false } // Mencegah Tailwind me-reset CSS bawaan M-TRIX
+    }
+  </script>
+
 </head>
 <body>
     <!-- ========================================================= -->
@@ -1261,164 +1269,279 @@
             </div>
         </div>
     </div>
-    <!-- ========================================================= -->
-    <!-- WORKSHOP DIVISI                                           -->
-    <!-- ========================================================= -->
-    <div id="divisi-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-cogs" style="margin-right:10px;"></i> <span id="judul-divisi">Nama Divisi</span></h2>
-            </div>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="window.inisialisasiFormWS(); window.navigasi('new-project-screen')" style="border-left-color: #10b981;">
-                    <i class="fas fa-plus-circle" style="color:#10b981;"></i> 1. Input New Project
-                </div>
-                <div class="menu-card" onclick="window.navigasi('update-project-screen'); window.renderUpdateListWS();" style="border-left-color: #3b82f6;">
-                    <i class="fas fa-edit" style="color:#3b82f6;"></i> 2. Input Update Project
-                </div>
-                <div class="menu-card" onclick="window.bukaProgressWorkshop()" style="border-left-color: #8b5cf6;">
-                    <i class="fas fa-chart-line" style="color:#8b5cf6;"></i> 3. Control Progres Project
-                </div>
-            </div>
-        </div>
-    </div>
+<div id="mold-workshop-screen" class="screen w-full h-screen bg-slate-100 text-slate-800 overflow-hidden" style="padding-bottom: 0 !important;">
+  
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotif" class="fixed top-4 right-4 sm:top-5 sm:right-5 z-[9999] transform translate-x-[150%] transition-transform duration-300 bg-emerald-600 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 text-xs font-semibold max-w-[90vw]">
+    <i class="fa-solid fa-circle-check text-base"></i>
+    <span id="toastMsg">Data berhasil disimpan!</span>
+  </div>
 
-    <!-- FORM INPUT NEW PROJECT (WORKSHOP) -->
-    <div id="new-project-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-plus-circle" style="margin-right:10px;"></i> Input New Project</h2>
-            </div>
-            <div class="dark-panel">
-                <div class="form-group">
-                    <label>Nama Proyek / MOLD</label>
-                    <input type="text" id="ws-np-nama" placeholder="Masukkan nama proyek..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
-                </div>
-                <div class="form-group" style="display: flex; gap: 15px;">
-                    <div style="flex: 1;">
-                        <label>Mulai Pekerjaan</label>
-                        <input type="date" id="ws-np-start-date" required>
-                    </div>
-                    <div style="flex: 1;">
-                        <label>Target Selesai</label>
-                        <input type="date" id="ws-np-finish-date" required>
-                    </div>
-                </div>
-                <div class="form-group" style="display: flex; gap: 15px;">
-                    <div style="flex: 1;">
-                        <label>Estimasi Hari</label>
-                        <input type="text" id="ws-np-hari" readonly style="text-align:center; font-size:16px; color:var(--secondary);" value="0 Hari">
-                    </div>
-                    <div style="flex: 1;">
-                        <label>Estimasi Jam</label>
-                        <input type="text" id="ws-np-jam" readonly style="text-align:center; font-size:16px; color:var(--secondary);" value="0 Jam">
-                    </div>
-                </div>
-                
-                <div class="form-group" style="margin-top: 25px;">
-                    <h3 class="sub-title-box"><i class="fas fa-list-ul" style="color:var(--secondary);"></i> Rencana Kerja</h3>
-                    <div id="ws-rencana-kerja-container"></div>
-                    <button class="btn-submit" type="button" style="background: rgba(56, 189, 248, 0.1); color: var(--secondary); border: 2px dashed var(--secondary); margin-top: 10px; margin-bottom: 25px; box-shadow:none;" onclick="window.tambahTugasUtamaWS()">
-                        <i class="fas fa-plus"></i> TAMBAH TUGAS UTAMA
-                    </button>
-                </div>
-                <button class="btn-submit" type="button" onclick="window.simpanNewProjectWS()">
-                    <i class="fas fa-save"></i> SIMPAN PROJECT
-                </button>
-            </div>
-        </div>
-    </div>
+  <!-- MOBILE OVERLAY BACKDROP -->
+  <div id="mobileSidebarBackdrop" onclick="window.toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 z-30 hidden lg:hidden transition-opacity"></div>
 
-    <!-- UPDATE PROJECT (WORKSHOP) -->
-    <div id="update-project-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-edit" style="margin-right:10px;"></i> Input Update Project</h2>
+  <div class="flex h-full w-full relative z-40">
+    <!-- SIDEBAR -->
+    <aside id="mainSidebar" class="absolute lg:static inset-y-0 left-0 z-40 w-64 bg-slate-900 text-white flex flex-col justify-between shadow-2xl lg:shadow-xl transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex-shrink-0 h-full">
+      <div>
+        <div class="p-4 sm:p-5 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="p-2 bg-indigo-600 rounded-xl text-white font-bold text-base sm:text-lg shadow-md shadow-indigo-600/30">
+              <i class="fa-solid fa-industry"></i>
             </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-ws-proses" onclick="window.switchTabWS('proses')">
-                    <i class="fas fa-spinner"></i> Proses Pengerjaan
-                </button>
-                <button class="tab-btn" type="button" id="tab-ws-selesai" onclick="window.switchTabWS('selesai')">
-                    <i class="fas fa-check-circle"></i> Sudah Selesai
-                </button>
+            <div>
+              <h1 class="font-bold text-sm tracking-wide leading-tight m-0 text-white">Workshop Hub</h1>
+              <p class="text-[10px] text-slate-400 m-0">Mold LMG Tracker</p>
             </div>
-            <div id="list-ws-proses"></div>
-            <div id="list-ws-selesai" style="display: none;"></div>
+          </div>
+          <button onclick="window.toggleMobileSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1 bg-transparent border-none">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+
+        <nav class="p-3 sm:p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-160px)] custom-scrollbar">
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mb-2 mt-2">Manajemen Proyek</div>
+          
+          <div>
+            <button onclick="window.toggleWorkshopMenu()" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-slate-800 text-indigo-400 hover:bg-slate-700/80 transition border-none cursor-pointer">
+              <span class="flex items-center gap-3 font-medium text-xs">
+                <i class="fa-solid fa-screwdriver-wrench"></i> Workshop
+              </span>
+              <i id="workshopArrow" class="fa-solid fa-chevron-down text-xs transition-transform duration-200"></i>
+            </button>
             
-            <!-- AREA LIST TUGAS -->
-            <div id="ws-task-list-area" class="dark-panel" style="display: none;">
-                <h3 class="sub-title-box">
-                    <i class="fas fa-tools" style="color:var(--secondary);"></i> Update: <span id="ws-nama-proyek-tampil" style="color: white; margin-left:5px;"></span>
-                </h3>
-                <input type="hidden" id="ws-update-id-project">
-                <div id="ws-tasks-container" style="margin-bottom: 20px;"></div>
-                <button class="btn-submit" type="button" style="background: var(--card-dark); border:1px solid rgba(255,255,255,0.1); box-shadow:none;" onclick="window.tutupWsTaskList()">
-                    <i class="fas fa-arrow-left"></i> KEMBALI KE LIST PROJECT
-                </button>
+            <div id="workshopSubmenu" class="pl-3 pr-1 py-1.5 space-y-1">
+              <button onclick="window.switchWsTab('ongoing')" id="tabBtn-ongoing" class="w-full text-left px-3 py-2 rounded-md text-xs font-semibold transition flex items-center justify-between bg-indigo-600/20 text-indigo-300 border-l-2 border-indigo-500 cursor-pointer">
+                <span><i class="fa-solid fa-spinner fa-spin-pulse mr-2 text-[11px]"></i> Sedang Berjalan</span>
+                <span id="badgeOngoing" class="bg-indigo-600 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+              </button>
+              <button onclick="window.switchWsTab('scheduled')" id="tabBtn-scheduled" class="w-full text-left px-3 py-2 rounded-md text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center justify-between bg-transparent border-none cursor-pointer">
+                <span><i class="fa-regular fa-calendar-check mr-2 text-[11px]"></i> Terjadwal</span>
+                <span id="badgeScheduled" class="bg-slate-700 text-slate-300 text-[10px] px-2 py-0.5 rounded-full font-bold">0</span>
+              </button>
             </div>
+          </div>
 
-            <!-- FORM INPUT REALISASI -->
-            <div id="ws-form-update-task" class="dark-panel" style="display: none; border-left: 6px solid var(--secondary);">
-                <h3 class="sub-title-box">
-                    <i class="fas fa-bullseye" style="color:var(--secondary);"></i> Target: <span id="ws-nama-tugas-tampil" style="color: white; margin-left:5px;"></span>
-                </h3>
-                <input type="hidden" id="ws-update-task-index">
-                <input type="hidden" id="ws-update-subtask-index">
-                
-                <div class="form-group">
-                    <label>Nama PIC (Pekerja)</label>
-                    <input type="text" id="ws-up-pic" placeholder="Nama Pekerja..." style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
-                </div>
-                <div class="form-group">
-                    <label>Shift Pekerjaan</label>
-                    <select id="ws-up-shift">
-                        <option value="Shift 1">Shift 1</option>
-                        <option value="Shift 2">Shift 2</option>
-                        <option value="Shift 3">Shift 3</option>
-                    </select>
-                </div>
-                <div class="form-group" style="display: flex; gap: 15px;">
-                    <div style="flex: 1;">
-                        <label>Waktu Start</label>
-                        <input type="datetime-local" id="ws-up-start" onchange="window.hitungDurasiUpdateWS()">
-                    </div>
-                    <div style="flex: 1;">
-                        <label>Waktu Finish</label>
-                        <input type="datetime-local" id="ws-up-finish" onchange="window.hitungDurasiUpdateWS()">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Durasi (Otomatis)</label>
-                    <input type="text" id="ws-up-durasi" readonly style="color:var(--proses); text-align:center; font-size:16px; background:rgba(0,0,0,0.4);">
-                </div>
-                
-                <div class="form-group" style="margin-top: 15px;">
-                    <label>Status Pekerjaan Aktual</label>
-                    <select id="ws-up-status" style="background:rgba(245,158,11,0.1); color:#fbbf24; border:1px solid #b45309;">
-                        <option value="Belum Selesai">⏳ BELUM SELESAI (Masih Lanjut Nanti)</option>
-                        <option value="Selesai">✅ SUDAH SELESAI (Tuntas 100%)</option>
-                    </select>
-                </div>
+          <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider px-3 mt-4 mb-2">Monitoring & Data</div>
 
-                <div style="display: flex; gap: 12px; margin-top: 25px;">
-                    <button class="btn-submit" type="button" style="background: var(--card-dark); border:1px solid rgba(255,255,255,0.1); flex: 1; box-shadow:none;" onclick="window.batalUpdateTaskWS()">BATAL</button>
-                    <button class="btn-submit" type="button" style="flex: 2;" onclick="window.simpanUpdateTaskWS()"><i class="fas fa-save"></i> SIMPAN AKTUAL</button>
-                </div>
-            </div>
+          <button onclick="window.switchWsTab('sheetView')" id="tabBtn-sheetView" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition text-xs font-medium bg-transparent border-none cursor-pointer">
+            <i class="fa-solid fa-table-cells text-slate-400"></i> Sheet Data View
+          </button>
+
+          <button onclick="window.switchWsTab('historyView')" id="tabBtn-historyView" class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition text-xs font-medium bg-transparent border-none cursor-pointer">
+            <span class="flex items-center gap-3">
+              <i class="fa-solid fa-clock-rotate-left text-slate-400"></i> Riwayat Aktivitas
+            </span>
+            <span id="badgeLogs" class="bg-indigo-950 text-indigo-400 border border-indigo-800 text-[10px] px-1.5 py-0.5 rounded font-bold">0</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-3 sm:p-4 border-t border-slate-800 text-xs text-slate-400">
+        <button onclick="window.exportWsDataCSV()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-center transition flex items-center justify-center gap-2 font-medium text-xs border-none cursor-pointer">
+          <i class="fa-solid fa-download"></i> Ekspor CSV
+        </button>
+      </div>
+    </aside>
+
+    <!-- KONTEN UTAMA -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden w-full bg-slate-100">
+      
+      <!-- TOPBAR -->
+      <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-3">
+          <button onclick="window.toggleMobileSidebar()" class="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 focus:outline-none bg-transparent border-none">
+            <i class="fa-solid fa-bars text-lg"></i>
+          </button>
+          <div>
+            <h2 id="pageTitle" class="text-base sm:text-lg font-bold text-slate-800 leading-tight m-0">Workshop - Proyek Sedang Berjalan</h2>
+            <p id="pageSubtitle" class="text-[11px] sm:text-xs text-slate-500 hidden sm:block m-0 mt-1">Pantau mold yang sedang dalam proses fabrikasi dan checklist checkpoint.</p>
+          </div>
         </div>
-    </div>
+        <button onclick="window.openAddProjectModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg shadow-sm flex items-center gap-1.5 sm:gap-2 transition whitespace-nowrap border-none cursor-pointer">
+          <i class="fa-solid fa-plus text-xs"></i> <span>Tambah Proyek</span>
+        </button>
+      </header>
 
-    <!-- CONTROL PROGRES (WORKSHOP) - VIEW & REPORT DATA -->
-    <div id="progress-screen" class="screen">
-        <div class="content-wrapper">
-            <div class="header">
-                <h2><i class="fas fa-chart-line" style="margin-right:10px;"></i> Control Progres Project</h2>
+      <!-- CONTENT AREA -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-6 pb-24 lg:pb-6 custom-scrollbar text-slate-800">
+        
+        <!-- Section Ongoing -->
+        <section id="view-ongoing">
+          <div id="ongoingCardsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"></div>
+        </section>
+
+        <!-- Section Scheduled -->
+        <section id="view-scheduled" class="hidden">
+          <div id="scheduledCardsContainer" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6"></div>
+        </section>
+
+        <!-- Section Sheet View -->
+        <section id="view-sheetView" class="hidden space-y-4">
+          <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 text-slate-800">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+              <div>
+                <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 m-0">
+                  <i class="fa-solid fa-table-list text-indigo-600"></i> Sheet Checkpoint
+                </h3>
+              </div>
+              <input type="text" id="sheetSearchInput" oninput="window.filterSheetTable()" placeholder="Cari part/pekerjaan..." class="px-3 py-2 border border-slate-300 rounded-lg text-xs w-full sm:w-64 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white text-slate-800">
             </div>
-            <div class="tab-container">
-                <button class="tab-btn tab-active" type="button" id="tab-prog-view" onclick="window.switchTabProgressWS('data')"><i class="fas fa-database"></i> View Data</button>
-                <button class="tab-btn" type="button" id="tab-prog-report" onclick="window.switchTabProgressWS('report')"><i class="fas fa-file-invoice"></i> Report Data</button>
+            
+            <div class="overflow-x-auto custom-scrollbar border border-slate-100 rounded-xl">
+              <table class="w-full text-left border-collapse text-xs whitespace-nowrap sm:whitespace-normal">
+                <thead>
+                  <tr class="bg-slate-100 text-slate-700 uppercase font-bold text-[10px] sm:text-[11px] border-b border-slate-200">
+                    <th class="p-3">Nama Part</th>
+                    <th class="p-3">Status</th>
+                    <th class="p-3">Kategori</th>
+                    <th class="p-3">Uraian Checkpoint</th>
+                    <th class="p-3">Proses</th>
+                    <th class="p-3 text-center">Foto</th>
+                    <th class="p-3 text-center">Est (Jam)</th>
+                    <th class="p-3 text-center">Aktual</th>
+                    <th class="p-3 text-center">Progress</th>
+                    <th class="p-3 text-center">Status</th>
+                    <th class="p-3 text-center">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="sheetTableBody" class="divide-y divide-slate-100"></tbody>
+              </table>
             </div>
+          </div>
+        </section>
+
+        <!-- Section Riwayat -->
+        <section id="view-historyView" class="hidden space-y-4">
+          <div class="bg-white p-4 sm:p-5 rounded-2xl shadow-sm border border-slate-200 text-slate-800">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b pb-3 mb-4 gap-2">
+              <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2 m-0">
+                <i class="fa-solid fa-clock-rotate-left text-indigo-600"></i> Riwayat Aktivitas
+              </h3>
+              <button onclick="window.clearHistoryLogs()" class="px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg transition bg-transparent cursor-pointer">
+                <i class="fa-solid fa-trash-can mr-1"></i> Bersihkan
+              </button>
+            </div>
+            <div id="historyLogList" class="space-y-2.5"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL TAMBAH PROYEK -->
+  <div id="modalAddProject" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-5 sm:p-6 text-slate-800">
+      <div class="flex justify-between items-center border-b pb-3 mb-4">
+        <h3 class="text-base font-bold text-slate-800 m-0">Tambah Proyek Baru</h3>
+        <button onclick="window.closeWsModal('modalAddProject')" class="text-slate-400 hover:text-slate-600 text-lg p-1 bg-transparent border-none cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="window.handleSaveProject(event)" class="space-y-3.5 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Nama Part / Mold *</label>
+          <input type="text" id="projName" placeholder="Contoh: BASE MOLD LMG" required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-white text-slate-800">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Status Proyek *</label>
+            <select id="projStatus" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-800">
+              <option value="ongoing">Sedang Berjalan</option>
+              <option value="scheduled">Terjadwal</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Hari Kerja (HK)</label>
+            <input type="number" id="projHK" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-800">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Target Total Jam</label>
+            <input type="number" id="projTargetJam" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-800">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Tanggal Mulai</label>
+            <input type="date" id="projStartDate" class="w-full px-3 py-2 border border-slate-300 rounded-lg bg-white text-slate-800">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-4 border-t mt-4">
+          <button type="button" onclick="window.closeWsModal('modalAddProject')" class="px-4 py-2 border border-slate-300 rounded-lg font-medium text-slate-600 bg-transparent cursor-pointer">Batal</button>
+          <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-semibold transition border-none cursor-pointer">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL CHECKPOINTS -->
+  <div id="modalCheckpoints" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center hidden p-2 sm:p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl h-[90vh] flex flex-col overflow-hidden text-slate-800">
+      <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+        <div>
+          <h3 id="modalProjTitle" class="text-sm sm:text-base font-bold text-slate-800 m-0">Detail Checkpoint</h3>
+          <p id="modalProjSubtitle" class="text-[11px] text-slate-500 m-0 mt-1"></p>
+        </div>
+        <button onclick="window.closeWsModal('modalCheckpoints')" class="text-slate-400 hover:text-slate-600 text-lg p-1 bg-transparent border-none cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="p-4 overflow-y-auto flex-1 custom-scrollbar space-y-4">
+        <!-- Form Tambah CP -->
+        <div class="bg-indigo-50/60 p-4 rounded-xl border border-indigo-100">
+          <h4 class="text-xs font-bold text-indigo-900 uppercase mb-2">Tambah Uraian Checkpoint Baru</h4>
+          <form onsubmit="window.handleSaveCheckpoint(event)" class="space-y-3 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-2 items-end">
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">Kategori</label>
+                <select id="cpCategory" class="w-full px-2 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800"><option>Cavity</option><option>Core</option><option>Sleder</option><option>Base Mold</option><option>Ejector</option><option>Lainnya</option></select>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block font-semibold text-slate-600 mb-1">Uraian *</label>
+                <input type="text" id="cpTask" required class="w-full px-2 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">Mesin</label>
+                <input type="text" id="cpProcess" required class="w-full px-2 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800">
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-600 mb-1">Est (Jam)</label>
+                <input type="number" id="cpEst" required class="w-full px-2 py-1.5 border border-slate-300 rounded-lg bg-white text-slate-800">
+              </div>
+            </div>
+            <div class="flex justify-end"><button type="submit" class="px-4 py-1.5 bg-indigo-600 text-white rounded-lg font-semibold border-none cursor-pointer">+ Tambah</button></div>
+          </form>
+        </div>
+        <!-- Tabel CP -->
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+          <table class="w-full text-left border-collapse text-xs whitespace-nowrap">
+            <thead class="bg-slate-100 text-slate-600 font-bold border-b">
+              <tr>
+                <th class="p-2">Kategori</th><th class="p-2">Uraian</th><th class="p-2">Mesin</th><th class="p-2 text-center">Foto</th><th class="p-2 text-center">Est</th><th class="p-2 text-center">Aktual</th><th class="p-2 text-center">Progres</th><th class="p-2 text-center">Status</th><th class="p-2 text-center">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="checkpointTableBody" class="divide-y divide-slate-100 bg-white"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL INPUT LOG (VIEWER FOTO DIHILANGKAN KARENA KAPASITAS CHAT, LOG HARIAN SAJA) -->
+  <div id="modalDailyLog" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[9999] flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-5 text-slate-800">
+      <div class="flex justify-between items-center border-b pb-3 mb-3">
+        <h3 class="text-sm font-bold m-0">Input Jam Harian</h3>
+        <button onclick="window.closeWsModal('modalDailyLog')" class="text-slate-400 hover:text-slate-600 p-1 bg-transparent border-none cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="window.handleSaveDailyLog(event)" class="space-y-3 text-xs">
+        <input type="hidden" id="logCPId"><input type="hidden" id="logProjId">
+        <p id="logTaskName" class="font-bold text-indigo-600 m-0 mb-2"></p>
+        <div><label class="block font-semibold mb-1">Tanggal</label><input type="date" id="logDate" required class="w-full px-3 py-2 border rounded-lg bg-white"></div>
+        <div><label class="block font-semibold mb-1">Tambahan (Jam)</label><input type="number" id="logHours" step="0.5" required class="w-full px-3 py-2 border rounded-lg bg-white"></div>
+        <div><label class="block font-semibold mb-1">Catatan</label><input type="text" id="logNote" class="w-full px-3 py-2 border rounded-lg bg-white"></div>
+        <div class="flex justify-end gap-2 pt-3 border-t">
+          <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold border-none cursor-pointer">Catat ke Riwayat</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
 
             <!-- BAGIAN VIEW DATA -->
             <div id="ws-prog-view-data" style="display:block;">
