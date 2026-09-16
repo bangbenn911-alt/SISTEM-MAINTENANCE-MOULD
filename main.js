@@ -323,23 +323,29 @@ window.renderListSuratMasuk = async function(forceFetch = false) {
     const c = document.getElementById('sm-list-container');
     const kw = window.amankanData((document.getElementById('sm-search-key').value || "").toLowerCase());
     const ft = document.getElementById('sm-filter-tahun').value;
-    if(forceFetch || window.smDatabase.length === 0) {
-        if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
-        window.smDatabase = [];
-        try {
-            const snap = await getDocs(query(collection(window.db, "surat_masuk")));
+    
+    const renderSM = () => {
+        let data = window.smDatabase.filter(d => ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)));
+        if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Masuk ditemukan.</p>`;
+        let h = "";
+        data.forEach(d => {
+            h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#10b981;" onclick="window.bukaViewerArsip('SM', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#10b981;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
+        });
+        c.innerHTML = h;
+    };
+
+    if(window.smDatabase && window.smDatabase.length > 0) renderSM();
+    else window.toggleLoader(true, "Memuat Data...");
+
+    if(!window.smListenerAktif) {
+        window.smListenerAktif = true;
+        onSnapshot(collection(window.db, "surat_masuk"), (snap) => {
+            window.smDatabase = [];
             snap.forEach(d => window.smDatabase.push({id: d.id, ...d.data()}));
             window.smDatabase.sort((a,b) => b.timestamp - a.timestamp);
-        } catch(e){}
-        if(!forceFetch) window.toggleLoader(false);
+            renderSM(); window.toggleLoader(false);
+        });
     }
-    let data = window.smDatabase.filter(d => { return ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)); });
-    if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Masuk ditemukan.</p>`;
-    let h = "";
-    data.forEach(d => {
-        h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#10b981;" onclick="window.bukaViewerArsip('SM', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#10b981;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
-    });
-    c.innerHTML = h;
 };
 
 window.simpanSuratKeluar = async function() {
@@ -364,23 +370,29 @@ window.renderListSuratKeluar = async function(forceFetch = false) {
     const c = document.getElementById('sk-list-container');
     const kw = window.amankanData((document.getElementById('sk-search-key').value || "").toLowerCase());
     const ft = document.getElementById('sk-filter-tahun').value;
-    if(forceFetch || window.skDatabase.length === 0) {
-        if(!forceFetch) window.toggleLoader(true, "Memuat Data...");
-        window.skDatabase = [];
-        try {
-            const snap = await getDocs(query(collection(window.db, "surat_keluar")));
+    
+    const renderSK = () => {
+        let data = window.skDatabase.filter(d => ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)));
+        if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Keluar ditemukan.</p>`;
+        let h = "";
+        data.forEach(d => {
+            h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#f59e0b;" onclick="window.bukaViewerArsip('SK', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#f59e0b;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
+        });
+        c.innerHTML = h;
+    };
+
+    if(window.skDatabase && window.skDatabase.length > 0) renderSK();
+    else window.toggleLoader(true, "Memuat Data...");
+
+    if(!window.skListenerAktif) {
+        window.skListenerAktif = true;
+        onSnapshot(collection(window.db, "surat_keluar"), (snap) => {
+            window.skDatabase = [];
             snap.forEach(d => window.skDatabase.push({id: d.id, ...d.data()}));
             window.skDatabase.sort((a,b) => b.timestamp - a.timestamp);
-        } catch(e){}
-        if(!forceFetch) window.toggleLoader(false);
+            renderSK(); window.toggleLoader(false);
+        });
     }
-    let data = window.skDatabase.filter(d => { return ((d.judul || "").toLowerCase().includes(kw)) && ((ft === 'ALL') ? true : (d.tahun == ft)); });
-    if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); margin-top:30px;">Tidak ada Surat Keluar ditemukan.</p>`;
-    let h = "";
-    data.forEach(d => {
-        h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:#f59e0b;" onclick="window.bukaViewerArsip('SK', '${d.id}')"><div><h4 style="margin:0 0 5px 0; color:#f59e0b;">${d.judul}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);"><i class="fas fa-calendar-alt"></i> Tgl: ${d.tanggal} | Thn: ${d.tahun}</p></div><i class="fas fa-chevron-right" style="color:var(--text-muted);"></i></div>`;
-    });
-    c.innerHTML = h;
 };
 
 window.arsipPdfDocObj = null; window.arsipCurrentPage = 1;
@@ -808,19 +820,46 @@ window.bukaAllDataSurkom = async () => { window.navigasi('surkom-alldata-screen'
 window.filterTabTahunSurkom = (th, btn) => { document.querySelectorAll('#surkom-tabs-tahun .gm-tab').forEach(b => b.classList.remove('active')); btn.classList.add('active'); window.surkomTahunAktif = th; window.renderListAllSurkom(); };
 window.toggleModePilihSurkom = () => { window.isModePilihSurkom = !window.isModePilihSurkom; const btn = document.getElementById('btn-mode-pilih-surkom'); const actions = document.getElementById('surkom-action-buttons'); if(window.isModePilihSurkom) { btn.style.background = "linear-gradient(135deg, #10b981, #059669)"; btn.style.borderColor = "#10b981"; actions.style.display = 'flex'; } else { btn.style.background = "rgba(255,255,255,0.1)"; btn.style.borderColor = "var(--border-dark)"; actions.style.display = 'none'; } window.renderListAllSurkom(); };
 window.renderListAllSurkom = async function() {
-    const c = document.getElementById('surkom-list-container'); const kw = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
-    if(!window.surkomDatabase || window.surkomDatabase.length === 0) {
-        window.toggleLoader(true, "Mengambil Arsip..."); window.surkomDatabase = [];
-        try { const snap = await getDocs(query(collection(window.db, "surat_komponen"))); snap.forEach(d => window.surkomDatabase.push({id: d.id, ...d.data()})); window.surkomDatabase.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0)); } catch(e){} window.toggleLoader(false);
+    const c = document.getElementById('surkom-list-container'); 
+    const kw = window.amankanData((document.getElementById('surkom-search-key')?.value || "").toLowerCase());
+    
+    const jalankanRenderSurkom = () => {
+        let data = window.surkomDatabase.filter(d => { 
+            let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw); 
+            let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif); 
+            return mKw && mTh; 
+        });
+        if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; border:1px dashed var(--border-dark); border-radius:10px;">Tidak ada arsip ditemukan.</p>`;
+        
+        let h = ""; 
+        data.forEach(d => {
+            let tagTh = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">${d.tahun}</span>` : `<span style="background:rgba(239,68,68,0.2); color:#ef4444; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">DATA LAMA</span>`;
+            let checkboxHtml = window.isModePilihSurkom ? `<input type="checkbox" class="chk-surkom-item" value="${d.id}" style="width:20px; height:20px; margin-right:15px; cursor:pointer;" onclick="event.stopPropagation()">` : '';
+            h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:var(--cepat);" onclick="window.bukaPreviewDariServer('${d.id}')"><div style="flex:1; display:flex; align-items:center;">${checkboxHtml}<div><h4 style="margin:0 0 5px 0; color:var(--secondary);">${d.judul} ${tagTh}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">PIC: ${d.operator || 'Admin'} | ${d.waktuInput || '-'}</p></div></div><button type="button" onclick="event.stopPropagation(); window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:var(--cepat); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;"><i class="fas fa-download"></i></button></div>`;
+        }); 
+        c.innerHTML = h;
+    };
+
+    // TAMPILKAN INSTAN DARI MEMORI
+    if (window.surkomDatabase && window.surkomDatabase.length > 0) {
+        jalankanRenderSurkom();
+    } else {
+        window.toggleLoader(true, "Mengambil Arsip...");
     }
-    let data = window.surkomDatabase.filter(d => { let mKw = (d.judul || "").toLowerCase().includes(kw) || (d.operator || "").toLowerCase().includes(kw); let mTh = (window.surkomTahunAktif === 'ALL') ? true : (d.tahun == window.surkomTahunAktif); return mKw && mTh; });
-    if(data.length === 0) return c.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:20px; border:1px dashed var(--border-dark); border-radius:10px;">Tidak ada arsip ditemukan.</p>`;
-    let h = ""; data.forEach(d => {
-        let tagTh = d.tahun ? `<span style="background:rgba(245,158,11,0.2); color:#fbbf24; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">${d.tahun}</span>` : `<span style="background:rgba(239,68,68,0.2); color:#ef4444; padding:3px 6px; border-radius:5px; font-size:10px; margin-left:8px;">DATA LAMA</span>`;
-        let checkboxHtml = window.isModePilihSurkom ? `<input type="checkbox" class="chk-surkom-item" value="${d.id}" style="width:20px; height:20px; margin-right:15px; cursor:pointer;" onclick="event.stopPropagation()">` : '';
-        h += `<div class="progress-card" style="display:flex; justify-content:space-between; align-items:center; border-left-color:var(--cepat);" onclick="window.bukaPreviewDariServer('${d.id}')"><div style="flex:1; display:flex; align-items:center;">${checkboxHtml}<div><h4 style="margin:0 0 5px 0; color:var(--secondary);">${d.judul} ${tagTh}</h4><p style="margin:0; font-size:11px; color:var(--text-muted);">PIC: ${d.operator || 'Admin'} | ${d.waktuInput || '-'}</p></div></div><button type="button" onclick="event.stopPropagation(); window.unduhPDFSurkom('${d.id}', '${d.judul}')" style="background:var(--cepat); color:white; border:none; padding:10px; border-radius:8px; cursor:pointer;"><i class="fas fa-download"></i></button></div>`;
-    }); c.innerHTML = h;
+
+    // SINKRONISASI SILUMAN (Real-time tanpa Loading Layar)
+    if (!window.listenerSurkomAktif) {
+        window.listenerSurkomAktif = true;
+        onSnapshot(collection(window.db, "surat_komponen"), (snap) => {
+            window.surkomDatabase = [];
+            snap.forEach(d => window.surkomDatabase.push({id: d.id, ...d.data()}));
+            window.surkomDatabase.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+            jalankanRenderSurkom();
+            window.toggleLoader(false);
+        });
+    }
 };
+
 window.bukaPreviewDariServer = async function(id) {
     const d = window.surkomDatabase.find(x => x.id === id);
     if(d && d.filePdfBase64) {
@@ -1201,12 +1240,9 @@ window.switchTabNotulen = (j) => { document.querySelectorAll('.notul-list-conten
 window.bukaHasilNotulen = async () => { 
     window.navigasi('notulen-hasil-screen'); 
     window.switchTabNotulen('MEETING PAGI'); 
-    window.notulenDatabase=[]; 
-    try{ 
-        const snap=await getDocs(query(collection(window.db,"notulen_meeting"))); 
-        snap.forEach(d=>window.notulenDatabase.push({id:d.id,...d.data()})); 
-        window.notulenDatabase.sort((a,b)=>b.timestamp-a.timestamp); 
-        
+    
+    // Fungsi khusus untuk merender HTML agar bisa dipanggil instan
+    const jalankanRenderNotulen = () => {
         let hP="",hU="",hL=""; 
         window.notulenDatabase.forEach(d=>{ 
             let c=`<div class="notulen-dark-card" onclick="window.bukaDetailNotulen('${d.id}')"><h3>${d.jenisMeeting}</h3><p>${d.waktuRecord}</p></div>`; 
@@ -1215,15 +1251,32 @@ window.bukaHasilNotulen = async () => {
             else hL+=c; 
         }); 
         
-        // FIX: Tambahkan fallback pesan KOSONG agar layar tidak blank putih
         const msgKosong = "<p style='text-align:center; color:var(--text-muted); margin-top:30px;'><i class='fas fa-folder-open fa-2x' style='margin-bottom:10px; display:block;'></i>Belum ada data Notulen</p>";
         
         document.getElementById('list-notulen-pagi').innerHTML = hP || msgKosong; 
         document.getElementById('list-notulen-urgent').innerHTML = hU || msgKosong; 
         document.getElementById('list-notulen-lapangan').innerHTML = hL || msgKosong; 
-    } catch(e){
-        console.error("Error Notulen:", e);
-    } 
+    };
+
+    // JIKA DATA SUDAH ADA DI MEMORI, TAMPILKAN INSTAN (0 Detik)
+    if (window.notulenDatabase && window.notulenDatabase.length > 0) {
+        jalankanRenderNotulen();
+    } else {
+        window.toggleLoader(true, "Membuka Arsip...");
+    }
+
+    // SINKRONISASI SILUMAN (Hanya dipasang 1 kali, update otomatis di belakang layar)
+    if (!window.notulenListenerAktif) {
+        window.notulenListenerAktif = true;
+        onSnapshot(collection(window.db, "notulen_meeting"), (snap) => {
+            window.notulenDatabase = [];
+            snap.forEach(d => window.notulenDatabase.push({id: d.id, ...d.data()}));
+            window.notulenDatabase.sort((a,b) => b.timestamp - a.timestamp);
+            
+            jalankanRenderNotulen(); // Update layar tanpa loading muter-muter
+            window.toggleLoader(false);
+        });
+    }
 };
 
 window.bukaDetailNotulen = (id) => {
@@ -1330,7 +1383,6 @@ window.bukaDetailNotulen = (id) => {
     document.getElementById('report-notulen-content').innerHTML = finalHtml;
     window.navigasi('detail-notulen-screen');
 };
-
 window.updateCeklisNotulen = async function(docId, indexPoin, isChecked) { console.log("Ceklis dinonaktifkan di mode Pro."); };
 
 window.downloadNotulenJPG = () => { const wrapper = document.getElementById('notul-export-wrapper'); if(wrapper) { wrapper.classList.add('export-mode'); } window.scrollTo(0, 0); window.toggleLoader(true, "Mencetak Laporan Profesional..."); setTimeout(() => { html2canvas(document.getElementById('notul-export-wrapper'), { scale: 2, useCORS: true, backgroundColor: "#ffffff", windowWidth: 1000 }).then(canvas => { let link = document.createElement('a'); link.download = `Notulen_${Date.now()}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.95); link.click(); if(wrapper) { wrapper.classList.remove('export-mode'); } window.toggleLoader(false); }).catch(e => { alert("Gagal cetak gambar."); if(wrapper) { wrapper.classList.remove('export-mode'); } window.toggleLoader(false); }); }, 600); };
