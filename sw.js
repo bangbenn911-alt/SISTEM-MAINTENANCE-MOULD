@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mtrix-cache-v48';
+const CACHE_NAME = 'mtrix-cache-v49';
 const ASSETS = [
   '/', 
   './index.html',
@@ -13,7 +13,6 @@ const ASSETS = [
   'https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'
 ];
 
-// Install Service Worker & Simpan Cache
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
